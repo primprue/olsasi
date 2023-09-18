@@ -17,7 +17,7 @@ function columnsFill(tipoanexo) {
             },
 
             {
-                headerName: "Descripción",
+                headerName: "Descrfdddipción",
                 field: "PresupConfTipoDesc",
                 lookup: tipoanexo,
             },
