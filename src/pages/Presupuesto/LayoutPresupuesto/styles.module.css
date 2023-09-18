@@ -1,0 +1,18 @@
+  .root {
+    flex: auto;
+  }
+
+  .paper {
+    padding: spacing(2);
+    align-items: center;
+    color: aliceblue;
+  }
+
+  .text {
+    color: #000;
+  }
+
+  .textField {
+
+    color: crimson
+  }

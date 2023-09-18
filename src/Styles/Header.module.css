@@ -1,0 +1,51 @@
+.botonmenu {
+	padding: 16px;
+	background: linear-gradient(50deg, #e3faf7 20%, #58f7e1 60%);
+	color: rgb(5, 1, 0);
+	text-align-last: center;
+	border-radius: 5px;
+	margin: 4px;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	height: 35px;
+	width: 150px;
+	margin-right: 8px;
+	margin-bottom: 18px;
+	transition: background 1s, color 1s, transform 1s;
+}
+
+.botonmenu:hover {
+	background: linear-gradient(30deg, #95cce6 20%, #e3faf7 70%);
+	color: rgb(48, 22, 190);
+	font-weight: bold;
+	width: 200px;
+	transform: scale(1.2);
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.barraherr {
+	background: linear-gradient(10deg, #f4f5f7 20%, #95cfe6 70%);
+	text-align-last: right;
+	min-height: 40;
+	padding: "0 30px";
+}
+
+.title {
+	/* flex-grow: 1; */
+	flex: auto;
+	/* margin-right: 15px; */
+	align-items: center;
+	color: #3006e7;
+	border-radius: 10px;
+}
+
+.botonitem {
+	background-color: linear-gradient(10deg, #f4f5f7 20%, #f3757b 70%);
+}
+
+.botonitem:hover {
+	background: linear-gradient(10deg, #9ba7eb94 20%, #7ba1db 70%);
+	color: rgb(48, 22, 190);
+	border-radius: 10px;
+}

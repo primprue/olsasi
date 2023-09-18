@@ -1,0 +1,29 @@
+.dialogo {
+	padding: auto;
+	background-color: rgba(255, 217, 0, 0.514);
+	width: auto;
+}
+
+.dialogocontenido {
+
+	background-color: rgb(236, 242, 248);
+	width: auto;
+}
+
+.dialogotitulo {
+	padding: auto;
+	background-color: rgba(185, 189, 248, 0.555);
+	width: auto;
+	color: #db1717;
+	align-items: center;
+
+}
+
+.h3 {
+	padding: auto;
+	background-color: rgba(187, 245, 247, 0.438);
+	width: auto;
+	color: #db1717;
+	align-items: flex-end;
+
+}

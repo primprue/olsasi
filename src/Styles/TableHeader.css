@@ -1,0 +1,5 @@
+.headerFijo {
+	position: sticky;
+	top: 35px;
+	background-color: blueviolet;
+}
