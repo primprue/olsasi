@@ -14,16 +14,19 @@ import estilotabla from "../../../../Styles/Tabla.module.css";
 import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
-import { red, blue, green, purple } from "@mui/material/colors";
+import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
+import SaveAsTwoToneIcon from "@mui/icons-material/SaveAsTwoTone";
+import { deepOrange, red, blue, green, purple } from "@mui/material/colors";
+import { CurrencyTextField } from "../../../../hooks/useCurrencyTextField";
+import EstTF from "../../../../Styles/TextField.module.css";
 // import MaterialTable, { MTableToolbar } from "material-table";
 // import { tableIcons } from "../../../../../lib/material-table/tableIcons";
 // import { localization } from "../../../../../lib/material-table/localization";
-// import FilaCuatro from "../FilaCuatro/FilaCuatro";
 // import CurrencyTextField from "@unicef/material-ui-currency-textfield";
 // import { PresupPreview } from "../PresupPreview";
-
+import FilaCuatro from "../FilaCuatro/FilaCuatro";
 // import { blue, green, purple, teal } from "@material-ui/core/colors";
-
+import { PresupPreview } from "../PresupPreview";
 import FilaAnexo from "../FilaAnexo/FilaAnexo";
 // Context
 import { useContext } from "react";
@@ -31,7 +34,6 @@ import { PresupPantContext } from "../../PresupPant";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
 export function CustomFooterStatusComponent(suma) {
-	console.log("suma  ", suma);
 	const sumar = suma.suma;
 	return (
 		<Box sx={{ p: 1, display: "flex" }}>
@@ -68,29 +70,50 @@ export default function TablaPresup(props) {
 				{/* <GridToolbarColumnsButton /> */}
 				{/* <GridToolbarFilterButton /> */}
 				{/* <GridToolbarDensitySelector /> */}
+				{state.renglonanexo.length !== 0 && <h3>Tiene Anexos</h3>}
+				<CurrencyTextField
+					size="small"
+					label="Total"
+					value={suma}
+					className={EstTF.tfcurrency}
+				></CurrencyTextField>
+				<b></b>
+				<b></b>
+				<b></b>
+				<b></b>
 				<GridToolbarExport></GridToolbarExport>
-				<IconButton onClick={BorraFila}>
-					<DeleteForeverRoundedIcon
-						style={{ color: red[500] }}
-						fontSize="medium"
-						titleAccess="Borrar"
-					/>
-				</IconButton>
-				<IconButton onClick={sumar}>
-					<AddShoppingCartIcon
-						style={{ color: green[500] }}
-						fontSize="medium"
-						titleAccess="Sumar"
-					/>
-				</IconButton>
-				<IconButton onClick={() => setAnexos({ anexos: true })}>
-					<AttachFileIcon
-						style={{ color: purple[500] }}
-						fontSize="medium"
-						titleAccess="Sumar"
-					/>
-				</IconButton>
-				<Button onClick={handleClose}>Cierra</Button>
+				<DeleteForeverRoundedIcon
+					onClick={BorraFila}
+					style={{ color: red[500] }}
+					fontSize="medium"
+					titleAccess="Borrar"
+				/>
+				<AddShoppingCartIcon
+					onClick={sumar}
+					style={{ color: green[500] }}
+					fontSize="medium"
+					titleAccess="Sumar"
+				/>
+				{/* onAnimationStartnClick={() => setAnexos({ anexos: true })} */}
+				<AttachFileIcon
+					onClick={() => setAnexos({ anexos: true })}
+					style={{ color: purple[500] }}
+					fontSize="medium"
+					titleAccess="Sumar"
+				/>
+				<LocalPrintshopRoundedIcon
+					onClick={() => setPPreview({ ppreview: true })}
+					style={{ color: blue[500] }}
+					fontSize="medium"
+					titleAccess="Imprimir"
+				/>
+				<SaveAsTwoToneIcon
+					onClick={() => setFilacuatro({ filacuatro: true })}
+					style={{ color: deepOrange[500] }}
+					fontSize="medium"
+					titleAccess="Grabar"
+				/>
+				{/* <Button onClick={handleClose}>Cierra</Button> */}
 			</GridToolbarContainer>
 		);
 	}
@@ -102,7 +125,6 @@ export default function TablaPresup(props) {
 			i++;
 		}
 		setSuma(totalpresup);
-		console.log("totalpresup  ", totalpresup);
 	};
 
 	const handleClose = () => {
@@ -135,10 +157,7 @@ export default function TablaPresup(props) {
 						// onProcessRowUpdateError={handleProcessRowUpdateError}
 						slots={{
 							toolbar: CustomToolbar,
-							footer: CustomFooterStatusComponent,
-						}}
-						slotProps={{
-							footer: { suma },
+							// footer: CustomFooterStatusComponent,
 						}}
 
 						// initialState={{
@@ -151,6 +170,18 @@ export default function TablaPresup(props) {
 				</Grid>
 			</Grid>
 			<FilaAnexo open={anexos.anexos} setOpen={setAnexos} />;
+			<PresupPreview
+				open={ppreview.ppreview}
+				setOpen={setPPreview}
+			></PresupPreview>
+			<FilaCuatro
+				open={filacuatro.filacuatro}
+				datos={datosrenglon}
+				maymin={props.maymin}
+				suma={suma}
+				setOpen={setFilacuatro}
+				handleClose={handleClose}
+			/>
 		</div>
 	);
 }
@@ -249,6 +280,8 @@ export default function TablaPresup(props) {
         setOpen={setFilacuatro}
         handleClose={handleClose}
       />
-
+slotProps={{
+							footer: { suma },
+						}}
       <PresupPreview open={ppreview.ppreview} setOpen={setPPreview}></PresupPreview> */
 }

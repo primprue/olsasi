@@ -56,7 +56,9 @@ router.post("/", function (req, res, next) {
     var tipoleygral = 0
     var operador = ''
     var i = 0
+    console.log('req condpagoele  ', req.body.condpagoeleg)
     req.body.condpagoeleg.map(() => {
+        console.log('req.body.condpagoeleg[i].tableData.checked  ', req.body.condpagoeleg[i].tableData.checked)
         if (req.body.condpagoeleg[i].tableData.checked == true) {
             if (req.body.condpagoeleg[i].PresupDetPieLeyenda.search('Operador') === 0) {
                 operador = req.body.condpagoeleg[i].PresupDetPieLeyenda

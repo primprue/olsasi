@@ -35,11 +35,17 @@ router.get('/', function (req, res, next) {
 
     // ].join(' ');
     const q = [
-        'SELECT * FROM BasesGenerales.Clientes ',
-        // ' where BasesGenerales.Clientes.ClientesTipo = BasesGenerales.SubRubros.idSubRubro ',
+        'SELECT  idClientes as id, ClientesDesc, ClientesDomicilio, ClientesCodPos, ',
+        'ClientesLoc, ClientesPcia, ClientesTel, ClientesMail, ClientesIVA, ClientesCUIT, ',
+        'ClientesTipo, ClientesContacto, ClientesCategoria, ClientesObserv1, ClientesObserv2, ',
+        'ClientesFecha FROM BasesGenerales.Clientes ',
         ' order by ClientesDesc',
-
     ].join(' ');
+
+    // const q = [
+    //     'SELECT idClientes as id, * FROM BasesGenerales.Clientes ',
+    //     ' order by ClientesDesc',
+    // ].join(' ');
     conexion.query(
         q,
         function (err, result) {

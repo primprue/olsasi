@@ -1,0 +1,25 @@
+.tfselect {
+	padding: 45px;
+	background-color: rgba(249, 245, 227, 0.514);
+	width: 400px;
+	/* variant:"outlined"; */
+	margin:"dense";
+}
+.tfmed {
+	padding: 45px;
+	background-color: rgba(249, 245, 227, 0.514);
+	width: 150px;
+	/* variant:"outlined"; */
+	margin:"dense";
+}
+.tfcurrency {
+	padding: 5px;
+	background-color: rgba(249, 245, 227, 0.514);
+	width: 150px;
+	text-align: right;
+	font-size: 18px;
+	color: #277909;
+	height: 30px;
+	
+	
+}

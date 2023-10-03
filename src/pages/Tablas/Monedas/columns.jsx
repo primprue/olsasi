@@ -1,3 +1,4 @@
+import React from "react";
 export async function llenarcolumns() {
 	return columnsFill();
 }
@@ -31,13 +32,20 @@ function columnsFill() {
 				placeholder: "999999,99",
 				required: true,
 				editable: true,
-				alignItems: "right",
+				// alignItems: "right",
 				// renderEditCell: (val) => {
 				// 	return `Editando: ${val.value}`;
 				// },
 				maxLength: 9,
 				xs: 4,
 				pattern: /^[0-9]{0,6}.[0-9]{0,2}$/,
+				align: "right",
+				renderCell: (params) => (
+					<div style={{ textAlign: "right" }}>
+						{params.value && `$ ${params.value}`}{" "}
+						{/* Agrega el signo monetario */}
+					</div>
+				),
 				// valueParser: (value) => parseFloat(value.toFixed(2)),
 				// valueFormatter: (params) => {
 				// 	// Formatear el valor numérico con dos decimales

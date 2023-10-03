@@ -3,6 +3,9 @@ import IpServidor from "../VariablesDeEntorno";
 
 export const presupcalculador = (DatosPresupEleg, datoscalculo, tipo) => {
 	var datotraido = DatosPresupEleg;
+	console.log("DatosPresupEleg  ", DatosPresupEleg);
+	console.log("datoscalculo  ", datoscalculo);
+	console.log("tipo  ", tipo);
 	var backend, url;
 	if (
 		datotraido === null ||
@@ -30,7 +33,6 @@ export const presupcalculador = (DatosPresupEleg, datoscalculo, tipo) => {
 			.set("Content-Type", "application/json")
 			.then((res) => {
 				const presuprenglon = JSON.parse(res.text);
-
 				resolve(presuprenglon);
 			});
 	});

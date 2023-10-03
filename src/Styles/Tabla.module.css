@@ -15,24 +15,18 @@
 }
 
 .tablapresupuestoslot {
-	background-color: rgb(223, 224, 231);
+	background-color:  rgba(242, 244, 245, 0.514);
+	display: flex;
+	justify-content:  flex-end;
 
 }
 
-.diaanexo {
-	position: flex;
-	background-color: rgb(241, 248, 248.0.5);
-	width: 500;
-	min-height: 100vh;
-	max-height: 100vh;
-	padding: 25px;
-}
+
 
 .tablaanexo {
 	position: flex;
-	background-color: rgb(240, 229, 236, 0.3);
-	width: 500;
-	height: 250px;
-
+	background-color: rgba(235, 240, 241, 0.3);
+	height: 350px;
+	max-width:"xl";
 	padding: 25px;
 }

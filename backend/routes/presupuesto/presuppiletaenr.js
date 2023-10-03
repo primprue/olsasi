@@ -30,7 +30,7 @@ router.get("/", (req, res, next) => {
         metroscuad = 0,
         StkRubroAbrP = "",
         largo = 0,
-        minutospmc = 7,
+        minutospmc = 5,
         ancho = 0.0;
       minutosdren = 0.0;
       // var enteroancho = 0,
@@ -82,7 +82,7 @@ router.get("/", (req, res, next) => {
                 detalle = "Lona enrollable para pileta, con fajas en las puntas, con drenaje "
               }
               else {
-                detalle = detallep + ''
+                detalle = detallep + ' '
               }
               minutosdren = ((largo / 1.50) + 2) * 12
 
@@ -92,11 +92,10 @@ router.get("/", (req, res, next) => {
                 detalle = "Lona enrollable para pileta, con fajas en las puntas"
               }
               else {
-                detalle = detallep + ''
+                detalle = detallep + ' '
               }
               minutosdren = 0
             }
-
 
             if (datos.minmay == 'my') {
               coeficiente = result[0].coeficientemay
@@ -108,21 +107,18 @@ router.get("/", (req, res, next) => {
               coefMOT = result[0].coefMOTmin
             }
 
-            if (tipoojale == 'hz') {
+            if (tipoojale == 'hz' && detallep == '') {
               tipoojal = result[0].abrojales3hz
               detalle = detalle + ' c/ojales de HZ en : '
             }
-            else {
+            if (tipoojale !== 'hz' && detallep == '') {
+              // else {
               tipoojal = result[0].abrojales3b
               detalle = detalle + ' c/ojales de bronce en : '
             }
 
             cantidadojales = datos.largo * 2
             valorMOT = result[0].costoMOT * coefMOT / 60 * ((metroscuad * minutospmc) + minutosdren)
-            console.log('minutospmc  ', minutospmc)
-            console.log('minutosdren  ', minutosdren)
-            console.log('metroscuad  ', metroscuad)
-            console.log('(metroscuad * minutospmc)  ', (metroscuad * minutospmc))
 
 
             mcuadcob = ['Select ',
