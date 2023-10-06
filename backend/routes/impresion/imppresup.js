@@ -37,10 +37,10 @@ const formatter = new Intl.NumberFormat('es-AR', {
 
 var fonts = {
     Roboto: {
-        normal: '/home/sandra/SistOLSA/OlsaSG/backend/node_modules/pdfmake/examples/fonts/Roboto-Regular.ttf',
-        bold: '/home/sandra/SistOLSA/OlsaSG//backend/node_modules/pdfmake/examples/fonts/Roboto-Medium.ttf',
-        italics: '/home/sandra/SistOLSA/OlsaSG/backend/node_modules/pdfmake/examples/fonts/Roboto-Italic.ttf',
-        bolditalics: '/home/sandra/SistOLSA/OlsaSG/backend/node_modules/pdfmake/examples/fonts/Roboto-MediumItalic.ttf'
+        normal: '/home/sandra/SistOLSA/olsasi/backend/node_modules/pdfmake/examples/fonts/Roboto-Regular.ttf',
+        bold: '/home/sandra/SistOLSA/olsasi//backend/node_modules/pdfmake/examples/fonts/Roboto-Medium.ttf',
+        italics: '/home/sandra/SistOLSA/olsasi/backend/node_modules/pdfmake/examples/fonts/Roboto-Italic.ttf',
+        bolditalics: '/home/sandra/SistOLSA/olsasi/backend/node_modules/pdfmake/examples/fonts/Roboto-MediumItalic.ttf'
     }
 };
 
@@ -56,21 +56,31 @@ router.post("/", function (req, res, next) {
     var tipoleygral = 0
     var operador = ''
     var i = 0
-    console.log('req condpagoele  ', req.body.condpagoeleg)
-    req.body.condpagoeleg.map(() => {
-        console.log('req.body.condpagoeleg[i].tableData.checked  ', req.body.condpagoeleg[i].tableData.checked)
-        if (req.body.condpagoeleg[i].tableData.checked == true) {
-            if (req.body.condpagoeleg[i].PresupDetPieLeyenda.search('Operador') === 0) {
-                operador = req.body.condpagoeleg[i].PresupDetPieLeyenda
-            }
-            else {
-                condicionpago1.push(req.body.condpagoeleg[i].PresupDetPieLeyenda)
-                tipoleygral = tipoleygral + req.body.condpagoeleg[i].PresupDetPieLeyenda.search('seña')
-            }
+    var condicionesvs = req.body.condpagoeleg
+    var index = 0
+    condicionesvs.forEach(element => {
+        if (element[0].PresupDetPieLeyenda.search('Operador') === 0) {
+            operador = req.body.condpagoeleg[i].PresupDetPieLeyenda
         }
-        i++
-    }
-    )
+        else {
+            condicionpago1.push(element[0].PresupDetPieLeyenda)
+            tipoleygral = tipoleygral + element[0].PresupDetPieLeyenda.search('seña')
+        }
+    });
+    // req.body.condpagoeleg.map(() => {
+    //     // console.log('req.body.condpagoeleg[i].tableData.checked  ', req.body.condpagoeleg[i].tableData.checked)
+    //     // if (req.body.condpagoeleg[i].tableData.checked == true) {
+    //     if (req.body.condpagoeleg[i].PresupDetPieLeyenda.search('Operador') === 0) {
+    //         operador = req.body.condpagoeleg[i].PresupDetPieLeyenda
+    //     }
+    //     else {
+    //         condicionpago1.push(req.body.condpagoeleg[i].PresupDetPieLeyenda)
+    //         tipoleygral = tipoleygral + req.body.condpagoeleg[i].PresupDetPieLeyenda.search('seña')
+    //     }
+    //     // }
+    //     i++
+    // }
+    // )
     condicionpago1.push(req.body.otraCondicion)
     TotalPresup = req.body.suma
 
@@ -92,7 +102,6 @@ router.post("/", function (req, res, next) {
     var opciones = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
     var i = 0;
     var a = 'N'
-
 
     if (TotalPresup === 0) {
         if (descrip === '') {
@@ -401,7 +410,8 @@ router.post("/", function (req, res, next) {
 
     };
     var pdfDoc = printer.createPdfKitDocument(docDefinition);
-    pdfDoc.pipe(fs.createWriteStream('/home/sandra/SistOLSA/OlsaSG/src/components/Main/pages/Presupuesto/static/media/basics.pdf'));
+    pdfDoc.pipe(fs.createWriteStream('/home/sandra/SistOLSA/olsasi/public/basics.pdf'));
+    // pdfDoc.pipe(fs.createWriteStream('/home/sandra/SistOLSA/OlsaSG/src/components/Main/pages/Presupuesto/static/media/basics.pdf'));
     // pdfDoc.pipe(fs.createWriteStream(('/home/sandra/Documentos/OLSAFrecuentes/PresupSistema/' + nombrepresup)));
 
     pdfDoc.pipe(fs.createWriteStream((variables.dirpresupdocumento + nombrepresup)));

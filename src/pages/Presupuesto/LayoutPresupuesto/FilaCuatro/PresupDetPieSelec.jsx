@@ -48,16 +48,26 @@ export default function PresupDetPieSelect() {
 
 	const handleSelectionModelChange = (selectionModel) => {
 		// Generar el array de selección basado en la columna "leyenda"
-		console.log("selectionModel  ", selectionModel[selectionModel.length - 1]);
-		const foundUser = data.find(
-			(datos) => datos.id === selectionModel[selectionModel.length - 1]
+		// console.log("selectionModel  ", selectionModel[selectionModel.length - 1]);
+		// console.log("data  ", data.index);
+		// const foundUser = data.find(
+		// 	(datos) => datos.id === selectionModel[selectionModel.length - 1]
+		// );
+		// console.log("foundUser  ", foundUser.PresupDetPieLeyenda);
+		// const selectedLeyendas = selectionModel.map(
+		// 	(index) => data[index].PresupDetPieLeyenda
+		// );
+		const selectedLeyendas = selectionModel.map((row, i) =>
+			data.filter((rows) => rows.id == row)
 		);
-		console.log("foundUser  ", foundUser.PresupDetPieLeyenda);
-		const selectedLeyendas = selectionModel.map(
-			(index) => data[index].PresupDetPieLeyenda
-		);
+
 		setSelectionModel(selectedLeyendas);
-		console.log("Filas seleccionadas:", selectedLeyendas);
+		setState({ ...state, condpagoeleg: selectedLeyendas });
+		console.log(selectedLeyendas);
+		// console.log(
+		// 	"Filas seleccionadas:",
+		// 	selectedLeyendas[selectedLeyendas.length - 1][0].PresupDetPieLeyenda
+		// );
 	};
 	return (
 		<div>

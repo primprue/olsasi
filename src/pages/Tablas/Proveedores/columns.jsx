@@ -26,8 +26,8 @@ function columnsFill(tipoprov, stkMonedas) {
 				editable: true,
 				required: true,
 				maxLength: 10,
+				width: 250,
 				pattern: /^/,
-
 				xs: 8,
 			},
 

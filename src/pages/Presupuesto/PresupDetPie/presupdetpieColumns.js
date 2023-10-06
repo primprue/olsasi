@@ -1,7 +1,7 @@
 export function presupdetpieColumns() {
     return new Promise(function (resolve) {
         resolve([
-            // { headerName: "id", field: "id", type: "text", xs: 4, editable: false },
+            { headerName: "id", field: "id", type: "text", xs: 4, editable: false },
             {
                 headerName: "Leyenda",
                 field: "PresupDetPieLeyenda",

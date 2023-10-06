@@ -429,7 +429,7 @@ app.use("/copiafact", copiafact);
 app.use("/datosencabpresupeleg", datosencabpresupeleg);
 app.use("/otarmatabla", otarmatabla);
 
-app.use("/", proveedoresleer);
+app.use("/", clientesleer);
 
 
 app.use(function (req, res, next) {

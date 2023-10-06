@@ -15,8 +15,9 @@ var router = express();
 
 router.get("/", function (req, res, next) {
   //'Select * from StkGrupo '
-  var q = ["Select idPresupDetPie as id, PresupDetPieLeyenda, PresupDetPieSelec from BasePresup.PresupDetPie order by PresupDetPieLeyenda"].join(" ");
+  //var q = ["Select sPresupDetPieLeyenda, PresupDetPieSelec from BasePresup.PresupDetPie order by PresupDetPieLeyenda"].join(" ");
 
+  var q = ["Select idPresupDetPie as id, PresupDetPieLeyenda, PresupDetPieSelec from BasePresup.PresupDetPie order by PresupDetPieLeyenda"].join(" ");
 
   console.log('q  ', q)
   conexion.query(q, function (err, result) {

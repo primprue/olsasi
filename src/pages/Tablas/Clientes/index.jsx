@@ -31,7 +31,7 @@ import TablasContexto from "../../../context/TablasContext.jsx";
 import { formdata } from "./formdata.js";
 // import { tablasContext } from "../Tablas.jsx";
 // export const ProveedoresContext = React.createContext();
-export default function Proveedores() {
+export default function Clientes() {
 	const { formdatos, setFormdatos } = useContext(TablasContexto);
 	const { setValor } = useContext(StaticContexto);
 	//	const [formdatos, setFormdatos] = useState(formdata);
@@ -41,6 +41,7 @@ export default function Proveedores() {
 	//empiezan las cosas del sistema
 	async function columnsFetch() {
 		var col = await llenarcolumns();
+		console.log("col  ", col);
 		col.push(actionsColumn);
 		setColumns(() => col);
 	}
@@ -54,7 +55,7 @@ export default function Proveedores() {
 	}
 	useEffect(() => {
 		initialFetch();
-		setValor("Proveedores");
+		setValor("Clientes");
 		setFormdatos(formdata);
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -69,7 +70,6 @@ export default function Proveedores() {
 	};
 
 	const handleEdit = (params) => {
-		console.log("params.row handleEdit ", formdata.datoserroneos);
 		setOpen(true);
 	};
 

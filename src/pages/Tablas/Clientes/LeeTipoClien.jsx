@@ -1,4 +1,4 @@
-import IpServidor from "../VariablesDeEntorno";
+import IpServidor from "../../VariablesDeEntorno";
 import request from "superagent";
 
 export function leeTipoClien() {
