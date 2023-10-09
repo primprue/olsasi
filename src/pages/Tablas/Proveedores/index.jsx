@@ -31,6 +31,7 @@ import TablasContexto from "../../../context/TablasContext.jsx";
 import { formdata } from "./formdata.js";
 // import { tablasContext } from "../Tablas.jsx";
 // export const ProveedoresContext = React.createContext();
+
 export default function Proveedores() {
 	const { formdatos, setFormdatos } = useContext(TablasContexto);
 	const { setValor } = useContext(StaticContexto);

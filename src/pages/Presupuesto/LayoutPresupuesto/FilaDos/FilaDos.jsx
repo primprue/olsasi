@@ -17,6 +17,7 @@ import { red } from "@mui/material/colors";
 
 // Context
 import { useContext } from "react";
+
 import { PresupPantContext } from "../../PresupPant";
 import TablaPresup from "../TablaPresup/TablaPresup";
 import FilaConf from "../FilaConf/FilaConf";
@@ -283,6 +284,8 @@ export default function FilaDos() {
 			),
 		},
 	];
+
+	console.log("state  ", state);
 	return (
 		<>
 			{rubrosn === "S" &&

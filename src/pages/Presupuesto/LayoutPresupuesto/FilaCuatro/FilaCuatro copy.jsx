@@ -10,7 +10,6 @@ import { clientesleercod } from "../../../Tablas/Clientes/ClientesLeerCod";
 import PresupDetPieSelec from "./PresupDetPieSelec";
 import { PresupPreview } from "../PresupPreview";
 import useStyles from "../styles.module.css";
-import DetCliente from "./DetCliente";
 
 export default function FilaCuatro(props) {
 	const { state, setState } = useContext(PresupPantContext);
@@ -21,6 +20,7 @@ export default function FilaCuatro(props) {
 	};
 	const CHARACTER_LIMIT = 200;
 	async function clientesleerdescrip() {
+		console.log("state.ClientesDesc  ", state.ClientesDesc);
 		const result = await clientesleerdescmayigual(state.ClientesDesc);
 		setState({ ...state, clientes: result });
 	}
@@ -74,6 +74,23 @@ export default function FilaCuatro(props) {
 	function cierrafilacuatro() {
 		props.setOpen({ filacuatro: false });
 	}
+	const textdata = [
+		{
+			id: "idClientes",
+			value: state.idClientes,
+			mapeo: (
+				<>
+					<option></option>
+					<option />
+					{state.clientes.map((option) => (
+						<option key={option.idClientes} value={option.idClientes}>
+							{option.ClientesDesc}
+						</option>
+					))}
+				</>
+			),
+		},
+	];
 
 	const classes = useStyles;
 	return (
@@ -95,7 +112,42 @@ export default function FilaCuatro(props) {
 					helperText={`Cantidad de caracteres ${state.otraCondicion.length}/${CHARACTER_LIMIT}`}
 				/>
 
-				<DetCliente />
+				<h3>Cliente Presupuesto</h3>
+				<TextField
+					inputProps={{ maxLength: 45 }}
+					size="small"
+					variant="outlined"
+					id="nomCliente"
+					type="text"
+					label="Nombre Cliente Ocacional"
+					fullWidth
+					margin="dense"
+					value={state.nomCliente}
+					onChange={handleChange}
+					className={classes.textField}
+				/>
+
+				<label>Cliente Existente</label>
+				{console.log("textdata enn ", textdata)}
+				{textdata.map((data) => (
+					<TextField
+						key={data.id}
+						id={data.id}
+						//está agregado este key para que no dé el famoso warning
+						size="small"
+						inputProps={{ maxLength: 20 }}
+						select
+						label={data.label}
+						value={data.value}
+						onChange={handleChange}
+						SelectProps={{ native: true }}
+						variant="outlined"
+						fullWidth
+					>
+						{data.mapeo}
+					</TextField>
+				))}
+
 				<PresupPreview
 					open={ppreview.ppreview}
 					setOpen={setPPreview}

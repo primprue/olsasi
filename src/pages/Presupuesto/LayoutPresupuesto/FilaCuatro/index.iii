@@ -8,7 +8,7 @@ export default function Fila() {
   return (
     <>
       <FilaCuatro />
-      <PresupDetPieSelec />
+      {/* <PresupDetPieSelec /> */}
     </>
   );
 }

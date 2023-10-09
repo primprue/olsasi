@@ -1,15 +1,14 @@
 import React from "react";
 
-
 import FilaUnoIzq from "./FilaUnoIzq";
 import TipoCliente from "./TipoCliente";
 import TipoIVA from "./TipoIVA";
-import TipoProducto from "./TipoProducto"
+import TipoProducto from "./TipoProducto";
 
 export default function Fila() {
-  return (
-    <>
-      {/* <Grid
+	return (
+		<>
+			{/* <Grid
         container
         spacing={3}
         // alignItems="flex-end"
@@ -18,13 +17,12 @@ export default function Fila() {
         alignItems="center"
         xs={12}
       > */}
-      <TipoCliente />
-      <TipoIVA />
-      <TipoProducto/>
-      <FilaUnoIzq />
-    
+			<TipoCliente />
+			<TipoIVA />
+			<TipoProducto />
+			<FilaUnoIzq />
 
-      {/* </Grid> */}
-    </>
-  );
+			{/* </Grid> */}
+		</>
+	);
 }

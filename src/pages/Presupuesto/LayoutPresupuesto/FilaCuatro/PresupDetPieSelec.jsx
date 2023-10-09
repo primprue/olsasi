@@ -16,6 +16,7 @@ import { presupdetpieData } from "../../PresupDetPie/presupdetpieData";
 // Context
 import { useContext } from "react";
 import { PresupPantContext } from "../../PresupPant";
+
 var arregloeleg1 = [];
 export default function PresupDetPieSelect() {
 	const { state, setState } = useContext(PresupPantContext);
@@ -41,33 +42,16 @@ export default function PresupDetPieSelect() {
 	useEffect(() => {
 		initialFetch();
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
-	const [rowSelectionModel, setRowSelectionModel] = React.useState([]);
-	const [arregloeleg, setArregloeleg] = React.useState([]);
 
 	const [selectionModel, setSelectionModel] = useState([]);
 
 	const handleSelectionModelChange = (selectionModel) => {
-		// Generar el array de selección basado en la columna "leyenda"
-		// console.log("selectionModel  ", selectionModel[selectionModel.length - 1]);
-		// console.log("data  ", data.index);
-		// const foundUser = data.find(
-		// 	(datos) => datos.id === selectionModel[selectionModel.length - 1]
-		// );
-		// console.log("foundUser  ", foundUser.PresupDetPieLeyenda);
-		// const selectedLeyendas = selectionModel.map(
-		// 	(index) => data[index].PresupDetPieLeyenda
-		// );
 		const selectedLeyendas = selectionModel.map((row, i) =>
 			data.filter((rows) => rows.id == row)
 		);
 
 		setSelectionModel(selectedLeyendas);
 		setState({ ...state, condpagoeleg: selectedLeyendas });
-		console.log(selectedLeyendas);
-		// console.log(
-		// 	"Filas seleccionadas:",
-		// 	selectedLeyendas[selectedLeyendas.length - 1][0].PresupDetPieLeyenda
-		// );
 	};
 	return (
 		<div>
@@ -78,24 +62,8 @@ export default function PresupDetPieSelect() {
 				checkboxSelection
 				onRowSelectionModelChange={handleSelectionModelChange}
 				selectionModel={selectionModel}
-				// onRowSelectionModelChange={(newRowSelectionModel) => {
-				// 	setRowSelectionModel(newRowSelectionModel);
-				// }}
-				// onRowSelectionModelChange={(newRowSelectionModel) => {
-				// 	console.log("newRowSelectionModel fff  ", newRowSelectionModel);
-				// 	const foundUser = data.find(
-				// 		(user) =>
-				// 			user.id === newRowSelectionModel[newRowSelectionModel.length - 1]
-				// 	);
-				// 	console.log("foundUser  ", foundUser);
-				// 	setArregloeleg(foundUser.PresupDetPieLeyenda);
-				// 	arregloeleg1.push(foundUser.PresupDetPieLeyenda);
-
-				// 	setRowSelectionModel(newRowSelectionModel);
-				// 	setState({ ...state, condpagoeleg: data });
-				// }}
-				// rowSelectionModel={rowSelectionModel}
 				localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+				pageSizeOptions={[10, 10]}
 				// icons={tableIcons}
 				// options={{
 				// 	sorting: true,

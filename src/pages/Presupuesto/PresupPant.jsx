@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { initial_state } from "./Initial_State";
-import FilaUno from "./LayoutPresupuesto/FilaUno";
+import FilaUno from "./LayoutPresupuesto/FilaUno/index.jsx";
 import FilaDos from "./LayoutPresupuesto/FilaDos";
 import { Grid } from "@mui/material";
 import { useContext } from "react";
 import StaticContexto from "../../context/StaticContext.jsx";
+import TablaPresup from "./LayoutPresupuesto/TablaPresup/TablaPresup";
+import FilaCuatro from "./LayoutPresupuesto/FilaCuatro/FilaCuatro";
 export const PresupPantContext = React.createContext();
-var PresupPant = () => {
+var PresupPant = ({ children }) => {
 	const { setValor } = useContext(StaticContexto);
 	const [state, setState] = useState(initial_state);
 	const [datosrenglon, setDatosRenglon] = useState([]);
@@ -24,8 +26,12 @@ var PresupPant = () => {
 						setDatosRenglon: setDatosRenglon,
 					}}
 				>
+					{children}
+
 					<FilaUno />
 					<FilaDos />
+					{/* <FilaCuatro /> */}
+					{/* <TablaPresup /> */}
 				</PresupPantContext.Provider>
 			</Grid>
 		</div>

@@ -43,21 +43,11 @@ export function stkProveedoresAgregar(props) {
 				.send({ provcodmon: ProveedoresCodMon })
 
 				.then((res) => {
-					// datoserroneos = false;
 					MuestraMensaje(res);
 				})
 				.catch((err) => {
-					// datoserroneos = true;
 					MuestraMensaje(err);
 				});
-			// .then(function (res) {
-			// 	MuestraMensaje(res);
-
-			// })
-
-			// .catch((err) => {
-			// 	MuestraMensaje(err);
-			// });
 		}, 1000);
 	});
 }

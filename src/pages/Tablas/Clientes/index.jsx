@@ -41,7 +41,6 @@ export default function Clientes() {
 	//empiezan las cosas del sistema
 	async function columnsFetch() {
 		var col = await llenarcolumns();
-		console.log("col  ", col);
 		col.push(actionsColumn);
 		setColumns(() => col);
 	}

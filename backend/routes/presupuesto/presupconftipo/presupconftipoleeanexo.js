@@ -34,7 +34,6 @@ router.get("/", function (req, res, next) {
   // else {
   //   var q = [" SELECT @numero:=@numero+1 as value , PresupConfTipoDesc as label, PresupConfTipoImprime  from BasePresup.PresupConfTipo where PresupConfTipoAnexo = '" + PresupConfTipoAnexoSN + "' and PresupConfTipoPElab = 'S' or PresupConfTipoBack = '/presupunid'  group by PresupConfTipoDesc, PresupConfTipoImprime  order by PresupConfTipoDesc "].join(" ");
   // }
-  console.log('q presupconftipoleeanexo ', q)
   conexion.query(q, function (err, result) {
     if (err) {
       console.log(err);

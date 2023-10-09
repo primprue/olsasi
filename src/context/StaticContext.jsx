@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-const StaticContext = React.createContext({});
+const StaticContext = React.createContext();
 
 export function StaticContexto({ children }) {
 	const [valor, setValor] = useState("");
