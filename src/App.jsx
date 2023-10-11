@@ -11,6 +11,7 @@ import Clientes from "./pages/Tablas/Clientes";
 import PresupPant from "./pages/Presupuesto/PresupPant";
 import { StaticContexto } from "./context/StaticContext";
 import { DatosTablas } from "./context/TablasContext";
+import ListaPrecios from "./pages/ListaPrecios/ListaPrecios";
 export default function App() {
 	return (
 		<StaticContexto>
@@ -21,6 +22,7 @@ export default function App() {
 					<Routes>
 						<Route path="/" element={<Home />} />
 						<Route path="/Home" element={<Home />} />
+						<Route path="/ListaPrecios" element={<ListaPrecios />} />
 						<Route path="/Proveedores" element={<Proveedores />} />
 						<Route path="/StkMonedas" element={<StkMonedas />} />
 						<Route path="/Clientes" element={<Clientes />} />

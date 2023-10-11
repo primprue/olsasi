@@ -3,9 +3,6 @@ import IpServidor from "../VariablesDeEntorno";
 
 export const presupcalculador = (DatosPresupEleg, datoscalculo, tipo) => {
 	var datotraido = DatosPresupEleg;
-	console.log("DatosPresupEleg  ", DatosPresupEleg);
-	console.log("datoscalculo  ", datoscalculo);
-	console.log("tipo  ", tipo);
 	var backend, url;
 	if (
 		datotraido === null ||

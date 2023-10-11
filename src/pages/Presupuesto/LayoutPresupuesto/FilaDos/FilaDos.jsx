@@ -21,18 +21,18 @@ import { useContext } from "react";
 import { PresupPantContext } from "../../PresupPant";
 import TablaPresup from "../TablaPresup/TablaPresup";
 import FilaConf from "../FilaConf/FilaConf";
-// import FilaEnrollables from "../FilaEnrollables/FilaEnrollables";
-// import FilaTanques from "../FilaTanques/FilaTanques"
-// import FilaPiletasEnr from "../FilaPiletas/FilaPiletasEnr"
+import FilaEnrollables from "../FilaEnrollables/FilaEnrollables";
+import FilaTanques from "../FilaTanques/FilaTanques";
+import FilaPiletasEnr from "../FilaPiletas/FilaPiletasEnr";
 // import FilaToldosExt from "../FilaToldosExt/FilaToldosExt";
 // import FilaDetDesc from "./FilaDetDesc"
 // import FilaCargaDesc from "./FilaCargaDesc";
-// import FilaAbolinada from "../FilaAbolinada/FilaAbolinada"
-// import FilaComedero from "../FilaComedero/FilaComedero"
-// import FilaCambPanio from "../FilaCambPanio/FilaCambPanio"
-// import FilaModMed from "../FilaModMed/FilaModMed";
-// import FilaAbanico from "../FilaAbanico/FilaAbanico";
-// import FilaLateral from "../FilaLateral/FilaLateral";
+import FilaAbolinada from "../FilaAbolinada/FilaAbolinada";
+import FilaComedero from "../FilaComedero/FilaComedero";
+import FilaCambPanio from "../FilaCambPanio/FilaCambPanio";
+import FilaModMed from "../FilaModMed/FilaModMed";
+import FilaAbanico from "../FilaAbanico/FilaAbanico";
+import FilaLateral from "../FilaLateral/FilaLateral";
 
 export default function FilaDos() {
 	// Esto es para poder consumir los datos del CONTEXTAPI
@@ -285,7 +285,6 @@ export default function FilaDos() {
 		},
 	];
 
-	console.log("state  ", state);
 	return (
 		<>
 			{rubrosn === "S" &&
@@ -411,17 +410,21 @@ export default function FilaDos() {
 
 			<Grid container item xs={12}>
 				{presuptipo === "CONFECCIONADA" && <FilaConf></FilaConf>}
-				{/* {presuptipo === "MODIFICA MEDIDAS" && <FilaModMed></FilaModMed>}
-        {presuptipo === "LONAS ENROLLABLES" && <FilaEnrollables></FilaEnrollables>}
-        {presuptipo === "BOLSON PARA TANQUE" && <FilaTanques></FilaTanques>}
-        {presuptipo === "PILETA ENROLLABLE" && <FilaPiletasEnr></FilaPiletasEnr>}
-        {presuptipo === "PILETA CAÑOS ALUMINIO" && <FilaPiletasEnr></FilaPiletasEnr>}
+				{presuptipo === "LONAS ENROLLABLES" && (
+					<FilaEnrollables></FilaEnrollables>
+				)}
+				{presuptipo === "TOLDO ABANICO" && <FilaAbanico></FilaAbanico>}
+				{presuptipo === "ABOLINADA" && <FilaAbolinada></FilaAbolinada>}
+				{presuptipo === "CAMBIO PAÑO" && <FilaCambPanio></FilaCambPanio>}
+				{presuptipo === "COMEDERO" && <FilaComedero></FilaComedero>}
+				{presuptipo === "LATERAL CORREDIZO" && <FilaLateral></FilaLateral>}
+				{presuptipo === "MODIFICA MEDIDAS" && <FilaModMed></FilaModMed>}
+				{presuptipo === "PILETA ENROLLABLE" && (
+					<FilaPiletasEnr></FilaPiletasEnr>
+				)}
+				{presuptipo === "BOLSON PARA TANQUE" && <FilaTanques></FilaTanques>}
+				{/*  {presuptipo === "PILETA CAÑOS ALUMINIO" && <FilaPiletasEnr></FilaPiletasEnr>}
         {presuptipo === "TOLDO BARRACUADRA" && <FilaToldosExt></FilaToldosExt>}
-        {presuptipo === "ABOLINADA" && <FilaAbolinada></FilaAbolinada>}
-        {presuptipo === "COMEDERO" && <FilaComedero></FilaComedero>}
-        {presuptipo === "CAMBIO PAÑO" && <FilaCambPanio></FilaCambPanio>}
-        {presuptipo === "TOLDO ABANICO" && <FilaAbanico></FilaAbanico>}
-        {presuptipo === "LATERAL CORREDIZO" && <FilaLateral></FilaLateral>}
         {(presuptipo === "CARGA DESCRIPCION") ? <FilaCargaDesc></FilaCargaDesc> : <></>}
         {(presuptipo !== "UNIDAD" && rubrosn === "S") ? <FilaDetDesc presuptipo={presuptipo}></FilaDetDesc> : <></>}
       */}
