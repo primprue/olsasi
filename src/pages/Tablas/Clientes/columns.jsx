@@ -17,6 +17,7 @@ function columnsFill(tipoclien) {
 				width: 25,
 				xs: 4,
 				editable: false,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Descripción",
@@ -28,6 +29,7 @@ function columnsFill(tipoclien) {
 				width: 250,
 				pattern: /^/,
 				xs: 8,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Domicilio",
@@ -37,6 +39,7 @@ function columnsFill(tipoclien) {
 				required: true,
 				editable: true,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "CodPos",
@@ -45,6 +48,7 @@ function columnsFill(tipoclien) {
 				required: true,
 				editable: true,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Loc",
@@ -53,6 +57,7 @@ function columnsFill(tipoclien) {
 				required: true,
 				editable: true,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Pcia",
@@ -61,6 +66,7 @@ function columnsFill(tipoclien) {
 				required: true,
 				editable: true,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Tel-WA",
@@ -69,6 +75,7 @@ function columnsFill(tipoclien) {
 				required: true,
 				editable: true,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "IVA",
@@ -77,6 +84,7 @@ function columnsFill(tipoclien) {
 				required: true,
 				editable: true,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "CUIT",
@@ -85,6 +93,7 @@ function columnsFill(tipoclien) {
 				required: true,
 				editable: true,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Mail",
@@ -93,6 +102,7 @@ function columnsFill(tipoclien) {
 				required: true,
 				editable: true,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Tipo",
@@ -102,6 +112,7 @@ function columnsFill(tipoclien) {
 				valueOptions: tipoclien,
 				required: true,
 				editable: true,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Contacto",
@@ -110,6 +121,7 @@ function columnsFill(tipoclien) {
 				required: true,
 				editable: true,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Categoría",
@@ -118,6 +130,7 @@ function columnsFill(tipoclien) {
 				required: true,
 				editable: true,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Observación",
@@ -126,6 +139,7 @@ function columnsFill(tipoclien) {
 				required: true,
 				editable: true,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Observación",
@@ -134,6 +148,7 @@ function columnsFill(tipoclien) {
 				required: true,
 				editable: true,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Fecha",
@@ -142,6 +157,7 @@ function columnsFill(tipoclien) {
 				required: true,
 				editable: true,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 		]);
 	});

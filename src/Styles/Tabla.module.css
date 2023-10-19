@@ -1,8 +1,39 @@
 .tabla {
 	padding: auto;
-	background-color: rgba(255, 217, 0, 0.514);
+	background-color: rgba(199, 190, 140, 0.514);
 	width: 1000px;
 }
+
+.tablalista {
+	position: sticky;
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	background-color: rgb(240, 245, 248, 0.5);
+	width: 1600px;
+	box-shadow: 10;
+	border-color: rgb(145, 113, 134);
+	border: 10;
+	font-size: 25px;
+	column-rule-style: solid;
+}
+
+
+.tablalista:hover {
+	background-color: rgb(240, 245, 248, 0.3);
+}
+
+.MuiDataGrid-colCell {
+	font-size: 25;
+	/* Tamaño de letra deseado */
+}
+
+.MuiDataGrid-row {
+	background-color: rgb(5, 32, 37);
+}
+
+
 
 .tablapresupuesto {
 	position: sticky;
@@ -10,14 +41,14 @@
 	padding-right: 10px;
 	padding-bottom: 10px;
 	padding-left: 20px;
-	background-color: rgba(242, 244, 245, 0.514);
+	background-color: rgba(243, 245, 242, 0.514);
 	width: 1600px;
 }
 
 .tablapresupuestoslot {
-	background-color:  rgba(242, 244, 245, 0.514);
+	background-color: rgba(242, 244, 245, 0.514);
 	display: flex;
-	justify-content:  flex-end;
+	justify-content: flex-end;
 
 }
 
@@ -27,6 +58,35 @@
 	position: flex;
 	background-color: rgba(235, 240, 241, 0.3);
 	height: 350px;
-	max-width:"xl";
+	max-width: "xl";
 	padding: 25px;
+}
+
+
+
+.headerclass {
+	color: blueviolet;
+	font-weight: bold;
+}
+
+.cellclass {
+	color: blue;
+}
+
+.datagridclass {
+	font-size: 16px;
+}
+
+.tablalistaprecios {
+	background-color: rgba(188, 204, 212, 0.514);
+	display: flex;
+	justify-content: flex-end;
+
+}
+
+.tablasgenerales {
+	background-color: rgba(252, 248, 5, 0.105);
+	display: flex;
+	justify-content: flex-start;
+
 }

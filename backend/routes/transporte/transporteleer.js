@@ -17,8 +17,9 @@ conexion.connect(function (err) {
 var router = express();
 
 router.get('/', function (req, res, next) {
-    const q = ['Select * from BasesGenerales.Transporte '].join(' ');
-
+    const q = ['Select idTransporte as id, TransporteDesc,  TransporteTel1,',
+        'TransporteTel2, TransporteWA, TransporteMail, TransporteDom, TransporteLoc,  ',
+        'TransporteDestino, TransporteObser from BasesGenerales.Transporte '].join(' ');
     conexion.query(q,
         function (err, result) {
             if (err) {

@@ -233,7 +233,7 @@ function Header() {
 							<MenuItem
 								component={Link}
 								className={PropBarra.botonitem}
-								to="/StkGrupo"
+								to="/StkGrupos"
 								onClick={handleClose2}
 							>
 								Grupos

@@ -24,9 +24,9 @@ import FilaConf from "../FilaConf/FilaConf";
 import FilaEnrollables from "../FilaEnrollables/FilaEnrollables";
 import FilaTanques from "../FilaTanques/FilaTanques";
 import FilaPiletasEnr from "../FilaPiletas/FilaPiletasEnr";
-// import FilaToldosExt from "../FilaToldosExt/FilaToldosExt";
-// import FilaDetDesc from "./FilaDetDesc"
-// import FilaCargaDesc from "./FilaCargaDesc";
+import FilaToldosExt from "../FilaToldosExt/FilaToldosExt";
+import FilaDetDesc from "./FilaDetDesc";
+import FilaCargaDesc from "./FilaCargaDesc";
 import FilaAbolinada from "../FilaAbolinada/FilaAbolinada";
 import FilaComedero from "../FilaComedero/FilaComedero";
 import FilaCambPanio from "../FilaCambPanio/FilaCambPanio";
@@ -423,11 +423,21 @@ export default function FilaDos() {
 					<FilaPiletasEnr></FilaPiletasEnr>
 				)}
 				{presuptipo === "BOLSON PARA TANQUE" && <FilaTanques></FilaTanques>}
-				{/*  {presuptipo === "PILETA CAÑOS ALUMINIO" && <FilaPiletasEnr></FilaPiletasEnr>}
-        {presuptipo === "TOLDO BARRACUADRA" && <FilaToldosExt></FilaToldosExt>}
-        {(presuptipo === "CARGA DESCRIPCION") ? <FilaCargaDesc></FilaCargaDesc> : <></>}
-        {(presuptipo !== "UNIDAD" && rubrosn === "S") ? <FilaDetDesc presuptipo={presuptipo}></FilaDetDesc> : <></>}
-      */}
+				{presuptipo === "PILETA CAÑOS ALUMINIO" && (
+					<FilaPiletasEnr></FilaPiletasEnr>
+				)}
+				{presuptipo === "TOLDO BARRACUADRA" && <FilaToldosExt></FilaToldosExt>}
+				{presuptipo === "CARGA DESCRIPCION" ? (
+					<FilaCargaDesc></FilaCargaDesc>
+				) : (
+					<></>
+				)}
+				{presuptipo !== "UNIDAD" && rubrosn === "S" ? (
+					<FilaDetDesc presuptipo={presuptipo}></FilaDetDesc>
+				) : (
+					<></>
+				)}
+
 				<Grid item xs={2}>
 					<FormControlLabel
 						control={

@@ -5,8 +5,7 @@ import IpServidor from '../VariablesDeEntorno';
 
 export const leelistaprecios = () => {
   return new Promise(resolve => {
-    const url =  IpServidor + '/listaprecios'
-    
+    const url = IpServidor + '/listaprecios'
     request
       .get(url)
       .set('Content-Type', 'application/json')
@@ -14,5 +13,5 @@ export const leelistaprecios = () => {
         const listaprecios = JSON.parse(res.text)
         resolve(listaprecios);
       })
-        });
+  });
 };

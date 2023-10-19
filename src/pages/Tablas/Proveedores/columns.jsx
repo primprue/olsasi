@@ -29,6 +29,7 @@ function columnsFill(tipoprov, stkMonedas) {
 				width: 250,
 				pattern: /^/,
 				xs: 8,
+				headerClassName: "encabcolumns",
 			},
 
 			{
@@ -40,6 +41,7 @@ function columnsFill(tipoprov, stkMonedas) {
 				editable: true,
 				width: 200,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "CUIT",
@@ -51,6 +53,7 @@ function columnsFill(tipoprov, stkMonedas) {
 				pattern: /^[0-9]{0,2}-[0-9]{0,8}-[0-9]{1,1}$/,
 				placeholder: "99-99999999-9",
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Calle",
@@ -59,6 +62,7 @@ function columnsFill(tipoprov, stkMonedas) {
 				width: 350,
 				type: "text",
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Calle Nro.",
@@ -67,6 +71,7 @@ function columnsFill(tipoprov, stkMonedas) {
 				type: "number",
 				defaultValue: 0,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 
 			{
@@ -75,6 +80,7 @@ function columnsFill(tipoprov, stkMonedas) {
 				editable: true,
 				type: "text",
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Dto",
@@ -82,6 +88,7 @@ function columnsFill(tipoprov, stkMonedas) {
 				editable: true,
 				type: "text",
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "CodPos",
@@ -89,6 +96,7 @@ function columnsFill(tipoprov, stkMonedas) {
 				type: "text",
 				editable: true,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Loc",
@@ -97,6 +105,7 @@ function columnsFill(tipoprov, stkMonedas) {
 				editable: true,
 				width: 120,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Pcia",
@@ -105,6 +114,7 @@ function columnsFill(tipoprov, stkMonedas) {
 				editable: true,
 				width: 120,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Tel",
@@ -112,6 +122,7 @@ function columnsFill(tipoprov, stkMonedas) {
 				type: "text",
 				editable: true,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Contacto",
@@ -119,6 +130,7 @@ function columnsFill(tipoprov, stkMonedas) {
 				type: "text",
 				editable: true,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Mail",
@@ -126,6 +138,7 @@ function columnsFill(tipoprov, stkMonedas) {
 				type: "email",
 				editable: true,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Web",
@@ -133,6 +146,7 @@ function columnsFill(tipoprov, stkMonedas) {
 				type: "text",
 				editable: true,
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 			{
 				field: "ProveedoresCodMon",
@@ -142,6 +156,7 @@ function columnsFill(tipoprov, stkMonedas) {
 				valueOptions: stkMonedas,
 				editable: "true",
 				xs: 4,
+				headerClassName: "encabcolumns",
 			},
 		]);
 	});

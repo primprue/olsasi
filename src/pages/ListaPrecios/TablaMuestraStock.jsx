@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { DialogContent, Dialog } from "@mui/material";
+import { DialogContent, Dialog, DialogTitle } from "@mui/material";
 // Dialogfrom, , Slide
 import {
 	DataGrid,
@@ -23,22 +23,33 @@ export default function TablaMuestraStock(props) {
 	const { open, handleClose, Grupo, Rubro } = props;
 	const [stock, setStock] = useState({
 		columns: [
+			// {
+			// 	headerName: "id",
+			// 	field: "id",
+			// 	width: 50,
+			// },
 			{
-				title: "Detalle",
+				headerName: "Detalle",
 				field: "StkItemsDesc",
-				width: "50%",
+				headerClassName: "encabcolumns",
+				width: 250,
+				align: "left",
 			},
 			{
-				title: "Cant.Disponible",
+				headerName: "Cant.Disponible",
 				field: "StkItemsCantDisp",
 				type: "numeric",
-				width: "25%",
+				headerClassName: "encabcolumns",
+				width: 100,
+				align: "right",
 			},
 			{
-				title: "Cantidad",
+				headerName: "Cantidad",
 				field: "StkItemsCantidad",
 				type: "numeric",
-				width: "25%",
+				headerClassName: "encabcolumns",
+				width: 100,
+				align: "right",
 			},
 		],
 
@@ -63,25 +74,28 @@ export default function TablaMuestraStock(props) {
 			aria-labelledby="alert-dialog-slide-title"
 			aria-describedby="alert-dialog-slide-description"
 		>
-			{/* <DialogTitle id="alert-dialog-slide-title">
-        Stock de Items
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-slide-description"> */}
-			<DialogContent>
-				<DataGrid
-					// icons={tableIcons}
-					// localization={localization}
-					title="Stock"
-					columns={stock.columns}
-					rows={stock.datastock}
-				/>
-			</DialogContent>
-			{/* </DialogContentText>
-       </DialogContent>
-       <DialogActions>
-       
-      </DialogActions> */}
+			<DialogTitle id="alert-dialog-slide-title">Stock de Items</DialogTitle>
+			<DataGrid
+				sx={{
+					height: 600,
+					width: "100%",
+					"& .encabcolumns": {
+						backgroundColor: "rgba(235, 240, 241, 0.3)",
+						textJustify: "center",
+						fontSize: "15px",
+						fontWeight: "bold",
+						color: "rgba(15, 6, 145, 1)",
+						borderRadius: 1,
+						boxShadow: 3,
+						bgcolor: "rgba(235, 240, 241, 0.3)",
+						height: 10,
+					},
+				}}
+				title="Stock"
+				columns={stock.columns}
+				rows={stock.datastock}
+			/>
+
 			<button onClick={handleClose} className={BotonEstilo.botoncerrar}>
 				Cerrar
 			</button>

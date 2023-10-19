@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import Button from "@mui/material/Button";
 import { ButtonGroup } from "@mui/material";
-import { leerproveedores } from "./ProveedoresLeer.jsx";
+import { leerTransporte } from "./TransporteLeer";
 import { llenarcolumns } from "./columns.jsx";
-import { ProveedoresModificar } from "./ProveedoresModificar.jsx";
-import { ProveedoresBorrar } from "./ProveedoresBorrar.jsx";
+import { TransporteModificar } from "./TransporteModificar.jsx";
+import { TransporteBorrar } from "./TransporteBorrar.jsx";
 import { useEffect } from "react";
 import { useState } from "react";
 import DeleteForeverTwoToneIcon from "@mui/icons-material/DeleteForeverTwoTone";
@@ -12,7 +12,8 @@ import AddToPhotosTwoToneIcon from "@mui/icons-material/AddToPhotosTwoTone";
 import CheckCircleTwoToneIcon from "@mui/icons-material/CheckCircleTwoTone";
 import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
 import { styled } from "@mui/material/styles";
-// import { formdataprov } from "../formdata.js";
+import estilotabla from "../../../Styles/Tabla.module.css";
+import { deepOrange, red, blue, green, purple } from "@mui/material/colors";
 //https://www.youtube.com/watch?v=1zYf4Yw1jqs usa custom hooks y en el ejemplo maneja promesas y errores
 import {
 	DataGrid,
@@ -23,7 +24,7 @@ import {
 	GridToolbarExport,
 	GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
-import estilotabla from "../../../Styles/Tabla.module.css";
+
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { DialogoDatos } from "../../../components/DialogoDatos.jsx";
@@ -32,14 +33,9 @@ import StaticContexto from "../../../context/StaticContext.jsx";
 import TablasContexto from "../../../context/TablasContext.jsx";
 import { formdata } from "./formdata.js";
 import SelecCampos from "../../Impresion/SelecCampos.jsx";
-import { deepOrange, red, blue, green, purple } from "@mui/material/colors";
-// import { tablasContext } from "../Tablas.jsx";
-// export const ProveedoresContext = React.createContext();
-
-export default function Proveedores() {
+export default function Transporte() {
 	const { formdatos, setFormdatos } = useContext(TablasContexto);
 	const { setValor } = useContext(StaticContexto);
-	//	const [formdatos, setFormdatos] = useState(formdata);
 	const [rows, setRows] = React.useState([]);
 	const [imprimirTF, setImprimirTF] = useState(false);
 	const [columns, setColumns] = useState([]);
@@ -50,7 +46,7 @@ export default function Proveedores() {
 		setColumns(() => col);
 	}
 	async function dataFetch() {
-		const data = await leerproveedores();
+		const data = await leerTransporte();
 		setRows(data);
 	}
 	async function initialFetch() {
@@ -59,7 +55,7 @@ export default function Proveedores() {
 	}
 	useEffect(() => {
 		initialFetch();
-		setValor("Proveedores");
+		setValor("Transportes");
 		setFormdatos(formdata);
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -68,29 +64,28 @@ export default function Proveedores() {
 	const [rowv, setRowv] = useState();
 	const [rown, setRown] = useState();
 
+	const handleCloseImprimir = () => {
+		setImprimirTF(false);
+	};
 	const handleClose = () => {
 		setOpen(false);
 		initialFetch();
 	};
 
-	const handleEdit = (params) => {
-		console.log("params.row handleEdit ", formdata.datoserroneos);
+	const handleEdit = () => {
 		setOpen(true);
 	};
 
 	const handleModifica = (params) => {
-		// var moduloimp = "./ProveedoresModificar.jsx";
-		// onRowUpdate(params.row, moduloimp);
-
 		setTimeout(() => {
-			ProveedoresModificar(params.row);
+			TransporteModificar(params.row);
 		}, 1000);
 	};
 
 	const handleDelete = (params) => {
 		// onRowDelete(params.row);
 		setTimeout(() => {
-			ProveedoresBorrar(params.row);
+			TransporteBorrar(params.row);
 		}, 1000);
 	};
 	const actionsColumn = {
@@ -116,7 +111,7 @@ export default function Proveedores() {
 				<Button
 					variant="contained"
 					color="primary"
-					onClick={() => handleEdit(params)}
+					onClick={() => handleEdit()}
 					startIcon={<AddToPhotosTwoToneIcon />}
 				/>
 			</ButtonGroup>
@@ -134,6 +129,7 @@ export default function Proveedores() {
 							resolve({ ...user, name: user.name?.toUpperCase() });
 						}
 					}, 200);
+					console.log("esta en el useFakeMutation  ", open);
 				}),
 			[]
 		);
@@ -153,9 +149,7 @@ export default function Proveedores() {
 		},
 		[mutateRow]
 	);
-	const handleCloseImprimir = () => {
-		setImprimirTF(false);
-	};
+
 	const [snackbar, setSnackbar] = React.useState(null);
 	const handleCloseSnackbar = () => setSnackbar(null);
 	const handleProcessRowUpdateError = React.useCallback((error) => {
@@ -192,12 +186,6 @@ export default function Proveedores() {
 	}));
 	return (
 		<div style={{ height: 500, width: "150%" }}>
-			{/* <ProveedoresContext.Provider
-				value={{
-					formdatos: formdatos,
-					setFormdatos: setFormdatos,
-				}}
-			> */}
 			<StyledDataGrid
 				sx={{
 					height: 700,
@@ -232,7 +220,13 @@ export default function Proveedores() {
 			/>
 
 			<DialogoDatos open={open} columns={columns} handleClose={handleClose} />
-
+			<SelecCampos
+				columns={columns}
+				datos={rows}
+				open={imprimirTF}
+				setOpen={setImprimirTF}
+				handleClose={handleCloseImprimir}
+			/>
 			{!!snackbar && (
 				<Snackbar
 					open
@@ -243,14 +237,6 @@ export default function Proveedores() {
 					<Alert {...snackbar} onClose={handleCloseSnackbar} />
 				</Snackbar>
 			)}
-			<SelecCampos
-				columns={columns}
-				datos={rows}
-				open={imprimirTF}
-				setOpen={setImprimirTF}
-				handleClose={handleCloseImprimir}
-			/>
-			{/* </ProveedoresContext.Provider> */}
 		</div>
 	);
 }

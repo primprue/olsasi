@@ -1,13 +1,15 @@
 import { Route, Routes } from "react-router-dom";
 // import Layout from "./pages/Layout";
-import Header from "/src/components/Header/Header.jsx";
+// import Header from "/src/components/Header/Header.jsx";
+import Header from "./components/Header/Header.jsx";
 // , BrowserRouter as Router,
 import React from "react";
 import Home from "./components/Home/index";
 import Proveedores from "./pages/Tablas/Proveedores/index.jsx";
 import StkMonedas from "./pages/Tablas/Monedas";
 import Clientes from "./pages/Tablas/Clientes";
-//import Clientes from "./pages/Tablas/Clientes/index.jsx";
+import Transporte from "./pages/Tablas/Transporte";
+import StkGrupos from "./pages/Tablas/StkGrupos";
 import PresupPant from "./pages/Presupuesto/PresupPant";
 import { StaticContexto } from "./context/StaticContext";
 import { DatosTablas } from "./context/TablasContext";
@@ -27,6 +29,8 @@ export default function App() {
 						<Route path="/StkMonedas" element={<StkMonedas />} />
 						<Route path="/Clientes" element={<Clientes />} />
 						<Route path="/PresupPant" element={<PresupPant />} />
+						<Route path="/Transporte" element={<Transporte />} />
+						<Route path="/StkGrupos" element={<StkGrupos />} />
 					</Routes>
 				</DatosTablas>
 			</div>

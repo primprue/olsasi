@@ -10,6 +10,10 @@ import { useState } from "react";
 import DeleteForeverTwoToneIcon from "@mui/icons-material/DeleteForeverTwoTone";
 import AddToPhotosTwoToneIcon from "@mui/icons-material/AddToPhotosTwoTone";
 import CheckCircleTwoToneIcon from "@mui/icons-material/CheckCircleTwoTone";
+import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
+import { styled } from "@mui/material/styles";
+import estilotabla from "../../../Styles/Tabla.module.css";
+import { deepOrange, red, blue, green, purple } from "@mui/material/colors";
 //https://www.youtube.com/watch?v=1zYf4Yw1jqs usa custom hooks y en el ejemplo maneja promesas y errores
 import {
 	DataGrid,
@@ -28,11 +32,12 @@ import { useContext } from "react";
 import StaticContexto from "../../../context/StaticContext.jsx";
 import TablasContexto from "../../../context/TablasContext.jsx";
 import { formdata } from "./formdata.js";
+import SelecCampos from "../../Impresion/SelecCampos.jsx";
 export default function StkMonedas() {
 	const { formdatos, setFormdatos } = useContext(TablasContexto);
 	const { setValor } = useContext(StaticContexto);
 	const [rows, setRows] = React.useState([]);
-
+	const [imprimirTF, setImprimirTF] = useState(false);
 	const [columns, setColumns] = useState([]);
 	//empiezan las cosas del sistema
 	async function columnsFetch() {
@@ -59,6 +64,9 @@ export default function StkMonedas() {
 	const [rowv, setRowv] = useState();
 	const [rown, setRown] = useState();
 
+	const handleCloseImprimir = () => {
+		setImprimirTF(false);
+	};
 	const handleClose = () => {
 		setOpen(false);
 		initialFetch();
@@ -83,6 +91,7 @@ export default function StkMonedas() {
 	const actionsColumn = {
 		field: "actions",
 		headerName: "Acciones",
+		headerClassName: "encabcolumns",
 		width: 180,
 		renderCell: (params) => (
 			<ButtonGroup>
@@ -149,18 +158,50 @@ export default function StkMonedas() {
 
 	function CustomToolbar() {
 		return (
-			<GridToolbarContainer>
-				<GridToolbarColumnsButton />
-				<GridToolbarFilterButton />
-				<GridToolbarDensitySelector />
-				<GridToolbarExport />
+			<GridToolbarContainer className={estilotabla.tablasgenerales}>
+				<GridToolbarColumnsButton style={{ color: green[900] }} />
+				<GridToolbarFilterButton style={{ color: green[900] }} />
+				<GridToolbarDensitySelector style={{ color: green[900] }} />
+				<GridToolbarExport style={{ color: green[900] }} />
+				<LocalPrintshopRoundedIcon
+					onClick={() => setImprimirTF(true)}
+					style={{ color: green[500] }}
+					fontSize="medium"
+					titleAccess="Imprimir"
+				/>
 			</GridToolbarContainer>
 		);
 	}
 
+	const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
+		"& .super-app-theme--Open": {
+			backgroundColor: "rgba(232, 250, 241, 0.3)",
+			textJustify: "center",
+			fontSize: "16px",
+			color: "rgba(51, 99, 29, 0.966)",
+			borderRadius: 8,
+			boxShadow: 5,
+			gridArea: "main",
+		},
+	}));
 	return (
 		<div style={{ height: 500, width: "150%" }}>
-			<DataGrid
+			<StyledDataGrid
+				sx={{
+					height: 700,
+					width: "100%",
+					"& .encabcolumns": {
+						backgroundColor: "rgba(57, 192, 68, 0.651)",
+						textJustify: "center",
+						fontSize: "15px",
+						fontWeight: "bold",
+						color: "rgba(22, 53, 25, 0.7)",
+						borderRadius: 1,
+						boxShadow: 3,
+						bgcolor: "rgba(224, 211, 29, 0.144)",
+						height: 4,
+					},
+				}}
 				rows={rows}
 				columns={columns}
 				autoHeight={true}
@@ -179,7 +220,13 @@ export default function StkMonedas() {
 			/>
 
 			<DialogoDatos open={open} columns={columns} handleClose={handleClose} />
-
+			<SelecCampos
+				columns={columns}
+				datos={rows}
+				open={imprimirTF}
+				setOpen={setImprimirTF}
+				handleClose={handleCloseImprimir}
+			/>
 			{!!snackbar && (
 				<Snackbar
 					open

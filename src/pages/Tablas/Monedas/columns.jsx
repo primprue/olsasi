@@ -12,6 +12,7 @@ function columnsFill() {
 				type: "text",
 				maxLength: 3,
 				editable: true,
+				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Descripción",
@@ -23,6 +24,7 @@ function columnsFill() {
 				width: 200,
 				pattern: /^/,
 				xs: 8,
+				headerClassName: "encabcolumns",
 			},
 
 			{
@@ -51,6 +53,7 @@ function columnsFill() {
 				// 	// Formatear el valor numérico con dos decimales
 				// 	return params.value.toFixed(2);
 				// },
+				headerClassName: "encabcolumns",
 			},
 		]);
 	});

@@ -1,42 +1,25 @@
 import React, { useEffect, useState } from "react";
-// import { localization } from "../../../lib/material-table/localization";
-// import "../../../../Styles/TableHeader.css";
 
-import { Grid, Box, Button, IconButton, TextField } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import {
-	DataGrid,
 	esES,
+	DataGrid,
 	GridToolbarContainer,
-	GridToolbarColumnsButton,
-	GridToolbarFilterButton,
 	GridToolbarExport,
-	GridToolbarDensitySelector,
-	GridFooter,
 } from "@mui/x-data-grid";
 import estilotabla from "../../Styles/Tabla.module.css";
-import { CurrencyTextField } from "../../hooks/useCurrencyTextField";
-import PropTypes from "prop-types";
+
+import FitbitIcon from "@mui/icons-material/Fitbit";
 import { leelistaprecios } from "./LeeListaPrecios";
-import Imprimir from "../Impresion/Imprimir";
+import { llenarcolumns } from "./columns.jsx";
 import TablaMuestraStock from "./TablaMuestraStock";
-import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import AttachFileIcon from "@mui/icons-material/AttachFile";
+import { darken, lighten, styled } from "@mui/material/styles";
 import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
-import SaveAsTwoToneIcon from "@mui/icons-material/SaveAsTwoTone";
 import { deepOrange, red, blue, green, purple } from "@mui/material/colors";
-// , { MTableToolbar }
-// const useStyles = makeStyles({
-//   root: {
-//     width: "100%",
-//   },
-//   container: {
-//     maxHeight: 440,
-//   },
-// });
 
 import { useContext } from "react";
 import StaticContexto from "../../context/StaticContext";
+import SelecCampos from "../Impresion/SelecCampos";
 
 export default function ListaPrecios() {
 	// const classes = useStyles();
@@ -49,145 +32,147 @@ export default function ListaPrecios() {
 	// const [state, setState] = useState(initial_state);
 
 	const [open, setOpen] = React.useState(false);
-	const [imprimirTF, setImprimirTF] = useState({ imprimir: false });
-	const [lista, setLista] = useState({
-		columns: [
-			{
-				title: "id",
-				field: "id",
-			},
-			{
-				title: "Grupo",
-				field: "GrupoDesc",
-			},
-			{
-				title: "Descripción",
-				field: "StkRubroDesc",
-			},
-			{
-				title: "Ancho",
-				field: "StkRubroAncho",
-				type: "numeric",
-			},
-			{
-				title: "Presentación",
-				field: "StkRubroPres",
-				type: "numeric",
-			},
-			{
-				title: "Público",
-				// align: "center",
-				// align: "right",
-				field: "PPub",
-				width: 50,
-				type: "currency",
-				// render: (rowData) => <span>$ {rowData.PPub}</span>, //Agregado para poder poner las columnas en linea con los datos
-			},
-			{
-				title: "Mayorista",
-				field: "PMay",
-				type: "currency",
-				width: 50,
-			},
-			{
-				title: "Fecha",
-				field: "StkRubroFecha",
-			},
-		],
+	const [imprimirTF, setImprimirTF] = useState(false);
 
-		data: [],
-	});
-
-	async function leerlistaprecios() {
-		const result = await leelistaprecios();
-		setLista({ ...lista, data: result });
-		console.log("resul  ", result);
+	const [rows, setRows] = React.useState([]);
+	const [columns, setColumns] = useState([]);
+	async function columnsFetch() {
+		var col = await llenarcolumns();
+		col.push(actionsColumn);
+		setColumns(col);
+	}
+	async function dataFetch() {
+		const data = await leelistaprecios();
+		setRows(data);
+	}
+	async function initialFetch() {
+		columnsFetch();
+		dataFetch();
 	}
 
 	useEffect(() => {
-		leerlistaprecios();
+		initialFetch();
 		setValor("Lista de Precios");
+		// setFormdatos(formdata);
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-	const openApp = (event, StkRubroCodGrp, idStkRubro) => {
-		//  console.log('event  ', event)
-		setParamItems({ paramitems, idGrupo: StkRubroCodGrp, idRubro: idStkRubro });
+	const openApp = (params) => {
+		setParamItems({
+			paramitems,
+			idGrupo: params.row.StkRubroCodGrp,
+			idRubro: params.row.idStkRubro,
+		});
 		handleClickOpen();
 	};
 	const handleClickOpen = () => {
 		setOpen(true);
+	};
+	const handleCloseImprimir = () => {
+		setImprimirTF(false);
 	};
 
 	const handleClose = () => {
 		setParamItems({ paramitems, idGrupo: 0, idRubro: 0 });
 		setOpen(false);
 	};
+
+	const actionsColumn = {
+		field: "actions",
+		headerName: "Stock",
+		width: 100,
+		headerClassName: "encabcolumns",
+		renderCell: (params) => (
+			<Button
+				variant="text"
+				style={{ color: deepOrange[800] }}
+				placeholder="Ver Stock"
+				fontSize="large"
+				onClick={() => openApp(params)}
+				startIcon={<FitbitIcon />}
+			/>
+		),
+	};
+
 	function CustomToolbar() {
 		return (
-			<GridToolbarContainer className={estilotabla.tablapresupuestoslot}>
-				{/* <GridToolbarColumnsButton /> */}
-				{/* <GridToolbarFilterButton /> */}
-				{/* <GridToolbarDensitySelector /> */}
-				{/* {state.renglonanexo.length !== 0 && <h3>Tiene Anexos</h3>} */}
-				<CurrencyTextField
-					size="small"
-					label="Total"
-					// value={suma}
-					// className={EstTF.tfcurrency}
-				></CurrencyTextField>
+			<GridToolbarContainer className={estilotabla.tablalistaprecios}>
 				<b></b>
 				<b></b>
 				<b></b>
 				<b></b>
-				<GridToolbarExport></GridToolbarExport>
-
-				{/* onAnimationStartnClick={() => setAnexos({ anexos: true })} */}
-				<AttachFileIcon
-					onClick={() => setAnexos({ anexos: true })}
-					style={{ color: purple[500] }}
-					fontSize="medium"
-					titleAccess="Sumar"
-				/>
 				<LocalPrintshopRoundedIcon
-					onClick={() => setPPreview({ ppreview: true })}
-					style={{ color: blue[500] }}
+					onClick={() => setImprimirTF(true)}
+					style={{ color: blue[800] }}
 					fontSize="medium"
 					titleAccess="Imprimir"
 				/>
-				<SaveAsTwoToneIcon
-					onClick={() => setFilacuatro({ filacuatro: true })}
-					style={{ color: deepOrange[500] }}
-					fontSize="medium"
-					titleAccess="Grabar"
-				/>
-				{/* <Button onClick={handleClose}>Cierra</Button> */}
+				<GridToolbarExport style={{ color: green[800] }} />
 			</GridToolbarContainer>
 		);
 	}
+
+	const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
+		"& .super-app-theme--Open": {
+			backgroundColor: "rgba(248, 250, 250, 0.3)",
+			textJustify: "center",
+			fontSize: "16px",
+			color: "rgba(2, 1, 12, 0.966)",
+			borderRadius: 8,
+			boxShadow: 5,
+			gridArea: "main",
+			// bgcolor: "rgba(46, 190, 94, 0.6)",
+		},
+	}));
 	return (
-		// <Paper className={classes.root}>
-		<div>
-			<DataGrid
+		<Box
+			sx={{
+				width: 1247,
+				height: 700,
+				align: "center",
+				justifycontent: "center",
+				boxShadow: 5,
+			}}
+		>
+			<StyledDataGrid
+				sx={{
+					height: 700,
+					width: "100%",
+					"& .encabcolumns": {
+						backgroundColor: "rgba(235, 240, 241, 0.3)",
+						textJustify: "center",
+						fontSize: "15px",
+						fontWeight: "bold",
+						color: "rgba(15, 6, 145)",
+						borderRadius: 1,
+						boxShadow: 3,
+						bgcolor: "rgba(235, 240, 241, 0.3)",
+						height: 10,
+					},
+				}}
+				rows={rows}
+				columns={columns}
 				title="Lista de Precios"
-				columns={lista.columns}
-				rows={lista.data}
+				localeText={esES.components.MuiDataGrid.defaultProps.localeText}
 				slots={{
 					toolbar: CustomToolbar,
 				}}
+				getCellClassName={() => `super-app-theme--Open`}
+				getRowClassName={() => `super-app-theme--Open`} //son las propiedades de las filas
 			/>
-			{/* <Imprimir
-				columns={lista.columns}
-				datos={lista.data}
-				open={imprimirTF.imprimir}
+
+			<SelecCampos
+				columns={columns}
+				datos={rows}
+				open={imprimirTF}
 				setOpen={setImprimirTF}
-			/> */}
+				handleClose={handleCloseImprimir}
+			/>
 			<TablaMuestraStock
 				open={open}
 				handleClose={handleClose}
 				Grupo={paramitems.idGrupo}
 				Rubro={paramitems.idRubro}
 			/>
-			{/* </Paper> */}
-		</div>
+		</Box>
 	);
 }
