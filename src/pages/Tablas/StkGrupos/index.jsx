@@ -1,19 +1,15 @@
-import React, { Component } from "react";
-import Button from "@mui/material/Button";
-import { ButtonGroup } from "@mui/material";
+import React from "react";
 import { stkgrupolee } from "./StkGrupoLee.jsx";
 import { llenarcolumns } from "./columns.jsx";
 import { StkGrupoModificar } from "./StkGrupoModificar.jsx";
-import { StkGrupoBorrar } from "./StkGrupoBorrar.jsx";
 import { useEffect } from "react";
 import { useState } from "react";
 import DeleteForeverTwoToneIcon from "@mui/icons-material/DeleteForeverTwoTone";
 import AddToPhotosTwoToneIcon from "@mui/icons-material/AddToPhotosTwoTone";
 import CheckCircleTwoToneIcon from "@mui/icons-material/CheckCircleTwoTone";
 import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
-import { styled } from "@mui/material/styles";
 import estilotabla from "../../../Styles/Tabla.module.css";
-import { deepOrange, red, blue, green, purple } from "@mui/material/colors";
+import { green } from "@mui/material/colors";
 // import { formdataprov } from "../formdata.js";
 //https://www.youtube.com/watch?v=1zYf4Yw1jqs usa custom hooks y en el ejemplo maneja promesas y errores
 import {
@@ -34,20 +30,21 @@ import StaticContexto from "../../../context/StaticContext.jsx";
 import TablasContexto from "../../../context/TablasContext.jsx";
 import { formdata } from "./formdata.js";
 import SelecCampos from "../../Impresion/SelecCampos.jsx";
-// import { tablasContext } from "../Tablas.jsx";
+import { IconButton, Tooltip } from "@mui/material";
 // export const ProveedoresContext = React.createContext();
 export default function StkGrupos() {
 	const { formdatos, setFormdatos } = useContext(TablasContexto);
-	const { setValor } = useContext(StaticContexto);
+	const { valor, setValor } = useContext(StaticContexto);
 	const [imprimirTF, setImprimirTF] = useState(false);
-	//	const [formdatos, setFormdatos] = useState(formdata);
 	const [rows, setRows] = React.useState([]);
 
 	const [columns, setColumns] = useState([]);
+	const [nombreboton, setNombreBoton] = useState("");
+	const [titulodial, setTituloDial] = useState("");
+	const [paramsbor, setParamsBor] = useState(0);
 	//empiezan las cosas del sistema
 	async function columnsFetch() {
 		var col = await llenarcolumns();
-		col.push(actionsColumn);
 		setColumns(() => col);
 	}
 	async function dataFetch() {
@@ -68,6 +65,7 @@ export default function StkGrupos() {
 
 	const [rowv, setRowv] = useState();
 	const [rown, setRown] = useState();
+	const [rowsel, setRowSel] = useState();
 
 	const handleCloseImprimir = () => {
 		setImprimirTF(false);
@@ -78,53 +76,23 @@ export default function StkGrupos() {
 		initialFetch();
 	};
 
-	const handleEdit = (params) => {
+	const handleAlta = () => {
+		setNombreBoton("Enviar");
+		setTituloDial(`Alta de ${valor}`);
 		setOpen(true);
 	};
 
 	const handleModifica = (params) => {
-		// var moduloimp = "./StkGrupoModificar.jsx";
-		// onRowUpdate(params.row, moduloimp);
-
 		setTimeout(() => {
-			StkGrupoModificar(params.row);
+			StkGrupoModificar(params);
 		}, 1000);
 	};
 
 	const handleDelete = (params) => {
-		// onRowDelete(params.row);
-		setTimeout(() => {
-			StkGrupoBorrar(params.row);
-		}, 1000);
-	};
-	const actionsColumn = {
-		field: "actions",
-		headerName: "Acciones",
-		headerClassName: "encabcolumns",
-		width: 180,
-		renderCell: (params) => (
-			<ButtonGroup>
-				<Button
-					variant="contained"
-					color="success"
-					onClick={() => handleModifica(params)}
-					startIcon={<CheckCircleTwoToneIcon />}
-				/>
-				<Button
-					variant="contained"
-					color="warning"
-					// onClick={() => onRowDelete(params.row)}
-					onClick={() => handleDelete(params)}
-					startIcon={<DeleteForeverTwoToneIcon />}
-				/>
-				<Button
-					variant="contained"
-					color="primary"
-					onClick={() => handleEdit(params)}
-					startIcon={<AddToPhotosTwoToneIcon />}
-				/>
-			</ButtonGroup>
-		),
+		setNombreBoton("Borrar");
+		setTituloDial("BORRA ESTE DATO!!!!!");
+		setParamsBor(params);
+		setOpen(true);
 	};
 
 	const useFakeMutation = () => {
@@ -158,6 +126,10 @@ export default function StkGrupos() {
 		[mutateRow]
 	);
 
+	const handleRowSelect = ({ row }) => {
+		setRowSel(row);
+	};
+
 	const [snackbar, setSnackbar] = React.useState(null);
 	const handleCloseSnackbar = () => setSnackbar(null);
 	const handleProcessRowUpdateError = React.useCallback((error) => {
@@ -177,32 +149,38 @@ export default function StkGrupos() {
 					fontSize="medium"
 					titleAccess="Imprimir"
 				/>
+				<Tooltip title="Agregar" arrow>
+					<IconButton color="primary" size="large" onClick={() => handleAlta()}>
+						<AddToPhotosTwoToneIcon />
+					</IconButton>
+				</Tooltip>
+				<Tooltip title="Confirma Modificación" arrow>
+					<IconButton
+						variant="contained"
+						color="success"
+						onClick={() => handleModifica(rown)}
+					>
+						<CheckCircleTwoToneIcon />
+					</IconButton>
+				</Tooltip>
+				<Tooltip title="Borra Elemento Elegido" arrow>
+					<IconButton
+						variant="contained"
+						color="warning"
+						onClick={() => handleDelete(rowsel)}
+					>
+						<DeleteForeverTwoToneIcon />
+					</IconButton>
+				</Tooltip>
 			</GridToolbarContainer>
 		);
 	}
 
-	const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
-		"& .super-app-theme--Open": {
-			backgroundColor: "rgba(232, 250, 241, 0.3)",
-			textJustify: "center",
-			fontSize: "16px",
-			color: "rgba(51, 99, 29, 0.966)",
-			borderRadius: 8,
-			boxShadow: 5,
-			gridArea: "main",
-		},
-	}));
-
 	return (
-		<div style={{ height: 500, width: "150%" }}>
-			{/* <ProveedoresContext.Provider
-				value={{
-					formdatos: formdatos,
-					setFormdatos: setFormdatos,
-				}}
-			> */}
-			<StyledDataGrid
+		<>
+			<DataGrid
 				sx={{
+					//esto es el estilo del encabezado de las columnas
 					height: 700,
 					width: "100%",
 					"& .encabcolumns": {
@@ -219,22 +197,34 @@ export default function StkGrupos() {
 				}}
 				rows={rows}
 				columns={columns}
-				autoHeight={true}
 				localeText={esES.components.MuiDataGrid.defaultProps.localeText}
 				processRowUpdate={processRowUpdate}
+				onRowClick={handleRowSelect}
 				onProcessRowUpdateError={handleProcessRowUpdateError}
+				showCellVerticalBorder={true}
+				columnHeaderHeight={35}
 				slots={{
 					toolbar: CustomToolbar,
 				}}
 				initialState={{
+					...rows.initialState,
 					pagination: {
-						paginationModel: { page: 0, pageSize: 10 },
+						...rows.initialState?.pagination,
+						paginationModel: {
+							pageSize: 25,
+						},
 					},
 				}}
-				pageSizeOptions={[10, 10]}
 			/>
 
-			<DialogoDatos open={open} columns={columns} handleClose={handleClose} />
+			<DialogoDatos
+				open={open}
+				columns={columns}
+				handleClose={handleClose}
+				nombrebtn={nombreboton}
+				paramsbor={paramsbor}
+				titulodial={titulodial}
+			/>
 			<SelecCampos
 				columns={columns}
 				datos={rows}
@@ -249,10 +239,54 @@ export default function StkGrupos() {
 					onClose={handleCloseSnackbar}
 					autoHideDuration={6000}
 				>
-					<Alert {...snackbar} onClose={handleCloseSnackbar} />
+					<Alert {...snackbar} variant="filled" onClose={handleCloseSnackbar} />
 				</Snackbar>
 			)}
 			{/* </ProveedoresContext.Provider> */}
-		</div>
+		</>
 	);
 }
+
+// const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
+// 	"& .super-app-theme--Open": {
+// 		backgroundColor: "rgba(232, 250, 241, 0.3)",
+// 		textJustify: "center",
+// 		fontSize: "16px",
+// 		color: "rgba(51, 99, 29, 0.966)",
+// 		borderRadius: 8,
+// 		boxShadow: 5,
+// 		gridArea: "main",
+// 	},
+// }));
+
+// const [selectionModel, setSelectionModel] = useState([]);
+// const [ideleg, setIdeleg] = useState(0);
+// const handleSelectionModelChange = (selectionModel) => {
+// 	console.log("selectionModle  ", selectionModel);
+// 	const selectedLeyendas = selectionModel.map((row, i) =>
+// 		rows.filter((rowse) => rowse.id == row)
+// 	);
+
+// 	console.log("selectedLeyendas  ", selectedLeyendas);
+
+// 	console.log("selectedLeyendas [0][0] ", selectedLeyendas[0][0].id);
+// 	setIdeleg(selectedLeyendas[0][0]);
+// 	// setSelectionModel(selectedLeyendas);
+// 	// setState({ ...state, condpagoeleg: selectedLeyendas });
+// };
+// const handleRowEditStop = (params, event) => {
+// 	if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+// 		event.defaultMuiPrevented = true;
+// 	}
+// };
+
+// // Función para manejar las ediciones
+// const handleCellEdit = ({ fromRow, toRow, updated }) => {
+// 	// Registra las modificaciones en el estado 'changes'
+// 	console.log("from  ", fromRow, "to ", toRow, "updated ", updated);
+// 	const updatedChanges = [...changes];
+// 	for (let i = fromRow; i <= toRow; i++) {
+// 		updatedChanges[i] = { ...updatedChanges[i], ...updated };
+// 	}
+// 	setChanges(updatedChanges);
+// };

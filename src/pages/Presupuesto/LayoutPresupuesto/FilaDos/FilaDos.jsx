@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 
 import styles from "../styles.module.css";
-import { stkrubroleeconf } from "../../../Tablas/Rubros/StkRubroLeeConf";
+import { stkrubroleeconf } from "../../../Tablas/StkRubros/StkRubroLeeConf";
 import { presupcalculador } from "../../PresupCalculador";
 import { stkmonedasleercod } from "../../../Tablas/Monedas/StkMonedasLeerCod";
 import ArchiveIcon from "@mui/icons-material/Archive";

@@ -1,7 +1,7 @@
 import request from "superagent";
 import IpServidor from "../../VariablesDeEntorno";
 import MuestraMensaje from "../../../components/lib/MuestraMensaje";
-import "react-toastify/dist/ReactToastify.css";
+
 export function TransporteAgregar(props) {
 	return new Promise(function () {
 		setTimeout(() => {

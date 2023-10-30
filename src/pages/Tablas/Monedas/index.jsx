@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import Button from "@mui/material/Button";
-import { ButtonGroup } from "@mui/material";
 import { leerStkMonedas } from "./StkMonedasLeer.jsx";
 import { llenarcolumns } from "./columns.jsx";
 import { StkMonedasModificar } from "./StkMonedasModificar.jsx";
-import { StkMonedasBorrar } from "./StkMonedasBorrar.jsx";
+// import { StkMonedasBorrar } from "./StkMonedasBorrar.jsx";
 import { useEffect } from "react";
 import { useState } from "react";
 import DeleteForeverTwoToneIcon from "@mui/icons-material/DeleteForeverTwoTone";
@@ -13,7 +11,7 @@ import CheckCircleTwoToneIcon from "@mui/icons-material/CheckCircleTwoTone";
 import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
 import { styled } from "@mui/material/styles";
 import estilotabla from "../../../Styles/Tabla.module.css";
-import { deepOrange, red, blue, green, purple } from "@mui/material/colors";
+import { green } from "@mui/material/colors";
 //https://www.youtube.com/watch?v=1zYf4Yw1jqs usa custom hooks y en el ejemplo maneja promesas y errores
 import {
 	DataGrid,
@@ -33,16 +31,20 @@ import StaticContexto from "../../../context/StaticContext.jsx";
 import TablasContexto from "../../../context/TablasContext.jsx";
 import { formdata } from "./formdata.js";
 import SelecCampos from "../../Impresion/SelecCampos.jsx";
+import { IconButton, Tooltip } from "@mui/material";
 export default function StkMonedas() {
 	const { formdatos, setFormdatos } = useContext(TablasContexto);
-	const { setValor } = useContext(StaticContexto);
+	const { valor, setValor } = useContext(StaticContexto);
 	const [rows, setRows] = React.useState([]);
 	const [imprimirTF, setImprimirTF] = useState(false);
 	const [columns, setColumns] = useState([]);
+	const [nombreboton, setNombreBoton] = useState("");
+	const [titulodial, setTituloDial] = useState("");
+	const [paramsbor, setParamsBor] = useState(0);
+
 	//empiezan las cosas del sistema
 	async function columnsFetch() {
 		var col = await llenarcolumns();
-		col.push(actionsColumn);
 		setColumns(() => col);
 	}
 	async function dataFetch() {
@@ -63,7 +65,7 @@ export default function StkMonedas() {
 
 	const [rowv, setRowv] = useState();
 	const [rown, setRown] = useState();
-
+	const [rowsel, setRowSel] = useState();
 	const handleCloseImprimir = () => {
 		setImprimirTF(false);
 	};
@@ -72,50 +74,23 @@ export default function StkMonedas() {
 		initialFetch();
 	};
 
-	const handleEdit = () => {
+	const handleAlta = () => {
+		setNombreBoton("Enviar");
+		setTituloDial(`Alta de ${valor}`);
 		setOpen(true);
 	};
 
 	const handleModifica = (params) => {
 		setTimeout(() => {
-			StkMonedasModificar(params.row);
+			StkMonedasModificar(params);
 		}, 1000);
 	};
 
 	const handleDelete = (params) => {
-		// onRowDelete(params.row);
-		setTimeout(() => {
-			StkMonedasBorrar(params.row);
-		}, 1000);
-	};
-	const actionsColumn = {
-		field: "actions",
-		headerName: "Acciones",
-		headerClassName: "encabcolumns",
-		width: 180,
-		renderCell: (params) => (
-			<ButtonGroup>
-				<Button
-					variant="contained"
-					color="success"
-					onClick={() => handleModifica(params)}
-					startIcon={<CheckCircleTwoToneIcon />}
-				/>
-				<Button
-					variant="contained"
-					color="warning"
-					// onClick={() => onRowDelete(params.row)}
-					onClick={() => handleDelete(params)}
-					startIcon={<DeleteForeverTwoToneIcon />}
-				/>
-				<Button
-					variant="contained"
-					color="primary"
-					onClick={() => handleEdit()}
-					startIcon={<AddToPhotosTwoToneIcon />}
-				/>
-			</ButtonGroup>
-		),
+		setNombreBoton("Borrar");
+		setTituloDial("BORRA ESTE DATO!!!!!");
+		setParamsBor(params);
+		setOpen(true);
 	};
 
 	const useFakeMutation = () => {
@@ -129,7 +104,6 @@ export default function StkMonedas() {
 							resolve({ ...user, name: user.name?.toUpperCase() });
 						}
 					}, 200);
-					console.log("esta en el useFakeMutation  ", open);
 				}),
 			[]
 		);
@@ -149,7 +123,9 @@ export default function StkMonedas() {
 		},
 		[mutateRow]
 	);
-
+	const handleRowSelect = ({ row }) => {
+		setRowSel(row);
+	};
 	const [snackbar, setSnackbar] = React.useState(null);
 	const handleCloseSnackbar = () => setSnackbar(null);
 	const handleProcessRowUpdateError = React.useCallback((error) => {
@@ -169,25 +145,38 @@ export default function StkMonedas() {
 					fontSize="medium"
 					titleAccess="Imprimir"
 				/>
+				<Tooltip title="Agregar" arrow>
+					<IconButton color="primary" size="large" onClick={() => handleAlta()}>
+						<AddToPhotosTwoToneIcon />
+					</IconButton>
+				</Tooltip>
+				<Tooltip title="Confirma Modificación" arrow>
+					<IconButton
+						variant="contained"
+						color="success"
+						onClick={() => handleModifica(rown)}
+					>
+						<CheckCircleTwoToneIcon />
+					</IconButton>
+				</Tooltip>
+				<Tooltip title="Borra Elemento Elegido" arrow>
+					<IconButton
+						variant="contained"
+						color="warning"
+						onClick={() => handleDelete(rowsel)}
+					>
+						<DeleteForeverTwoToneIcon />
+					</IconButton>
+				</Tooltip>
 			</GridToolbarContainer>
 		);
 	}
 
-	const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
-		"& .super-app-theme--Open": {
-			backgroundColor: "rgba(232, 250, 241, 0.3)",
-			textJustify: "center",
-			fontSize: "16px",
-			color: "rgba(51, 99, 29, 0.966)",
-			borderRadius: 8,
-			boxShadow: 5,
-			gridArea: "main",
-		},
-	}));
 	return (
-		<div style={{ height: 500, width: "150%" }}>
-			<StyledDataGrid
+		<>
+			<DataGrid
 				sx={{
+					//esto es el estilo del encabezado de las columnas
 					height: 700,
 					width: "100%",
 					"& .encabcolumns": {
@@ -204,22 +193,34 @@ export default function StkMonedas() {
 				}}
 				rows={rows}
 				columns={columns}
-				autoHeight={true}
 				localeText={esES.components.MuiDataGrid.defaultProps.localeText}
 				processRowUpdate={processRowUpdate}
+				onRowClick={handleRowSelect}
 				onProcessRowUpdateError={handleProcessRowUpdateError}
+				showCellVerticalBorder={true}
+				columnHeaderHeight={35}
 				slots={{
 					toolbar: CustomToolbar,
 				}}
 				initialState={{
+					...rows.initialState,
 					pagination: {
-						paginationModel: { page: 0, pageSize: 10 },
+						...rows.initialState?.pagination,
+						paginationModel: {
+							pageSize: 25,
+						},
 					},
 				}}
-				pageSizeOptions={[10, 10]}
 			/>
 
-			<DialogoDatos open={open} columns={columns} handleClose={handleClose} />
+			<DialogoDatos
+				open={open}
+				columns={columns}
+				handleClose={handleClose}
+				nombrebtn={nombreboton}
+				paramsbor={paramsbor}
+				titulodial={titulodial}
+			/>
 			<SelecCampos
 				columns={columns}
 				datos={rows}
@@ -234,9 +235,9 @@ export default function StkMonedas() {
 					onClose={handleCloseSnackbar}
 					autoHideDuration={6000}
 				>
-					<Alert {...snackbar} onClose={handleCloseSnackbar} />
+					<Alert {...snackbar} variant="filled" onClose={handleCloseSnackbar} />
 				</Snackbar>
 			)}
-		</div>
+		</>
 	);
 }

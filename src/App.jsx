@@ -10,6 +10,8 @@ import StkMonedas from "./pages/Tablas/Monedas";
 import Clientes from "./pages/Tablas/Clientes";
 import Transporte from "./pages/Tablas/Transporte";
 import StkGrupos from "./pages/Tablas/StkGrupos";
+import StkRubros from "./pages/Tablas/StkRubros";
+import StkItems from "./pages/Tablas/StkItems/index.jsx";
 import PresupPant from "./pages/Presupuesto/PresupPant";
 import { StaticContexto } from "./context/StaticContext";
 import { DatosTablas } from "./context/TablasContext";
@@ -24,13 +26,15 @@ export default function App() {
 					<Routes>
 						<Route path="/" element={<Home />} />
 						<Route path="/Home" element={<Home />} />
-						<Route path="/ListaPrecios" element={<ListaPrecios />} />
 						<Route path="/Proveedores" element={<Proveedores />} />
 						<Route path="/StkMonedas" element={<StkMonedas />} />
 						<Route path="/Clientes" element={<Clientes />} />
-						<Route path="/PresupPant" element={<PresupPant />} />
 						<Route path="/Transporte" element={<Transporte />} />
 						<Route path="/StkGrupos" element={<StkGrupos />} />
+						<Route path="/StkRubros" element={<StkRubros />} />
+						<Route path="/StkItems" element={<StkItems />} />
+						<Route path="/PresupPant" element={<PresupPant />} />
+						<Route path="/ListaPrecios" element={<ListaPrecios />} />
 					</Routes>
 				</DatosTablas>
 			</div>

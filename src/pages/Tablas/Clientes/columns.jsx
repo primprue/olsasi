@@ -1,30 +1,28 @@
-// import { stkMonedasleerRed } from "../../Stock/Rubros/StkMonedasLeerRed";
 import { leeTipoClien } from "./LeeTipoClien";
 
 export async function llenarcolumns() {
 	const tipoclien = await leeTipoClien();
 
 	return columnsFill(tipoclien);
-	//, objstkMonedas);
 }
 
 function columnsFill(tipoclien) {
 	return new Promise(function (resolve) {
 		resolve([
-			{
-				headerName: "Cód",
-				field: "id",
-				width: 25,
-				xs: 4,
-				editable: false,
-				headerClassName: "encabcolumns",
-			},
+			// {
+			// 	headerName: "Cód",
+			// 	field: "id",
+			// 	width: 25,
+			// 	xs: 4,
+			// 	editable: false,
+			// 	headerClassName: "encabcolumns",
+			// },
 			{
 				headerName: "Descripción",
 				field: "ClientesDesc",
 				placeholder: "_________________",
-				editable: true,
-				required: true,
+				editable: false,
+
 				maxLength: 10,
 				width: 250,
 				pattern: /^/,
@@ -36,8 +34,8 @@ function columnsFill(tipoclien) {
 				field: "ClientesDomicilio",
 				width: 150,
 				defaultValue: "",
-				required: true,
-				editable: true,
+
+				editable: false,
 				xs: 4,
 				headerClassName: "encabcolumns",
 			},
@@ -45,8 +43,8 @@ function columnsFill(tipoclien) {
 				headerName: "CodPos",
 				field: "ClientesCodPos",
 				width: 50,
-				required: true,
-				editable: true,
+
+				editable: false,
 				xs: 4,
 				headerClassName: "encabcolumns",
 			},
@@ -54,8 +52,8 @@ function columnsFill(tipoclien) {
 				headerName: "Loc",
 				field: "ClientesLoc",
 				width: 150,
-				required: true,
-				editable: true,
+
+				editable: false,
 				xs: 4,
 				headerClassName: "encabcolumns",
 			},
@@ -63,8 +61,8 @@ function columnsFill(tipoclien) {
 				headerName: "Pcia",
 				field: "ClientesPcia",
 				width: 150,
-				required: true,
-				editable: true,
+
+				editable: false,
 				xs: 4,
 				headerClassName: "encabcolumns",
 			},
@@ -72,8 +70,8 @@ function columnsFill(tipoclien) {
 				headerName: "Tel-WA",
 				field: "ClientesTel",
 				width: 100,
-				required: true,
-				editable: true,
+
+				editable: false,
 				xs: 4,
 				headerClassName: "encabcolumns",
 			},
@@ -81,8 +79,8 @@ function columnsFill(tipoclien) {
 				headerName: "IVA",
 				field: "ClientesIVA",
 				width: 50,
-				required: true,
-				editable: true,
+
+				editable: false,
 				xs: 4,
 				headerClassName: "encabcolumns",
 			},
@@ -90,8 +88,8 @@ function columnsFill(tipoclien) {
 				headerName: "CUIT",
 				field: "ClientesCUIT",
 				width: 150,
-				required: true,
-				editable: true,
+
+				editable: false,
 				xs: 4,
 				headerClassName: "encabcolumns",
 			},
@@ -99,8 +97,8 @@ function columnsFill(tipoclien) {
 				headerName: "Mail",
 				field: "ClientesMail",
 				width: 50,
-				required: true,
-				editable: true,
+
+				editable: false,
 				xs: 4,
 				headerClassName: "encabcolumns",
 			},
@@ -110,16 +108,16 @@ function columnsFill(tipoclien) {
 				type: "singleSelect",
 				width: 50,
 				valueOptions: tipoclien,
-				required: true,
-				editable: true,
+
+				editable: false,
 				headerClassName: "encabcolumns",
 			},
 			{
 				headerName: "Contacto",
 				field: "ClientesContacto",
 				width: 150,
-				required: true,
-				editable: true,
+
+				editable: false,
 				xs: 4,
 				headerClassName: "encabcolumns",
 			},
@@ -127,8 +125,8 @@ function columnsFill(tipoclien) {
 				headerName: "Categoría",
 				field: "ClientesCategoria",
 				width: 50,
-				required: true,
-				editable: true,
+
+				editable: false,
 				xs: 4,
 				headerClassName: "encabcolumns",
 			},
@@ -136,8 +134,8 @@ function columnsFill(tipoclien) {
 				headerName: "Observación",
 				field: "ClientesObserv1",
 				width: 350,
-				required: true,
-				editable: true,
+
+				editable: false,
 				xs: 4,
 				headerClassName: "encabcolumns",
 			},
@@ -145,8 +143,8 @@ function columnsFill(tipoclien) {
 				headerName: "Observación",
 				field: "ClientesObserv2",
 				width: 350,
-				required: true,
-				editable: true,
+
+				editable: false,
 				xs: 4,
 				headerClassName: "encabcolumns",
 			},
@@ -154,8 +152,8 @@ function columnsFill(tipoclien) {
 				headerName: "Fecha",
 				field: "ClientesFecha",
 				width: 150,
-				required: true,
-				editable: true,
+
+				editable: false,
 				xs: 4,
 				headerClassName: "encabcolumns",
 			},

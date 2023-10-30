@@ -241,7 +241,7 @@ function Header() {
 							<MenuItem
 								component={Link}
 								className={PropBarra.botonitem}
-								to="/StkRubro"
+								to="/StkRubros"
 								onClick={handleClose2}
 							>
 								Rubros

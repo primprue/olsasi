@@ -5,7 +5,7 @@ var conexion = require("../../conexion");
 var mysql = require("mysql");
 
 var router = express();
-conexion.connect(function(err) {
+conexion.connect(function (err) {
   if (!err) {
     console.log("base de datos conectada en stkgrupoborrar");
   } else {
@@ -13,13 +13,12 @@ conexion.connect(function(err) {
   }
 });
 
-router.delete("/?:id", function(req, res, next) {
+router.delete("/?:id", function (req, res, next) {
   indice = req.params.id;
-  //'delete from StkGrupo where idStkGrupo = "' + indice + '"',
   var q = ["delete", ' from StkGrupo where idStkGrupo = "', indice, '"'].join(
-    " "
+    ""
   );
-  conexion.query(q, function(err, result) {
+  conexion.query(q, function (err, result) {
     if (err) {
       if (err.errno == 1451) {
         return res

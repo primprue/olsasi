@@ -15,7 +15,7 @@ var router = express();
 
 router.get("/", function (req, res, next) {
   //'Select * from StkGrupo '
-  var q = ["Select idStkGrupo as id, StkGrupoAbr,  StkGrupoDesc from StkGrupo "].join(" ");
+  var q = ["Select idStkGrupo as id, StkGrupoAbr,  StkGrupoDesc, StkGrupoContRubro from StkGrupo "].join(" ");
   conexion.query(q, function (err, result) {
     if (err) {
       console.log(err);

@@ -52,7 +52,6 @@ router.get('/', function (req, res, next) {
             if (err) {
                 console.log(err);
             } else {
-                console.log('result  ', result)
                 res.json(result);
             }
         });

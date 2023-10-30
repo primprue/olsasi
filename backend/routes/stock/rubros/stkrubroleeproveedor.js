@@ -3,7 +3,7 @@ var router = express.Router();
 var path = require("path");
 var conexion = require("../../conexion");
 
-conexion.connect(function(err) {
+conexion.connect(function (err) {
   if (!err) {
     console.log("base de datos conectada en stkrubroleeproveedor");
   } else {
@@ -14,12 +14,12 @@ conexion.connect(function(err) {
 var router = express();
 
 //router.all("/", async function(req, res, next) {
-router.get("/", function(req, res, next) {
+router.get("/", function (req, res, next) {
   var q = [
-    "SELECT idProveedores as StkRubroProv, ProveedoresDesc  FROM BasesGenerales.Proveedores where ProveedoresTipo = 26 order by ProveedoresDesc"
+    "SELECT idProveedores as value, ProveedoresDesc as label FROM BasesGenerales.Proveedores where ProveedoresTipo = 26 order by ProveedoresDesc"
   ].join(" ");
 
-  conexion.query(q, function(err, result) {
+  conexion.query(q, function (err, result) {
     if (err) {
       console.log(err);
     } else {

@@ -1,17 +1,17 @@
 import IpServidor from "../../VariablesDeEntorno";
 import request from "superagent";
 
-export function grupoData() {
+export function leeStkItemsDesc(StkRubroAbr) {
   return new Promise(function (resolve) {
-    const url = IpServidor + "/stkgrupoleer";
+    const url = IpServidor + "/stkitemsleedescabrrub/?StkRubroAbr=" +
+      StkRubroAbr;
+
     request
       .get(url)
       .set("Content-Type", "application/json")
       .then((res) => {
-        const grupos = JSON.parse(res.text);
-
-        resolve(grupos);
-        //.catch() //Todo: agregar el catch error.
+        const items = JSON.parse(res.text);
+        resolve(items);
       });
   });
 }

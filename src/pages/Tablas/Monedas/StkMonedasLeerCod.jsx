@@ -12,7 +12,6 @@ export const stkmonedasleercod = () => {
 			.set("Content-Type", "application/json")
 			.then((res) => {
 				const monedas = JSON.parse(res.text);
-				console.log(monedas);
 				MuestraMensaje(res);
 				resolve(monedas);
 			})

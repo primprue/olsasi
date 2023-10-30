@@ -8,7 +8,7 @@ import {
 	Checkbox,
 } from "@mui/material";
 import styles from "../styles.module.css";
-import { stkrubroleelat } from "../../../Tablas/Rubros/StkRubroLeeLAT";
+import { stkrubroleelat } from "../../../Tablas/StkRubros/StkRubroLeeLAT";
 // Context
 import { useContext } from "react";
 import { PresupPantContext } from "../../PresupPant";

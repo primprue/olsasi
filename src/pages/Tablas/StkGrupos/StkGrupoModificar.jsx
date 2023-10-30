@@ -4,9 +4,9 @@ import IpServidor from "../../VariablesDeEntorno";
 import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 
 export function StkGrupoModificar(props) {
-	const { StkGrupoAbr, StkGrupoDesc, StkGrupoContRubro, idStkGrupo } = props;
+	const { StkGrupoAbr, StkGrupoDesc, StkGrupoContRubro, id } = props;
 
-	const url = IpServidor + "/stkgrupomodificar/?id=" + idStkGrupo;
+	const url = IpServidor + "/stkgrupomodificar/?id=" + id;
 	request
 		.post(url)
 		.set("Content-Type", "application/json")

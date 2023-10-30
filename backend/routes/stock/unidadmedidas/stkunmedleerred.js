@@ -16,7 +16,7 @@ var router = express();
 
 router.get("/", function (req, res, next) {
 
-  conexion.query("Select idStkUnMed, StkUnMedDesc from StkUnMed ", function (err, result) {
+  conexion.query("Select idStkUnMed as value, StkUnMedDesc as label from StkUnMed ", function (err, result) {
     if (err) {
       console.log(err);
     } else {

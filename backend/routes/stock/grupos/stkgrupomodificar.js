@@ -3,7 +3,7 @@ var router = express.Router();
 var path = require("path");
 var conexion = require("../../conexion");
 
-conexion.connect(function(err) {
+conexion.connect(function (err) {
   if (!err) {
     console.log("base de datos conectada en stkgrupomodificar");
   } else {
@@ -13,41 +13,25 @@ conexion.connect(function(err) {
 
 var router = express();
 
-router.post("/", async function(req, res, next) {
+router.post("/", async function (req, res, next) {
   indice = req.query.id;
-
   descr = req.body.StkGrupoDesc.toUpperCase();
   abrev = req.body.StkGrupoAbr;
   contRubro = req.body.StkGrupoContRubro;
 
-  //  'UPDATE StkGrupo SET StkGrupoDesc = "' + descr + '", StkGrupoAbr = "' + abrev + '", StkGrupoContRubro = '+ contRubro + ' WHERE idStkGrupo = "' + indice + '"',
-  console.log("Estoy en BAckend de grupo");
   var q = [
-    // "UPDATE StkGrupo SET",
-    // 'StkGrupoDesc = "',
-    // descr,
-    // '",',
-    // 'StkGrupoAbr = "',
-    // abrev,
-    // '",',
-    // "StkGrupoContRubro = ",
-    // contRubro,
-    // ' WHERE idStkGrupo = "',
-    // indice,
-    // '"'
     'UPDATE StkGrupo SET StkGrupoDesc = "' +
-      descr +
-      '", StkGrupoAbr = "' +
-      abrev +
-      '", StkGrupoContRubro = ' +
-      contRubro +
-      ' WHERE idStkGrupo = "' +
-      indice +
-      '"',
+    descr +
+    '", StkGrupoAbr = "' +
+    abrev +
+    '", StkGrupoContRubro = ' +
+    contRubro +
+    ' WHERE idStkGrupo = "' +
+    indice +
+    '"',
   ];
   // .join(" ");
-  console.log(q);
-  conexion.query(q[0], function(err, result) {
+  conexion.query(q[0], function (err, result) {
     if (err) {
       if (err.errno == 1062) {
         return res

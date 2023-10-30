@@ -5,7 +5,7 @@ import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 
 export function TransporteModificar(props) {
 	const {
-		idTransporte,
+		id,
 		TransporteDesc,
 		TransporteTel1,
 		TransporteTel2,
@@ -17,7 +17,7 @@ export function TransporteModificar(props) {
 		TransporteObser,
 	} = props;
 
-	const url = IpServidor + "/transportemodificar/" + idTransporte;
+	const url = IpServidor + "/transportemodificar/" + id;
 	request
 		.post(url)
 		.set("Content-Type", "application/json")

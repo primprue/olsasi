@@ -4,8 +4,7 @@ import IpServidor from "../../VariablesDeEntorno";
 import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 
 export function TransporteBorrar(props) {
-	const { idTransporte } = props;
-	const url = IpServidor + "/transporteborrar/?id=" + idTransporte;
+	const url = IpServidor + "/transporteborrar/?id=" + props;
 	request
 		.delete(url)
 		.set("Content-Type", "application/json")

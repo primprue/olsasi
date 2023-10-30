@@ -7,7 +7,7 @@ import {
 	TextField,
 } from "@mui/material";
 import styles from "../styles.module.css";
-import { stkrubroleetbr } from "../../../Tablas/Rubros/StkRubroLeeTBR";
+import { stkrubroleetbr } from "../../../Tablas/StkRubros/StkRubroLeeTBR";
 // Context
 import { useContext } from "react";
 import { PresupPantContext } from "../../PresupPant";

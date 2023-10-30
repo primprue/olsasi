@@ -21,8 +21,9 @@ router.get("/", function (req, res, next) {
   //     console.log(err);
   //   }
   // });
+  // "Select idStkGrupo as StkRubroCodGrp, StkGrupoDesc from StkGrupo order by StkGrupoDesc"
   var q = [
-    "Select idStkGrupo as StkRubroCodGrp, StkGrupoDesc from StkGrupo order by StkGrupoDesc"
+    "Select idStkGrupo as value, StkGrupoDesc as label from StkGrupo order by StkGrupoDesc"
     //"Select @numero:=@numero+1 as StkRubroCodGrp, StkGrupoDesc from StkGrupo order by StkGrupoDesc"
   ].join(" ");
   conexion.query(q, function (err, result) {

@@ -3,6 +3,7 @@ const TablasContexto = createContext();
 
 export function DatosTablas({ children }) {
 	const [formdatos, setFormdatos] = useState("");
+
 	return (
 		<TablasContexto.Provider value={{ formdatos, setFormdatos }}>
 			{children}

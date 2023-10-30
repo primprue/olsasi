@@ -14,8 +14,9 @@ conexion.connect(function (err) {
 var router = express();
 
 router.get("/", function (req, res, next) {
+  // "Select StkRubroAbr as id, StkRubroCodGrp, StkRubroDesc,",
   var q = [
-    "Select idStkRubro, StkRubroCodGrp, StkRubroDesc,",
+    "Select concat(idStkRubro, StkRubroCodGrp, StkRubroAbr) as id, idStkRubro, StkRubroCodGrp, StkRubroDesc,",
     " StkGrupo.StkGrupoDesc, StkRubroAbr, StkRubroProv, ",
     " Proveedores.ProveedoresDesc, StkRubroAncho, StkRubroPresDes,",
     " StkRubroPres, StkRubroUM, StkRubroCosto, StkRubroConf, StkRubroTM,",
@@ -24,6 +25,7 @@ router.get("/", function (req, res, next) {
     " from StkRubro JOIN StkGrupo, BasesGenerales.Proveedores ",
     " where StkRubroCodGrp = idStkGrupo and StkRubroProv = idProveedores "
   ].join(" ");
+  console.log('q stkrubrollermezcla  ', q)
   /*
   esto estaba así, tenía en el último renglón antes del where StkItems, y repetía todos los rubros
   se lo saqué y dió resultado

@@ -14,7 +14,10 @@ conexion.connect(function (err) {
 var router = express();
 
 router.get("/", function (req, res, next) {
-  conexion.query("Select * from StkRubro order by StkRubroDesc", function (err, result) {
+  var q = ['Select idStkRubro as id, StkRubroCodGrp, StkRubroDesc, StkRubroAbr, StkRubroProv, StkRubroAncho, StkRubroPres, StkRubroPresDes, StkRubroUM, ',
+    'StkRubroCosto, StkRubroTM, StkRubroConf from  StkRubro order by StkRubroDesc '].join(" ");
+
+  conexion.query(q, function (err, result) {
     if (err) {
       console.log(err);
     } else {

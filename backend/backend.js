@@ -57,6 +57,7 @@ var stkunmedborrar = require("./routes/stock/unidadmedidas/stkunmedborrar");
 var stkunmedleerred = require("./routes/stock/unidadmedidas/stkunmedleerred");
 
 var stkgrupoleer = require("./routes/stock/grupos/stkgrupoleer");
+var stkgrupoleeselec = require("./routes/stock/grupos/stkgrupoleeselec");
 var stkgrupoleercod = require("./routes/stock/grupos/stkgrupoleercod");
 var stkgrupoagregar = require("./routes/stock/grupos/stkgrupoagregar");
 var stkgrupomodificar = require("./routes/stock/grupos/stkgrupomodificar");
@@ -72,6 +73,7 @@ var stkubfisicaborrar = require("./routes/stock/ubfisica/stkubfisicaborrar");
 var stkubfisicaleerUbG = require("./routes/stock/ubfisica/stkubfisicaleerUbG");
 
 var stkrubroleer = require("./routes/stock/rubros/stkrubroleer");
+var stkrubroleeselec = require("./routes/stock/rubros/stkrubroleeselec");
 var stkrubroleermezcla = require("./routes/stock/rubros/stkrubroleermezcla");
 var stkrubroleercod = require("./routes/stock/rubros/stkrubroleercod");
 var stkrubroagregar = require("./routes/stock/rubros/stkrubroagregar");
@@ -287,6 +289,7 @@ app.use("/stkunmedleerred", stkunmedleerred);
 
 
 app.use("/stkgrupoleer", stkgrupoleer);
+app.use("/stkgrupoleeselec", stkgrupoleeselec);
 app.use("/stkgrupoleercod", stkgrupoleercod);
 app.use("/stkgrupoagregar", stkgrupoagregar);
 app.use("/stkgrupomodificar", stkgrupomodificar);
@@ -302,6 +305,7 @@ app.use("/stkubfisicaborrar", stkubfisicaborrar);
 app.use("/stkubfisicaleerUbG", stkubfisicaleerUbG);
 
 app.use("/stkrubroleer", stkrubroleer);
+app.use("/stkrubroleeselec", stkrubroleeselec);
 app.use("/stkrubroleermezcla", stkrubroleermezcla);
 app.use("/stkrubroleercod", stkrubroleercod);
 app.use("/stkrubroagregar", stkrubroagregar);

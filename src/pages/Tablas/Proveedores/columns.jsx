@@ -9,7 +9,7 @@ import { leetipoprov } from "./LeeTipoProv";
 
 export async function llenarcolumns() {
 	const tipoprov = await leetipoprov();
-
+	console.log("tipoprov  ", tipoprov);
 	const stkMonedas = await leerStkMonedas();
 
 	return columnsFill(tipoprov, stkMonedas);
@@ -18,7 +18,14 @@ export async function llenarcolumns() {
 function columnsFill(tipoprov, stkMonedas) {
 	return new Promise(function (resolve) {
 		resolve([
-			{ headerName: "id", field: "id", type: "text", xs: 4, editable: false },
+			{
+				headerName: "id",
+				field: "id",
+				type: "text",
+				xs: 4,
+				editable: false,
+				headerClassName: "encabcolumns",
+			},
 			{
 				headerName: "Descripción",
 				field: "ProveedoresDesc",
