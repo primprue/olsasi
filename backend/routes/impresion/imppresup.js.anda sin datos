@@ -1,0 +1,279 @@
+var express = require("express");
+var router = express.Router();
+var path = require("path");
+var moment = require("moment");
+var variables = require('../../public/variables')
+var fs = require('fs');
+var conexion = require('../conexion');
+var PdfPrinter = require('pdfmake');
+var dateFormat = require('dateformat');
+var url = require('url');
+
+
+conexion.connect(function (err) {
+    if (!err) {
+        console.log("base de datos conectada en imppresup");
+    } else {
+        console.log("no se conecto en imppresup");
+    }
+});
+
+var router = express();
+
+var TotalPresup = 0
+const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2
+})
+
+// /SistOLSA/OlsaSG/backend/node_modules/pdfmake/examples
+
+var fonts = {
+    Roboto: {
+        normal: '/home/sandra/SistOLSA/OlsaSG/backend/node_modules/pdfmake/examples/fonts/Roboto-Regular.ttf',
+        bold: '/home/sandra/SistOLSA/OlsaSG//backend/node_modules/pdfmake/examples/fonts/Roboto-Medium.ttf',
+        italics: '/home/sandra/SistOLSA/OlsaSG/backend/node_modules/pdfmake/examples/fonts/Roboto-Italic.ttf',
+        bolditalics: '/home/sandra/SistOLSA/OlsaSG/backend/node_modules/pdfmake/examples/fonts/Roboto-MediumItalic.ttf'
+    }
+};
+
+router.post("/", function (req, res, next) {
+
+    var printer = new PdfPrinter(fonts);
+    // var fs = require('fs');
+    var chartLines = [];
+    var chartText = [];
+    var docDefinition = {
+        pageMargins: [40, 130, 40, 40],
+        header: {
+            margin: 20,
+            columns: [
+                {
+                    image: path.resolve('.') + '/routes/impresion/encabpresup.png',
+                    width: 550,
+                    height: 100,
+                },
+            ],
+        },
+        content: [
+
+            {
+                text: 'cccc',
+                style: 'textoD',
+            },
+
+            // {
+            //     text: 'Bahía Blanca, ' + Fecha,
+            //     style: 'textoD',
+            // },
+
+            {
+                text: ' dgadgdfg ',
+                style: 'textoD',
+            },
+            {
+                text: Fecha,
+                style: 'textoD',
+            },
+            // {
+            //     text: 'Sr. ',
+            //     style: 'textoI',
+            // },
+            // {
+            //     text: Cliente,
+            //     style: 'textoI',
+            // },
+
+            // {
+            //     text: Telefono,
+            //     style: 'textoI',
+            // },
+
+            // {
+            //     text: ' ',
+            //     style: 'textoD',
+            // },
+
+            // {
+            //     text: 'Cotización Nro. : ' + Presupuestonro,
+            //     style: 'textoD',
+            // },
+            // {
+            //     text: ' ',
+            //     style: 'textoD',
+            // },
+            // {
+            //     //  style: 'tableDatos',
+            //     table: {
+            //         headerRows: 1,
+            //         widths: [ac1, ac2, ac3, ac4, ac5, ac6, ac7],
+            //         body: rows,
+            //     }
+            // },
+            // {
+            //     text: ' ',
+            //     style: 'textoD',
+            // },
+            // {
+            //     text: ' ',
+            //     style: 'textoD',
+            // },
+            // {
+            //     style: 'tableCond',
+            //     ul: [
+            //         // headerRows: 1,
+            //         // widths: [500],
+            //         condpag,
+            //     ]
+            // },
+            // {
+            //     text: ' ',
+            //     style: 'textoD',
+            // },
+            // {
+            //     text: ' ',
+            //     style: 'textoD',
+            // },
+            // {
+            //     style: 'tableCondGral',
+            //     table: {
+            //         body: [
+            //             [
+            //                 {
+            //                     //  stack: [
+            //                     //   {
+            //                     ul: [
+            //                         condpaggral[0],
+            //                         condpaggral[1],
+            //                         condpaggral[2],
+            //                     ]
+            //                     // }
+            //                     //]
+            //                 }],
+            //         ]
+            //     }
+            // },
+            // {
+            //     text: operador,
+            //     style: 'textoOperador',
+            // },
+        ],
+
+        styles: {
+            header: {
+                fontSize: 12,
+                italics: true,
+                alignment: 'center',
+                bold: true
+            },
+            resaltado: {
+                fontSize: 12,
+                italics: true,
+                alignment: 'left',
+                bold: true
+            },
+            subheader: {
+                fontSize: 15,
+                bold: true,
+                italics: true,
+                alignment: 'center',
+
+            },
+            quote: {
+                italics: true
+            },
+            small: {
+                fontSize: 8
+            },
+            textoCI: {
+                fontSize: 14,
+                alignment: 'center',
+            },
+            textoD: {
+                fontSize: 12,
+                alignment: 'right',
+
+
+            },
+            textoI: {
+                fontSize: 12,
+                alignment: 'left',
+
+            },
+            tableEncabColumn: {
+                margin: [0, 0, 0, 0],
+                alignment: 'center',
+                bold: true
+            },
+            tableDatos: {
+                fontSize: 11,
+                margin: [0, 0, 30, 0],
+                alignment: 'center',
+            },
+            tableDatosI: {
+                margin: [0, 0, 0, 15],
+                alignment: 'left',
+            },
+            tableDatosD: {
+                margin: [0, 0, 0, 15],
+                alignment: 'right',
+            },
+            tableDatosTot: {
+                margin: [0, 0, 0, 15],
+                alignment: 'right',
+                bold: true
+            },
+            textoDTot: {
+                fontSize: 9,
+                alignment: 'right',
+                bold: true
+            },
+            tableCond: {
+                fontSize: 11,
+                margin: [0, 0, 30, 0],
+                alignment: 'left',
+            },
+            tableCondGral: {
+                fontSize: 11,
+                margin: [0, 0, 30, 0],
+                bold: true,
+                color: 'blue',
+                markerColor: 'red',
+                alignment: 'left',
+                fillColor: '#ffff38',
+            },
+            textoOperador: {
+                fontSize: 8,
+                margin: [0, 0, 30, 0],
+                bold: false,
+                color: 'black',
+                //  markerColor: 'red',
+                alignment: 'right',
+                //fillColor: '#ffff38',
+            },
+
+        }
+
+    };
+    //recien bajados de un link 
+    // var printer = new pdfMakePrinter(fontDescriptors);
+    // var doc = printer.createPdfKitDocument(documentDefinition);
+    // doc.pipe(stream);
+    // doc.end();
+
+    // var pdfDoc = printer.createPdfKitDocument(docDefinition);
+    // const pdfDoc = new PDFDocument;
+    pdfDoc = printer.createPdfKitDocument(docDefinition)
+    console.log('docDefinition ddd ', docDefinition)
+    pdfDoc.pipe(fs.createWriteStream('/home/sandra/SistOLSA/OlsaSG/src/components/Main/pages/Presupuesto/static/media/basics.pdf'));
+    // pdfDoc.pipe(fs.createWriteStream(('/home/sandra/Documentos/OLSAFrecuentes/PresupSistema/' + nombrepresup)));
+
+    //  pdfDoc.pipe(fs.createWriteStream((variables.dirpresupdocumento + nombrepresup)));
+
+    pdfDoc.end();
+
+
+});
+
+module.exports = router;

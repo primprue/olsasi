@@ -1,0 +1,224 @@
+.tabla {
+	padding: auto;
+	background-color: rgba(199, 190, 140, 0.514);
+	width: 1000px;
+}
+
+.tablalista {
+	position: relative;
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	background-color: rgb(240, 245, 248, 0.5);
+	width: 1600px;
+	box-shadow: 10;
+	border-color: rgb(145, 113, 134);
+	border: 10;
+	font-size: 25px;
+	column-rule-style: solid;
+}
+
+.multiline-cell {
+	white-space: normal;
+	overflow: visible;
+	max-height: none;
+}
+
+.tablalista:hover {
+	background-color: rgb(240, 245, 248, 0.3);
+}
+
+/* 
+.MuiDataGrid-colCell {
+	font-size: 25;
+}
+
+.MuiDataGrid-row {
+	background-color: rgb(5, 32, 37);
+}
+ */
+
+.tablamuestrarenglon {
+	font-size: large;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	color: rgb(149, 12, 212);
+	background-color: rgba(239, 246, 247, 0.432);
+	display: flex;
+
+}
+
+.tablapresupuesto {
+	position: relative;
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	background-color: rgba(243, 245, 242, 0.514);
+	width: 1600px;
+}
+
+.tablapresupuestoslot {
+	background-color: rgba(242, 244, 245, 0.514);
+	display: flex;
+	justify-content: flex-end;
+
+}
+
+
+
+.tablaanexo {
+	position: flex;
+	background-color: rgba(235, 240, 241, 0.3);
+	height: 350px;
+	max-width: "xl";
+	padding: 25px;
+}
+
+
+
+.headerclass {
+	color: blueviolet;
+	font-weight: bold;
+}
+
+.cellclass {
+	color: blue;
+}
+
+.datagridclass {
+	font-size: 16px;
+}
+
+.tablalistaprecios {
+	background-color: rgba(188, 204, 212, 0.514);
+	display: flex;
+	justify-content: flex-end;
+
+}
+
+.tablasgenerales {
+	background-color: rgba(245, 246, 252, 0.432);
+	display: flex;
+	justify-content: flex-end
+}
+
+.tooltip {
+	background-color: blue;
+	color: aliceblue;
+	box-shadow: aquamarine;
+	font-size: 11;
+}
+
+.filaselec {
+	background-color: rgb(255, 72, 0);
+	color: rgb(219, 158, 27);
+	box-shadow: aquamarine;
+	font-size: 11;
+}
+
+
+
+.sxb {
+	background-color: rgba(244, 246, 252, 0.432);
+	height: 100%;
+	width: 100%;
+
+
+}
+
+.encabcolumns {
+	background-color: rgba(5, 25, 92, 0.288);
+	text-align: center;
+	font-size: 18px;
+	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	font-weight: bold;
+	border-radius: 1;
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+	color: rgba(17, 10, 116, 0.863);
+
+	/* height: 40; */
+}
+
+.encabcolumnsmt {
+	background-color: rgba(77, 6, 77, 0.288);
+	text-align: center;
+	font-size: 16px;
+	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	font-weight: bold;
+	border-radius: 1;
+	box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+	color: rgba(53, 1, 46, 0.863);
+
+	height: 40;
+}
+
+.titulartablas {
+	background-color: antiquewhite;
+	font-size: 25px;
+	color: rgb(64, 247, 18);
+	display: flex;
+	flex-direction: column;
+	align-items: left;
+	margin-right: 80px;
+}
+
+.iconostablas {
+	color: rgb(13, 34, 230);
+	font-size: 30px;
+}
+
+.iconoimpresora {
+	color: rgba(9, 65, 55, 0.507);
+	margin-left: 35px;
+	font-size: 30px;
+}
+
+.iconoimpresora:hover {
+	color: rgb(9, 65, 55);
+	font-size: 30px;
+}
+
+.iconoagregar {
+	color: rgba(46, 116, 18, 0.521);
+	margin-left: 35px;
+	font-size: 30px;
+}
+
+.iconoagregar:hover {
+	color: rgb(45, 116, 18);
+	font-size: 30px;
+}
+
+.iconomodificar {
+	color: rgba(238, 8, 226, 0.404);
+	margin-left: 35px;
+	font-size: 30px;
+}
+
+.iconomodificar:hover {
+	color: rgb(238, 8, 226);
+
+	font-size: 30px;
+}
+
+.iconoborrar {
+	color: rgba(247, 33, 5, 0.301);
+	margin-left: 35px;
+	font-size: 30px;
+}
+
+.iconoborrar:hover {
+	color: rgb(247, 33, 5);
+	font-size: 30px;
+}
+
+.coloropcioncol {
+	color: rgb(15, 24, 56);
+	align-items: left;
+}
+
+.tituloacceso {
+	color: rgba(247, 33, 5, 0.301);
+	font-size: 30px;
+}
