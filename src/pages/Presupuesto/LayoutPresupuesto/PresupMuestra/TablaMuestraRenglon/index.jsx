@@ -13,9 +13,7 @@ import {
 	Slide,
 } from "@mui/material";
 import { DataGrid, GridToolbarContainer } from "@mui/x-data-grid";
-// import MaterialTable from "material-table";
 import { presuprenglonleer } from "./PresupRenglonLeer.jsx";
-// import { OTOrigenPresupAgregar } from "../../../../OrdenTrabajo/OTVarios/OTOrigenPresupAgregar.jsx";
 import { llenarcolumns } from "./columns.jsx";
 import { PresupBorrar } from "../PresupBorrar.jsx";
 import { useContext } from "react";
@@ -49,15 +47,11 @@ export function TablaMuestraRenglon(props) {
 		PresupBorrar(Presup.id);
 		handleClose();
 	};
-	// const Cierra = () => {
 	async function AceptaItemOT() {
 		//campos de la orden de trabajo original
 		//idOTRenglon, OTRenglonNroPresup, OTRenglonCant, OTRenglonDesc, OTRenglonLargo, OTRenglonAncho, OTRenglonImpUnit, OTRenglonImpItem, OTRenglonParamInt
-		//grabo los datos en la tabla de Origen de datos orden de Trabajo
-		console.log("selectiomModel tablamuestrarenglon ", selectionModel);
-		// setState({ ...state, renglonespresup: selectionModel });
+		//los mando por Context a la OT
 		setOTdatos({ ...otdatos, renglonespresup: selectionModel });
-		//var respuesta = await OTOrigenPresupAgregar(selectionModel);
 	}
 	const Cierra = () => {
 		handleClose();
