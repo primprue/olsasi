@@ -11,7 +11,7 @@ var PresupPant = () => {
 	const { setValor } = useContext(StaticContexto);
 	const [state, setState] = useState(initial_state);
 	const [datosrenglon, setDatosRenglon] = useState([]);
-	const [datosot, setDatosOT] = useState([]);
+
 	useEffect(() => {
 		setValor("Presupuestos");
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps

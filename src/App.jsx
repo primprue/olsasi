@@ -29,6 +29,7 @@ const PresupMuestra = lazy(() =>
 const MovStockPant = lazy(() => import("./pages/MovStock/MovStockPant"));
 import { StaticContexto } from "./context/StaticContext";
 import { DatosTablas } from "./context/TablasContext";
+import { OrdenTrabajo } from "./context/OrdTrabajo.jsx";
 
 export default function App() {
 	return (
@@ -36,161 +37,163 @@ export default function App() {
 			<div className="DivPpal.multi_bg_example">
 				<Header />
 				<DatosTablas>
-					<Routes>
-						<Route
-							path="/"
-							element={
-								<Suspense fallback={<>...</>}>
-									<Home />{" "}
-								</Suspense>
-							}
-						/>
-						<Route
-							path="/Home"
-							element={
-								<Suspense fallback={<>...</>}>
-									<Home />{" "}
-								</Suspense>
-							}
-						/>
-						<Route
-							path="/PresupDetPie"
-							element={
-								<Suspense fallback={<>...</>}>
-									<PresupDetPie />
-								</Suspense>
-							}
-						/>
-						<Route
-							path="/PresupPant"
-							element={
-								<Suspense fallback={<>...</>}>
-									<PresupPant />
-								</Suspense>
-							}
-						/>
-						<Route
-							path="/PresupMuestra"
-							element={
-								<Suspense fallback={<>...</>}>
-									<PresupMuestra />
-								</Suspense>
-							}
-						/>
-						<Route
-							path="/OTrabajo"
-							element={
-								<Suspense fallback={<>...</>}>
-									<OTrabajo />
-								</Suspense>
-							}
-						/>
+					<OrdenTrabajo>
+						<Routes>
+							<Route
+								path="/"
+								element={
+									<Suspense fallback={<>...</>}>
+										<Home />{" "}
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/Home"
+								element={
+									<Suspense fallback={<>...</>}>
+										<Home />{" "}
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/PresupDetPie"
+								element={
+									<Suspense fallback={<>...</>}>
+										<PresupDetPie />
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/PresupPant"
+								element={
+									<Suspense fallback={<>...</>}>
+										<PresupPant />
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/PresupMuestra"
+								element={
+									<Suspense fallback={<>...</>}>
+										<PresupMuestra />
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/OTrabajo"
+								element={
+									<Suspense fallback={<>...</>}>
+										<OTrabajo />
+									</Suspense>
+								}
+							/>
 
-						<Route
-							path="/ListaPrecios"
-							element={
-								<Suspense fallback={<>...</>}>
-									<ListaPrecios />
-								</Suspense>
-							}
-						/>
-						<Route
-							path="/ModificaPrecios"
-							element={
-								<Suspense fallback={<>...</>}>
-									<ModificaPrecios />
-								</Suspense>
-							}
-						/>
-						<Route
-							path="/MovStockPant"
-							element={
-								<Suspense fallback={<>...</>}>
-									<MovStockPant />
-								</Suspense>
-							}
-						/>
-						<Route
-							path="/Proveedores"
-							element={
-								<Suspense fallback={<>...</>}>
-									<Proveedores />
-								</Suspense>
-							}
-						/>
-						<Route
-							path="/Clientes"
-							element={
-								<Suspense fallback={<>...</>}>
-									<Clientes />
-								</Suspense>
-							}
-						/>
-						<Route
-							path="/StkMonedas"
-							element={
-								<Suspense fallback={<>...</>}>
-									<StkMonedas />
-								</Suspense>
-							}
-						/>
-						<Route
-							path="/Transporte"
-							element={
-								<Suspense fallback={<>...</>}>
-									<Transporte />
-								</Suspense>
-							}
-						/>
-						<Route
-							path="/StkGrupos"
-							element={
-								<Suspense fallback={<>...</>}>
-									<StkGrupos />
-								</Suspense>
-							}
-						/>
-						<Route
-							path="/StkRubros"
-							element={
-								<Suspense fallback={<>...</>}>
-									<StkRubros />
-								</Suspense>
-							}
-						/>
-						<Route
-							path="/StkItems"
-							element={
-								<Suspense fallback={<>...</>}>
-									<StkItems />
-								</Suspense>
-							}
-						/>
-						<Route
-							path="/StkUnMed"
-							element={
-								<Suspense fallback={<>...</>}>
-									<StkUnMed />
-								</Suspense>
-							}
-						/>
-						<Route
-							path="/UbFisica"
-							element={
-								<Suspense fallback={<>...</>}>
-									<UbFisica />
-								</Suspense>
-							}
-						/>
-						<Route
-							path="/PresupConfTipo"
-							element={
-								<Suspense fallback={<>...</>}>
-									<PresupConfTipo />
-								</Suspense>
-							}
-						/>
-					</Routes>
+							<Route
+								path="/ListaPrecios"
+								element={
+									<Suspense fallback={<>...</>}>
+										<ListaPrecios />
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/ModificaPrecios"
+								element={
+									<Suspense fallback={<>...</>}>
+										<ModificaPrecios />
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/MovStockPant"
+								element={
+									<Suspense fallback={<>...</>}>
+										<MovStockPant />
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/Proveedores"
+								element={
+									<Suspense fallback={<>...</>}>
+										<Proveedores />
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/Clientes"
+								element={
+									<Suspense fallback={<>...</>}>
+										<Clientes />
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/StkMonedas"
+								element={
+									<Suspense fallback={<>...</>}>
+										<StkMonedas />
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/Transporte"
+								element={
+									<Suspense fallback={<>...</>}>
+										<Transporte />
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/StkGrupos"
+								element={
+									<Suspense fallback={<>...</>}>
+										<StkGrupos />
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/StkRubros"
+								element={
+									<Suspense fallback={<>...</>}>
+										<StkRubros />
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/StkItems"
+								element={
+									<Suspense fallback={<>...</>}>
+										<StkItems />
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/StkUnMed"
+								element={
+									<Suspense fallback={<>...</>}>
+										<StkUnMed />
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/UbFisica"
+								element={
+									<Suspense fallback={<>...</>}>
+										<UbFisica />
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/PresupConfTipo"
+								element={
+									<Suspense fallback={<>...</>}>
+										<PresupConfTipo />
+									</Suspense>
+								}
+							/>
+						</Routes>
+					</OrdenTrabajo>
 				</DatosTablas>
 			</div>
 		</StaticContexto>

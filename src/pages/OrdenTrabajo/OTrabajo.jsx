@@ -4,27 +4,30 @@ import { Grid } from "@mui/material";
 import { useContext } from "react";
 import StaticContexto from "../../context/StaticContext.jsx";
 import FilaUno from "./LayoutOrdenTrabajo/FilaUno.jsx";
-export const OTContext = React.createContext();
+// import { TablaMuestraRenglon } from "../Presupuesto/LayoutPresupuesto/PresupMuestra/TablaMuestraRenglon/index.jsx";
+// export const OTContext = React.createContext();
 // { children }
-var OTrabajo = () => {
+// var OTrabajo = () => {
+
+export default function OTrabajo() {
 	const { setValor } = useContext(StaticContexto);
-	const [datosortt, setDatosOrTr] = useState(datosot);
+	// const [datosortt, setDatosOrTr] = useState(datosot);
 	useEffect(() => {
 		setValor("Orden de Trabajo");
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 	return (
 		<div>
 			<Grid container rowSpacing={-15} spacing={2} alignItems="center">
-				<OTContext.Provider
+				{/* <OTContext.Provider
 					value={{
 						datosortt: datosortt,
 						setDatosOrTr: setDatosOrTr,
 					}}
 				>
-					<FilaUno />
-				</OTContext.Provider>
+				<TablaMuestraRenglon />
+			</OTContext.Provider> */}
+				<FilaUno />
 			</Grid>
 		</div>
 	);
-};
-export default OTrabajo;
+}

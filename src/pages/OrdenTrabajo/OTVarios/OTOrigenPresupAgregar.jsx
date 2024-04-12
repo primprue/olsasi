@@ -10,21 +10,26 @@ export function OTOrigenPresupAgregar(selectionModel) {
 		}))
 	);
 
-	let renglonelegido = JSON.stringify(relegidos);
 	return new Promise(function () {
-		setTimeout(() => {
-			const url =
-				IpServidor + "/otorigenpresupagregar/?renglonelegido=" + renglonelegido;
-			request
-				.post(url)
-				.set("Content-Type", "application/json")
-				.set("X-API-Key", "foobar")
-				.then((res) => {
-					MuestraMensaje(res);
-				})
-				.catch((err) => {
-					MuestraMensaje(err);
-				});
-		}, 500);
+		relegidos.forEach((element) => {
+			let renglonelegido = JSON.stringify(element);
+			setTimeout(() => {
+				const url =
+					IpServidor +
+					"/otorigenpresupagregar/?renglonelegido=" +
+					renglonelegido;
+				request
+					.post(url)
+					.set("Content-Type", "application/json")
+					.set("X-API-Key", "foobar")
+
+					.then((res) => {
+						MuestraMensaje(res);
+					})
+					.catch((err) => {
+						MuestraMensaje(err);
+					});
+			}, 300);
+		});
 	});
 }

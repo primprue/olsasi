@@ -59,22 +59,22 @@ router.get('/', function (req, res, next) {
         }
     })
 
-    var comando = ' /home/sandra/pruebagnu/./pcliseq'
-    console.log('comando  ', comando)
-    exec(comando, (error, stdout, stderr) => {
-        if (error) {
-            console.log(`error: ${error.message}`);
-            console.log(`error: ${error.code}`);
-            res.json([{ error: error.code }])
+    // var comando = ' /home/sandra/pruebagnu/./pcliseq'
+    // console.log('comando  ', comando)
+    // exec(comando, (error, stdout, stderr) => {
+    //     if (error) {
+    //         console.log(`error: ${error.message}`);
+    //         console.log(`error: ${error.code}`);
+    //         res.json([{ error: error.code }])
 
-            return;
-        }
-        if (stderr) {
-            console.log(`stderr: ${stderr}`);
-            return ('exito');
-        }
-        // res.json(stdout)
-    });
+    //         return;
+    //     }
+    //     if (stderr) {
+    //         console.log(`stderr: ${stderr}`);
+    //         return ('exito');
+    //     }
+    //     // res.json(stdout)
+    // });
 
     // const q = [
     //     'load data  infile ' + '"' + '/media/sandra/OLS/clientes.csv' + '"  into table BasesGenerales.Clientes  FIELDS TERMINATED BY ' + '";"' + '',

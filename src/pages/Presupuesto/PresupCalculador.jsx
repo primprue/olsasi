@@ -2,7 +2,6 @@ import request from "superagent";
 import IpServidor from "../VariablesDeEntorno";
 
 export const presupcalculador = (DatosPresupEleg, datoscalculo, tipo) => {
-	console.log("datoscalculo  ", datoscalculo);
 	var datotraido = DatosPresupEleg;
 	var backend = "",
 		url = "";
