@@ -205,5 +205,5 @@ export const initial_state = {
   StkRubroAbrLAT: '',
 
   indicetp: 0,
-
+  renglonespresup: [],
 };

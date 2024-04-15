@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 // import { tableIcons } from "../../../../../lib/material-table/tableIcons";
 // import { localization } from "../../../../../lib/material-table/localization";
 import estilotabla from "../../../../../Styles/Tabla.module.css";
-// import OTDatosPresup from "../../../../OrdenTrabajo/OTVarios/OTDatosPresup.jsx";
 import CompressSharpIcon from "@mui/icons-material/CompressSharp";
 import {
 	Button,
@@ -14,16 +13,16 @@ import {
 	Slide,
 } from "@mui/material";
 import { DataGrid, GridToolbarContainer } from "@mui/x-data-grid";
-// import MaterialTable from "material-table";
 import { presuprenglonleer } from "./PresupRenglonLeer.jsx";
-import { OTOrigenPresupAgregar } from "../../../../OrdenTrabajo/OTVarios/OTOrigenPresupAgregar.jsx";
 import { llenarcolumns } from "./columns.jsx";
 import { PresupBorrar } from "../PresupBorrar.jsx";
+import { useContext } from "react";
+import OrdTrabajo from "../../../../../context/OrdTrabajo.jsx";
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
 });
-
 export function TablaMuestraRenglon(props) {
+	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
 	const { open, handleClose, Presup, origen } = props;
 	const [renglon, setRenglon] = useState([]);
 	const [columns, setColumns] = useState([]);
@@ -48,16 +47,16 @@ export function TablaMuestraRenglon(props) {
 		PresupBorrar(Presup.id);
 		handleClose();
 	};
-	// const Cierra = () => {
-	async function Cierra() {
+	async function AceptaItemOT() {
 		//campos de la orden de trabajo original
 		//idOTRenglon, OTRenglonNroPresup, OTRenglonCant, OTRenglonDesc, OTRenglonLargo, OTRenglonAncho, OTRenglonImpUnit, OTRenglonImpItem, OTRenglonParamInt
-		//grabo los datos en la tabla de Origen de datos orden de Trabajo
-		console.log("antes de otorigenpreus  ");
-		var respuesta = await OTOrigenPresupAgregar(selectionModel);
-		console.log("vuelve de otorigenpreus  ");
-		handleClose();
+		//los mando por Context a la OT
+		setOTdatos({ ...otdatos, renglonespresup: selectionModel });
 	}
+	const Cierra = () => {
+		handleClose();
+	};
+
 	useEffect(() => {
 		leerenglones(Presup.id);
 	}, [Presup]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -115,9 +114,13 @@ export function TablaMuestraRenglon(props) {
 					<Button onClick={Cierra} color="secondary">
 						Cerrar
 					</Button>
-					{origen === "Borrar" && (
+					{(origen === "Borrar" && (
 						<Button onClick={AceptaBorrar} color="secondary">
 							Borrar
+						</Button>
+					)) || (
+						<Button onClick={AceptaItemOT} color="secondary">
+							Aceptar
 						</Button>
 					)}
 				</DialogActions>

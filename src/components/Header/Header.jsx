@@ -70,7 +70,7 @@ function Header() {
 	const diafecha = moment().format("DD-MM-YYYY");
 	// const [state, setState] = useState(initial_state);
 	useEffect(() => {
-		clientestraeNuevos();
+		// clientestraeNuevos();
 		clientesCobol();
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 

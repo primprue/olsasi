@@ -208,6 +208,7 @@ var copiafact = require("./routes/procinternos/copiafact");
 // var otarmatabla = require("./routes/ordentrabajo/otarmatabla")
 var otorigenpresupagregar = require("./routes/ordentrabajo/otorigenpresupagregar")
 
+
 // const { RouterSharp } = require("@material-ui/icons");
 
 // function agregada por el error CORS
@@ -454,6 +455,8 @@ app.use("/copiafact", copiafact);
 // app.use("/datosencabpresupeleg", datosencabpresupeleg);
 // app.use("/otarmatabla", otarmatabla);
 app.use("/otorigenpresupagregar", otorigenpresupagregar);
+
+
 
 app.use("/", proveedoresleer);
 
