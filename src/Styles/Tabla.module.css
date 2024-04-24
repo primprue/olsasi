@@ -222,3 +222,46 @@
 	color: rgba(247, 33, 5, 0.301);
 	font-size: 30px;
 }
+
+
+
+/* formato para <table> de orden de trabajo */
+.tablecontainer {
+	width: 80%;
+	border-collapse: collapse;
+}
+
+.tablecontainer th,
+.tablecontainer td {
+	border: 1px solid #e48314;
+	padding: 8px;
+	text-align: left;
+}
+
+.tablecontainer tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+
+.tablecontainer th {
+	background-color: #10b9be;
+	color: #333333;
+}
+
+/* Establecer anchos específicos para las columnas */
+.table-container th:nth-child(1),
+.table-container td:nth-child(1) {
+	width: 20%;
+	/* Porcentaje del ancho total */
+}
+
+.table-container th:nth-child(2),
+.table-container td:nth-child(2) {
+	width: 40%;
+	/* Porcentaje del ancho total */
+}
+
+.table-container th:nth-child(3),
+.table-container td:nth-child(3) {
+	width: 40%;
+	/* Porcentaje del ancho total */
+}

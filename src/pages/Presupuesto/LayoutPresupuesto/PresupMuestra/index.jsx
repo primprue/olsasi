@@ -7,7 +7,6 @@ import { useState } from "react";
 
 import { useContext } from "react";
 import StaticContexto from "../../../../context/StaticContext.jsx";
-// import OrdTrabajo from "../../../../context/OrdTrabajo.jsx";
 import estilotabla from "../../../../Styles/Tabla.module.css";
 import {
 	DataGrid,
