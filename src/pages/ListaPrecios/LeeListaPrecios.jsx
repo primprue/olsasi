@@ -6,7 +6,6 @@ import MuestraMensaje from "../../components/lib/MuestraMensaje";
 export const leelistaprecios = () => {
 	return new Promise((resolve) => {
 		const url = IpServidor + "/listaprecios";
-		console.log("leelistaprecios  ", url);
 		request
 			.get(url)
 			.set("Content-Type", "application/json")

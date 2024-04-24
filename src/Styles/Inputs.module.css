@@ -1,0 +1,12 @@
+.formcontainer {
+    display: flex;
+    flex-wrap: wrap;
+    /* Permitir que los elementos se envuelvan */
+}
+
+.formcontainer input {
+    margin-right: 10px;
+    /* Espacio entre los elementos de entrada */
+    margin-bottom: 10px;
+    /* Espacio entre filas */
+}

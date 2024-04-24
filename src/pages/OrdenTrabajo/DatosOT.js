@@ -1,4 +1,3 @@
 export const datosot = {
-  renglonespresup: []
-
+  renglonespresup: [],
 };
