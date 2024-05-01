@@ -10,11 +10,11 @@ import styles from "../styles.module.css";
 
 // Context
 import { useContext } from "react";
-import { PresupPantContext } from "../../PresupPant";
+import PresupPant from "../../../../context/PresupPant";
 
 export default function FilaTanques() {
 	//  const [selectedValue, setSelectedValue] = React.useState("PVC05");
-	const { state, setState } = useContext(PresupPantContext);
+	const { state, setState } = useContext(PresupPant);
 	// const [setFaja] = React.useState('2P');
 
 	// const [AnchoPared, setAnchoPared] = React.useState(0.20)

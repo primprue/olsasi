@@ -3,11 +3,11 @@ import { Grid, Radio, RadioGroup, FormControlLabel } from "@mui/material";
 
 // Context
 import { useContext } from "react";
-import { PresupPantContext } from "../../PresupPant";
+import PresupPant from "../../../../context/PresupPant";
 
 export default function TipoIVA() {
 	const [selectedValue, setSelectedValue] = React.useState("CIVA");
-	const { state, setState } = useContext(PresupPantContext);
+	const { state, setState } = useContext(PresupPant);
 
 	const handleChange = (event) => {
 		setSelectedValue(event.target.value);

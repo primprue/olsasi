@@ -18,7 +18,6 @@ conexion.connect(function (err) {
 var router = express();
 
 router.get('/', function (req, res, next) {
-    console.log('estoy en  stkbgsubrubroleer res ', res)
     conexion.query('Select idSubRubro as value, SubRubroDetalle as label from BasesGenerales.SubRubros ',
         // conexion.query('Select idSubRubro as value, SubRubroDetalle as text  from BasesGenerales.SubRubros ',
         function (err, result) {

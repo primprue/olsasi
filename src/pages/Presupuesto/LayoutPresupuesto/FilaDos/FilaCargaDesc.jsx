@@ -1,11 +1,11 @@
 import React from "react";
 import styles from "../styles.module.css";
 import { useContext } from "react";
-import { PresupPantContext } from "../../PresupPant";
+import PresupPant from "../../../../context/PresupPant";
 
 import { TextField, Grid } from "@mui/material";
 export default function FilaCargaDesc() {
-	const { state, setState } = useContext(PresupPantContext);
+	const { state, setState } = useContext(PresupPant);
 
 	const handleChange5 = (event) => {
 		setState({ ...state, DetalleRenglon: event.target.value });

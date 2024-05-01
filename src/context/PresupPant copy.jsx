@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { initial_state } from "./Initial_State.js";
-import FilaUno from "./LayoutPresupuesto/FilaUno/index.jsx";
-import FilaDos from "./LayoutPresupuesto/FilaDos/index.jsx";
+import { initial_state } from "../pages/Presupuesto/Initial_State.js";
+import FilaUno from "../pages/Presupuesto/LayoutPresupuesto/FilaUno/index.jsx";
+import FilaDos from "../pages/Presupuesto/LayoutPresupuesto/FilaDos/index.jsx";
 import { Grid } from "@mui/material";
 import { useContext } from "react";
-import StaticContexto from "../../context/StaticContext.jsx";
+import StaticContexto from "./StaticContext.jsx";
 export const PresupPantContext = React.createContext();
 // { children }
 var PresupPant = () => {

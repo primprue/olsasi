@@ -1,42 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { llenarcolumns } from "./columns";
-
-// const columns = [
-// 	// { field: "id", headerName: "ID", width: 90 },
-// 	{ field: "idPresupRenglon", headerName: "ID Presup Renglon", width: 150 },
-// 	{ field: "PresupRenglonNroPresup", headerName: "Nro Presup", width: 150 },
-// 	{ field: "PresupRenglonCant", headerName: "Cantidad", width: 130 },
-// 	{ field: "PresupRenglonDesc", headerName: "Descripción", width: 400 },
-// 	{ field: "PresupRenglonLargo", headerName: "Largo", width: 120 },
-// 	{ field: "PresupRenglonAncho", headerName: "Ancho", width: 120 },
-// 	{ field: "PresupRenglonImpUnit", headerName: "Importe Unitario", width: 180 },
-// 	{ field: "PresupRenglonImpItem", headerName: "Importe Item", width: 180 },
-// 	// {
-// 	// 	field: "PresupRenglonParamInt",
-// 	// 	headerName: "Parámetros Internos",
-// 	// 	width: 300,
-// 	// },
-// 	{
-// 		field: "PresupRenglonParamInt",
-// 		headerName: "Parámetros Internos",
-// 		type: "singleSelect",
-// 		editable: true,
-// 		width: 300,
-// 	},
-// ];
+import FilaAbanico from "../../Presupuesto/LayoutPresupuesto/FilaAbanico/FilaAbanico";
+import OTFilaGral from "../OTFilas/OTFilaGral/OTFilaGral";
 
 export default function DataTable({ data }) {
-	const [selectionModel, setSelectionModel] = useState([]);
+	// const { otdatos, setOTdatos } = useContext(OrdTrabajo);
 	const [columns, setColumns] = useState([]);
-	const [rows, setRows] = React.useState([]);
+	const [rows, setRows] = useState([]);
 
+	const [open, setOpen] = useState(false);
+	const [gridKey, setGridKey] = useState(0);
 	// Transforma el arreglo multidimensional en un arreglo plano
-
+	const [presuptipo, setPresuptipo] = useState("");
+	const [datospot, setDatospot] = useState("");
 	const flattenedData = data.flatMap((nivel1) => nivel1);
+
 	async function columnsFetch() {
 		var col = await llenarcolumns(flattenedData);
-		// col.push(actionsColumn);
 		setColumns(() => col);
 	}
 
@@ -51,69 +32,140 @@ export default function DataTable({ data }) {
 		initialFetch();
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-	const handleSelectionModelChange = (selectionModel) => {
-		console.log("flattendData  ", rows[selectionModel]);
-		console.log("flattenedData  ", selectionModel);
+	function handleColumnHeaderClick(event) {
+		console.log("Clic en el título de la columna:", event.field);
+		// Aquí puedes ejecutar la lógica que desees cuando se hace clic en el título de la columna
+	}
+	async function handleCellClick(event) {
+		var datorenglon = event.row;
+		const paramObjeto = JSON.parse(datorenglon.PresupRenglonParamInt);
+		setPresuptipo(paramObjeto.tipopresup);
+		setDatospot(paramObjeto);
+		setOpen(true);
+	}
+
+	const handleClose = () => {
+		setOpen(false);
+		// initialFetch();
 	};
-
-	const handleCellClick = (params) => {
-		const rowId = params.id;
-		const columnName = params.field;
-
-		// Aquí puedes manejar la lógica para mostrar y/o solicitar datos adicionales
-		if (columnName === "PresupRenglonParamInt") {
-			const selectedRow = rows.find((row) => row.id === rowId);
-			console.log(" selectedRow ", selectedRow);
-			const paramObjeto = JSON.parse(selectedRow.PresupRenglonParamInt);
-			console.log("paramObjeto  ", paramObjeto);
-			console.log("paramObjeto  ", paramObjeto.tipopresup);
-			// if (selectedRow.name === "John") {
-			// 	// Aquí podrías mostrar un modal o una interfaz para solicitar datos adicionales
-			// 	const additionalData = prompt("Ingrese datos adicionales para John:");
-			// 	setRows((prevRows) =>
-			// 		prevRows.map((row) =>
-			// 			row.id === rowId ? { ...row, additionalData } : row
-			// 		)
-			// 	);
-			//}
-		}
-	};
-	// const actionsColumn = {
-	// 	field: "StkRubroAbr",
-	// 	headerName: "Tela",
-	// 	width: 100,
-	// 	renderCell: (params) =>
-	// 		rows.forEach((element, i) => {
-	// 			const paramObjeto = JSON.parse(element.PresupRenglonParamInt);
-	// 			console.log("paramObjeto  ", paramObjeto.tipopresup);
-	// 			if (paramObjeto.tipopresup === "PAÑO UNIDO") {
-	// 				[
-
-	// 						{field: "StkRubroAbr",
-	// 						headerName: "Tela",
-	// 						width: 100,}
-	// 				];
-	// 			}
-	// 		}),
-	// };
-	// 									return Object.entries(paramObjeto).map(([campo, valor]) => (
-	// 										<li key={campo}>
-	// 											<strong>{campo}:</strong> {valor}
-	// 										</li>
 
 	return (
 		<div style={{ height: 400, width: "100%" }}>
 			<DataGrid
+				key={gridKey}
 				rows={rows}
 				columns={columns}
 				onCellClick={handleCellClick}
+				onColumnHeaderClick={handleColumnHeaderClick}
 				pageSize={5}
 				rowsPerPageOptions={[5]}
-				// checkboxSelection
-				// disableSelectionOnClick
-				// selectionModel={selectionModel}
-				// onRowSelectionModelChange={handleSelectionModelChange}
 			/>
+			<OTFilaGral open={open} handleClose={handleClose} datospot={datospot} />
+			{datospot !== undefined && <OTFilaGral datospot={datospot}></OTFilaGral>}
+			{presuptipo === "PILETA ENROLLABLE" && <FilaAbanico></FilaAbanico>}
+			{presuptipo === "ABOLINADA" && <FilaAbanico></FilaAbanico>}
 		</div>
 	);
 }
+// setRows((prevRows) =>
+// 	prevRows.map((row) => (row.id === rowId ? { ...row, nuevafila } : row))
+// );
+//  const agregarFila = () => {
+//     const nuevaFila = { id: rows.length + 1, name: 'Nuevo', age: 0, // Otras columnas };
+//     const nuevasFilas = [...rows, nuevaFila];
+//     setRows(nuevasFilas);
+//   };
+// Esto Funciona , agrega una columna
+// if (paramObjeto.tipopresup === "CONFECCIONADA") {
+// 	var colores = await StkItemsLeeAbrRub(paramObjeto.StkRubroAbr);
+// 	const additionalData = {
+// 		field: "StkRubroAbr",
+// 		headerName: "Color",
+// 		width: 100,
+// 		type: "singleSelect",
+// 		valueOptions: colores,
+// 		editable: true,
+// 	};
+// 	var col = columns;
+// 	col.push(additionalData);
+// 	setColumns(col);
+// 	setGridKey((prevKey) => prevKey + 1);
+// }
+// if (selectedRow.name === "John") {
+// 	// Aquí podrías mostrar un modal o una interfaz para solicitar datos adicionales
+// 	const additionalData = prompt("Ingrese datos adicionales para John:");
+// 	setRows((prevRows) =>
+// 		prevRows.map((row) =>
+// 			row.id === rowId ? { ...row, additionalData } : row
+// 		)
+// 	);
+//}
+
+// setColumns((prevColumns) =>
+// 	prevColumns.map((columnas) =>
+// 		columnas.id === columnasId ? { ...columnas, additionalData } : columnas
+// 	)
+// );
+// 	 <InputLabel id="color-picker-label">Color</InputLabel>
+//   <Select
+//     labelId="color-picker-label"
+//     id="color-picker"
+//     value={selectedColor}
+//     onChange={handleChange}
+//   >
+//     {colors.map((color) => (
+//       <MenuItem key={color.id} value={color.name}>
+//         {color.name}
+//       </MenuItem>
+//     ))}
+//   </Select>
+// }
+// const actionsColumn = {
+// 	field: "StkRubroAbr",
+// 	headerName: "Tela",
+// 	width: 100,
+// 	renderCell: (params) =>
+// 		rows.forEach((element, i) => {
+// 			const paramObjeto = JSON.parse(element.PresupRenglonParamInt);
+// 			console.log("paramObjeto  ", paramObjeto.tipopresup);
+// 			if (paramObjeto.tipopresup === "PAÑO UNIDO") {
+// 				[
+
+// 						{field: "StkRubroAbr",
+// 						headerName: "Tela",
+// 						width: 100,}
+// 				];
+// 			}
+// 		}),
+// };
+// 									return Object.entries(paramObjeto).map(([campo, valor]) => (
+// 										<li key={campo}>
+// 											<strong>{campo}:</strong> {valor}
+// 										</li>
+// async function handleCellClick(params) {
+// 	const rowId = params.id;
+// 	const columnName = params.field;
+// 	console.log("params.length   ", rows.length);
+// 	// Aquí puedes manejar la lógica para mostrar y/o solicitar datos adicionales
+
+// 	if (columnName === "PresupRenglonParamInt") {
+// 		const selectedRow = rows.find((row) => row.id === rowId);
+// 		const paramObjeto = JSON.parse(selectedRow.PresupRenglonParamInt);
+// 		console.log("paramObjeto  ", paramObjeto);
+// 		console.log("confeccionado  ", confeccionado);
+
+// 	}
+// }
+
+/*
+		{
+				field: "OtColor",
+				headerName: "Color",
+				width: 100,
+				type: "singleSelect",
+				editable: true,
+
+			 valueOptions: colores,
+				
+			},
+	*/

@@ -1,16 +1,15 @@
 
 
-export const formdata = {
-  ProveedoresDesc: '',
-  ProveedoresTipo: 0,
-  ProveedoresCUIT: '',
-  ProveedoresCalle: '',
-  datoserroneos: true,
+export const punido = {
+  Color: '',
   presuptipo: 'PAÑO UNIDO'
+}
 
-
-  // idStkMonedas: '',
-  // StkMonedasDescripcion: '',
-  // StkMonedasCotizacion: 0.00,
-
+export const confeccionado = {
+  Color: '',
+  Refuerzo: '',
+  Cs: '',
+  ChicoteColor: '',
+  ChicoteLargo: '',
+  presuptipo: 'CONFECCIONADO'
 }

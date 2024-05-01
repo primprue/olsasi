@@ -11,10 +11,10 @@ import styles from "../styles.module.css";
 import { stkrubroleelat } from "../../../Tablas/StkRubros/StkRubroLeeLAT";
 // Context
 import { useContext } from "react";
-import { PresupPantContext } from "../../PresupPant";
+import PresupPant from "../../../../context/PresupPant";
 
 export default function FilaLateral() {
-	const { state, setState } = useContext(PresupPantContext);
+	const { state, setState } = useContext(PresupPant);
 	const [chcarros, setChCarros] = React.useState(false);
 	const [chcolocacion, setColocacion] = React.useState(false);
 	const [hebillas, setHebillas] = React.useState([]);

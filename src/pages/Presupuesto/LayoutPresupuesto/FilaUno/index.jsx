@@ -3,7 +3,7 @@ import TipoCliente from "./TipoCliente";
 import TipoIVA from "./TipoIVA";
 import TipoProducto from "./TipoProducto";
 
-export default function Fila() {
+export default function FilaUno() {
 	return (
 		<>
 			{/* <Grid

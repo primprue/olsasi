@@ -7,6 +7,7 @@ import {
 	MenuItem,
 	Button,
 	IconButton,
+	makeStyles,
 } from "@mui/material";
 import RequestQuoteTwoToneIcon from "@mui/icons-material/RequestQuoteTwoTone";
 import DifferenceTwoToneIcon from "@mui/icons-material/DifferenceTwoTone";
@@ -73,9 +74,8 @@ function Header() {
 		// clientestraeNuevos();
 		clientesCobol();
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
-
 	return (
-		<div height={"50px"}>
+		<div>
 			<Toolbar className={PropBarra.barraherr}>
 				<Button
 					className={PropBarra.botonmenu1}

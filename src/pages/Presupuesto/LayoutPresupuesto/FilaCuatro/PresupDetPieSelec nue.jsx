@@ -16,11 +16,11 @@ import { PresupDetPieLee } from "../../../Tablas/PresupDetPie/PresupDetPieLee";
 
 // Context
 import { useContext } from "react";
-import { PresupPantContext } from "../../PresupPant";
+import PresupPant from "../../../../context/PresupPant";
 
 var arregloeleg1 = [];
 export default function PresupDetPieSelect() {
-	const { state, setState } = useContext(PresupPantContext);
+	const { state, setState } = useContext(PresupPant);
 
 	const [columns, setColumns] = useState([]);
 	const [data, setData] = useState([]);

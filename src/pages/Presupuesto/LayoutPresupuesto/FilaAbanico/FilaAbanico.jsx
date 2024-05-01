@@ -12,10 +12,10 @@ import swal from "sweetalert";
 import styles from "../styles.module.css";
 // Context
 import { useContext } from "react";
-import { PresupPantContext } from "../../PresupPant";
+import PresupPant from "../../../../context/PresupPant";
 
 export default function FilaAbanico(props) {
-	const { state, setState } = useContext(PresupPantContext);
+	const { state, setState } = useContext(PresupPant);
 	const handleChange = (event) => {
 		const id = event.target.id;
 		setState({ ...state, [id]: event.target.value });

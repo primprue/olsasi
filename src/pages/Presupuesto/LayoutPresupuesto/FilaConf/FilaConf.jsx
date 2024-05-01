@@ -3,11 +3,11 @@ import { Grid, Radio, RadioGroup, FormControlLabel } from "@mui/material";
 
 // Context
 import { useContext } from "react";
-import { PresupPantContext } from "../../PresupPant";
+import PresupPant from "../../../../context/PresupPant";
 
 export default function FilaConf(props) {
 	const [selectedValue, setSelectedValue] = React.useState("cs");
-	const { state, setState } = useContext(PresupPantContext);
+	const { state, setState } = useContext(PresupPant);
 	const [ojalbronce, setOjalBronce] = React.useState("hz");
 
 	const handleChange = (event) => {

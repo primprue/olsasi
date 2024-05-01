@@ -7,6 +7,7 @@ import { useState } from "react";
 
 import { useContext } from "react";
 import StaticContexto from "../../../../context/StaticContext.jsx";
+import OrdTrabajo from "../../../../context/OrdTrabajo.jsx";
 import estilotabla from "../../../../Styles/Tabla.module.css";
 import {
 	DataGrid,
@@ -29,7 +30,7 @@ import { Route, useNavigate } from "react-router-dom";
 // import { OTContext } from "../../../OrdenTrabajo/OTrabajo.jsx";
 export default function PresupMuestra() {
 	const { valor, setValor } = useContext(StaticContexto);
-
+	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
 	const [rows, setRows] = React.useState([]);
 	const [columns, setColumns] = useState([]);
 	var fecha = new Date();
@@ -87,7 +88,9 @@ export default function PresupMuestra() {
 	const handleClose = () => {
 		dataFetch();
 		setOpen(!open);
-		handleClose1();
+		if (otdatos.renglonespresup) {
+			handleClose1();
+		}
 	};
 
 	async function armanombre(rowsel) {

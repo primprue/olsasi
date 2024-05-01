@@ -5,10 +5,10 @@ import leePresupConfTipoLeerDesc from "../../leePresupConfTipoLeerDesc";
 import leePresupConfTipoLeeAnexo from "../../leePresupConfTipoLeeAnexo";
 // Context
 import { useContext } from "react";
-import { PresupPantContext } from "../../PresupPant";
+import PresupPant from "../../../../context/PresupPant";
 
 export default function FilaUnoIzq() {
-	const { state, setState } = useContext(PresupPantContext);
+	const { state, setState } = useContext(PresupPant);
 	var anexo = "N";
 	const handleChange = (event) => {
 		var descripcion = event.target.value;

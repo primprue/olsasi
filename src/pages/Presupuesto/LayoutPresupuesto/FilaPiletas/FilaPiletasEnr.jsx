@@ -8,11 +8,11 @@ import {
 } from "@mui/material";
 // Context
 import { useContext } from "react";
-import { PresupPantContext } from "../../PresupPant";
+import PresupPant from "../../../../context/PresupPant";
 
 export default function FilaPiletasEnr(props) {
 	const [selectedValue, setSelectedValue] = React.useState("cd");
-	const { state, setState } = useContext(PresupPantContext);
+	const { state, setState } = useContext(PresupPant);
 	const [ojalbronce, setOjalBronce] = React.useState("hz");
 	// const [DescripPresup, setDescripPresup] = React.useState('')
 	// var [DetallePresup, setDetallePresup] = React.useState('')

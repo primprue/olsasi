@@ -32,6 +32,7 @@ export function TablaMuestraRenglon(props) {
 		const result = await presuprenglonleer(Presup);
 		setRenglon(result);
 	}
+
 	async function columnsFetch() {
 		var col = await llenarcolumns();
 		setColumns(() => col);
@@ -54,6 +55,7 @@ export function TablaMuestraRenglon(props) {
 		setOTdatos({ ...otdatos, renglonespresup: selectionModel });
 	}
 	const Cierra = () => {
+		//setOTdatos({ ...otdatos, otdatocliente: Presup.NombreCliente });
 		handleClose();
 	};
 

@@ -11,7 +11,7 @@ import { CurrencyTextField } from "../../../../hooks/useCurrencyTextField";
 import { Dialog, IconButton, TextField, Box } from "@mui/material";
 // Context
 import { useContext } from "react";
-import { PresupPantContext } from "../../PresupPant";
+import PresupPant from "../../../../context/PresupPant";
 
 import Estilos from "../../../../Styles/Tabla.module.css";
 import EstDial from "../../../../Styles/Dialog.module.css";
@@ -23,7 +23,7 @@ import { blue, green, purple, teal, red } from "@mui/material/colors";
 let idContador = 0;
 
 export default function FilaAnexo(props) {
-	const { state, setState } = useContext(PresupPantContext);
+	const { state, setState } = useContext(PresupPant);
 	const [columns, setColumns] = useState([]);
 
 	const [snackbar, setSnackbar] = React.useState(null);

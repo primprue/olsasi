@@ -12,13 +12,13 @@ conexion.connect(function (err) {
 });
 
 var router = express();
-router.get("/", async function (req, res) {
-  // router.get("/", async function (req, res, next) {
 
-  var StkRubroAbr = req.query.StkRubroAbr;
+router.get("/?:StkItemsRubroAbr", function (req, res, next) {
+  var StkRubroAbr = req.params.StkItemsRubroAbr;
+
   var q = [
-    "Select  StkItemsDesc from StkItems where StkItemsRubroAbr = '" + StkRubroAbr + "'"].join(" ");
-
+    "Select idStkItems as value, StkItemsDesc as label from StkItems where StkItemsRubroAbr = '" + StkRubroAbr + "'"].join(" ");
+  console.log('q  ', q)
   conexion.query(q, function (err, result) {
     if (err) {
       if (err.errno === 1064) {
