@@ -1,11 +1,11 @@
 import React from "react";
 import styles from "../styles.module.css";
 import { useContext } from "react";
-import { PresupPantContext } from "../../PresupPant";
+import PresupPant from "../../../../context/PresupPant";
 
 import { TextField } from "@mui/material";
 export default function FilaDetDesc(props) {
-	const { state, setState } = useContext(PresupPantContext);
+	const { state, setState } = useContext(PresupPant);
 	const [DescripPresup, setDescripPresup] = React.useState("");
 	//  const [selectedValue, setSelectedValue] = React.useState("");
 

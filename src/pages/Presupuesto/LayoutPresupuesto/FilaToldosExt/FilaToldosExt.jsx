@@ -10,10 +10,10 @@ import styles from "../styles.module.css";
 import { stkrubroleetbr } from "../../../Tablas/StkRubros/StkRubroLeeTBR";
 // Context
 import { useContext } from "react";
-import { PresupPantContext } from "../../PresupPant";
+import PresupPant from "../../../../context/PresupPant";
 
 export default function FilaToldosExt(props) {
-	const { state, setState } = useContext(PresupPantContext);
+	const { state, setState } = useContext(PresupPant);
 	const [mecanismo, setMecanismo] = React.useState("Manual");
 
 	const handleChange = (event) => {

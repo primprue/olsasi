@@ -21,7 +21,7 @@ import { PresupPreview } from "../PresupPreview";
 import FilaAnexo from "../FilaAnexo/FilaAnexo";
 // Context
 import { useContext } from "react";
-import { PresupPantContext } from "../../PresupPant";
+import PresupPant from "../../../../context/PresupPant.jsx";
 
 // export function CustomFooterStatusComponent(suma) {
 // 	const sumar = suma.suma;
@@ -34,8 +34,8 @@ import { PresupPantContext } from "../../PresupPant";
 // 	);
 // }
 export default function TablaPresup(props) {
-	const { state } = useContext(PresupPantContext);
-	const { datosrenglon, setDatosRenglon } = useContext(PresupPantContext);
+	const { state } = useContext(PresupPant);
+	const { datosrenglon, setDatosRenglon } = useContext(PresupPant);
 	const [anexos, setAnexos] = useState({ anexos: false });
 	const [ppreview, setPPreview] = useState({ ppreview: false });
 	const [filacuatro, setFilacuatro] = useState({ filacuatro: false });

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TextField, Button, Dialog, DialogActions } from "@mui/material";
 import { useContext } from "react";
-import { PresupPantContext } from "../../PresupPant";
+import PresupPant from "../../../../context/PresupPant.jsx";
 
 import { clientesleerdescmayigual } from "../../../Tablas/Clientes/ClientesLeerDesc";
 import { PresupGrabar } from "../../PresupGrabar";
@@ -13,7 +13,7 @@ import useStyles from "../styles.module.css";
 import DetCliente from "./DetCliente";
 
 export default function FilaCuatro(props) {
-	const { state, setState } = useContext(PresupPantContext);
+	const { state, setState } = useContext(PresupPant);
 	const [ppreview, setPPreview] = useState({ ppreview: false });
 	const handleChange = (event) => {
 		const id = event.target.id;

@@ -4,7 +4,7 @@ import request from "superagent";
 
 export const OTLeeEncPresup = (props) => {
 	return new Promise((resolve) => {
-		const url = IpServidor + "/presupencableenro/?idClienteP=" + props;
+		const url = IpServidor + "/presupencableenro/?idPresupP=" + props;
 		request
 			.get(url)
 			.set("Content-Type", "application/json")

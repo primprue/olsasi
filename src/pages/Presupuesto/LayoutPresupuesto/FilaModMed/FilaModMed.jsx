@@ -10,11 +10,11 @@ import styles from "../styles.module.css";
 // Context
 
 import { useContext } from "react";
-import { PresupPantContext } from "../../PresupPant";
+import PresupPant from "../../../../context/PresupPant";
 
 export default function FilaModMed(props) {
 	const [selectedValue, setSelectedValue] = React.useState("cs");
-	const { state, setState } = useContext(PresupPantContext);
+	const { state, setState } = useContext(PresupPant);
 	const [ojalbronce, setOjalBronce] = React.useState("hz");
 	const [lonanuesafu, setLonaNuesAfu] = React.useState("LN");
 

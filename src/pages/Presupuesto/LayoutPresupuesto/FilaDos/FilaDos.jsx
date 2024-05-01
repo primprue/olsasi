@@ -11,7 +11,7 @@ import { red } from "@mui/material/colors";
 import { GeneraDCalculo } from "./GeneraDCalculo";
 // Context
 import { useContext } from "react";
-import { PresupPantContext } from "../../PresupPant";
+import PresupPant from "../../../../context/PresupPant";
 
 // import TablaPresup from "../TablaPresup/TablaPresup";
 // import FilaConf from "../FilaConf/FilaConf";
@@ -48,8 +48,8 @@ import useAgregar from "./useAgregar";
 export default function FilaDos() {
 	// Esto es para poder consumir los datos del CONTEXTAPI
 
-	const { state, setState } = useContext(PresupPantContext);
-	const { datosrenglon, setDatosRenglon } = useContext(PresupPantContext);
+	const { state, setState } = useContext(PresupPant);
+	const { datosrenglon, setDatosRenglon } = useContext(PresupPant);
 
 	const [otramoneda, setOtraMoneda] = useState(false);
 	const [eligemoneda, setEligeMoneda] = useState(false);

@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { TextField } from "@mui/material";
 import { useContext } from "react";
-import { PresupPantContext } from "../../PresupPant";
+import PresupPant from "../../../../context/PresupPant";
 
 import { clientesleerdescmayigual } from "../../../Tablas/Clientes/ClientesLeerDesc";
 import useStyles from "../styles.module.css";
 
 export default function DetCliente() {
-	const { state, setState } = useContext(PresupPantContext);
+	const { state, setState } = useContext(PresupPant);
 	const handleChange = (event) => {
 		const id = event.target.id;
 		setState({ ...state, [id]: event.target.value });
