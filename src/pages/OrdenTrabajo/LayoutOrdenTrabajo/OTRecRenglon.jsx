@@ -5,7 +5,7 @@ import OrdTrabajo from "../../../context/OrdTrabajo.jsx";
 import { OTLeeEncPresup } from "./OTLeeEncPresup.jsx";
 import { Box, Button, Paper, TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import DataTable from "./OTDataGrid.jsx";
+import OTDataGrid from "./OTDataGrid.jsx";
 import { ClientesLeer } from "../../Tablas/Clientes/ClientesLeer.jsx";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -63,6 +63,7 @@ export default function OTRecRenglon() {
 					<Item>Total: {otdatos.datosencab[0][0].PresupEncabTotal}</Item>
 					<Item>Explicacion: {otdatos.datosencab[0][0].PresupEncabExplic}</Item>
 				</Box>
+				{console.log("(otdatos.datosencab[1][0]  ", otdatos.datosencab[1][0])}
 				{(otdatos.datosencab[1][0].idClientes && (
 					// ((otdatos.datosencab[1][0].idClientes && (
 
@@ -166,7 +167,7 @@ export default function OTRecRenglon() {
 					</Box>
 				)}
 				{/* <TableContainer component={Paper}> */}
-				<DataTable data={otdatos.renglonespresup} />
+				<OTDataGrid data={otdatos.renglonespresup} />
 			</div>
 		);
 	}

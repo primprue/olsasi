@@ -5,7 +5,7 @@ import request from "superagent";
 
 export function clientesleercod(props) {
 	var idcliente = props;
-	return new Promise(function (resolve) {
+	return new Promise((resolve) => {
 		setTimeout(() => {
 			const url = IpServidor + "/clientesleercod/?id=" + idcliente;
 			request
@@ -13,6 +13,7 @@ export function clientesleercod(props) {
 				.set("Content-Type", "application/json")
 				.then((res) => {
 					const clientes = JSON.parse(res.text);
+					console.log("clientes  ", clientes);
 					resolve(clientes);
 				})
 				.catch((err) => MuestraMensaje(err));

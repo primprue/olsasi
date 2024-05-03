@@ -19,7 +19,6 @@ var router = express();
 
 router.get('/', async function (req, res) {
 
-    indice = req.query.id;
     var q = ['SELECT idClientes, ClientesDesc FROM BasesGenerales.Clientes order by ClientesDesc'].join(' ')
     console.log('q en clientes leer desc  ', q)
     conexion.query(q,

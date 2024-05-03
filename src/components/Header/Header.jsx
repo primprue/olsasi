@@ -77,13 +77,13 @@ function Header() {
 	return (
 		<div>
 			<Toolbar className={PropBarra.barraherr}>
-				<Button
+				{/* <Button
 					className={PropBarra.botonmenu1}
 					component={Link}
 					to="/"
 					onClick={handleClose}
 					startIcon={<CabinTwoToneIcon />}
-				></Button>
+				></Button> */}
 
 				<Button
 					className={PropBarra.botonmenu}
@@ -94,7 +94,7 @@ function Header() {
 					onClick={handleClick}
 					startIcon={<RequestQuoteTwoToneIcon />}
 				>
-					Presup-Lista-OT
+					Presup Lista OT
 				</Button>
 				<Menu
 					id="basic-menu"

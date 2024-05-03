@@ -4,7 +4,7 @@ import { llenarcolumns } from "./columns";
 import FilaAbanico from "../../Presupuesto/LayoutPresupuesto/FilaAbanico/FilaAbanico";
 import OTFilaGral from "../OTFilas/OTFilaGral/OTFilaGral";
 
-export default function DataTable({ data }) {
+export default function OTDataGrid({ data }) {
 	// const { otdatos, setOTdatos } = useContext(OrdTrabajo);
 	const [columns, setColumns] = useState([]);
 	const [rows, setRows] = useState([]);
@@ -32,38 +32,33 @@ export default function DataTable({ data }) {
 		initialFetch();
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-	function handleColumnHeaderClick(event) {
-		console.log("Clic en el título de la columna:", event.field);
-		// Aquí puedes ejecutar la lógica que desees cuando se hace clic en el título de la columna
-	}
 	async function handleCellClick(event) {
 		var datorenglon = event.row;
 		const paramObjeto = JSON.parse(datorenglon.PresupRenglonParamInt);
 		setPresuptipo(paramObjeto.tipopresup);
 		setDatospot(paramObjeto);
-		setOpen(true);
+		// setOpen(true);
 	}
 
-	const handleClose = () => {
-		setOpen(false);
-		// initialFetch();
-	};
+	// const handleClose = () => {
+	// 	setOpen(false);
+	// 	// initialFetch();
+	// };
 
 	return (
 		<div style={{ height: 400, width: "100%" }}>
+			{datospot !== undefined && <OTFilaGral datospot={datospot}></OTFilaGral>}
+			{presuptipo === "PILETA ENROLLABLE" && <FilaAbanico></FilaAbanico>}
+			{presuptipo === "ABOLINADA" && <FilaAbanico></FilaAbanico>}
 			<DataGrid
+				columnHeaderHeight={35}
 				key={gridKey}
 				rows={rows}
 				columns={columns}
 				onCellClick={handleCellClick}
-				onColumnHeaderClick={handleColumnHeaderClick}
 				pageSize={5}
 				rowsPerPageOptions={[5]}
 			/>
-			<OTFilaGral open={open} handleClose={handleClose} datospot={datospot} />
-			{datospot !== undefined && <OTFilaGral datospot={datospot}></OTFilaGral>}
-			{presuptipo === "PILETA ENROLLABLE" && <FilaAbanico></FilaAbanico>}
-			{presuptipo === "ABOLINADA" && <FilaAbanico></FilaAbanico>}
 		</div>
 	);
 }
