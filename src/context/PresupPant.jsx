@@ -8,7 +8,7 @@ export function PresupPant({ children }) {
 	const [state, setState] = useState(initial_state);
 	const [datosrenglon, setDatosRenglon] = useState([]);
 	return (
-		<div>
+		<>
 			<Grid container rowSpacing={-15} spacing={2} alignItems="center">
 				<PresupPantContext.Provider
 					value={{
@@ -23,7 +23,7 @@ export function PresupPant({ children }) {
 					<FilaDos /> */}
 				</PresupPantContext.Provider>
 			</Grid>
-		</div>
+		</>
 	);
 }
 export default PresupPantContext;

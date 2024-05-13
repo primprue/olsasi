@@ -4,9 +4,11 @@ const OrdTrabajo = createContext();
 export function OrdenTrabajo({ children }) {
 	const [otdatos, setOTdatos] = useState("");
 	return (
-		<OrdTrabajo.Provider value={{ otdatos, setOTdatos }}>
-			{children}
-		</OrdTrabajo.Provider>
+		<>
+			<OrdTrabajo.Provider value={{ otdatos, setOTdatos }}>
+				{children}
+			</OrdTrabajo.Provider>
+		</>
 	);
 }
 export default OrdTrabajo;

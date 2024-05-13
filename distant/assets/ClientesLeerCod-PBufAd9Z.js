@@ -1,0 +1,1 @@
+import{r as c,M as i,I as a}from"./index-r_yxv9AL.js";function p(s){var n=s;return new Promise(o=>{setTimeout(()=>{const r=a+"/clientesleercod/?id="+n;c.get(r).set("Content-Type","application/json").then(e=>{const t=JSON.parse(e.text);console.log("clientes  ",t),o(t)}).catch(e=>i(e))})},500)}export{p as c};

@@ -1,7 +1,7 @@
 // import { ClientesLeerPresup } from "../../../Tablas/Clientes/ClientesLeerPresup";
 import estilotabla from "../../../../../Styles/Tabla.module.css";
 import { styled } from "@mui/system";
-const MultilineCell = styled("div")`
+const MultilineCell = styled("span")`
 	white-space: normal;
 	line-height: 1.2;
 	max-height: 3.6em; /* Puedes ajustar esta altura según tu necesidad */
@@ -73,10 +73,10 @@ function columnsFill() {
 				pattern: /^[0-9]{0,8}.[0-9]{0,2}$/,
 				align: "right",
 				renderCell: (params) => (
-					<div style={{ textAlign: "right" }}>
+					<span style={{ textAlign: "right" }}>
 						{params.value && `$ ${params.value}`}{" "}
 						{/* Agrega el signo monetario */}
-					</div>
+					</span>
 				),
 				editable: "never",
 				headerClassName: estilotabla.encabcolumnsmt,
@@ -94,10 +94,10 @@ function columnsFill() {
 				pattern: /^[0-9]{0,8}.[0-9]{0,2}$/,
 				align: "right",
 				renderCell: (params) => (
-					<div style={{ textAlign: "right" }}>
+					<span style={{ textAlign: "right" }}>
 						{params.value && `$ ${params.value}`}{" "}
 						{/* Agrega el signo monetario */}
-					</div>
+					</span>
 				),
 				headerClassName: estilotabla.encabcolumnsmt,
 			},

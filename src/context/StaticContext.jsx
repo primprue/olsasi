@@ -5,9 +5,11 @@ export function StaticContexto({ children }) {
 	const [valor, setValor] = useState("");
 
 	return (
-		<StaticContext.Provider value={{ valor, setValor }}>
-			{children}
-		</StaticContext.Provider>
+		<>
+			<StaticContext.Provider value={{ valor, setValor }}>
+				{children}
+			</StaticContext.Provider>
+		</>
 	);
 }
 

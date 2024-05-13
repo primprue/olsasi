@@ -53,10 +53,10 @@ function columnsFill() {
 				pattern: /^[0-9]{0,6}.[0-9]{0,2}$/,
 				align: "right",
 				renderCell: (params) => (
-					<div style={{ textAlign: "right" }}>
+					<span style={{ textAlign: "right" }}>
 						{params.value && `$ ${params.value}`}{" "}
 						{/* Agrega el signo monetario */}
-					</div>
+					</span>
 				),
 				headerClassName: estilotabla.encabcolumns,
 			},

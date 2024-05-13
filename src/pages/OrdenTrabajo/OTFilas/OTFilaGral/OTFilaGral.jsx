@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { StkItemsLeeAbrRub } from "../../../Tablas/StkItems/StkItemsLeeAbrRub";
+import React, { useState } from "react";
 import { useContext } from "react";
 import OrdTrabajo from "../../../../context/OrdTrabajo.jsx";
-import { Button, Dialog, Grid, TextField } from "@mui/material";
+import { Button, Dialog, Grid, Paper, TextField } from "@mui/material";
 import { ClientesLeer } from "../../../Tablas/Clientes/ClientesLeer.jsx";
 import { clientesleercod } from "../../../Tablas/Clientes/ClientesLeerCod.jsx";
 export default function OTFilaGral(props) {
@@ -11,34 +10,55 @@ export default function OTFilaGral(props) {
 	const [items, setItems] = useState([]);
 	const { datospot } = props;
 	//open, handleClose,
-	console.log("datospot  ", datospot);
-	let idCliente, idItems;
-	async function stkleeitemsrubro(cuallee) {
-		const result = await StkItemsLeeAbrRub(cuallee);
-		setItems(result);
+	let idCliente;
+
+	/*StkRubroAbr
+: 
+"ST840"
+ancho
+: 
+"5"
+cantidad
+: 
+1
+cotdivisa
+: 
+0
+detallep
+: 
+""
+detaller
+: 
+""
+ivasn
+: 
+"CIVA"
+largo
+: 
+"8"
+minmay
+: 
+"mn"
+presupojalesc
+: 
+20
+signomonet
+: 
+"$"
+tipoojale
+: 
+"hz"
+tipopresup
+: 
+"ABOLINADA" */
+	let colorfondo = "";
+	if (datospot.minmay === "my") {
+		colorfondo = "#a6d4ff8d";
+	} else {
+		if (datospot.minmay === "mn" && datospot.tipopresup !== "CONFECCIONADA") {
+			colorfondo = "#ffffa6ca";
+		}
 	}
-
-	useEffect(() => {
-		stkleeitemsrubro(datospot.StkRubroAbr);
-	}, [datospot]); // eslint-disable-line react-hooks/exhaustive-deps
-
-	const textdataI = [
-		{
-			id: "idItems",
-			label: "Color",
-			value: idItems,
-			mapeo: (
-				<>
-					<option />
-					{items.map((option) => (
-						<option key={option.idStkItems} value={option.idStkItems}>
-							{option.StkItemsDesc}
-						</option>
-					))}
-				</>
-			),
-		},
-	];
 
 	async function buscaclientes() {
 		const datosclientes = await ClientesLeer();
@@ -67,59 +87,52 @@ export default function OTFilaGral(props) {
 	const handleChange = (event) => {
 		const id = event.target.id;
 
-		console.log(" event.target.value ", event.target.value);
-		console.log(" event.target.id ", event.target.id);
+		const indice = event.target.value - 1;
+		console.log("Cantidad  ", items[indice].StkItemsCantDisp);
+		console.log("datospot.anchor ", datospot.ancho);
+		console.log("datospot.largo ", datospot.largo);
 	};
 	async function handleChange1(event) {
-		const id = event.target.id;
 		const datosnuevocliente = await clientesleercod(event.target.value);
-		console.log("datosnuevocliente  ", datosnuevocliente);
-		setOTdatos(...otdatos, datosencab[1][0], datosnuevocliente);
-		console.log(" event.target.value ", event.target.value);
-		console.log(" event.target.id ", event.target.id);
+		otdatos.datosencab[1][0] = datosnuevocliente[0];
+		if (otdatos.datosencab[1][0]) {
+			setOTdatos({ ...otdatos, datosnuevocliente });
+		} else {
+			if (otdatos.datosencab[0]) {
+				setOTdatos({ ...otdatos, datosclientes: datosnuevocliente });
+			}
+		}
 	}
 	return (
 		<div>
 			{/* <Dialog open={open} onClose={handleClose}> */}
-			<Grid item xs={1}>
-				<Button onClick={buscaclientes}>Cambia Cliente</Button>
-				{clientesleidos.length > 0 &&
-					textdata.map((data) => (
-						<TextField
-							key={data.id}
-							id={data.id}
-							size="small"
-							inputProps={{ maxLength: 3 }}
-							select
-							label={data.label}
-							value={data.value}
-							onChange={handleChange1}
-							SelectProps={{ native: true }}
-							variant="outlined"
-							margin="dense"
-						>
-							{data.mapeo}
-						</TextField>
-					))}
-			</Grid>
-			<Grid item xs={1}>
-				{textdataI.map((data) => (
-					<TextField
-						key={data.id}
-						id={data.id}
-						size="small"
-						inputProps={{ maxLength: 3 }}
-						select
-						label={data.label}
-						value={data.value}
-						onChange={handleChange}
-						SelectProps={{ native: true }}
-						variant="outlined"
-						margin="dense"
-					>
-						{data.mapeo}
-					</TextField>
-				))}
+			<Grid container style={{ backgroundColor: colorfondo }}>
+				{/* <Grid item xs={1}>
+					<TextField name="MayMin" value={datospot.minmay}></TextField>
+				</Grid> */}
+				{/* si se quiere cambiar el cliente */}
+				<Grid item xs={1}>
+					<Button onClick={buscaclientes}>Cambia Cliente</Button>
+					{clientesleidos.length > 0 &&
+						textdata.map((data) => (
+							<TextField
+								key={data.id}
+								id={data.id}
+								size="small"
+								inputProps={{ maxLength: 3 }}
+								select
+								label={data.label}
+								value={data.value}
+								onChange={handleChange1}
+								SelectProps={{ native: true }}
+								variant="outlined"
+								margin="dense"
+							>
+								{data.mapeo}
+							</TextField>
+						))}
+				</Grid>
+
 				{/* </Dialog> */}
 			</Grid>
 		</div>

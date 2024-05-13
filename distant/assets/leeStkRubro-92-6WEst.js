@@ -1,0 +1,1 @@
+import{r as o,M as n,I as a}from"./index-r_yxv9AL.js";function c(){return new Promise(t=>{setTimeout(()=>{const r=a+"/stkrubroleeselec";o.get(r).set("Content-Type","application/json").then(e=>{const s=JSON.parse(e.text);t(s)}).catch(e=>{n(e)})},500)})}export{c as l};

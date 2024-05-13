@@ -1,0 +1,29 @@
+  .root {
+    flex: auto;
+  }
+
+  .paper {
+    padding: spacing(2);
+    align-items: center;
+    color: aliceblue;
+  }
+
+  .text {
+    color: #000;
+  }
+
+
+  .textField {
+    border-color: red;
+    color: crimson
+  }
+
+
+
+  .lightcoral {
+    background-color: rgba(252, 0, 13, 0.822);
+  }
+
+  .lightgreen {
+    background-color: rgba(9, 248, 9, 0.308);
+  }
