@@ -82,7 +82,7 @@ export function TablaMuestraRenglon(props) {
 		);
 	}
 	return (
-		<div>
+		<>
 			<Dialog
 				fullWidth={true}
 				maxWidth={"xl"}
@@ -127,6 +127,6 @@ export function TablaMuestraRenglon(props) {
 					)}
 				</DialogActions>
 			</Dialog>
-		</div>
+		</>
 	);
 }

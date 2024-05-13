@@ -28,7 +28,9 @@ export default function OTRecRenglon() {
 	}
 
 	useEffect(() => {
-		datosencab();
+		if (otdatos.renglonespresup !== undefined) {
+			datosencab();
+		}
 	}, [otdatos.renglonespresup]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const handleChange = (event) => {
@@ -43,6 +45,7 @@ export default function OTRecRenglon() {
 					direction="row"
 					useFlexGap
 					flexWrap="wrap"></Stack> */}
+				{console.log("otdatos  ", otdatos)}
 				<Box
 					height={50}
 					width={1600}
@@ -63,10 +66,7 @@ export default function OTRecRenglon() {
 					<Item>Total: {otdatos.datosencab[0][0].PresupEncabTotal}</Item>
 					<Item>Explicacion: {otdatos.datosencab[0][0].PresupEncabExplic}</Item>
 				</Box>
-				{console.log("(otdatos.datosencab[1][0]  ", otdatos.datosencab[1][0])}
 				{(otdatos.datosencab[1][0].idClientes && (
-					// ((otdatos.datosencab[1][0].idClientes && (
-
 					<Box
 						height={50}
 						width={1600}
@@ -85,72 +85,87 @@ export default function OTRecRenglon() {
 							value={otdatos.datosencab[1][0].idClientes}
 							// onChange={handleChange}
 						/>
-						<TextField
-							size="small"
-							variant="outlined"
-							id="datosencab[1][0].ClientesDesc"
-							fullWidth
-							label="Cliente"
-							value={otdatos.datosencab[1][0].ClientesDesc}
-							// onChange={handleChange}
-						/>
-
-						<TextField
-							size="small"
-							id="otdatos.OTDomicilio"
-							label="Domicilio"
-							fullWidth
-							value={otdatos.datosencab[1][0].ClientesDomicilio}
-							// onChange={handleChange}
-						/>
-						<TextField
-							size="small"
-							id="otdatos.OTCodPos"
-							label="CodPos"
-							fullWidth
-							value={otdatos.datosencab[1][0].ClientesCodPos}
-							// onChange={handleChange}
-						/>
-						<TextField
-							size="small"
-							id="otdatos.OTLocalidad"
-							label="Localidad"
-							fullWidth
-							value={otdatos.datosencab[1][0].ClientesLoc}
-							// onChange={handleChange}
-						/>
-						<TextField
-							size="small"
-							id="otdatos.OTPcia"
-							label="Pcia"
-							fullWidth
-							value={otdatos.datosencab[1][0].ClientesPcia}
-							// onChange={handleChange}
-						/>
-						<TextField
-							size="small"
-							id="otdatos.OTTel"
-							label="Tel"
-							fullWidth
-							value={otdatos.datosencab[1][0].ClientesTel}
-							// onChange={handleChange}
-						/>
-						<TextField
-							size="small"
-							id="otdatos.OTMail"
-							label="Mail"
-							fullWidth
-							value={otdatos.datosencab[1][0].ClientesMail}
-							// onChange={handleChange}
-						/>
-						<TextField
-							size="small"
-							id="otdatos.OTCUIT"
-							label="CUIT"
-							fullWidth
-							value={otdatos.datosencab[1][0].ClientesCUIT}
-							// onChange={handleChange}
-						/>
+						{(otdatos.datosencab[1][0].ClientesDesc && (
+							<TextField
+								size="small"
+								variant="outlined"
+								id="datosencab[1][0].ClientesDesc"
+								fullWidth
+								label="Cliente"
+								value={otdatos.datosencab[1][0].ClientesDesc}
+								// onChange={handleChange}
+							/>
+						)) || <></>}
+						{(otdatos.datosencab[1][0].ClientesDomicilio && (
+							<TextField
+								size="small"
+								id="otdatos.OTDomicilio"
+								label="Domicilio"
+								fullWidth
+								value={otdatos.datosencab[1][0].ClientesDomicilio}
+								// onChange={handleChange}
+							/>
+						)) || <></>}
+						{(otdatos.datosencab[1][0].ClientesCodPos && (
+							<TextField
+								size="small"
+								id="otdatos.OTCodPos"
+								label="CodPos"
+								fullWidth
+								value={otdatos.datosencab[1][0].ClientesCodPos}
+								// onChange={handleChange}
+							/>
+						)) || <></>}
+						{(otdatos.datosencab[1][0].ClientesLoc && (
+							<TextField
+								size="small"
+								id="otdatos.OTLocalidad"
+								label="Localidad"
+								fullWidth
+								value={otdatos.datosencab[1][0].ClientesLoc}
+								// onChange={handleChange}
+							/>
+						)) || <></>}
+						{(otdatos.datosencab[1][0].ClientesPcia && (
+							<TextField
+								size="small"
+								id="otdatos.OTPcia"
+								label="Pcia"
+								fullWidth
+								value={otdatos.datosencab[1][0].ClientesPcia}
+								// onChange={handleChange}
+							/>
+						)) || <></>}
+						{(otdatos.datosencab[1][0].ClientesTel && (
+							<TextField
+								size="small"
+								id="otdatos.OTTel"
+								label="Tel"
+								fullWidth
+								value={otdatos.datosencab[1][0].ClientesTel}
+								// onChange={handleChange}
+							/>
+						)) || <></>}
+						{(otdatos.datosencab[1][0].ClientesMail && (
+							<TextField
+								size="small"
+								id="otdatos.OTMail"
+								label="Mail"
+								fullWidth
+								value={otdatos.datosencab[1][0].ClientesMail}
+								// onChange={handleChange}
+							/>
+						)) || <></>}
+						{(otdatos.datosencab[1][0].ClientesCUIT && (
+							<TextField
+								size="small"
+								id="otdatos.OTCUIT"
+								label="CUIT"
+								fullWidth
+								value={otdatos.datosencab[1][0].ClientesCUIT}
+								// onChange={handleChange}
+							/>
+						)) || <></>}
 					</Box>
 				)) || (
 					<Box
@@ -163,10 +178,9 @@ export default function OTRecRenglon() {
 						p={2}
 						sx={{ border: "2px solid grey" }}
 					>
-						<Item>Cliente: {otdatos.datosencab[0]}</Item>{" "}
+						<Item>Cliente: {otdatos.datosencab[0]}</Item>
 					</Box>
 				)}
-				{/* <TableContainer component={Paper}> */}
 				<OTDataGrid data={otdatos.renglonespresup} />
 			</div>
 		);

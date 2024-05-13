@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PantallaIngreso from "./LayoutMovStock/Ingreso/PantallaIngreso.js";
+import PantallaIngreso from "./LayoutMovStock/Ingreso/PantallaIngreso.jsx";
 // import SalidaDisponible from "./LayoutMovStock/SalidaDisp/SalidaDisponible";
 
 import Grid from "@mui/material/Grid";

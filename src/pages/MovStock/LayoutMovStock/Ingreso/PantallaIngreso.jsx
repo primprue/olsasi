@@ -1,22 +1,17 @@
 import React, { useEffect, useState, useRef } from "react";
 import Estilos from "./Ingreso.module.css";
-import MaterialTable from "material-table";
-import { tableIcons } from "../../../../../lib/material-table/tableIcons";
-import { localization } from "../../../../../lib/material-table/localization";
-
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
+import { Card, CardContent, Button, Grid, TextField } from "@mui/material";
 
 import { columnasdi } from "./columnasdi";
 import { stkrubrolee } from "./LeeRubro";
 import { stkgrupoleer } from "./LeeGrupos";
 import { datosingreso } from "./DatosIngreso";
 import { sumaingreso } from "./SumaIngreso";
-import { Button, Grid, TextField } from "@material-ui/core";
 
 // Context
 import { useContext } from "react";
 import { MovStockPantContext } from "../../MovStockPant";
+import { DataGrid } from "@mui/x-data-grid";
 
 export default function PantallaIngreso(props) {
 	const { state, setState } = useContext(MovStockPantContext);
@@ -154,7 +149,19 @@ export default function PantallaIngreso(props) {
 					</TextField>
 				))}
 
-				<MaterialTable
+				<DataGrid
+					rows={data}
+					columns={columns}
+					localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+					onRowClick={(evt, selectedRow) => {
+						setSelectedRow(selectedRow.tableData.id);
+						miraitem(selectedRow.tableData.id);
+						setTimeout(() => {
+							textInput.current.focus();
+						}, 100);
+					}}
+				/>
+				{/* <MaterialTable
 					id="tablaDatos"
 					title="Items de Rubro"
 					columns={columns}
@@ -169,13 +176,7 @@ export default function PantallaIngreso(props) {
 							textInput.current.focus();
 						}, 100);
 					}}
-
-					// options={{
-					//     rowStyle: rowData => ({
-					//         backgroundColor: (selectedRow === rowData.tableData.id) ? '#EEE' : '#FFF'
-					//     }),
-					// }}
-				/>
+				/> */}
 			</div>
 			<div className={Estilos.contenedor2}>
 				{/* <div> */}

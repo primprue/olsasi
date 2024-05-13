@@ -27,7 +27,7 @@ const ModificaPrecios = lazy(() =>
 const PresupMuestra = lazy(() =>
 	import("./pages/Presupuesto/LayoutPresupuesto/PresupMuestra")
 );
-const MovStockPant = lazy(() => import("./pages/MovStock/MovStockPant"));
+const MovStockPant = lazy(() => import("./pages/MovStock/MovStockPant.jsx"));
 import { StaticContexto } from "./context/StaticContext";
 import { DatosTablas } from "./context/TablasContext";
 import { OrdenTrabajo } from "./context/OrdTrabajo.jsx";
@@ -51,14 +51,7 @@ export default function App() {
 										</Suspense>
 									}
 								/>
-								<Route
-									path="/Home"
-									element={
-										<Suspense fallback={<>...</>}>
-											<Home />{" "}
-										</Suspense>
-									}
-								/>
+
 								<Route
 									path="/PresupDetPie"
 									element={

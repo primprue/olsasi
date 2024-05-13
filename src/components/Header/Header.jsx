@@ -121,14 +121,14 @@ function Header() {
 					>
 						Lista de Precios
 					</MenuItem>
-					<MenuItem
+					{/* <MenuItem
 						className={PropBarra.botonitem}
 						component={Link}
 						to="/OTrabajo"
 						onClick={handleClose}
 					>
 						Orden de Trabajo
-					</MenuItem>
+					</MenuItem> */}
 					<MenuItem
 						className={PropBarra.botonitem}
 						component={Link}

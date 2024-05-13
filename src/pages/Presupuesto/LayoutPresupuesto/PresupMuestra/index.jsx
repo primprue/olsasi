@@ -27,7 +27,6 @@ import { TablaMuestraRenglon } from "./TablaMuestraRenglon/index.jsx";
 import { PresupPreview } from "../PresupPreview";
 import { PresupNombre } from "./PresupNombre.jsx";
 import { Route, useNavigate } from "react-router-dom";
-// import { OTContext } from "../../../OrdenTrabajo/OTrabajo.jsx";
 export default function PresupMuestra() {
 	const { valor, setValor } = useContext(StaticContexto);
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
@@ -88,6 +87,10 @@ export default function PresupMuestra() {
 	const handleClose = () => {
 		dataFetch();
 		setOpen(!open);
+		console.log(
+			"PresupMuestra otdatos.renglonespresup ",
+			otdatos.renglonespresup
+		);
 		if (otdatos.renglonespresup) {
 			handleClose1();
 		}
@@ -108,14 +111,6 @@ export default function PresupMuestra() {
 	function CustomToolbar() {
 		return (
 			<GridToolbarContainer className={estilotabla.tablasgenerales}>
-				{/* <div>
-					<Typography
-						className={estilotabla.titulartablas}
-						// variant="h4"
-					>
-						{formdatos.tablabase}
-					</Typography>
-				</div> */}
 				<GridToolbarColumnsButton className={estilotabla.coloropcioncol} />
 				<GridToolbarFilterButton className={estilotabla.coloropcioncol} />
 				<GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
@@ -147,13 +142,11 @@ export default function PresupMuestra() {
 
 	return (
 		<>
-			{/* <Dialog open={open} onClose={handleClose}> */}
 			{isOpen && (
 				<DataGrid
 					rows={rows}
 					columns={columns}
 					localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-					//  processRowUpdate={processRowUpdate}
 					onRowClick={handleRowSelect}
 					onProcessRowUpdateError={handleProcessRowUpdateError}
 					showCellVerticalBorder={true}
@@ -184,7 +177,6 @@ export default function PresupMuestra() {
 				open={ppreview.ppreview}
 				setOpen={setPPreview}
 			></PresupPreview>
-			{/* </Dialog> */}
 		</>
 	);
 }
