@@ -1,17 +1,19 @@
 .tfselect {
 	padding: 45px;
-	background-color: rgba(249, 245, 227, 0.514);
+	background-color: rgba(243, 242, 253, 0.432);
 	width: 400px;
 	/* variant:"outlined"; */
-	margin:"dense";
+	margin: "dense";
 }
+
 .tfmed {
 	padding: 45px;
 	background-color: rgba(249, 245, 227, 0.514);
 	width: 150px;
 	/* variant:"outlined"; */
-	margin:"dense";
+	margin: "dense";
 }
+
 .tfcurrency {
 	padding: 5px;
 	background-color: rgba(249, 245, 227, 0.514);
@@ -20,6 +22,6 @@
 	font-size: 18px;
 	color: #277909;
 	height: 30px;
-	
-	
+
+
 }

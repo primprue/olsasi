@@ -13,21 +13,6 @@ import { GeneraDCalculo } from "./GeneraDCalculo";
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
 
-// import TablaPresup from "../TablaPresup/TablaPresup";
-// import FilaConf from "../FilaConf/FilaConf";
-// import FilaEnrollables from "../FilaEnrollables/FilaEnrollables";
-// import FilaTanques from "../FilaTanques/FilaTanques";
-// import FilaPiletasEnr from "../FilaPiletas/FilaPiletasEnr";
-// import FilaToldosExt from "../FilaToldosExt/FilaToldosExt";
-// import FilaDetDesc from "./FilaDetDesc";
-// import FilaCargaDesc from "./FilaCargaDesc";
-// import FilaAbolinada from "../FilaAbolinada/FilaAbolinada";
-// import FilaComedero from "../FilaComedero/FilaComedero";
-// import FilaCambPanio from "../FilaCambPanio/FilaCambPanio";
-// import FilaModMed from "../FilaModMed/FilaModMed";
-// import FilaAbanico from "../FilaAbanico/FilaAbanico";
-// import FilaLateral from "../FilaLateral/FilaLateral";
-
 const TablaPresup = lazy(() => import("../TablaPresup/TablaPresup"));
 const FilaConf = lazy(() => import("../FilaConf/FilaConf"));
 const FilaEnrollables = lazy(() =>
@@ -45,6 +30,7 @@ const FilaModMed = lazy(() => import("../FilaModMed/FilaModMed"));
 const FilaAbanico = lazy(() => import("../FilaAbanico/FilaAbanico"));
 const FilaLateral = lazy(() => import("../FilaLateral/FilaLateral"));
 import useAgregar from "./useAgregar";
+
 export default function FilaDos() {
 	// Esto es para poder consumir los datos del CONTEXTAPI
 
@@ -94,7 +80,10 @@ export default function FilaDos() {
 	}
 
 	const handleChange = (event) => {
+		console.log("preusptipo  ", presuptipo);
 		const id = event.target.id;
+		console.log("id  ", id);
+		console.log("event.target.value  ", event.target.value);
 		setState({ ...state, [id]: event.target.value });
 
 		if (id === "idStkMonedas") {
@@ -147,6 +136,7 @@ export default function FilaDos() {
 		var PresupCantidadM = state.PresupCantidad;
 
 		var dcalculo = [];
+
 		var statepasante = state;
 		var dcalculo1 = await GeneraDCalculo(statepasante, presuptipo, cotidivisa);
 		dcalculo.push(dcalculo1);
@@ -212,6 +202,15 @@ export default function FilaDos() {
 	];
 	return (
 		<>
+			{/* <Grid
+				container
+				spacing={3}
+				alignItems="flex-end"
+				// direction="row"
+				// justify="center"
+				//padding={1}
+				xs={12}
+			> */}
 			{rubrosn === "S" &&
 				state.stkrubro.length > 0 &&
 				textdata.map((data) => (
@@ -327,25 +326,27 @@ export default function FilaDos() {
 					<></>
 				)}
 			</Grid>{" "}
-			{state.monedasleidas.length > 0 &&
-				textdatam.map((data) => (
-					<TextField
-						key={data.id}
-						id={data.id}
-						size="small"
-						inputProps={{ maxLength: 3 }}
-						select
-						label={data.label}
-						value={data.value}
-						onChange={handleChange}
-						SelectProps={{ native: true }}
-						variant="outlined"
-						margin="dense"
-					>
-						{data.mapeo}
-					</TextField>
-				))}
 			<Grid container item xs={6}>
+				{state.monedasleidas.length > 0 &&
+					textdatam.map((data) => (
+						<TextField
+							key={data.id}
+							id={data.id}
+							//fullWidth
+							size="small"
+							select
+							label={data.label}
+							margin="dense"
+							value={data.value}
+							onChange={handleChange}
+							SelectProps={{ native: true }}
+							variant="outlined"
+							//className={classes.textField}
+						>
+							{data.mapeo}
+						</TextField>
+					))}
+
 				<IconButton onClick={() => agregar()} color="primary">
 					<ArchiveIcon
 						style={{ color: red[500] }}
@@ -357,6 +358,7 @@ export default function FilaDos() {
 			<Suspense fallback={<>...</>}>
 				<TablaPresup data={datosrenglon} />
 			</Suspense>
+			{/* </Grid> */}
 		</>
 	);
 }

@@ -27,6 +27,7 @@ import { TablaMuestraRenglon } from "./TablaMuestraRenglon/index.jsx";
 import { PresupPreview } from "../PresupPreview";
 import { PresupNombre } from "./PresupNombre.jsx";
 import { Route, useNavigate } from "react-router-dom";
+import { Box } from "@mui/material";
 export default function PresupMuestra() {
 	const { valor, setValor } = useContext(StaticContexto);
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
@@ -87,10 +88,6 @@ export default function PresupMuestra() {
 	const handleClose = () => {
 		dataFetch();
 		setOpen(!open);
-		console.log(
-			"PresupMuestra otdatos.renglonespresup ",
-			otdatos.renglonespresup
-		);
 		if (otdatos.renglonespresup) {
 			handleClose1();
 		}
@@ -110,73 +107,87 @@ export default function PresupMuestra() {
 
 	function CustomToolbar() {
 		return (
-			<GridToolbarContainer className={estilotabla.tablasgenerales}>
-				<GridToolbarColumnsButton className={estilotabla.coloropcioncol} />
-				<GridToolbarFilterButton className={estilotabla.coloropcioncol} />
-				<GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
-				<GridToolbarExport className={estilotabla.coloropcioncol} />
-				<CompressSharpIcon
-					onClick={() => handleMuestraRenglon(rowsel.id)}
-					className={estilotabla.iconomodificar}
-					titleAccess="Ve datos Presupuesto"
-				/>
-				<PreviewTwoToneIcon
-					onClick={() => armanombre(rowsel)}
-					className={estilotabla.iconomodificar}
-					titleAccess="Preview Presupuesto"
-				/>
-				<LocalPrintshopRoundedIcon
-					onClick={() => setImprimirTF(true)}
-					className={estilotabla.iconoimpresora}
-					titleAccess="Imprimir"
-				/>
-				<DeleteSharpIcon
-					variant="contained"
-					titleAccess="Borrar"
-					className={estilotabla.iconoborrar}
-					onClick={() => handleDelete(rowsel)}
-				/>
-			</GridToolbarContainer>
+			<>
+				<GridToolbarContainer className={estilotabla.tablasgenerales}>
+					<GridToolbarColumnsButton className={estilotabla.coloropcioncol} />
+					<GridToolbarFilterButton className={estilotabla.coloropcioncol} />
+					<GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
+					<GridToolbarExport className={estilotabla.coloropcioncol} />
+					<CompressSharpIcon
+						onClick={() => handleMuestraRenglon(rowsel.id)}
+						className={estilotabla.iconomodificar}
+						titleAccess="Ve datos Presupuesto"
+					/>
+					<PreviewTwoToneIcon
+						onClick={() => armanombre(rowsel)}
+						className={estilotabla.iconomodificar}
+						titleAccess="Preview Presupuesto"
+					/>
+					<LocalPrintshopRoundedIcon
+						onClick={() => setImprimirTF(true)}
+						className={estilotabla.iconoimpresora}
+						titleAccess="Imprimir"
+					/>
+					<DeleteSharpIcon
+						variant="contained"
+						titleAccess="Borrar"
+						className={estilotabla.iconoborrar}
+						onClick={() => handleDelete(rowsel)}
+					/>
+				</GridToolbarContainer>
+			</>
 		);
 	}
 
 	return (
 		<>
-			{isOpen && (
-				<DataGrid
-					rows={rows}
-					columns={columns}
-					localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-					onRowClick={handleRowSelect}
-					onProcessRowUpdateError={handleProcessRowUpdateError}
-					showCellVerticalBorder={true}
-					columnHeaderHeight={35}
-					slots={{
-						toolbar: CustomToolbar,
-					}}
-					initialState={{
-						...rows.initialState,
-						pagination: {
-							...rows.initialState?.pagination,
-							paginationModel: {
-								pageSize: 25,
+			<Box
+				sx={{
+					width: "100%",
+					//height: "500px",
+					align: "center",
+					justifycontent: "center",
+					boxShadow: 5,
+					padding: 5,
+				}}
+			>
+				{isOpen && (
+					<DataGrid
+						autoHeight
+						rows={rows}
+						columns={columns}
+						localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+						onRowClick={handleRowSelect}
+						onProcessRowUpdateError={handleProcessRowUpdateError}
+						showCellVerticalBorder={true}
+						columnHeaderHeight={35}
+						slots={{
+							toolbar: CustomToolbar,
+						}}
+						initialState={{
+							...rows.initialState,
+							pagination: {
+								...rows.initialState?.pagination,
+								paginationModel: {
+									pageSize: 25,
+								},
 							},
-						},
-					}}
-				/>
-			)}
-			{rowsel !== undefined && (
-				<TablaMuestraRenglon
-					open={open}
-					handleClose={handleClose}
-					Presup={rowsel}
-					origen={origen}
-				/>
-			)}
-			<PresupPreview
-				open={ppreview.ppreview}
-				setOpen={setPPreview}
-			></PresupPreview>
+						}}
+					/>
+				)}
+				{rowsel !== undefined && (
+					<TablaMuestraRenglon
+						open={open}
+						handleClose={handleClose}
+						Presup={rowsel}
+						origen={origen}
+					/>
+				)}
+				<PresupPreview
+					open={ppreview.ppreview}
+					setOpen={setPPreview}
+				></PresupPreview>
+			</Box>
 		</>
 	);
 }

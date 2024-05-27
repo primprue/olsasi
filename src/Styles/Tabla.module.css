@@ -49,19 +49,26 @@
 }
 
 .tablapresupuesto {
-	position: relative;
-	padding-top: 10px;
-	padding-right: 10px;
-	padding-bottom: 10px;
-	padding-left: 20px;
-	background-color: rgba(243, 245, 242, 0.514);
+	position: right;
+	padding-top: 5px;
+	padding-right: 5px;
+	padding-bottom: 5px;
+	padding-left: 5px;
+	background-color: rgba(240, 254, 255, 0.144);
 	width: 1600px;
+	border-color: rgb(4, 41, 252);
+
 }
 
 .tablapresupuestoslot {
-	background-color: rgba(242, 244, 245, 0.514);
+	background-color: rgba(190, 200, 248, 0.178);
 	display: flex;
 	justify-content: flex-end;
+	/* padding-top: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 20px; */
+
 
 }
 
@@ -69,10 +76,10 @@
 
 .tablaanexo {
 	position: flex;
-	background-color: rgba(235, 240, 241, 0.3);
-	height: 350px;
+	background-color: rgba(239, 250, 253, 0.11);
+	height: 60%;
 	max-width: "xl";
-	padding: 25px;
+	padding: 15px;
 }
 
 

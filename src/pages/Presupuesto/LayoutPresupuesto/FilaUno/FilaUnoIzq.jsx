@@ -57,24 +57,22 @@ export default function FilaUnoIzq() {
 	];
 	return (
 		<>
-			<Grid item>
-				{textdata.map((data) => (
-					<TextField
-						id={data.id}
-						key={data.id}
-						size="small"
-						select
-						label={data.label}
-						margin="dense"
-						value={data.value}
-						onChange={handleChange}
-						SelectProps={{ native: true }}
-						variant="outlined"
-					>
-						{data.mapeo}
-					</TextField>
-				))}
-			</Grid>
+			{textdata.map((data) => (
+				<TextField
+					id={data.id}
+					key={data.id}
+					size="small"
+					select
+					label={data.label}
+					margin="dense"
+					value={data.value}
+					onChange={handleChange}
+					SelectProps={{ native: true }}
+					variant="outlined"
+				>
+					{data.mapeo}
+				</TextField>
+			))}
 		</>
 	);
 }

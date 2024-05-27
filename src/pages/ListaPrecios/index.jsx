@@ -34,6 +34,7 @@ export default function ListaPrecios() {
 	const [columns, setColumns] = useState([]);
 	async function columnsFetch() {
 		var col = await llenarcolumns();
+		console.log("col ListaPrecios ", col);
 		col.push(actionsColumn);
 		setColumns(col);
 	}
@@ -110,28 +111,14 @@ export default function ListaPrecios() {
 		<Box
 			sx={{
 				width: "100%",
-				height: "500px",
 				align: "center",
 				justifycontent: "center",
 				boxShadow: 5,
+				padding: 5,
 			}}
 		>
 			<DataGrid
 				autoHeight
-				sx={{
-					width: "100%",
-					"& .encabcolumns": {
-						backgroundColor: "rgba(235, 240, 241, 0.3)",
-						textJustify: "center",
-						fontSize: "15px",
-						fontWeight: "bold",
-						color: "rgba(15, 6, 145)",
-						borderRadius: 1,
-						boxShadow: 3,
-						bgcolor: "rgba(235, 240, 241, 0.3)",
-						height: 10,
-					},
-				}}
 				rows={rows}
 				columns={columns}
 				title="Lista de Precios"

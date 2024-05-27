@@ -77,14 +77,6 @@ function Header() {
 	return (
 		<div>
 			<Toolbar className={PropBarra.barraherr}>
-				{/* <Button
-					className={PropBarra.botonmenu1}
-					component={Link}
-					to="/"
-					onClick={handleClose}
-					startIcon={<CabinTwoToneIcon />}
-				></Button> */}
-
 				<Button
 					className={PropBarra.botonmenu}
 					id="basic-button"
