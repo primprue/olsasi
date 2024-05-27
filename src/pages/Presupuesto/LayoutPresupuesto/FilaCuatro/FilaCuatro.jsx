@@ -44,7 +44,7 @@ export default function FilaCuatro(props) {
 			const datoscliente = await clientesleercod(idClienteElegE);
 			nomClienteElegE = datoscliente[0].ClientesDesc;
 		}
-
+		console.log("props en FilaCuatro  ", props);
 		const nroPresupuesto1 = await PresupGrabar(
 			props,
 			ClienteMayMin,

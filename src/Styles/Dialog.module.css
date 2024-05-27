@@ -18,14 +18,17 @@
 	align-items: center;
 
 }
+
 .dialogoanexo {
 	position: flex;
-	background-color: rgb(241, 248, 248.0.5);
-	width: 600;
+	background-color: rgba(246, 246, 252, 0);
+	width: 70%;
+	height: 30%;
 	min-height: 100vh;
 	max-height: 100vh;
-	padding: 25px;
+	padding: 5px;
 }
+
 .h3 {
 	padding: auto;
 	background-color: rgba(187, 245, 247, 0.438);

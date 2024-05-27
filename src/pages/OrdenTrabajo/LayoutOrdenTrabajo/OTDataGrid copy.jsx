@@ -15,19 +15,17 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
 import SaveAsTwoToneIcon from "@mui/icons-material/SaveAsTwoTone";
-import FitbitIcon from "@mui/icons-material/Fitbit";
-
 import { deepOrange, red, blue, green, purple } from "@mui/material/colors";
 import { CurrencyTextField } from "../../../hooks/useCurrencyTextField";
 import estilotabla from "../../../Styles/Tabla.module.css";
 import EstTF from "../../../Styles/TextField.module.css";
-
 export default function OTDataGrid({ data }) {
 	const [columns, setColumns] = useState([]);
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
 	const [rows, setRows] = useState([]);
+
+	const [open, setOpen] = useState(false);
 	const [gridKey, setGridKey] = useState(0);
-	console.log("dataen OTDataGrid  ", data);
 	// Transforma el arreglo multidimensional en un arreglo plano
 	const [presuptipo, setPresuptipo] = useState("");
 	const [datospot, setDatospot] = useState("");
@@ -36,9 +34,6 @@ export default function OTDataGrid({ data }) {
 	const [rowsel, setRowSel] = useState();
 	async function columnsFetch() {
 		var col = await llenarcolumns(flattenedData);
-		console.log("col flattenedData ", col);
-		// col.push(actionsColumn);
-
 		setColumns(() => col);
 	}
 
@@ -54,21 +49,11 @@ export default function OTDataGrid({ data }) {
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	async function handleCellClick(event) {
-		console.log("estoy en handleCellClic  ", event);
-		// var datorenglon = event.row;
-		// const paramObjeto = JSON.parse(datorenglon.PresupRenglonParamInt);
-		// setPresuptipo(paramObjeto.tipopresup);
-		// setDatospot("");
-		// setDatospot(paramObjeto);
-		// setOpen(true);
-	}
-	async function fcionotrosdatos(event) {
-		console.log("estoy en fcionotrosdatos  ", event);
-		// var datorenglon = event.row;
-		// const paramObjeto = JSON.parse(datorenglon.PresupRenglonParamInt);
-		// setPresuptipo(paramObjeto.tipopresup);
-		// setDatospot("");
-		// setDatospot(paramObjeto);
+		var datorenglon = event.row;
+		const paramObjeto = JSON.parse(datorenglon.PresupRenglonParamInt);
+		setPresuptipo(paramObjeto.tipopresup);
+		setDatospot("");
+		setDatospot(paramObjeto);
 		// setOpen(true);
 	}
 	const handleChange = (event) => {
@@ -85,12 +70,11 @@ export default function OTDataGrid({ data }) {
 	};
 	const sumaimporte = () => {
 		let TotalPresupuesto = 0;
-
-		if (rown === undefined)
-			otdatos.renglonespresup.map((renglon) => {
-				TotalPresupuesto = renglon[0].PresupRenglonImpItem + TotalPresupuesto;
-			});
-		else TotalPresupuesto = rown.PresupRenglonImpItem + TotalPresupuesto;
+		otdatos.renglonespresup.map((renglon) => {
+			TotalPresupuesto = renglon[0].PresupRenglonImpItem + TotalPresupuesto;
+			console.log("renglon  ", renglon[0].PresupRenglonImpItem);
+			console.log("TotalPresupuesto  ", TotalPresupuesto);
+		});
 		setTotalpresup(TotalPresupuesto);
 		setOTdatos({ ...otdatos, TotalPresupuesto: TotalPresupuesto });
 	};
@@ -102,6 +86,9 @@ export default function OTDataGrid({ data }) {
 
 	const tomaseña = (selectedIndex, event) => {
 		setOTdatos({ ...otdatos, senia: event.target.value });
+		console.log("selectedIndex  ", selectedIndex);
+		console.log(" event.target.id;  ", event.target.id);
+		console.log("event.target.value  ", event.target.value);
 	};
 	function CustomToolbar({ onLoadData }) {
 		const [inputValue, setInputValue] = useState("");
@@ -126,6 +113,8 @@ export default function OTDataGrid({ data }) {
 					size="small"
 					label="Importe Seña"
 					value={inputValue}
+					//	onChange={(e) => setInputValue(e.target.value)}
+					// onChange={tomaseña}
 					onChange={(event) => tomaseña(event.target.selectedIndex, event)}
 					className={EstTF.tfcurrency}
 				></CurrencyTextField>
@@ -148,25 +137,8 @@ export default function OTDataGrid({ data }) {
 		);
 	}
 	const handleRowSelect = ({ row }) => {
+		console.log("viene aca  ", row);
 		setRowSel(row);
-	};
-
-	const actionsColumn = {
-		field: "actions",
-		// type: "actions",
-		headerName: "ODatos",
-		// width: 100,
-		// headerClassName: "encabcolumns",
-		renderCell: (params) => (
-			<Button
-				variant="text"
-				style={{ color: deepOrange[800] }}
-				placeholder="Otros Datos"
-				fontSize="large"
-				onClick={() => fcionotrosdatos(params)}
-				startIcon={<FitbitIcon />}
-			/>
-		),
 	};
 	const [rowv, setRowv] = useState();
 	const [rown, setRown] = useState();
@@ -189,22 +161,13 @@ export default function OTDataGrid({ data }) {
 	const mutateRow = useFakeMutation();
 	const processRowUpdate = React.useCallback(
 		async (newRow, oldRow) => {
-			newRow.PresupRenglonImpUnit =
-				(oldRow.PresupRenglonImpUnit /
-					oldRow.PresupRenglonLargo /
-					oldRow.PresupRenglonAncho) *
-				newRow.PresupRenglonLargo *
-				newRow.PresupRenglonAncho;
-			newRow.PresupRenglonImpItem =
-				newRow.PresupRenglonImpUnit * newRow.PresupRenglonCant;
 			setRown(newRow);
 			setRowv(oldRow);
-			setRown(newRow);
 			const response = await mutateRow(newRow);
-			// setSnackbar({
-			// 	children: "Modificado no confirmado",
-			// 	severity: "success",
-			// });
+			setSnackbar({
+				children: "Modificado no confirmado",
+				severity: "success",
+			});
 			return response;
 		},
 		[mutateRow]
@@ -220,11 +183,12 @@ export default function OTDataGrid({ data }) {
 				rows={rows}
 				columns={columns}
 				processRowUpdate={processRowUpdate}
-				// onCellClick={handleCellClick}
+				//onCellClick={handleRowSelect}
+				onCellClick={handleCellClick}
 				pageSize={5}
+				// onRowClick={handleCellClick}
+				// onRowClick={handleRowSelect}
 				rowsPerPageOptions={[5]}
-				getCellClassName={() => `super-app-theme--Open`}
-				getRowClassName={() => `super-app-theme--Open`}
 				slots={{
 					toolbar: CustomToolbar,
 				}}

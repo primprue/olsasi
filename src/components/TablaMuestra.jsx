@@ -63,7 +63,7 @@ import StaticContexto from "../../context/StaticContext.jsx";
 import TablasContexto from "../context/TablasContext.jsx";
 // import { formdata } from "./formdata.js";
 import SelecCampos from "../pages/Impresion/SelecCampos.jsx";
-import { IconButton, Tooltip } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 export default function TablaMuestra(props) {
 	const { rows1, columns1, formdatos } = props;
 	//const { formdatos, setFormdatos } = useContext(TablasContexto);
@@ -311,7 +311,15 @@ export default function TablaMuestra(props) {
 	}
 
 	return (
-		<>
+		<Box
+			sx={{
+				width: "100%",
+				align: "center",
+				justifycontent: "center",
+				boxShadow: 5,
+				padding: 5,
+			}}
+		>
 			<DataGrid
 				//
 				rows={rows}
@@ -366,7 +374,7 @@ export default function TablaMuestra(props) {
 					<Alert {...snackbar} variant="filled" onClose={handleCloseSnackbar} />
 				</Snackbar>
 			)}
-		</>
+		</Box>
 	);
 }
 

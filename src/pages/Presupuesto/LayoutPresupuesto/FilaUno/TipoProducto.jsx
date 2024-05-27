@@ -25,7 +25,7 @@ export default function TipoProducto() {
 				margin="dense"
 				color="primary"
 			>
-				<Grid item xs={6}>
+				<Grid item xs={4}>
 					<FormControlLabel
 						value="PE"
 						control={<Radio />}
@@ -34,7 +34,7 @@ export default function TipoProducto() {
 						margin="dense"
 					/>
 				</Grid>
-				<Grid item xs={6}>
+				<Grid item xs={4}>
 					<FormControlLabel
 						value="PAE"
 						control={<Radio />}

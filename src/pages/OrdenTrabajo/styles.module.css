@@ -27,3 +27,16 @@
   .lightgreen {
     background-color: rgba(9, 248, 9, 0.308);
   }
+
+
+  .select {
+    border-color: rgb(230, 239, 248);
+    color: rgb(12, 12, 12);
+    background-color: rgba(236, 247, 247, 0.425)
+  }
+
+  .boton {
+    border-color: black;
+    color: black;
+    background-color: coral;
+  }

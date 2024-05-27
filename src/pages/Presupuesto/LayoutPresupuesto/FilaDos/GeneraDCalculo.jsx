@@ -1,5 +1,5 @@
 export const GeneraDCalculo = (props, presuptipo, cotidivisa) => {
-	const datosobligatorios = {
+	let datosobligatorios = {
 		StkRubroAbr: props.StkRubroAbr,
 		minmay: props.PresupMnMy,
 		ivasn: props.PresupIVA,
@@ -12,8 +12,26 @@ export const GeneraDCalculo = (props, presuptipo, cotidivisa) => {
 		cotdivisa: cotidivisa,
 		signomonet: props.signomoneda,
 	};
-
+	if (presuptipo === "CARGA DESCRIPCION") {
+		datosobligatorios = {
+			StkRubroAbr: props.StkRubroAbr,
+			minmay: props.PresupMnMy,
+			ivasn: props.PresupIVA,
+			cantidad: props.PresupCantidad,
+			detallep: props.DetallePresup,
+			detaller: props.DetalleRenglon,
+			largo: 0,
+			importe: props.PresupLargo,
+			ancho: props.PresupAncho,
+			tipopresup: presuptipo,
+			cotdivisa: cotidivisa,
+			signomonet: props.signomoneda,
+		};
+	}
+	console.log("datosobligatorios GeneraDCalculo  ", datosobligatorios);
 	let objetoModificado = { ...datosobligatorios };
+
+	console.log(" despues datosobligatorios GeneraDCalculo  ", datosobligatorios);
 	if (presuptipo === "CONFECCIONADA") {
 		objetoModificado.tipoconf = props.PresupCsSs;
 		objetoModificado.tipoojale = props.PresupOB;
@@ -90,13 +108,7 @@ export const GeneraDCalculo = (props, presuptipo, cotidivisa) => {
 		objetoModificado.stkrubroabrtbr = props.StkRubroAbrTBR;
 		objetoModificado.altovolado = props.AltoVolado;
 	}
-
-	// if (presuptipo === "TOLDO BARRACUADRA") {
-	// 		objetoModificado.tipomecanismo = props.TipoMecanismo;
-	// 		objetoModificado.stkrubroabrtbr = props.StkRubroAbrTBR;
-	// 		objetoModificado.altovolado = props.AltoVolado;
-	// 	}
-
+	console.log("datosobligatorios GeneraDCalculo al final  ", datosobligatorios);
 	return objetoModificado;
 };
 // var dcalculo = [

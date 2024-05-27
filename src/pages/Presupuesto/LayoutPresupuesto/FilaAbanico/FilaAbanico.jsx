@@ -103,6 +103,7 @@ export default function FilaAbanico(props) {
 						id={data.id}
 						key={data.id}
 						fullWidth
+						size="small"
 						select
 						label={data.label}
 						margin="dense"
@@ -111,6 +112,7 @@ export default function FilaAbanico(props) {
 						SelectProps={{ native: true }}
 						variant="outlined"
 						helperText="Brazos de?"
+						// className={classes.textField}
 					>
 						{data.mapeo}
 					</TextField>

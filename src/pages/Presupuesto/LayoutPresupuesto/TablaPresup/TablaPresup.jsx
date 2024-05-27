@@ -131,10 +131,20 @@ export default function TablaPresup(props) {
 	const [rowSelectionModel, setRowSelectionModel] = React.useState([]);
 	return (
 		<div>
-			<div style={{ height: 300, width: "100%" }}>
+			<div style={{ margin: 80, height: 300, width: "100%" }}>
+				{/* style={{ height: 300, width: "98%" }} */}
 				{datosrenglon !== undefined ? (
 					<DataGrid
-						// 	className={estilotabla.tablapresupuesto}
+						className={estilotabla.tablapresupuesto}
+						// sx={{
+						// 	Margin: "50,10,10,10",
+						// 	boxShadow: 2,
+						// 	border: 2,
+						// 	borderColor: "primary",
+						// 	"& .MuiDataGrid-cell:hover": {
+						// 		color: "primary.main",
+						// 	},
+						// }}
 						rows={datosrenglon}
 						columns={columns.filter(
 							(column) => column.headerName !== "datospresup"

@@ -42,8 +42,10 @@ router.get('/', (req, res, next) => {
               console.log(err)
             }
             else {
-              result[0].ImpItem = datos.largo;
-              result[0].ImpUnitario = datos.largo;
+              // result[0].ImpItem = datos.largo;
+              // result[0].ImpUnitario = datos.largo;
+              result[0].ImpItem = datos.importe;
+              result[0].ImpUnitario = datos.importe;
               if (StkRubroAbrP === 'PUNT') {
                 result[0].Detalle = datos.detaller
               } else {

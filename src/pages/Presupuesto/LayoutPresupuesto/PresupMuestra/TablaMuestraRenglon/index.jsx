@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import estilotabla from "../../../../../Styles/Tabla.module.css";
 import CompressSharpIcon from "@mui/icons-material/CompressSharp";
 import {
+	Box,
 	Button,
 	Dialog,
 	DialogActions,
@@ -26,24 +27,13 @@ export function TablaMuestraRenglon(props) {
 	const { open, handleClose, Presup, origen } = props;
 	const [renglon, setRenglon] = useState([]);
 	const [columns, setColumns] = useState([]);
-	let titulo = "",
-		boton = "";
-	async function leerenglones(Presup) {
-		const result = await presuprenglonleer(Presup);
-		setRenglon(result);
-	}
+	const [selectionModel, setSelectionModel] = useState([]);
+	let titulo =
+		origen === "Borrar"
+			? `Borrará el Presupuesto nro. ${Presup.id} de ${Presup.NombreCliente}`
+			: `Renglones de Presupuesto nro. ${Presup.id} de ${Presup.NombreCliente}`;
+	// let boton = origen === "Borrar" ? "Borrar" : "Cerrar";
 
-	async function columnsFetch() {
-		var col = await llenarcolumns();
-		setColumns(() => col);
-	}
-	if (origen === "Borrar") {
-		titulo = `Borrará el Presupuesto nro. ${Presup.id} de ${Presup.NombreCliente}`;
-		boton = "Borrar";
-	} else {
-		titulo = `Renglones de Presupuesto nro. ${Presup.id} de ${Presup.NombreCliente}`;
-		boton = "Cerrar";
-	}
 	const AceptaBorrar = () => {
 		PresupBorrar(Presup.id);
 		handleClose();
@@ -53,20 +43,29 @@ export function TablaMuestraRenglon(props) {
 		//idOTRenglon, OTRenglonNroPresup, OTRenglonCant, OTRenglonDesc, OTRenglonLargo, OTRenglonAncho, OTRenglonImpUnit, OTRenglonImpItem, OTRenglonParamInt
 		//los mando por Context a la OT
 		setOTdatos({ ...otdatos, renglonespresup: selectionModel });
+		// handleClose();
 	}
+
 	const Cierra = () => {
-		//setOTdatos({ ...otdatos, otdatocliente: Presup.NombreCliente });
 		handleClose();
 	};
 
 	useEffect(() => {
-		leerenglones(Presup.id);
-	}, [Presup]); // eslint-disable-line react-hooks/exhaustive-deps
+		async function fetchRenglones() {
+			const result = await presuprenglonleer(Presup.id);
+			setRenglon(result);
+		}
+		fetchRenglones();
+	}, [Presup]);
 
 	useEffect(() => {
-		columnsFetch();
-	}, []); // eslint-disable-line react-hooks/exhaustive-deps
-	const [selectionModel, setSelectionModel] = useState([]);
+		async function fetchColumns() {
+			const col = await llenarcolumns();
+			setColumns(col);
+		}
+		fetchColumns();
+	}, []);
+
 	const handleSelectionModelChange = (selectionModel) => {
 		const itemelegoc = selectionModel.map((row, i) =>
 			renglon.filter((rows) => rows.id == row)
@@ -82,7 +81,7 @@ export function TablaMuestraRenglon(props) {
 		);
 	}
 	return (
-		<>
+		<div>
 			<Dialog
 				fullWidth={true}
 				maxWidth={"xl"}
@@ -95,8 +94,8 @@ export function TablaMuestraRenglon(props) {
 			>
 				<DialogTitle id="alert-dialog-slide-title">{titulo}</DialogTitle>
 				<DialogContent>
-					<DialogContentText
-						x={{ height: 500, width: "100%" }}
+					<Box
+						sx={{ height: 500, width: "100%" }}
 						id="alert-dialog-slide-description"
 					>
 						<DataGrid
@@ -110,7 +109,7 @@ export function TablaMuestraRenglon(props) {
 								toolbar: CustomToolbar,
 							}}
 						></DataGrid>
-					</DialogContentText>
+					</Box>
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={Cierra} color="secondary">
@@ -127,6 +126,6 @@ export function TablaMuestraRenglon(props) {
 					)}
 				</DialogActions>
 			</Dialog>
-		</>
+		</div>
 	);
 }

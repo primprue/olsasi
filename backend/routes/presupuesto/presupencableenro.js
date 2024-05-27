@@ -31,18 +31,23 @@ router.get("/", async function (req, res) {
           if (err) {
             console.log(err);
           } else {
+            console.log('result en presupencableeenro Clientes ', result)
             datosenvio.unshift(result);
           }
         })
 
 
       }
-      else {
-        // var datocliente = { PresupEncabCliente: result[0].PresupEncabCliente }
-
-        datosenvio.unshift(result[0].PresupEncabCliente);
-      }
-
+      // else {
+      //   // var datocliente = { PresupEncabCliente: result[0].PresupEncabCliente }
+      //   console.log('result[0].PresupEncabCliente en presupencableeenro Clientes ', result[0].PresupEncabCliente)
+      //   let Clientesindatos = {
+      //     ClientesDesc: result[0].PresupEncabCliente
+      //   };
+      //   // datosenvio.unshift(result[0].PresupEncabCliente);
+      //   datosenvio.unshift(Clientesindatos);
+      // }
+      console.log('datosenvio presupencableenro  ', datosenvio)
       res.json(datosenvio);
       datosenvio = [];
     }

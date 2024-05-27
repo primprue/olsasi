@@ -1,72 +1,68 @@
 import React from "react";
 import { styled } from "@mui/system";
+import EditIcon from "@mui/icons-material/Edit";
+import { IconButton } from "@mui/material";
 const MultilineCell = styled("span")`
 	white-space: normal;
 	line-height: 1.2;
 	max-height: 3.6em; /* Puedes ajustar esta altura según tu necesidad */
 	overflow: hidden;
 `;
-import { StkItemsLeeAbrRub } from "../../Tablas/StkItems/StkItemsLeeAbrRub";
-import { renderActionsCell } from "@mui/x-data-grid";
-export async function llenarcolumns(flattenedData) {
-	// console.log("param  ", params);
-	// 	var id = params.id;
-	// 	flattenedData.map((item) => {
-	// 		paramObjeto = JSON.parse(item.PresupRenglonParamInt);
-	// 	}),
-	// 		(
-	// async function buscacolor(tipomat) {
-	// 	colores = await StkItemsLeeAbrRub(paramObjeto.StkRubroAbr);
-	// 	// );
-	// }
-
+export async function llenarcolumns() {
 	return columnsFill();
 }
 
 function columnsFill() {
+	const fcionotrosdatos = (event) => {
+		console.log("event  ", event);
+	};
 	return new Promise(function (resolve) {
 		resolve([
-			{ field: "id", headerName: "ID", width: 90 },
+			// { field: "id", headerName: "ID", width: 90 },
 			{
-				field: "idPresupRenglon",
 				headerName: "ID Presup Renglon",
+				field: "idPresupRenglon",
 				width: 150,
 			},
 			{
-				field: "PresupRenglonNroPresup",
 				headerName: "Nro Presup",
+				field: "PresupRenglonNroPresup",
 				width: 150,
 			},
 			{
-				field: "PresupRenglonCant",
 				headerName: "Cantidad",
+				field: "PresupRenglonCant",
 				width: 80,
 				pattern: /^[0-9]{0,6}.[0-9]{0,2}/,
 				align: "right",
+				editable: true,
 			},
 			{
-				field: "PresupRenglonDesc",
 				headerName: "Descripción",
+				field: "PresupRenglonDesc",
 				width: 400,
 				renderCell: (params) => <MultilineCell>{params.value}</MultilineCell>,
+				editable: true,
 			},
 			{
-				field: "PresupRenglonLargo",
 				headerName: "Largo",
+				field: "PresupRenglonLargo",
 				width: 80,
 				pattern: /^[0-9]{0,6}.[0-9]{0,2}/,
 				align: "right",
+				editable: true,
 			},
 			{
-				field: "PresupRenglonAncho",
 				headerName: "Ancho",
+				field: "PresupRenglonAncho",
 				width: 80,
 				pattern: /^[0-9]{0,6}.[0-9]{0,2}/,
 				align: "right",
+				editable: true,
 			},
 			{
-				field: "PresupRenglonImpUnit",
 				headerName: "Importe Unitario",
+				field: "PresupRenglonImpUnit",
 				width: 150,
 				placeholder: "99999999,99",
 				maxLength: 9,
@@ -82,8 +78,8 @@ function columnsFill() {
 				editable: "never",
 			},
 			{
-				field: "PresupRenglonImpItem",
 				headerName: "Importe Item",
+				field: "PresupRenglonImpItem",
 				width: 150,
 				placeholder: "99999999,99",
 				maxLength: 9,
@@ -98,15 +94,22 @@ function columnsFill() {
 				),
 				editable: "never",
 			},
-
-			// {
-			// 	field: "PresupRenglonParamInt",
-			// 	headerName: "Parámetros Internos",
-			// 	width: 800,
-			// 	autoHeight: true,
-			// 	hide: true,
-			// 	renderCell: (params) => <MultilineCell>{params.value}</MultilineCell>,
-			// },
+			{
+				field: "actions",
+				headerName: "Actions",
+				width: 150,
+				renderCell: (params) => (
+					<>
+						<IconButton
+							color="primary"
+							onClick={() => fcionotrosdatos(params.row.id)}
+						>
+							<EditIcon />
+						</IconButton>
+					</>
+				),
+			},
 		]);
+		// }, 500);
 	});
 }

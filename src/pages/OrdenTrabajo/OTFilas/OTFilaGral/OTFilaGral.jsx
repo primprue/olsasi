@@ -1,57 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import OrdTrabajo from "../../../../context/OrdTrabajo.jsx";
-import { Button, Dialog, Grid, Paper, TextField } from "@mui/material";
+import {
+	Button,
+	Checkbox,
+	Dialog,
+	FormControl,
+	FormControlLabel,
+	FormGroup,
+	FormLabel,
+	Grid,
+	Paper,
+	TextField,
+} from "@mui/material";
 import { ClientesLeer } from "../../../Tablas/Clientes/ClientesLeer.jsx";
 import { clientesleercod } from "../../../Tablas/Clientes/ClientesLeerCod.jsx";
+import styles from "../../styles.module.css";
+import { StyleOutlined } from "@mui/icons-material";
 export default function OTFilaGral(props) {
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
 	const [clientesleidos, setClientesleidos] = useState([]);
 	const [items, setItems] = useState([]);
 	const { datospot } = props;
-	//open, handleClose,
-	let idCliente;
 
-	/*StkRubroAbr
-: 
-"ST840"
-ancho
-: 
-"5"
-cantidad
-: 
-1
-cotdivisa
-: 
-0
-detallep
-: 
-""
-detaller
-: 
-""
-ivasn
-: 
-"CIVA"
-largo
-: 
-"8"
-minmay
-: 
-"mn"
-presupojalesc
-: 
-20
-signomonet
-: 
-"$"
-tipoojale
-: 
-"hz"
-tipopresup
-: 
-"ABOLINADA" */
+	let idCliente;
 	let colorfondo = "";
+	const [checked, setChecked] = useState(false);
+
 	if (datospot.minmay === "my") {
 		colorfondo = "#a6d4ff8d";
 	} else {
@@ -64,6 +39,9 @@ tipopresup
 		const datosclientes = await ClientesLeer();
 		setClientesleidos(datosclientes);
 	}
+	const handleChangeC = (event) => {
+		setChecked(event.target.checked);
+	};
 	let textdata;
 	if (clientesleidos.length > 0) {
 		textdata = [
@@ -84,16 +62,16 @@ tipopresup
 			},
 		];
 	}
+
 	const handleChange = (event) => {
 		const id = event.target.id;
-
-		const indice = event.target.value - 1;
-		console.log("Cantidad  ", items[indice].StkItemsCantDisp);
-		console.log("datospot.anchor ", datospot.ancho);
-		console.log("datospot.largo ", datospot.largo);
+		setOTdatos({ ...otdatos, [id]: event.target.value });
 	};
 	async function handleChange1(event) {
 		const datosnuevocliente = await clientesleercod(event.target.value);
+		if (otdatos.datosencab.length === 1) {
+			otdatos.datosencab[1] = [];
+		}
 		otdatos.datosencab[1][0] = datosnuevocliente[0];
 		if (otdatos.datosencab[1][0]) {
 			setOTdatos({ ...otdatos, datosnuevocliente });
@@ -103,16 +81,22 @@ tipopresup
 			}
 		}
 	}
+
 	return (
 		<div>
-			{/* <Dialog open={open} onClose={handleClose}> */}
-			<Grid container style={{ backgroundColor: colorfondo }}>
-				{/* <Grid item xs={1}>
-					<TextField name="MayMin" value={datospot.minmay}></TextField>
-				</Grid> */}
+			<Grid
+				container
+				style={{ backgroundColor: "colorfondo" }}
+				spacing={2}
+				// alignItems="center"
+			>
 				{/* si se quiere cambiar el cliente */}
-				<Grid item xs={1}>
-					<Button onClick={buscaclientes}>Cambia Cliente</Button>
+				<Grid item xs={2}>
+					<Button onClick={buscaclientes} className={styles.boton}>
+						Cambia Cliente
+					</Button>
+				</Grid>
+				<Grid xs={2}>
 					{clientesleidos.length > 0 &&
 						textdata.map((data) => (
 							<TextField
@@ -132,7 +116,73 @@ tipopresup
 							</TextField>
 						))}
 				</Grid>
+				{/* <Grid item xs={4}>
+					<FormControl component="fieldset">
+						<FormGroup>
+							<FormControlLabel
+								control={
+									<Checkbox checked={checked} onChange={handleChangeC} />
+								}
+								label="Según Medidas"
+							/>
+						</FormGroup>
+					</FormControl>
+				</Grid>
+				<Grid item xs={12}>
+					{checked && (
+						<Grid container item>
+							<Grid item xs={1}>
+								<TextField
+									inputProps={{ maxLength: 3 }}
+									size="small"
+									variant="outlined"
+									id="LargoFinal"
+									type="number"
+									label="Largo Final"
+									placeholder="Largo Final"
+									fullWidth
+									margin="dense"
+									value={otdatos.OTLargoFinal}
+									onChange={handleChange}
+									// className={styles.textField}
+								/>
+							</Grid>
 
+							<Grid item xs={1}>
+								<TextField
+									inputProps={{ maxLength: 3 }}
+									size="small"
+									variant="outlined"
+									id="AnchoFinal"
+									type="number"
+									label="Ancho Final"
+									placeholder="Ancho Final"
+									fullWidth
+									margin="dense"
+									value={otdatos.OTAnchoFinal}
+									onChange={handleChange}
+									// className={styles.textField}
+								/>
+							</Grid>
+							<Grid item xs={1}>
+								<TextField
+									inputProps={{ maxLength: 3 }}
+									size="small"
+									variant="outlined"
+									id="MetrosCuadrados"
+									type="number"
+									label="Mts Cuadrados"
+									placeholder="Mts Cuadrados"
+									fullWidth
+									margin="dense"
+									value={otdatos.OTMetrosCuadrados}
+									onChange={handleChange}
+									// className={styles.textField}
+								/>
+							</Grid>
+						</Grid>
+					)}
+				</Grid> */}
 				{/* </Dialog> */}
 			</Grid>
 		</div>
