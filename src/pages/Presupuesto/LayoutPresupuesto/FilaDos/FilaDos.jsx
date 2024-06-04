@@ -80,10 +80,7 @@ export default function FilaDos() {
 	}
 
 	const handleChange = (event) => {
-		console.log("preusptipo  ", presuptipo);
 		const id = event.target.id;
-		console.log("id  ", id);
-		console.log("event.target.value  ", event.target.value);
 		setState({ ...state, [id]: event.target.value });
 
 		if (id === "idStkMonedas") {

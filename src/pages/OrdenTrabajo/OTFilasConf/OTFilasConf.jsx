@@ -14,7 +14,7 @@ import styles from "../styles.module.css";
 import { OTDatosLeer } from "../OTVarios/OTDatosLeer";
 export default function OTFilasConf(props) {
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
-	const [datosgenot, setDatosgenot] = useState({});
+	const { datosgenot, setDatosgenot } = useContext(OrdTrabajo);
 	const [checked, setChecked] = useState(false);
 
 	const { datospot } = props;
@@ -23,13 +23,16 @@ export default function OTFilasConf(props) {
 	const [datosrestantes, setDatosRestantes] = useState([]);
 
 	async function leedatosot() {
+		setDatosgenot("");
 		const result = await OTDatosLeer(datospot.tipopresup);
 		const datos = result.map((row) => ({
 			nombre: row.OTDatosDesc,
 			opciones: JSON.parse(row.OTDatosOpciones),
 			tipocomponete: row.OTDatosTipoPed,
 		}));
+		console.log("datos.le	  ", datos.length);
 		setDatosRestantes(datos);
+		setOTdatos({ ...otdatos, totaldatos: datos.length });
 	}
 	async function stkleeitemsrubro(cuallee) {
 		const result = await StkItemsLeeAbrRub(cuallee);
@@ -50,7 +53,7 @@ export default function OTFilasConf(props) {
 			value: coloreleg,
 			mapeo: (
 				<>
-					<option />
+					<option></option>
 					{items.map((option) => (
 						<option key={option.StkItemsDesc} value={option.StkItemsDesc}>
 							{option.StkItemsDesc}
@@ -60,25 +63,17 @@ export default function OTFilasConf(props) {
 			),
 		},
 	];
-	const handleChangeC = (event) => {
-		setChecked(event.target.checked);
-		console.log("checked  ", checked);
-	};
-	const handleChangeSM = (event) => {
-		const id = event.target.id;
-		setOTdatos({ ...otdatos, [id]: event.target.value });
 
-		console.log("id ", id);
-		console.log("event.target.value  ", event.target.value);
-	};
 	const handleChangeG = (event) => {
 		const id = event.target.id;
-		setOTdatos({ ...otdatos, [id]: event.target.value });
+		setDatosgenot({ ...datosgenot, [id]: event.target.value });
+		// setOTdatos({ ...otdatos, [id]: event.target.value });
 	};
 	const [backgroundColor, setBackgroundColor] = useState("");
 
 	const handleChange = (selectedIndex, event) => {
-		setOTdatos({ ...otdatos, StkItemsDesc: event.target.value });
+		setDatosgenot({ ...datosgenot, ColorMaterial: event.target.value });
+		// setOTdatos({ ...otdatos, StkItemsDesc: event.target.value });
 		const indice = selectedIndex;
 		let paños = (datospot.largo * 1 + 0.08) / 1.48;
 		const decimalPart = parseFloat(paños) - parseInt(paños);
@@ -96,93 +91,91 @@ export default function OTFilasConf(props) {
 			setBackgroundColor("lightgreen"); // Cambia el color de fondo si el resultado es menor o igual a 50
 		}
 	};
-	const {
-		StkRubroAbr,
-		minmay,
-		ivasn,
-		cantidad,
-		detallep,
-		detaller,
-		largo,
-		ancho,
-		tipopresup,
-		cotdivisa,
-		signomonet,
-		drenajesn,
-		tipoojale,
-	} = datospot;
+	const { largo } = datospot;
 	const classes = styles;
 
 	return (
-		<Grid container spacing={2} alignItems="center">
-			{/* acá muestra opción de colores */}
+		<div>
+			<Grid container spacing={2} alignItems="center">
+				{/* acá muestra opción de colores */}
 
-			{textdataI.map((data, index) => (
-				<TextField
-					className={`${styles.textField} ${
-						backgroundColor && styles[backgroundColor]
-					}`}
-					key={data.id}
-					id={data.id}
-					size="small"
-					inputProps={{ maxLength: 3 }}
-					select
-					label={data.label}
-					value={data.value}
-					onChange={(event) => handleChange(event.target.selectedIndex, event)}
-					SelectProps={{ native: true }}
-					variant="outlined"
-					margin="dense"
-				>
-					{data.mapeo}
-				</TextField>
-			))}
-			{/* </Grid> */}
+				{textdataI.map((data, index) => (
+					<TextField
+						className={`${styles.textField} ${
+							backgroundColor && styles[backgroundColor]
+						}`}
+						key={data.id}
+						id={data.id}
+						size="small"
+						inputProps={{ maxLength: 3 }}
+						select
+						label={data.label}
+						value={data.value}
+						onChange={(event) =>
+							handleChange(event.target.selectedIndex, event)
+						}
+						SelectProps={{ native: true }}
+						variant="outlined"
+						margin="dense"
+					>
+						{data.mapeo}
+					</TextField>
+				))}
+				{/* </Grid> */}
 
-			{datosrestantes.map((dato, index) => (
-				<div key={index}>
-					{dato.tipocomponete === "select" && (
-						<TextField
-							id={dato.nombre}
-							size="small"
-							select
-							onChange={handleChangeG}
-							defaultValue={dato.nombre}
-							label={dato.nombre}
-							variant="outlined" // Puedes cambiar el tipo de variante según tus preferencias
-							margin="dense"
-							inputProps={{ maxLength: 3 }}
-							SelectProps={{
-								native: true, // Esto es importante para que funcione como un campo de texto select
-							}}
-							// className={styles.select}
-						>
-							{Object.keys(dato.opciones).map((opcion, index) => (
-								<option key={index} value={opcion}>
-									{opcion}
-								</option>
-							))}
-						</TextField>
-						// </Grid>
-					)}
-					{/* <Grid item xs={1}> */}
-					{dato.tipocomponete === "textfield" && (
-						<TextField
-							disabled={largo === "N"}
-							inputProps={{ maxLength: 3 }}
-							size="small"
-							variant="outlined"
-							id={dato.nombre}
-							// type="number"
-							label={dato.nombre}
-							fullWidth
-							margin="dense"
-							value={otdatos.OTDatosDesc}
-							onChange={handleChangeG}
-							// className={styles.textField}
-						/>
-					)}
-					{/* <Grid item xs={4}>
+				{datosrestantes.map((dato, index) => (
+					<div key={index}>
+						{dato.tipocomponete === "select" && (
+							<TextField
+								id={dato.nombre}
+								size="small"
+								select
+								onChange={handleChangeG}
+								defaultValue={dato.nombre}
+								// value={dato.nombre}
+								label={dato.nombre}
+								//placeholder={dato.nombre}
+								variant="outlined" // Puedes cambiar el tipo de variante según tus preferencias
+								margin="dense"
+								inputProps={{ maxLength: 3 }}
+								SelectProps={{
+									native: true, // Esto es importante para que funcione como un campo de texto select
+								}}
+								// className={styles.select}
+							>
+								{Object.keys(dato.opciones).map((opcion, index) => (
+									<option key={index} value={opcion}>
+										{opcion}
+									</option>
+								))}
+							</TextField>
+						)}
+						{dato.tipocomponete === "textfield" && (
+							<TextField
+								disabled={largo === "N"}
+								inputProps={{ maxLength: 3 }}
+								size="small"
+								variant="outlined"
+								id={dato.nombre}
+								// type="number"
+								label={dato.nombre}
+								placeholder={dato.nombre}
+								fullWidth
+								margin="dense"
+								value={otdatos.OTDatosDesc}
+								onChange={handleChangeG}
+								// className={styles.textField}
+							/>
+						)}
+					</div>
+				))}
+			</Grid>
+		</div>
+	);
+}
+{
+	/* 
+	{/* <Grid item xs={4}>
 						<FormControl component="fieldset">
 							<FormGroup>
 								<FormControlLabel
@@ -194,70 +187,9 @@ export default function OTFilasConf(props) {
 							</FormGroup>
 						</FormControl>
 					</Grid>
-					<Grid item xs={12}>
-						{checked && (
-							<Grid container item>
-								<Grid item xs={1}>
-									<TextField
-										inputProps={{ maxLength: 3 }}
-										size="small"
-										variant="outlined"
-										id="LargoFinal"
-										type="number"
-										label="Largo Final"
-										placeholder="Largo Final"
-										fullWidth
-										margin="dense"
-										value={otdatos.OTLargoFinal}
-										onChange={handleChangeSM}
-										// className={styles.textField}
-									/>
-								</Grid>
-
-								<Grid item xs={1}>
-									<TextField
-										inputProps={{ maxLength: 3 }}
-										size="small"
-										variant="outlined"
-										id="AnchoFinal"
-										type="number"
-										label="Ancho Final"
-										placeholder="Ancho Final"
-										fullWidth
-										margin="dense"
-										value={otdatos.OTAnchoFinal}
-										onChange={handleChangeSM}
-										// className={styles.textField}
-									/>
-								</Grid>
-								<Grid item xs={1}>
-									<TextField
-										inputProps={{ maxLength: 3 }}
-										size="small"
-										variant="outlined"
-										id="MetrosCuadrados"
-										type="number"
-										label="Mts Cuadrados"
-										placeholder="Mts Cuadrados"
-										fullWidth
-										margin="dense"
-										value={otdatos.OTMetrosCuadrados}
-										onChange={handleChangeSM}
-										// className={styles.textField}
-									/>
-								</Grid>
-							</Grid>
-						)}
-					</Grid> */}
-
-					{/* </Grid> */}
-				</div>
-			))}
-		</Grid>
-	);
-}
-{
-	/* <p>StkRubroAbr: {StkRubroAbr}</p>
+	
+	
+	<p>StkRubroAbr: {StkRubroAbr}</p>
 			<p>minmay: {minmay}</p>
 			<p>ivasn: {ivasn}</p>
 			<p>cantidad: {cantidad}</p>

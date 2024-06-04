@@ -22,6 +22,7 @@ import {
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
 import CompressSharpIcon from "@mui/icons-material/CompressSharp";
+import PlaylistAddCheckRoundedIcon from "@mui/icons-material/PlaylistAddCheckRounded";
 import PreviewTwoToneIcon from "@mui/icons-material/PreviewTwoTone";
 import { TablaMuestraRenglon } from "./TablaMuestraRenglon/index.jsx";
 import { PresupPreview } from "../PresupPreview";
@@ -113,9 +114,9 @@ export default function PresupMuestra() {
 					<GridToolbarFilterButton className={estilotabla.coloropcioncol} />
 					<GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
 					<GridToolbarExport className={estilotabla.coloropcioncol} />
-					<CompressSharpIcon
+					<PlaylistAddCheckRoundedIcon
 						onClick={() => handleMuestraRenglon(rowsel.id)}
-						className={estilotabla.iconomodificar}
+						className={estilotabla.iconoordentrabao}
 						titleAccess="Ve datos Presupuesto"
 					/>
 					<PreviewTwoToneIcon
@@ -123,11 +124,11 @@ export default function PresupMuestra() {
 						className={estilotabla.iconomodificar}
 						titleAccess="Preview Presupuesto"
 					/>
-					<LocalPrintshopRoundedIcon
+					{/* <LocalPrintshopRoundedIcon
 						onClick={() => setImprimirTF(true)}
 						className={estilotabla.iconoimpresora}
 						titleAccess="Imprimir"
-					/>
+					/> */}
 					<DeleteSharpIcon
 						variant="contained"
 						titleAccess="Borrar"

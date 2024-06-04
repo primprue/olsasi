@@ -38,5 +38,22 @@
   .boton {
     border-color: black;
     color: black;
-    background-color: coral;
+    background-color: rgb(80, 121, 255);
+    padding: 2, 2, 2, 2;
+  }
+
+
+  .items {
+    font-size: 16px;
+    /* Tamaño de fuente */
+    color: #030963;
+    /* Color del texto */
+    padding: 10px;
+    /* Relleno interno */
+    background-color: #e3e3ec;
+    /* Color de fondo */
+    border-radius: 5px;
+    /* Esquinas redondeadas */
+    box-shadow: 0 2px 4px rgba(21, 5, 245, 0.788);
+    /* Sombra */
   }

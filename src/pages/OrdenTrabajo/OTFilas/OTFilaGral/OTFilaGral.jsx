@@ -15,7 +15,8 @@ import {
 } from "@mui/material";
 import { ClientesLeer } from "../../../Tablas/Clientes/ClientesLeer.jsx";
 import { clientesleercod } from "../../../Tablas/Clientes/ClientesLeerCod.jsx";
-import styles from "../../styles.module.css";
+import estilos from "../../../OrdenTrabajo/styles.module.css";
+import styles from "../../../../Styles/Tabla.module.css";
 import { StyleOutlined } from "@mui/icons-material";
 export default function OTFilaGral(props) {
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
@@ -92,11 +93,16 @@ export default function OTFilaGral(props) {
 			>
 				{/* si se quiere cambiar el cliente */}
 				<Grid item xs={2}>
-					<Button onClick={buscaclientes} className={styles.boton}>
+					<Button
+						onClick={buscaclientes}
+						variant="contained"
+						color="primary"
+						// className={styles.botontablamuestrarenglon}
+					>
 						Cambia Cliente
 					</Button>
 				</Grid>
-				<Grid xs={2}>
+				<Grid item>
 					{clientesleidos.length > 0 &&
 						textdata.map((data) => (
 							<TextField
@@ -116,7 +122,13 @@ export default function OTFilaGral(props) {
 							</TextField>
 						))}
 				</Grid>
-				{/* <Grid item xs={4}>
+			</Grid>
+		</div>
+	);
+}
+
+{
+	/* <Grid item xs={4}>
 					<FormControl component="fieldset">
 						<FormGroup>
 							<FormControlLabel
@@ -182,9 +194,8 @@ export default function OTFilaGral(props) {
 							</Grid>
 						</Grid>
 					)}
-				</Grid> */}
-				{/* </Dialog> */}
-			</Grid>
-		</div>
-	);
+				</Grid> */
+}
+{
+	/* </Dialog> */
 }

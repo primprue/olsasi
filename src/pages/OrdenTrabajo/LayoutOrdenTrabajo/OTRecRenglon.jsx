@@ -5,6 +5,7 @@ import OrdTrabajo from "../../../context/OrdTrabajo.jsx";
 import { OTLeeEncPresup } from "./OTLeeEncPresup.jsx";
 import { Box, Button, Paper, TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import estilos from "../styles.module.css";
 import OTDataGrid from "./OTDataGrid.jsx";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -37,7 +38,10 @@ export default function OTRecRenglon() {
 		const id = event.target.id;
 		setOTdatos({ ...otdatos, id: event.target.value });
 	};
+
 	if (otdatos.datosencab) {
+		const dateValue = new Date(otdatos.datosencab[0][0].PresupEncabFecha);
+		const formattedDate = dateValue.toLocaleDateString();
 		return (
 			<div style={{ width: 2000, padding: 20 }}>
 				{/* <Stack spacing={{ xs: 1, sm: 2 }}
@@ -57,13 +61,20 @@ export default function OTRecRenglon() {
 					// p={2}
 					sx={{ border: "2px solid grey" }}
 				>
-					<Item width={200}>
+					<Item className={estilos.items}>
 						Número de Presupuesto: {otdatos.datosencab[0][0].idPresupEncab}
 					</Item>
-					<Item>Fecha: {otdatos.datosencab[0][0].PresupEncabFecha}</Item>
-					<Item>MayMin: {otdatos.datosencab[0][0].PresupEncabMayMin}</Item>
-					<Item>Total: {otdatos.datosencab[0][0].PresupEncabTotal}</Item>
-					<Item>Explicacion: {otdatos.datosencab[0][0].PresupEncabExplic}</Item>
+					{/* <Item>Fecha: {otdatos.datosencab[0][0].PresupEncabFecha}</Item> */}
+					<Item className={estilos.items}>Fecha: {formattedDate}</Item>
+					<Item className={estilos.items}>
+						MayMin: {otdatos.datosencab[0][0].PresupEncabMayMin}
+					</Item>
+					<Item className={estilos.items}>
+						Total: {otdatos.datosencab[0][0].PresupEncabTotal}
+					</Item>
+					<Item className={estilos.items}>
+						Explicacion: {otdatos.datosencab[0][0].PresupEncabExplic}
+					</Item>
 				</Box>
 
 				{(otdatos.datosencab.length > 1 && (

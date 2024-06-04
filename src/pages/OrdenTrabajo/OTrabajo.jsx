@@ -19,7 +19,13 @@ export default function OTrabajo() {
 		setValor("Orden de Trabajo");
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 	return (
-		<Grid container rowSpacing={15} spacing={2} alignItems="center" padding={5}>
+		<Grid
+			container
+			rowSpacing={15}
+			spacing={2}
+			alignItems="center"
+			padding={10}
+		>
 			<OTRecRenglon />
 
 			<Button onClick={ReiniciaOTContext}>Cerrar</Button>

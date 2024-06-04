@@ -3,9 +3,12 @@ const OrdTrabajo = createContext();
 
 export function OrdenTrabajo({ children }) {
 	const [otdatos, setOTdatos] = useState("");
+	const [datosgenot, setDatosgenot] = useState("");
 	return (
 		<>
-			<OrdTrabajo.Provider value={{ otdatos, setOTdatos }}>
+			<OrdTrabajo.Provider
+				value={{ otdatos, setOTdatos, datosgenot, setDatosgenot }}
+			>
 				{children}
 			</OrdTrabajo.Provider>
 		</>

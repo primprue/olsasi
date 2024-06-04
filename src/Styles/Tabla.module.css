@@ -40,12 +40,30 @@
  */
 
 .tablamuestrarenglon {
-	font-size: large;
+	font-size: 20px;
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
-	color: rgb(149, 12, 212);
+	color: rgb(212, 12, 39);
 	background-color: rgba(239, 246, 247, 0.432);
 	display: flex;
 
+}
+
+.botontablamuestrarenglon {
+	font-size: 15px;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	color: rgb(12, 15, 212);
+	background-color: rgba(239, 246, 247, 0.432);
+	border-color: rgb(30, 255, 0);
+	display: flex;
+	padding: 2, 2, 2, 2;
+
+}
+
+.botontablamuestrarenglon:hover {
+	background-color: rgb(12, 15, 212);
+	color: rgba(239, 246, 247, 0.432);
+	font-size: 15px;
+	padding: 2, 2, 2, 2;
 }
 
 .tablapresupuesto {
@@ -107,7 +125,8 @@
 .tablasgenerales {
 	background-color: rgba(245, 246, 252, 0.432);
 	display: flex;
-	justify-content: flex-end
+	justify-content: flex-end;
+	height: 55px;
 }
 
 .tooltip {
@@ -148,14 +167,14 @@
 }
 
 .encabcolumnsmt {
-	background-color: rgba(77, 6, 77, 0.288);
+	background-color: rgba(6, 45, 77, 0.288);
 	text-align: center;
 	font-size: 16px;
 	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 	font-weight: bold;
 	border-radius: 1;
 	box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-	color: rgba(53, 1, 46, 0.863);
+	color: rgba(6, 45, 46, 0.863);
 
 	height: 40;
 }
@@ -220,6 +239,17 @@
 	font-size: 30px;
 }
 
+.iconoordentrabao {
+	color: rgba(7, 4, 185, 0.76);
+	margin-left: 35px;
+	font-size: 30px;
+}
+
+.iconoordentrabao:hover {
+	color: rgb(4, 5, 124);
+	font-size: 50px;
+}
+
 .coloropcioncol {
 	color: rgb(15, 24, 56);
 	align-items: left;
@@ -240,7 +270,7 @@
 
 .tablecontainer th,
 .tablecontainer td {
-	border: 1px solid #e48314;
+	border: 1px solid #0436a0;
 	padding: 8px;
 	text-align: left;
 }
