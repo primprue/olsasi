@@ -34,7 +34,6 @@ export default function ListaPrecios() {
 	const [columns, setColumns] = useState([]);
 	async function columnsFetch() {
 		var col = await llenarcolumns();
-		console.log("col ListaPrecios ", col);
 		col.push(actionsColumn);
 		setColumns(col);
 	}

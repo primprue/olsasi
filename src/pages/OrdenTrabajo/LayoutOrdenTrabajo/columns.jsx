@@ -13,9 +13,6 @@ export async function llenarcolumns() {
 }
 
 function columnsFill() {
-	const fcionotrosdatos = (event) => {
-		console.log("event  ", event);
-	};
 	return new Promise(function (resolve) {
 		resolve([
 			// { field: "id", headerName: "ID", width: 90 },
@@ -93,21 +90,6 @@ function columnsFill() {
 					</span>
 				),
 				editable: "never",
-			},
-			{
-				field: "actions",
-				headerName: "Actions",
-				width: 150,
-				renderCell: (params) => (
-					<>
-						<IconButton
-							color="primary"
-							onClick={() => fcionotrosdatos(params.row.id)}
-						>
-							<EditIcon />
-						</IconButton>
-					</>
-				),
 			},
 		]);
 		// }, 500);

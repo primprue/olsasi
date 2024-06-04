@@ -4,19 +4,19 @@ import {
 	GridToolbarContainer,
 	GridToolbarExport,
 } from "@mui/x-data-grid";
-import { llenarcolumns } from "./columns";
+import { llenarcolumns } from "./columns.jsx";
 import { useContext } from "react";
 import OrdTrabajo from "../../../context/OrdTrabajo.jsx";
-import OTFilaGral from "../OTFilas/OTFilaGral/OTFilaGral";
+import OTFilaGral from "../OTFilas/OTFilaGral/OTFilaGral.jsx";
 import { Button, Grid, TextField } from "@mui/material";
-import OTFilasConf from "../OTFilasConf/OTFilasConf";
+import OTFilasConf from "../OTFilasConf/OTFilasConf.jsx";
 import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
 import SaveAsTwoToneIcon from "@mui/icons-material/SaveAsTwoTone";
 import { deepOrange, red, blue, green, purple } from "@mui/material/colors";
-import { CurrencyTextField } from "../../../hooks/useCurrencyTextField";
+import { CurrencyTextField } from "../../../hooks/useCurrencyTextField.jsx";
 import estilotabla from "../../../Styles/Tabla.module.css";
 import EstTF from "../../../Styles/TextField.module.css";
 export default function OTDataGrid({ data }) {

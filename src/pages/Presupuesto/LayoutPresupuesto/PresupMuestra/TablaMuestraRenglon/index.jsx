@@ -112,15 +112,24 @@ export function TablaMuestraRenglon(props) {
 					</Box>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={Cierra} color="secondary">
+					<Button
+						onClick={Cierra}
+						className={estilotabla.botontablamuestrarenglon}
+					>
 						Cerrar
 					</Button>
 					{(origen === "Borrar" && (
-						<Button onClick={AceptaBorrar} color="secondary">
+						<Button
+							onClick={AceptaBorrar}
+							className={estilotabla.botontablamuestrarenglon}
+						>
 							Borrar
 						</Button>
 					)) || (
-						<Button onClick={AceptaItemOT} color="secondary">
+						<Button
+							onClick={AceptaItemOT}
+							className={estilotabla.botontablamuestrarenglon}
+						>
 							Aceptar
 						</Button>
 					)}
