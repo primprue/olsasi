@@ -1,12 +1,14 @@
 import React, { createContext, useState } from "react";
 import { initial_state } from "../pages/Presupuesto/Initial_State.js";
-
 import { Grid } from "@mui/material";
 const PresupPantContext = createContext();
-
 export function PresupPant({ children }) {
 	const [state, setState] = useState(initial_state);
 	const [datosrenglon, setDatosRenglon] = useState([]);
+	const inicializaPresup = () => {
+		setState(initial_state);
+		setDatosRenglon([]); // Reinicia otros estados si es necesario
+	};
 	return (
 		<>
 			<Grid container rowSpacing={-15} spacing={2} alignItems="center">
@@ -16,11 +18,10 @@ export function PresupPant({ children }) {
 						setState: setState,
 						datosrenglon: datosrenglon,
 						setDatosRenglon: setDatosRenglon,
+						inicializaPresup, // Proveer la función de inicialización
 					}}
 				>
 					{children}
-					{/* <FilaUno />
-					<FilaDos /> */}
 				</PresupPantContext.Provider>
 			</Grid>
 		</>

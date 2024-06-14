@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Radio, RadioGroup, FormControlLabel } from "@mui/material";
-
+import estilo from "../../../../Styles/RadioGroup.module.css";
 // Context
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
@@ -22,8 +22,9 @@ export default function FilaConf(props) {
 
 	return (
 		<>
-			<Grid item xs={2}>
+			<Grid item>
 				<RadioGroup
+					className={estilo.radioGroup1}
 					row
 					size="small"
 					name="tipoDobladillo"
@@ -34,7 +35,12 @@ export default function FilaConf(props) {
 					<FormControlLabel
 						size="small"
 						value="cs"
-						control={<Radio />}
+						control={
+							<Radio
+								classes={{ root: estilo.radio1, checked: estilo.radioChecked1 }}
+							/>
+						}
+						className={estilo.formControlLabel1}
 						label="C/S"
 						labelPlacement="top"
 						disabled={props.disable}
@@ -43,7 +49,12 @@ export default function FilaConf(props) {
 					<FormControlLabel
 						size="small"
 						value="ss"
-						control={<Radio />}
+						control={
+							<Radio
+								classes={{ root: estilo.radio1, checked: estilo.radioChecked1 }}
+							/>
+						}
+						className={estilo.formControlLabel1}
 						label="S/S"
 						labelPlacement="top"
 						disabled={props.disable}
@@ -51,8 +62,9 @@ export default function FilaConf(props) {
 					/>
 				</RadioGroup>
 			</Grid>
-			<Grid item xs={2}>
+			<Grid item>
 				<RadioGroup
+					className={estilo.radioGroup1}
 					row
 					size="small"
 					name="tipoOjal"
@@ -63,7 +75,12 @@ export default function FilaConf(props) {
 					<FormControlLabel
 						size="small"
 						value="hz"
-						control={<Radio />}
+						control={
+							<Radio
+								classes={{ root: estilo.radio1, checked: estilo.radioChecked1 }}
+							/>
+						}
+						className={estilo.formControlLabel1}
 						label="HZ"
 						labelPlacement="top"
 						disabled={props.disable}
@@ -72,7 +89,12 @@ export default function FilaConf(props) {
 					<FormControlLabel
 						size="small"
 						value="br"
-						control={<Radio />}
+						control={
+							<Radio
+								classes={{ root: estilo.radio1, checked: estilo.radioChecked1 }}
+							/>
+						}
+						className={estilo.formControlLabel1}
 						label="BR"
 						labelPlacement="top"
 						disabled={props.disable}

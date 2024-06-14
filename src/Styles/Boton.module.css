@@ -12,7 +12,7 @@
 	outline: none;
 	cursor: pointer;
 	width: 93px;
-	position: sticky;
+	/* position: sticky; */
 	margin-left: 20px;
 
 }
@@ -32,7 +32,7 @@
 	font-family: Arial, Helvetica, sans-serif;
 	text-align: center;
 	text-indent: 20%;
-	text-size-adjust: 8%;
+	/* text-size-adjust: 8%; */
 	position: relative;
 	border-radius: 8%;
 	border-color: #f8020e;
@@ -69,7 +69,7 @@
 	font-family: Arial, Helvetica, sans-serif;
 	text-align: center;
 	text-indent: 20%;
-	text-size-adjust: 8%;
+	/* text-size-adjust: 8%; */
 	position: relative;
 	border-radius: 8%;
 	border-color: #036b1d;
@@ -112,7 +112,7 @@
 	outline: none;
 	cursor: pointer;
 	width: 153px;
-	position: sticky;
+	/* position: sticky; */
 	margin-left: 20px;
 
 }
@@ -145,7 +145,7 @@
 	font-family: Arial, Helvetica, sans-serif;
 	text-align: justify-all;
 	text-indent: 20%;
-	text-size-adjust: 8%;
+	/* text-size-adjust: 8%; */
 	position: relative;
 	border-color: #020f01;
 	transform: scale(1);

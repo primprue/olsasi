@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header.jsx";
 import { Suspense } from "react";
 import { lazy } from "react";
@@ -47,19 +47,11 @@ export default function App() {
 									path="/"
 									element={
 										<Suspense fallback={<>...</>}>
-											<Home />{" "}
+											<Home />
 										</Suspense>
 									}
 								/>
 
-								<Route
-									path="/PresupDetPie"
-									element={
-										<Suspense fallback={<>...</>}>
-											<PresupDetPie />
-										</Suspense>
-									}
-								/>
 								<Route
 									path="/PresupPant"
 									element={
@@ -106,6 +98,14 @@ export default function App() {
 									element={
 										<Suspense fallback={<>...</>}>
 											<MovStockPant />
+										</Suspense>
+									}
+								/>
+								<Route
+									path="/PresupDetPie"
+									element={
+										<Suspense fallback={<>...</>}>
+											<PresupDetPie />
 										</Suspense>
 									}
 								/>
@@ -187,6 +187,14 @@ export default function App() {
 										<Suspense fallback={<>...</>}>
 											<PresupConfTipo />
 										</Suspense>
+									}
+								/>
+								<Route
+									path="*"
+									element={
+										<div>
+											<h2>404 - Página no encontrada</h2>
+										</div>
 									}
 								/>
 							</Routes>

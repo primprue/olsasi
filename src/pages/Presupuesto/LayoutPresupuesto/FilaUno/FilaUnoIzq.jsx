@@ -6,7 +6,7 @@ import leePresupConfTipoLeeAnexo from "../../leePresupConfTipoLeeAnexo";
 // Context
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
-
+import estilo from "../../../../Styles/TextFieldSelect.module.css";
 export default function FilaUnoIzq() {
 	const { state, setState } = useContext(PresupPant);
 	var anexo = "N";
@@ -56,9 +56,10 @@ export default function FilaUnoIzq() {
 		},
 	];
 	return (
-		<>
+		<Grid item>
 			{textdata.map((data) => (
 				<TextField
+					className={estilo.selectField}
 					id={data.id}
 					key={data.id}
 					size="small"
@@ -67,12 +68,19 @@ export default function FilaUnoIzq() {
 					margin="dense"
 					value={data.value}
 					onChange={handleChange}
-					SelectProps={{ native: true }}
+					// SelectProps={{ native: true }}
 					variant="outlined"
+					InputLabelProps={{
+						className: estilo.selectLabel,
+					}}
+					SelectProps={{
+						native: true,
+						className: estilo.menuItem,
+					}}
 				>
 					{data.mapeo}
 				</TextField>
 			))}
-		</>
+		</Grid>
 	);
 }

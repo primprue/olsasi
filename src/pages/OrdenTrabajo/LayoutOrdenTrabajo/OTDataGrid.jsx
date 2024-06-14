@@ -94,10 +94,18 @@ export default function OTDataGrid({ data }) {
 	};
 
 	const generaorden = () => {
-		presuptipo === "Unidad" ? handleOpen() : handleClose();
-		Object.keys(datosgenot).length > otdatos.totaldatos
-			? handleOpen()
-			: handleClose();
+		// presuptipo === "UNIDAD" ? handleOpen() : handleClose();
+		console.log(
+			"Object.keys(datosgenot).length  ",
+			Object.keys(datosgenot).length
+		);
+		console.log("otdatos.totaldatos  ", otdatos.totaldatos);
+		if (
+			Object.keys(datosgenot).length > otdatos.totaldatos ||
+			Object.keys(datosgenot).length === 0
+		) {
+			handleOpen();
+		} else handleClose();
 	};
 	const loadData = (data) => {
 		const newData = [...rows, { id: rows.length + 1, data }];
@@ -131,14 +139,15 @@ export default function OTDataGrid({ data }) {
 
 	const processRowUpdate = React.useCallback(
 		async (newRow, oldRow) => {
-			newRow.PresupRenglonImpUnit = Math.round(
-				(oldRow.PresupRenglonImpUnit /
-					oldRow.PresupRenglonLargo /
-					oldRow.PresupRenglonAncho) *
-					newRow.PresupRenglonLargo *
-					newRow.PresupRenglonAncho,
-				2
-			);
+			if (oldRow.PresupRenglonLargo !== 0 || oldRow.PresupRenglonAncho !== 0)
+				newRow.PresupRenglonImpUnit = Math.round(
+					(oldRow.PresupRenglonImpUnit /
+						oldRow.PresupRenglonLargo /
+						oldRow.PresupRenglonAncho) *
+						newRow.PresupRenglonLargo *
+						newRow.PresupRenglonAncho,
+					2
+				);
 			newRow.PresupRenglonImpItem = Math.round(
 				newRow.PresupRenglonImpUnit * newRow.PresupRenglonCant,
 				2
@@ -226,20 +235,23 @@ export default function OTDataGrid({ data }) {
 					</Snackbar>
 				</div>
 			)} */}
-			{console.log("datospot OTDatagrid ", datospot)}
-			{console.log("presuptipo OTDatagrid ", presuptipo)}
 			{datospot !== "" && presuptipo !== "" && abregenera && (
 				<>
 					<OTGenera datospot={datospot}></OTGenera>
 				</>
 			)}
-			{console.log("abregenera OTDataGrid ", abregenera)}
+			{presuptipo !== "UNIDAD" && (
+				<>
+					<OTGenera datospot={rows}></OTGenera>
+				</>
+			)}
+			{/* {console.log("abregenera OTDataGrid ", abregenera)}
 			{console.log("presuptipo ", presuptipo)}
 			{presuptipo === "UNIDAD" && abregenera && (
 				<>
 					<OTGenera datospot={datospot}></OTGenera>
 				</>
-			)}
+			)} */}
 			<DataGrid
 				columnHeaderHeight={35}
 				key={gridKey}

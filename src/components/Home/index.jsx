@@ -1,8 +1,10 @@
-import React from "react";
-import DivPpal from "../../Styles/Divindex.module.css";
-
+import React, { useState } from "react";
+import { StaticContexto } from "../../context/StaticContext";
+import { DatosTablas } from "../../context/TablasContext";
+import { OrdenTrabajo } from "../../context/OrdTrabajo.jsx";
+import { PresupPant } from "../../context/PresupPant";
 export default function Home() {
-	// <div className={DivPpal.multi_bg_example}>
-	//className={DivPpal}
-	<div></div>;
+	const [state, setState] = useState(false);
+	const [datosrenglon, setDatosRenglon] = useState(false);
+	return <div></div>;
 }
