@@ -1,0 +1,63 @@
+.selectField {
+    width: 100%;
+    padding: 5px;
+    margin: 10px 0 10px 0;
+    font-size: 16px;
+    border-right: 2px solid rgb(0, 4, 255);
+    /* Borde solo a la derecha */
+    border-bottom: 2px solid rgb(0, 4, 255);
+    /* Borde solo abajo */
+    border-radius: 0 0 8px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(7, 4, 180, 0.295);
+    /* border: 1px solid #020538;
+    border-radius: 4px; */
+    background-color: #f8f8f836;
+    transition: border-color 0.3s;
+    color: #020538;
+    /* Color del texto del select */
+    cursor: pointer;
+
+
+    &:focus {
+        border-color: rgb(0, 4, 255);
+        outline: none;
+    }
+}
+
+.selectField:focus {
+    border-color: rgb(0, 4, 255);
+    outline: none;
+}
+
+.selectLabel {
+    font-size: 16px;
+    color: #020538;
+    /* Color del texto del label */
+    margin-bottom: 5px;
+}
+
+.menuItem {
+    background-color: rgba(14, 45, 201, 0.034);
+    ;
+    color: #333;
+}
+
+.menuItem:hover {
+    background-color: rgba(190, 200, 248, 0.178);
+    color: #020538;
+}
+
+.menuItem:visited {
+    color: #f311bb;
+
+}
+
+
+
+.menuItem:focus {
+    background-color: rgba(190, 200, 248, 0.178);
+    /* Color de fondo cuando se navega con el cursor */
+    color: #f81130;
+    /* Color del texto cuando se navega con el cursor */
+}

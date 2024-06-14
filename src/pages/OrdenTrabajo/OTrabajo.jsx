@@ -4,17 +4,11 @@ import { useContext } from "react";
 import StaticContexto from "../../context/StaticContext.jsx";
 import OTRecRenglon from "./LayoutOrdenTrabajo/OTRecRenglon.jsx";
 import OrdTrabajo from "../../context/OrdTrabajo";
-import { Route, useNavigate } from "react-router-dom";
 export default function OTrabajo() {
 	const { setValor } = useContext(StaticContexto);
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
-	const navigate = useNavigate();
+	const { inicializaOT } = useContext(OrdTrabajo);
 
-	const ReiniciaOTContext = () => {
-		setOTdatos("");
-		setValor("");
-		navigate("/");
-	};
 	useEffect(() => {
 		setValor("Orden de Trabajo");
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -28,7 +22,7 @@ export default function OTrabajo() {
 		>
 			<OTRecRenglon />
 
-			<Button onClick={ReiniciaOTContext}>Cerrar</Button>
+			<Button onClick={inicializaOT}>Cerrar</Button>
 		</Grid>
 	);
 }

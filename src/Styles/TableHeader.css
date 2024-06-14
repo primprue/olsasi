@@ -1,5 +1,5 @@
 .headerFijo {
-	position: sticky;
+	position: absolute;
 	top: 35px;
 	background-color: rgb(43, 76, 226);
 }

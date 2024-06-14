@@ -1,18 +1,19 @@
-import React, { useEffect, lazy, Suspense, useState, useRef } from "react";
+import React, { useEffect, lazy, Suspense, useState } from "react";
 import { TextField, Grid, IconButton } from "@mui/material";
 
 import styles from "../styles.module.css";
+import estilo from "../../../../Styles/TextFieldSelect.module.css";
+import estilot from "../../../../Styles/TextField.module.css";
 import { stkrubroleeconf } from "../../../Tablas/StkRubros/StkRubroLeeConf";
 import { presupcalculador } from "../../PresupCalculador";
 import { stkmonedasleerorig } from "../../../Tablas/Monedas/StkMonedasLeerOrig";
 import ArchiveIcon from "@mui/icons-material/Archive";
-// import { presupgrabar } from "../../PresupGrabar";
-import { red } from "@mui/material/colors";
+import CancelPresentationTwoToneIcon from "@mui/icons-material/CancelPresentationTwoTone";
+import { red, green } from "@mui/material/colors";
 import { GeneraDCalculo } from "./GeneraDCalculo";
 // Context
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
-
 const TablaPresup = lazy(() => import("../TablaPresup/TablaPresup"));
 const FilaConf = lazy(() => import("../FilaConf/FilaConf"));
 const FilaEnrollables = lazy(() =>
@@ -29,6 +30,7 @@ const FilaCambPanio = lazy(() => import("../FilaCambPanio/FilaCambPanio"));
 const FilaModMed = lazy(() => import("../FilaModMed/FilaModMed"));
 const FilaAbanico = lazy(() => import("../FilaAbanico/FilaAbanico"));
 const FilaLateral = lazy(() => import("../FilaLateral/FilaLateral"));
+
 import useAgregar from "./useAgregar";
 
 export default function FilaDos() {
@@ -42,6 +44,8 @@ export default function FilaDos() {
 	const [cotidivisa, setCotidivisa] = useState(0.0);
 	let labellargo = "Largo";
 	let labelancho = "Ancho";
+	const { inicializaPresup } = useContext(PresupPant);
+
 	if (state.DatosPresupEleg.length !== 0) {
 		var largo = state.DatosPresupEleg[0].PresupConfTipoLargo;
 		var ancho = state.DatosPresupEleg[0].PresupConfTipoAncho;
@@ -85,7 +89,6 @@ export default function FilaDos() {
 
 		if (id === "idStkMonedas") {
 			setEligeMoneda(true);
-			// eligemoneda = true;
 		}
 	};
 
@@ -98,8 +101,6 @@ export default function FilaDos() {
 			setState({ ...state, signomoneda: objetosFiltrados[0].StkMonedasSigno });
 			setOtraMoneda(true);
 			setEligeMoneda(false);
-			// otramoneda = true;
-			// eligemoneda = false;
 		}
 	};
 	async function stkrubroleerconf(cuallee) {
@@ -125,6 +126,7 @@ export default function FilaDos() {
 
 	useEffect(() => {
 		leermonedas();
+		sacadatosmonedas();
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 	async function agregar() {
 		var indicetp1 = state.indicetp + 1;
@@ -199,34 +201,33 @@ export default function FilaDos() {
 	];
 	return (
 		<>
-			{/* <Grid
-				container
-				spacing={3}
-				alignItems="flex-end"
-				// direction="row"
-				// justify="center"
-				//padding={1}
-				xs={12}
-			> */}
-			{rubrosn === "S" &&
-				state.stkrubro.length > 0 &&
-				textdata.map((data) => (
-					<TextField
-						key={data.id}
-						id={data.id}
-						size="small"
-						inputProps={{ maxLength: 3 }}
-						select
-						label={data.label}
-						value={data.value}
-						onChange={handleChange}
-						SelectProps={{ native: true }}
-						variant="outlined"
-						margin="dense"
-					>
-						{data.mapeo}
-					</TextField>
-				))}
+			<Grid item>
+				{rubrosn === "S" &&
+					state.stkrubro.length > 0 &&
+					textdata.map((data) => (
+						<TextField
+							className={estilo.selectField}
+							key={data.id}
+							id={data.id}
+							size="small"
+							InputLabelProps={{
+								className: estilo.selectLabel,
+							}}
+							SelectProps={{
+								native: true,
+								className: estilo.menuItem,
+							}}
+							select
+							label={data.label}
+							value={data.value}
+							onChange={handleChange}
+							variant="outlined"
+							margin="dense"
+						>
+							{data.mapeo}
+						</TextField>
+					))}
+			</Grid>
 			{presuptipo === "PAÑO UNIDO" && (
 				<Grid item xs={1}>
 					<TextField
@@ -240,7 +241,8 @@ export default function FilaDos() {
 						margin="dense"
 						value={state.PresupVeces}
 						onChange={handleChange}
-						className={classes.textField}
+						// className={classes.textField}
+						className={estilot.textfcantidad}
 					/>
 				</Grid>
 			)}
@@ -257,42 +259,49 @@ export default function FilaDos() {
 						margin="dense"
 						value={state.PresupCantidad}
 						onChange={handleChange}
-						className={classes.textField}
+						// className={classes.textField}
+						className={estilot.textfcantidad}
 					/>
 				</Grid>
 			)}
-			<Grid item xs={1}>
-				<TextField
-					disabled={largo === "N"}
-					inputProps={{ maxLength: 3 }}
-					size="small"
-					variant="outlined"
-					id="PresupLargo"
-					type="number"
-					label={labellargo}
-					fullWidth
-					margin="dense"
-					value={state.PresupLargo}
-					onChange={handleChange}
-					className={classes.textField}
-				/>
-			</Grid>
-			<Grid item xs={1}>
-				<TextField
-					disabled={ancho === "N"}
-					inputProps={{ maxLength: 3 }}
-					size="small"
-					variant="outlined"
-					id="PresupAncho"
-					type="number"
-					label={labelancho}
-					fullWidth
-					margin="dense"
-					value={state.PresupAncho}
-					onChange={handleChange}
-					className={classes.textField}
-				/>
-			</Grid>
+			{largo !== "N" && (
+				<Grid item xs={1}>
+					<TextField
+						disabled={largo === "N"}
+						inputProps={{ maxLength: 3 }}
+						size="small"
+						variant="outlined"
+						id="PresupLargo"
+						type="number"
+						label={labellargo}
+						fullWidth
+						margin="dense"
+						value={state.PresupLargo}
+						onChange={handleChange}
+						// className={classes.textField}
+						className={estilot.textfcantidad}
+					/>
+				</Grid>
+			)}{" "}
+			{ancho !== "N" && (
+				<Grid item xs={1}>
+					<TextField
+						disabled={ancho === "N"}
+						inputProps={{ maxLength: 3 }}
+						size="small"
+						variant="outlined"
+						id="PresupAncho"
+						type="number"
+						label={labelancho}
+						fullWidth
+						margin="dense"
+						value={state.PresupAncho}
+						onChange={handleChange}
+						// className={classes.textField}
+						className={estilot.textfcantidad}
+					/>
+				</Grid>
+			)}
 			<Grid container item xs={12}>
 				{presuptipo === "CONFECCIONADA" && <FilaConf></FilaConf>}
 				{presuptipo === "LONAS ENROLLABLES" && (
@@ -346,9 +355,16 @@ export default function FilaDos() {
 
 				<IconButton onClick={() => agregar()} color="primary">
 					<ArchiveIcon
-						style={{ color: red[500] }}
+						style={{ color: green[500] }}
 						fontSize="large"
 						titleAccess="Agregar"
+					/>
+				</IconButton>
+				<IconButton onClick={inicializaPresup} color="primary">
+					<CancelPresentationTwoToneIcon
+						style={{ color: red[500] }}
+						fontSize="large"
+						titleAccess="Reinicio de Presupuesto"
 					/>
 				</IconButton>
 			</Grid>

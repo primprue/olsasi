@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
 	Toolbar,
 	Typography,
@@ -19,7 +19,6 @@ import moment from "moment";
 import { clientestraeNuevos } from "../../pages/Tablas/Clientes/ClientesTraeNuevos";
 import { clientesCobol } from "../../pages/Tablas/Clientes/ClientesCobol";
 import PropBarra from "../../Styles/Header.module.css";
-
 /* ver https://www.youtube.com/watch?v=8-sn405JX1Q&list=PLiio6JvlTLAxDn8azg7jgKJsrdiF4yKCN&index=1&t=50s */
 
 /*  OJO!!!!! cuando agrego una opción en el menú 
@@ -30,6 +29,11 @@ function Header() {
 	const { valor } = useContext(StaticContext);
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
+	const navigate = useNavigate();
+
+	const handleClickInicio = (event) => {
+		navigate("/");
+	};
 	const handleClick = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
@@ -77,17 +81,28 @@ function Header() {
 	return (
 		<div>
 			<Toolbar className={PropBarra.barraherr}>
-				<Button
-					className={PropBarra.botonmenu}
+				<a
+					className={PropBarra.a}
+					id="basic-button"
+					aria-controls={open ? "basic-button" : undefined}
+					aria-expanded={open ? "true" : undefined}
+					aria-haspopup="true"
+					onClick={handleClickInicio}
+					// startIcon={<RequestQuoteTwoToneIcon />}
+				>
+					Inicio
+				</a>
+				<a
+					className={PropBarra.a}
 					id="basic-button"
 					aria-controls={open ? "basic-button" : undefined}
 					aria-expanded={open ? "true" : undefined}
 					aria-haspopup="true"
 					onClick={handleClick}
-					startIcon={<RequestQuoteTwoToneIcon />}
+					// startIcon={<RequestQuoteTwoToneIcon />}
 				>
 					Presup Lista OT
-				</Button>
+				</a>
 				<Menu
 					id="basic-menu"
 					anchorEl={anchorEl}
@@ -138,17 +153,17 @@ function Header() {
 						Modifica Precios
 					</MenuItem>
 				</Menu>
-				<Button
-					className={PropBarra.botonmenu}
+				<a
+					className={PropBarra.a}
 					id="basic-button1"
 					aria-controls={open1 ? "basic-button1" : undefined}
 					aria-haspopup="true"
 					aria-expanded={open1 ? "true" : undefined}
 					onClick={handleClick1}
-					startIcon={<DifferenceTwoToneIcon />}
+					// startIcon={<DifferenceTwoToneIcon />}
 				>
 					Stock
-				</Button>
+				</a>
 				<Menu
 					id="basic-menu"
 					anchorEl={anchorEl1}
@@ -167,17 +182,17 @@ function Header() {
 						Movimiento Stock
 					</MenuItem>
 				</Menu>
-				<Button
-					className={PropBarra.botonmenu}
+				<a
+					className={PropBarra.a}
 					id="basic-button2"
 					aria-controls={open2 ? "basic-button2" : undefined}
 					aria-haspopup="true"
 					aria-expanded={open2 ? "true" : undefined}
 					onClick={handleClick2}
-					startIcon={<TableChartTwoToneIcon />}
+					// startIcon={<TableChartTwoToneIcon />}
 				>
 					Tablas
-				</Button>
+				</a>
 				<Menu
 					id="basic-menu"
 					anchorEl={anchorEl2}

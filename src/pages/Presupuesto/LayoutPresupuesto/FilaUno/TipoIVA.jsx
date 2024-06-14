@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Radio, RadioGroup, FormControlLabel } from "@mui/material";
-
+import estilo from "../../../../Styles/RadioGroup.module.css";
 // Context
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
@@ -15,9 +15,11 @@ export default function TipoIVA() {
 	};
 
 	return (
-		<>
+		// <Grid item xs={1}>
+		<Grid item>
 			{state.PresupMnMy === "mn" && (
 				<RadioGroup
+					className={estilo.radioGroup}
 					row
 					size="small"
 					name="tipoIVA"
@@ -25,26 +27,35 @@ export default function TipoIVA() {
 					onChange={handleChange}
 					margin="dense"
 				>
-					<Grid item xs={4}>
-						<FormControlLabel
-							value="CIVA"
-							control={<Radio />}
-							label="c/IVA"
-							labelPlacement="top"
-							margin="dense"
-						/>
-					</Grid>
-					<Grid item xs={4}>
-						<FormControlLabel
-							value="SIVA"
-							control={<Radio />}
-							label="s/IVA"
-							labelPlacement="top"
-							margin="dense"
-						/>
-					</Grid>
+					<FormControlLabel
+						value="CIVA"
+						control={
+							<Radio
+								classes={{ root: estilo.radio, checked: estilo.radioChecked }}
+							/>
+						}
+						className={estilo.formControlLabel}
+						label="c/IVA"
+						labelPlacement="top"
+						margin="dense"
+					/>
+					{/* </Grid>
+					<Grid item xs={4}> */}
+					<FormControlLabel
+						value="SIVA"
+						control={
+							<Radio
+								classes={{ root: estilo.radio, checked: estilo.radioChecked }}
+							/>
+						}
+						className={estilo.formControlLabel}
+						label="s/IVA"
+						labelPlacement="top"
+						margin="dense"
+					/>
 				</RadioGroup>
 			)}
-		</>
+		</Grid>
+		// </Grid>
 	);
 }

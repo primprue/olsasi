@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import FilaUnoIzq from "./FilaUnoIzq";
 import TipoCliente from "./TipoCliente";
 import TipoIVA from "./TipoIVA";
@@ -11,16 +11,18 @@ export default function FilaUno() {
 				container
 				spacing={3}
 				// alignItems="flex-end"
-				// direction="row"
+				direction="row"
 				// justify="center"
-				padding={1}
+				padding={3}
 				alignItems="center"
-				xs={12}
+				// xs={12}
 			> */}
+			{/* <Grid item xs={2}> */}
 			<TipoCliente />
 			<TipoIVA />
 			<TipoProducto />
 			<FilaUnoIzq />
+			{/* </Grid> */}
 			{/* </Grid> */}
 		</>
 	);

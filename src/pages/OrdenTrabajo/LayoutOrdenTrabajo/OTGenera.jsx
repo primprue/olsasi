@@ -14,19 +14,24 @@ export default function OTGenera(props) {
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo); //trae las caracteristicas de lo que se presupuesto
 	const { datosgenot, setDatosgenot } = useContext(OrdTrabajo); //trae lo que pide por cada tipo de confeccion
 	const [datosencabot, setDatosencabot] = useState();
+	console.log("datospot  ", datospot);
 	let colorfondo = "";
-	let Cliente = "";
-	let Localidad = "";
-	let TelWA = "";
-	let Cantidad = "";
-	let CUIT = "";
-	let Descripcion = "";
-	let Largo = 0;
-	let Ancho = 0;
-	let ImporteItem = 0.0;
-	let TotalOrden = "";
-	let ImporteSeña = "";
+	const otdatosdefcab = {
+		Cliente: "",
+		Localidad: "",
+		TelWA: "",
+		CUIT: "",
+		ImporteSeña: "",
+		TotalOrden: "",
+	};
 
+	const otdatosdefdet = {
+		Cantidad: "",
+		Descripcion: "",
+		Largo: 0,
+		Ancho: 0,
+		ImporteItem: 0.0,
+	};
 	if (datospot.minmay === "my") {
 		colorfondo = "#a6d4ff8d";
 	} else {
@@ -41,37 +46,32 @@ export default function OTGenera(props) {
 	}
 
 	if (otdatos.TotalPresupuesto !== 0) {
-		TotalOrden = otdatos.TotalPresupuesto;
+		otdatosdefcab.TotalOrden = otdatos.TotalPresupuesto;
 	}
 	if (otdatos.senia !== 0) {
-		ImporteSeña = otdatos.senia;
+		otdatosdefcab.ImporteSeña = otdatos.senia;
 	}
-	console.log("datospot  ", datospot);
 	if (otdatos.otrenglon) {
-		Cantidad = otdatos.otrenglon.PresupRenglonCant;
-		Descripcion = otdatos.otrenglon.PresupRenglonDesc;
-		Largo = otdatos.otrenglon.PresupRenglonLargo;
-		Ancho = otdatos.otrenglon.PresupRenglonAncho;
-		ImporteItem = otdatos.otrenglon.PresupRenglonImpItem;
-		console.log("otdatos.otrenglon condicional ", otdatos.otrenglon);
+		otdatosdefdet.Cantidad = otdatos.otrenglon.PresupRenglonCant;
+		otdatosdefdet.Descripcion = otdatos.otrenglon.PresupRenglonDesc;
+		otdatosdefdet.Largo = otdatos.otrenglon.PresupRenglonLargo;
+		otdatosdefdet.Ancho = otdatos.otrenglon.PresupRenglonAncho;
+		otdatosdefdet.ImporteItem = otdatos.otrenglon.PresupRenglonImpItem;
 	} else {
-		Cantidad = otdatos.renglonespresup[0][0].PresupRenglonCant;
-		Descripcion = otdatos.renglonespresup[0][0].PresupRenglonDesc;
-		Largo = otdatos.renglonespresup[0][0].PresupRenglonLargo;
-		Ancho = otdatos.renglonespresup[0][0].PresupRenglonAncho;
-		ImporteItem = otdatos.renglonespresup[0][0].PresupRenglonImpItem;
-		console.log("otdatos.renglonespresup  ", otdatos.renglonespresup);
+		otdatosdefdet.Cantidad = otdatos.renglonespresup[0][0].PresupRenglonCant;
+		otdatosdefdet.Descripcion = otdatos.renglonespresup[0][0].PresupRenglonDesc;
+		otdatosdefdet.Largo = otdatos.renglonespresup[0][0].PresupRenglonLargo;
+		otdatosdefdet.Ancho = otdatos.renglonespresup[0][0].PresupRenglonAncho;
+		otdatosdefdet.ImporteItem =
+			otdatos.renglonespresup[0][0].PresupRenglonImpItem;
 	}
 	if (otdatos.datosnuevocliente) {
-		Cliente = otdatos.datosnuevocliente[0].ClientesDesc;
-		Localidad = otdatos.datosnuevocliente[0].ClientesLoc;
-		TelWA = otdatos.datosnuevocliente[0].ClientesTel;
-		CUIT = otdatos.datosnuevocliente[0].ClientesCUIT;
-		console.log("otdatos.datosencab.ClientesLoc  ", otdatos.datosencab[0][0]);
-		console.log("otdatos.datosnuevocliente ", otdatos.datosnuevocliente);
+		otdatosdefcab.Cliente = otdatos.datosnuevocliente[0].ClientesDesc;
+		otdatosdefcab.Localidad = otdatos.datosnuevocliente[0].ClientesLoc;
+		otdatosdefcab.TelWA = otdatos.datosnuevocliente[0].ClientesTel;
+		otdatosdefcab.CUIT = otdatos.datosnuevocliente[0].ClientesCUIT;
 	} else {
-		Cliente = otdatos.datosencab[0][0].PresupEncabCliente;
-		console.log("otdatos.datosencab  ", otdatos.datosencab[0][0]);
+		otdatosdefcab.Cliente = otdatos.datosencab[0][0].PresupEncabCliente;
 		// Localidad = otdatos.datosencab[0][0].ClientesLoc;
 		// console.log(
 		// 	"otdatos.datosencab.ClientesLoc  ",
@@ -100,8 +100,6 @@ export default function OTGenera(props) {
 		const id = event.target.id;
 		setDatosencabot({ ...datosencabot, [id]: event.target.value });
 	};
-	console.log("datosencabot  ", datosencabot);
-	console.log("datosgenot OTGenera  ", datosgenot);
 
 	return (
 		<div>
@@ -132,13 +130,13 @@ export default function OTGenera(props) {
 				>
 					<TextField
 						label="Cliente"
-						value={Cliente}
+						value={otdatosdefcab.Cliente}
 						variant="outlined"
 						fullWidth
 					/>
 					<TextField
 						label="Localidad"
-						value={Localidad}
+						value={otdatosdefcab.Localidad}
 						onChange={handleChange}
 						variant="outlined"
 						fullWidth
@@ -146,31 +144,37 @@ export default function OTGenera(props) {
 					<TextField label="Correo Electrónico" variant="outlined" fullWidth />
 					<TextField
 						label="Tel-WA"
-						value={TelWA}
+						value={otdatosdefcab.TelWA}
 						onChange={handleChange}
 						variant="outlined"
 						fullWidth
 					/>
 					<TextField
 						label="C.U.I.T."
-						value={CUIT}
+						value={otdatosdefcab.CUIT}
 						onChange={handleChange}
 						variant="outlined"
 						fullWidth
 					/>
 					<TextField
 						label="Total"
-						value={TotalOrden}
+						value={otdatosdefcab.TotalOrden}
 						variant="outlined"
 						fullWidth
 					/>
-
+					<TextField
+						label="C/S IVA"
+						multiline
+						value={datospot.ivasn}
+						rows={1}
+						variant="outlined"
+					/>
 					<TextField
 						inputProps={{ maxLength: 5 }}
 						label="Seña"
 						id="ImporteSeña"
 						type="number"
-						value={ImporteSeña}
+						value={otdatosdefcab.ImporteSeña}
 						onChange={handleChange}
 						variant="outlined"
 						fullWidth
@@ -185,47 +189,41 @@ export default function OTGenera(props) {
 						display: "grid",
 						gridTemplateColumns: "1fr 4fr 1fr 1fr 2fr 1fr",
 						gap: 3,
+						padding: 5,
 					}}
 				>
 					<TextField
 						label="Cantidad"
 						multiline
-						value={Cantidad}
+						value={otdatosdefdet.Cantidad}
 						rows={1}
 						variant="filled"
 					/>
 					<TextField
 						label="Descripcion"
 						multiline
-						value={Descripcion}
+						value={otdatosdefdet.Descripcion}
 						rows={2}
 						variant="filled"
 					/>
 					<TextField
 						label="Largo"
 						multiline
-						value={Largo}
+						value={otdatosdefdet.Largo}
 						rows={1}
 						variant="filled"
 					/>
 					<TextField
 						label="Ancho"
 						multiline
-						value={Ancho}
+						value={otdatosdefdet.Ancho}
 						rows={1}
 						variant="filled"
 					/>
 					<TextField
 						label="Importe"
 						multiline
-						value={ImporteItem}
-						rows={1}
-						variant="filled"
-					/>
-					<TextField
-						label="C/S IVA"
-						multiline
-						value={datospot.ivasn}
+						value={otdatosdefdet.ImporteItem}
 						rows={1}
 						variant="filled"
 					/>

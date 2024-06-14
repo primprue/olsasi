@@ -1,0 +1,58 @@
+.radioGroup {
+    margin-bottom: 5px;
+    /* //  color: rgb(8, 1, 41); */
+    border-right: 2px solid rgb(0, 4, 255);
+    /* Borde solo a la derecha */
+    border-bottom: 2px solid rgb(0, 4, 255);
+    /* Borde solo abajo */
+    border-radius: 0 0 8px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(7, 4, 180, 0.295);
+
+}
+
+.formControlLabel {
+    margin-bottom: 1px;
+}
+
+.radio {
+    color: rgb(8, 1, 41);
+
+}
+
+.radioChecked {
+
+    color: rgb(0, 4, 255);
+}
+
+
+.radioGroup1 {
+    margin-bottom: 5px;
+    margin-right: 5px;
+    margin-left: 5px;
+    background-color: rgba(190, 200, 248, 0.178);
+    /* Borde solo a la derecha */
+    /* Borde solo abajo */
+    /* //  color: rgb(8, 1, 41); */
+    border-right: 2px solid rgb(0, 4, 255);
+    /* Borde solo a la derecha */
+    border-bottom: 2px solid rgb(0, 4, 255);
+    /* Borde solo abajo */
+    border-radius: 0 0 8px 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(7, 4, 180, 0.295);
+}
+
+.formControlLabel1 {
+    margin-bottom: 1px;
+}
+
+.radio1 {
+    color: rgb(1, 54, 10);
+
+}
+
+.radioChecked1 {
+
+    color: rgb(1, 54, 10);
+}

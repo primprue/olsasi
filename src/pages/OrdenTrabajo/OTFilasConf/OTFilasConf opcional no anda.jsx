@@ -1,11 +1,15 @@
 import {
 	Checkbox,
+	Container,
 	FormControl,
 	FormControlLabel,
 	FormGroup,
 	Grid,
+	InputLabel,
+	MenuItem,
 	Radio,
 	RadioGroup,
+	Select,
 	TextField,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -27,19 +31,16 @@ export default function OTFilasConf(props) {
 	async function leedatosot() {
 		setDatosgenot("");
 		const result = await OTDatosLeer(datospot.tipopresup);
-
 		const datos = result.map((row) => ({
+			idotdatos: row.idOTDatos,
 			nombre: row.OTDatosDesc,
 			opciones: JSON.parse(row.OTDatosOpciones),
-			tipocomponete: row.OTDatosTipoPed,
+			tipocomponente: row.OTDatosTipoPed,
 			cantidaddeveces: row.OTDatosVeces,
-			requerido: row.OTDatosRequerido,
 		}));
-		const countRequiredN = datos.filter(
-			(item) => item.requerido === "S"
-		).length;
+
 		setDatosRestantes(datos);
-		setOTdatos({ ...otdatos, totaldatos: countRequiredN });
+		setOTdatos({ ...otdatos, totaldatos: datos.length });
 	}
 	async function stkleeitemsrubro(cuallee) {
 		const result = await StkItemsLeeAbrRub(cuallee);
@@ -100,7 +101,44 @@ export default function OTFilasConf(props) {
 	};
 	const { largo } = datospot;
 	const classes = styles;
-
+	const renderFields = (datosrestantes) => {
+		console.log("datos en renderFields  ", datosrestantes);
+		let datoss = [];
+		for (let i = 0; i < datosrestantes.cantidaddeveces; i++) {
+			if (datosrestantes.tipocomponente === "select") {
+				const options = datosrestantes.opciones;
+				datoss.push(
+					<Grid item xs={12} sm={6} key={`${datosrestantes.idotdatos}-${i}`}>
+						<FormControl fullWidth margin="normal">
+							<InputLabel>
+								{datosrestantes.nombre} {i + 1}
+							</InputLabel>
+							<Select label={`${datosrestantes.nombre} ${i + 1}`}>
+								{Object.keys(options).map((option, index) => (
+									<MenuItem key={index} value={option}>
+										{option}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+					</Grid>
+				);
+			} else if (datosrestantes.tipocomponente === "textfield") {
+				datoss.push(
+					<Grid item xs={12} sm={6} key={`${datosrestantes.idotdatos}-${i}`}>
+						<TextField
+							fullWidth
+							label={`${datosrestantes.nombre} ${i + 1}`}
+							variant="outlined"
+							margin="normal"
+						/>
+					</Grid>
+				);
+			}
+		}
+		console.log("datoss en renderFields  ", datoss);
+		return datoss;
+	};
 	return (
 		<div>
 			<Grid container spacing={2} alignItems="center">
@@ -128,9 +166,14 @@ export default function OTFilasConf(props) {
 						{data.mapeo}
 					</TextField>
 				))}
+				<Container>
+					<Grid container spacing={2}>
+						{datosrestantes.map((datos) => renderFields(datos))}
+					</Grid>
+				</Container>
 				{/* </Grid> */}
 
-				{datosrestantes.map((dato, index) => (
+				{/* {datosrestantes.map((dato, index) => (
 					<div key={index}>
 						{dato.tipocomponete === "select" && (
 							<TextField
@@ -170,9 +213,9 @@ export default function OTFilasConf(props) {
 								value={otdatos.OTDatosDesc}
 								onChange={handleChangeG}
 							/>
-						)}{" "}
-					</div>
-				))}
+						)}{" "} */}
+				{/* </div> */}
+				{/* ))} */}
 			</Grid>
 		</div>
 	);
