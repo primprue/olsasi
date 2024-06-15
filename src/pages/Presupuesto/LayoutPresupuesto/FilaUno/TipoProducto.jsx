@@ -1,5 +1,11 @@
 import React from "react";
-import { Grid, Radio, RadioGroup, FormControlLabel } from "@mui/material";
+import {
+	Grid,
+	Radio,
+	RadioGroup,
+	FormControlLabel,
+	FormHelperText,
+} from "@mui/material";
 import estilo from "../../../../Styles/RadioGroup.module.css";
 // Context
 import { useContext } from "react";
@@ -53,6 +59,7 @@ export default function TipoProducto() {
 					margin="dense"
 				/>
 			</RadioGroup>
+			<FormHelperText>Prod.Elaborado o a Elaborar</FormHelperText>
 		</Grid>
 	);
 }

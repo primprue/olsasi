@@ -1,5 +1,11 @@
 import React from "react";
-import { Grid, Radio, RadioGroup, FormControlLabel } from "@mui/material";
+import {
+	Grid,
+	Radio,
+	RadioGroup,
+	FormControlLabel,
+	FormHelperText,
+} from "@mui/material";
 // Context
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
@@ -54,6 +60,7 @@ export default function TipoCliente() {
 				/>
 				{/* </Grid> */}
 			</RadioGroup>
+			<FormHelperText>Cliente Mayorista-Minorista</FormHelperText>
 		</Grid>
 	);
 }

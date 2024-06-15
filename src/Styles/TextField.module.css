@@ -47,3 +47,28 @@
 	border-radius: 8px;
 	box-shadow: 0 4px 8px rgba(7, 4, 180, 0.295);
 }
+
+.textftexto {
+	/* padding: 5px; */
+	margin-bottom: 2px;
+	margin-right: 8px;
+	margin-left: 5px;
+	background-color: rgba(168, 195, 245, 0.082);
+	border-right: 2px solid rgba(4, 30, 77, 0.966);
+	border-bottom: 2px solid rgba(5, 3, 119, 0.973);
+	border-radius: 0 0 8px 0;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(3, 104, 245, 0.568);
+
+}
+
+
+.formLabel {
+	margin-bottom: 1px;
+	color: rgb(64, 64, 71)
+}
+
+.input {
+	margin-bottom: 1px;
+	background-color: rgb(255, 60, 0)
+}

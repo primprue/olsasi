@@ -1,5 +1,11 @@
 import React from "react";
-import { Grid, Radio, RadioGroup, FormControlLabel } from "@mui/material";
+import {
+	Grid,
+	Radio,
+	RadioGroup,
+	FormControlLabel,
+	FormHelperText,
+} from "@mui/material";
 import estilo from "../../../../Styles/RadioGroup.module.css";
 // Context
 import { useContext } from "react";
@@ -55,6 +61,7 @@ export default function TipoIVA() {
 					/>
 				</RadioGroup>
 			)}
+			<FormHelperText>Cálculo con IVA o sin IVA</FormHelperText>
 		</Grid>
 		// </Grid>
 	);

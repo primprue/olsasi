@@ -1,9 +1,10 @@
 import React from "react";
 import styles from "../styles.module.css";
+import estilos from "../../../../Styles/TextField.module.css";
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
 
-import { TextField } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 export default function FilaDetDesc(props) {
 	const { state, setState } = useContext(PresupPant);
 	const [DescripPresup, setDescripPresup] = React.useState("");
@@ -34,63 +35,73 @@ export default function FilaDetDesc(props) {
 	const classes = styles;
 	return (
 		<>
-			{presuptipo !== "CARGA DESCRIPCION" && (
-				<div>
-					<TextField
-						inputProps={{ maxLength: 15 }}
-						size="small"
-						variant="outlined"
-						id="DescripPresup"
-						margin="dense"
-						label="Descripción"
-						// fullWidth
-						value={DescripPresup}
-						helperText="No imprime medidas"
-						onChange={handleChange3}
-						className={classes.textField}
-					/>
+			<Grid container spacing={2} alignItems="center" padding={3}>
+				{presuptipo !== "CARGA DESCRIPCION" && (
+					<div>
+						<TextField
+							inputProps={{ maxLength: 15 }}
+							size="small"
+							variant="filled"
+							id="DescripPresup"
+							margin="normal"
+							label="Descripción"
+							// fullWidth
+							value={DescripPresup}
+							helperText="No imprime medidas"
+							onChange={handleChange3}
+							className={estilos.textftexto}
+						/>
 
-					<TextField
-						inputProps={{ maxLength: 100 }}
-						size="small"
-						variant="outlined"
-						id="DetallePresup"
-						margin="dense"
-						label="Detalle Presupuesto "
-						// fullWidth
-						value={state.DetallePresup}
-						helperText="Saca la descripción por defecto"
-						onChange={handleChange4}
-						className={classes.textField}
-					/>
-					<TextField
-						inputProps={{ maxLength: 100 }}
-						size="small"
-						variant="outlined"
-						id="DetalleRenglon"
-						margin="dense"
-						label="Agrega en Renglón "
-						// fullWidth
-						value={state.DetalleRenglon}
-						helperText="Se agrega a la descripción"
-						onChange={handleChange5}
-						className={classes.textField}
-					/>
-				</div>
-			)}
-			<TextField
-				inputProps={{ maxLength: 100 }}
-				size="small"
-				variant="outlined"
-				id="ExplicaPresup"
-				margin="dense"
-				label="Explicación de Presupuesto "
-				// fullWidth
-				value={state.ExplicaPresup}
-				helperText="No aparece en el presupuesto"
-				onChange={handleChange6}
-				className={classes.textField}
-			/>
+						<TextField
+							inputProps={{ maxLength: 100 }}
+							size="small"
+							variant="filled"
+							id="DetallePresup"
+							margin="normal"
+							label="Detalle Presupuesto "
+							// fullWidth
+							value={state.DetallePresup}
+							helperText="Saca la descripción por defecto"
+							onChange={handleChange4}
+							className={estilos.textftexto}
+						/>
+						<TextField
+							inputProps={{ maxLength: 100 }}
+							size="small"
+							variant="filled"
+							id="DetalleRenglon"
+							margin="normal"
+							label="Agrega en Renglón "
+							// fullWidth
+							value={state.DetalleRenglon}
+							helperText="Se agrega a la descripción"
+							onChange={handleChange5}
+							className={estilos.textftexto}
+						/>
+					</div>
+				)}
+				<TextField
+					inputProps={{ maxLength: 100 }}
+					size="small"
+					variant="filled"
+					id="ExplicaPresup"
+					margin="normal"
+					InputLabelProps={{
+						classes: {
+							root: estilos.formLabel,
+							input: estilos.input,
+							MuiFormHelperTextroot: estilos.input,
+							//	helperText: estilos.formControlLabel,
+						},
+					}}
+					label="Explicación de Presupuesto "
+					// fullWidth
+					value={state.ExplicaPresup}
+					helperText="No aparece en el presupuesto"
+					onChange={handleChange6}
+					className={estilos.textftexto}
+				/>
+			</Grid>
 		</>
 	);
 }
