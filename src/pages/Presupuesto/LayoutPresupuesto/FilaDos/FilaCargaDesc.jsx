@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../styles.module.css";
+import estilot from "../../../../Styles/TextField.module.css";
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
 
@@ -30,7 +31,7 @@ export default function FilaCargaDesc() {
 					placeholder="no permite los signos % +"
 					helperText="Descripción del trabajo (no permite los signos % +)"
 					onChange={handleChange5}
-					className={classes.textField}
+					className={estilot.textfcantidad}
 				/>
 			</Grid>
 		</>

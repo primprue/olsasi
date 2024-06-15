@@ -1,5 +1,5 @@
 import React, { useEffect, lazy, Suspense, useState } from "react";
-import { TextField, Grid, IconButton } from "@mui/material";
+import { TextField, Grid, IconButton, FormHelperText } from "@mui/material";
 
 import styles from "../styles.module.css";
 import estilo from "../../../../Styles/TextFieldSelect.module.css";
@@ -96,6 +96,7 @@ export default function FilaDos() {
 		const objetosFiltrados = state.monedasleidas.filter(
 			(objeto) => objeto.idStkMonedas === state.idStkMonedas
 		);
+
 		if (objetosFiltrados.length > 0) {
 			setCotidivisa(objetosFiltrados[0].StkMonedasCotizacion);
 			setState({ ...state, signomoneda: objetosFiltrados[0].StkMonedasSigno });
@@ -127,7 +128,7 @@ export default function FilaDos() {
 	useEffect(() => {
 		leermonedas();
 		sacadatosmonedas();
-	}, []); // eslint-disable-line react-hooks/exhaustive-deps
+	}, [state.monedasleidas.length <= 0]); // eslint-disable-line react-hooks/exhaustive-deps
 	async function agregar() {
 		var indicetp1 = state.indicetp + 1;
 		setState({ ...state, indicetp: indicetp1 });
@@ -332,13 +333,14 @@ export default function FilaDos() {
 					<></>
 				)}
 			</Grid>{" "}
-			<Grid container item xs={6}>
+			<Grid container item xs={1}>
 				{state.monedasleidas.length > 0 &&
 					textdatam.map((data) => (
 						<TextField
+							className={estilo.selectField}
 							key={data.id}
 							id={data.id}
-							//fullWidth
+							fullWidth
 							size="small"
 							select
 							label={data.label}
@@ -352,7 +354,8 @@ export default function FilaDos() {
 							{data.mapeo}
 						</TextField>
 					))}
-
+			</Grid>
+			<Grid item>
 				<IconButton onClick={() => agregar()} color="primary">
 					<ArchiveIcon
 						style={{ color: green[500] }}
@@ -360,6 +363,8 @@ export default function FilaDos() {
 						titleAccess="Agregar"
 					/>
 				</IconButton>
+			</Grid>
+			<Grid item>
 				<IconButton onClick={inicializaPresup} color="primary">
 					<CancelPresentationTwoToneIcon
 						style={{ color: red[500] }}

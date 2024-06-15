@@ -8,8 +8,10 @@ import {
 } from "@mui/material";
 
 import swal from "sweetalert";
+import estilo from "../../../../Styles/TextFieldSelect.module.css";
+import estiloI from "../../../../Styles/RadioGroup.module.css";
+import estiloII from "../../../../Styles/TextField.module.css";
 
-import styles from "../styles.module.css";
 // Context
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
@@ -61,106 +63,130 @@ export default function FilaAbanico(props) {
 		},
 	];
 
-	const classes = styles;
-
 	return (
 		<>
-			<Grid item xs={1}>
-				<TextField
-					inputProps={{ maxLength: 3 }}
-					size="small"
-					variant="outlined"
-					id="CantBrazos"
-					type="number"
-					margin="dense"
-					label="Cantidad Brazos : "
-					fullWidth
-					value={state.CantBrazos}
-					onChange={handleChange}
-					className={classes.textField}
-				/>
-			</Grid>
-			<Grid item xs={1}>
-				<TextField
-					inputProps={{ maxLength: 3 }}
-					//no más de 1.25
-					size="small"
-					variant="outlined"
-					id="LargoBrazo"
-					type="number"
-					margin="dense"
-					label="Largo Brazos : "
-					fullWidth
-					value={state.LargoBrazo}
-					onChange={handleChangeLargo}
-					className={classes.textField}
-					helperText="No mayor a 1.25"
-				/>
-			</Grid>
-			<Grid item xs={1}>
-				{fajadebrazo.map((data) => (
+			<Grid container spacing={2}>
+				<Grid item xs={1}>
 					<TextField
-						id={data.id}
-						key={data.id}
-						fullWidth
+						inputProps={{ maxLength: 3 }}
 						size="small"
-						select
-						label={data.label}
-						margin="dense"
-						value={data.value}
-						onChange={handleChange}
-						SelectProps={{ native: true }}
 						variant="outlined"
-						helperText="Brazos de?"
-						// className={classes.textField}
+						id="CantBrazos"
+						type="number"
+						margin="dense"
+						label="Cantidad Brazos : "
+						fullWidth
+						value={state.CantBrazos}
+						onChange={handleChange}
+						className={estiloII.textfcantidad}
+					/>
+				</Grid>
+				<Grid item xs={1}>
+					<TextField
+						inputProps={{ maxLength: 3 }}
+						//no más de 1.25
+						size="small"
+						variant="outlined"
+						id="LargoBrazo"
+						type="number"
+						margin="dense"
+						label="Largo Brazos : "
+						fullWidth
+						value={state.LargoBrazo}
+						onChange={handleChangeLargo}
+						className={estiloII.textfcantidad}
+						helperText="No mayor a 1.25"
+					/>
+				</Grid>
+				<Grid item xs={1}>
+					{fajadebrazo.map((data) => (
+						<TextField
+							id={data.id}
+							key={data.id}
+							fullWidth
+							size="small"
+							select
+							label={data.label}
+							margin="dense"
+							value={data.value}
+							onChange={handleChange}
+							className={estilo.selectField}
+							InputLabelProps={{
+								className: estilo.selectLabel,
+							}}
+							SelectProps={{
+								native: true,
+								className: estilo.menuItem,
+							}}
+							variant="outlined"
+							// helperText="Brazos de?"
+							// className={classes.textField}
+						>
+							{data.mapeo}
+						</TextField>
+					))}
+				</Grid>
+				<Grid item xs={1}>
+					<TextField
+						inputProps={{ maxLength: 3 }}
+						size="small"
+						variant="outlined"
+						id="AltoVolado"
+						type="number"
+						label="Volado en cm :  "
+						fullWidth
+						margin="dense"
+						value={state.AltoVolado}
+						onChange={handleChange}
+						className={estiloII.textfcantidad}
+					/>
+				</Grid>
+				<Grid item ms={2}>
+					<RadioGroup
+						className={estiloI.radioGroup1}
+						row
+						size="small"
+						name="Volado"
+						value={state.VolDS}
+						onChange={voladods}
+						margin="dense"
 					>
-						{data.mapeo}
-					</TextField>
-				))}
-			</Grid>
-			<Grid item xs={1}>
-				<TextField
-					inputProps={{ maxLength: 3 }}
-					size="small"
-					variant="outlined"
-					id="AltoVolado"
-					type="number"
-					label="Volado en cm :  "
-					fullWidth
-					margin="dense"
-					value={state.AltoVolado}
-					onChange={handleChange}
-					className={classes.textField}
-				/>
-			</Grid>
-			<Grid item xs={2}>
-				<RadioGroup
-					row
-					size="small"
-					name="Volado"
-					value={state.VolDS}
-					onChange={voladods}
-					margin="dense"
-				>
-					<FormControlLabel
-						size="small"
-						value="S"
-						control={<Radio />}
-						label="Simple"
-						labelPlacement="top"
-						disabled={props.enable}
-						margin="dense"
-					/>
-					<FormControlLabel
-						size="small"
-						value="D"
-						control={<Radio />}
-						label="Doble"
-						labelPlacement="top"
-						disabled={props.disable}
-						margin="dense"
-					/>
-				</RadioGroup>
+						<FormControlLabel
+							size="small"
+							value="S"
+							control={
+								<Radio
+									classes={{
+										root: estiloI.radio1,
+										checked: estiloI.radioChecked1,
+									}}
+								/>
+							}
+							className={estiloI.formControlLabel1}
+							label="Simple"
+							labelPlacement="top"
+							disabled={props.enable}
+							margin="dense"
+						/>
+						<FormControlLabel
+							size="small"
+							value="D"
+							control={
+								<Radio
+									classes={{
+										root: estiloI.radio1,
+										checked: estiloI.radioChecked1,
+									}}
+								/>
+							}
+							className={estiloI.formControlLabel1}
+							label="Doble"
+							labelPlacement="top"
+							disabled={props.disable}
+							margin="dense"
+						/>
+					</RadioGroup>
+				</Grid>
 			</Grid>
 		</>
 	);
