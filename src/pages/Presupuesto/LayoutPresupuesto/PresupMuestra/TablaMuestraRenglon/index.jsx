@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
-// import { tableIcons } from "../../../../../lib/material-table/tableIcons";
-// import { localization } from "../../../../../lib/material-table/localization";
 import estilotabla from "../../../../../Styles/Tabla.module.css";
-import CompressSharpIcon from "@mui/icons-material/CompressSharp";
 import {
 	Box,
 	Button,
 	Dialog,
 	DialogActions,
 	DialogContent,
-	DialogContentText,
 	DialogTitle,
 	Slide,
 } from "@mui/material";
@@ -19,6 +15,7 @@ import { llenarcolumns } from "./columns.jsx";
 import { PresupBorrar } from "../PresupBorrar.jsx";
 import { useContext } from "react";
 import OrdTrabajo from "../../../../../context/OrdTrabajo.jsx";
+
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;
 });

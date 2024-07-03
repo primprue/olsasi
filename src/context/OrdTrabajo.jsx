@@ -3,7 +3,7 @@ const OrdTrabajo = createContext();
 
 export function OrdenTrabajo({ children }) {
 	const [otdatos, setOTdatos] = useState("");
-	const [datosgenot, setDatosgenot] = useState("");
+	const [datosgenot, setDatosgenot] = useState([]);
 	const inicializaOT = () => {
 		setOTdatos("");
 		setDatosgenot(""); // Reinicia otros estados si es necesario

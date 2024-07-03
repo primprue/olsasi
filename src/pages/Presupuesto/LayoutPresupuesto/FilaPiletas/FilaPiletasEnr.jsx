@@ -9,13 +9,11 @@ import {
 // Context
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
-
+import estiloI from "../../../../Styles/RadioGroup.module.css";
 export default function FilaPiletasEnr(props) {
 	const [selectedValue, setSelectedValue] = React.useState("cd");
 	const { state, setState } = useContext(PresupPant);
 	const [ojalbronce, setOjalBronce] = React.useState("hz");
-	// const [DescripPresup, setDescripPresup] = React.useState('')
-	// var [DetallePresup, setDetallePresup] = React.useState('')
 
 	const handleChange = (event) => {
 		setSelectedValue(event.target.value);
@@ -31,6 +29,7 @@ export default function FilaPiletasEnr(props) {
 		<>
 			<Grid item xs={2}>
 				<RadioGroup
+					className={estiloI.radioGroup1}
 					row
 					size="small"
 					name="Drenajesn"
@@ -41,7 +40,15 @@ export default function FilaPiletasEnr(props) {
 					<FormControlLabel
 						size="small"
 						value="cd"
-						control={<Radio />}
+						control={
+							<Radio
+								classes={{
+									root: estiloI.radio1,
+									checked: estiloI.radioChecked1,
+								}}
+							/>
+						}
+						className={estiloI.formControlLabel1}
 						label="C/D"
 						labelPlacement="top"
 						disabled={props.disable}
@@ -50,7 +57,15 @@ export default function FilaPiletasEnr(props) {
 					<FormControlLabel
 						size="small"
 						value="sd"
-						control={<Radio />}
+						control={
+							<Radio
+								classes={{
+									root: estiloI.radio1,
+									checked: estiloI.radioChecked1,
+								}}
+							/>
+						}
+						className={estiloI.formControlLabel1}
 						label="S/D"
 						labelPlacement="top"
 						disabled={props.disable}
@@ -61,6 +76,7 @@ export default function FilaPiletasEnr(props) {
 			</Grid>
 			<Grid item xs={2}>
 				<RadioGroup
+					className={estiloI.radioGroup1}
 					row
 					size="small"
 					name="tipoOjal"
@@ -71,7 +87,15 @@ export default function FilaPiletasEnr(props) {
 					<FormControlLabel
 						size="small"
 						value="hz"
-						control={<Radio />}
+						control={
+							<Radio
+								classes={{
+									root: estiloI.radio1,
+									checked: estiloI.radioChecked1,
+								}}
+							/>
+						}
+						className={estiloI.formControlLabel1}
 						label="HZ"
 						labelPlacement="top"
 						disabled={props.disable}
@@ -80,7 +104,15 @@ export default function FilaPiletasEnr(props) {
 					<FormControlLabel
 						size="small"
 						value="br"
-						control={<Radio />}
+						control={
+							<Radio
+								classes={{
+									root: estiloI.radio1,
+									checked: estiloI.radioChecked1,
+								}}
+							/>
+						}
+						className={estiloI.formControlLabel1}
 						label="BR"
 						labelPlacement="top"
 						disabled={props.disable}

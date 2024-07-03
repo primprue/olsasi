@@ -8,7 +8,8 @@ import {
 } from "@mui/material";
 import styles from "../styles.module.css";
 // Context
-
+import estiloI from "../../../../Styles/RadioGroup.module.css";
+import estiloII from "../../../../Styles/TextField.module.css";
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
 
@@ -40,124 +41,131 @@ export default function FilaModMed(props) {
 	const classes = styles;
 	return (
 		<>
-			<Grid item xs={1}>
-				<TextField
-					inputProps={{ maxLength: 3 }}
-					size="small"
-					variant="outlined"
-					id="PresupLargoN"
-					type="number"
-					label="Largo Nuevo"
-					fullWidth
-					margin="dense"
-					value={state.PresupLargoN}
-					onChange={handleChange1}
-					className={classes.textField}
-				/>
-			</Grid>
+			<Grid container spacing={2} xs={12}>
+				<Grid item xs={1}>
+					<TextField
+						inputProps={{ maxLength: 3 }}
+						size="small"
+						variant="outlined"
+						id="PresupLargoN"
+						type="number"
+						label="Largo Nuevo"
+						fullWidth
+						margin="dense"
+						value={state.PresupLargoN}
+						onChange={handleChange1}
+						className={estiloII.textfcantidad}
+					/>
+				</Grid>
 
-			<Grid item xs={1}>
-				<TextField
-					inputProps={{ maxLength: 3 }}
-					size="small"
-					variant="outlined"
-					id="PresupAnchoN"
-					type="number"
-					label="Ancho Nuevo"
-					fullWidth
-					margin="dense"
-					value={state.PresupAnchoN}
-					onChange={handleChange1}
-					className={classes.textField}
-				/>
-			</Grid>
+				<Grid item xs={1}>
+					<TextField
+						inputProps={{ maxLength: 3 }}
+						size="small"
+						variant="outlined"
+						id="PresupAnchoN"
+						type="number"
+						label="Ancho Nuevo"
+						fullWidth
+						margin="dense"
+						value={state.PresupAnchoN}
+						onChange={handleChange1}
+						className={estiloII.textfcantidad}
+					/>
+				</Grid>
 
-			<Grid item xs={2}>
-				<RadioGroup
-					row
-					size="small"
-					name="tipoDobladillo"
-					value={selectedValue}
-					onChange={handleChange}
-					margin="dense"
-				>
-					<FormControlLabel
+				<Grid item xs={2}>
+					<RadioGroup
+						className={estiloI.radioGroup1}
+						row
 						size="small"
-						value="cs"
-						control={<Radio />}
-						label="C/S"
-						labelPlacement="top"
-						disabled={props.disable}
+						name="tipoDobladillo"
+						value={selectedValue}
+						onChange={handleChange}
 						margin="dense"
-					/>
-					<FormControlLabel
+					>
+						<FormControlLabel
+							size="small"
+							value="cs"
+							label="C/S"
+							control={<Radio />}
+							labelPlacement="top"
+							disabled={props.disable}
+							margin="dense"
+						/>
+						<FormControlLabel
+							size="small"
+							value="ss"
+							control={<Radio />}
+							label="S/S"
+							labelPlacement="top"
+							disabled={props.disable}
+							margin="dense"
+						/>
+					</RadioGroup>
+				</Grid>
+				<Grid item xs={2}>
+					<RadioGroup
+						className={estiloI.radioGroup1}
+						row
 						size="small"
-						value="ss"
-						control={<Radio />}
-						label="S/S"
-						labelPlacement="top"
-						disabled={props.disable}
+						name="tipoOjal"
+						value={ojalbronce}
+						onChange={handleChange2}
 						margin="dense"
-					/>
-				</RadioGroup>
-			</Grid>
-			<Grid item xs={2}>
-				<RadioGroup
-					row
-					size="small"
-					name="tipoOjal"
-					value={ojalbronce}
-					onChange={handleChange2}
-					margin="dense"
-				>
-					<FormControlLabel
+					>
+						<FormControlLabel
+							size="small"
+							value="hz"
+							className={estiloI.formControlLabel1}
+							label="HZ"
+							control={<Radio />}
+							labelPlacement="top"
+							disabled={props.disable}
+							margin="dense"
+						/>
+						<FormControlLabel
+							className={estiloI.formControlLabel1}
+							size="small"
+							value="br"
+							control={<Radio />}
+							label="BR"
+							labelPlacement="top"
+							disabled={props.disable}
+							margin="dense"
+						/>
+					</RadioGroup>
+				</Grid>
+				<Grid item xs={2}>
+					<RadioGroup
+						className={estiloI.radioGroup1}
+						row
 						size="small"
-						value="hz"
-						control={<Radio />}
-						label="HZ"
-						labelPlacement="top"
-						disabled={props.disable}
+						name="lonadeAca"
+						value={lonanuesafu}
+						onChange={handleChange3}
 						margin="dense"
-					/>
-					<FormControlLabel
-						size="small"
-						value="br"
-						control={<Radio />}
-						label="BR"
-						labelPlacement="top"
-						disabled={props.disable}
-						margin="dense"
-					/>
-				</RadioGroup>
-			</Grid>
-			<Grid item xs={2}>
-				<RadioGroup
-					row
-					size="small"
-					name="lonadeAca"
-					value={lonanuesafu}
-					onChange={handleChange3}
-					margin="dense"
-				>
-					<FormControlLabel
-						size="small"
-						value="LN"
-						control={<Radio />}
-						label="LN"
-						labelPlacement="top"
-						disabled={props.disable}
-						margin="dense"
-					/>
-					<FormControlLabel
-						size="small"
-						value="LA"
-						control={<Radio />}
-						label="LA"
-						labelPlacement="top"
-						disabled={props.disable}
-						margin="dense"
-					/>
-				</RadioGroup>
+					>
+						<FormControlLabel
+							size="small"
+							value="LN"
+							control={<Radio />}
+							label="LN"
+							labelPlacement="top"
+							disabled={props.disable}
+							margin="dense"
+						/>
+						<FormControlLabel
+							size="small"
+							value="LA"
+							control={<Radio />}
+							label="LA"
+							labelPlacement="top"
+							disabled={props.disable}
+							margin="dense"
+						/>
+					</RadioGroup>
+				</Grid>
 			</Grid>
 		</>
 	);

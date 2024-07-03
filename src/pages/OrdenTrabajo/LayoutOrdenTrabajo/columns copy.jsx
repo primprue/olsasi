@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { styled } from "@mui/system";
+import OTFilasConf from "../OTFilasConf/OTFilasConf";
 const MultilineCell = styled("span")`
 	white-space: normal;
 	line-height: 1.2;
 	max-height: 3.6em; /* Puedes ajustar esta altura según tu necesidad */
 	overflow: hidden;
 `;
-export async function llenarcolumns(flattenedData) {
+export async function llenarcolumns() {
 	return columnsFill();
 }
 
@@ -89,14 +90,14 @@ function columnsFill() {
 				),
 				editable: "never",
 			},
-			// {
-			// 	headerName: "Datos Confección",
-			// 	field: "DatosConf",
-			// 	width: 400,
+			{
+				headerName: "Datos Confección",
+				field: "DatosConf",
+				width: 400,
 
-			// 	//	renderCell: (params) => <MultilineCell>{params.value}</MultilineCell>,
-			// 	editable: true,
-			// },
+				//	renderCell: (params) => <MultilineCell>{params.value}</MultilineCell>,
+				editable: true,
+			},
 		]);
 		// }, 500);
 	});

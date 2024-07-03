@@ -12,6 +12,10 @@ import { stkrubroleelat } from "../../../Tablas/StkRubros/StkRubroLeeLAT";
 // Context
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
+import estilo from "../../../../Styles/TextFieldSelect.module.css";
+import estiloI from "../../../../Styles/RadioGroup.module.css";
+import estiloII from "../../../../Styles/TextField.module.css";
+import estiloIII from "../../../../Styles/Check.module.css";
 
 export default function FilaLateral() {
 	const { state, setState } = useContext(PresupPant);
@@ -53,8 +57,8 @@ export default function FilaLateral() {
 
 	return (
 		<>
-			<Grid container>
-				<Grid item>
+			<Grid container spacing={2} xs={12}>
+				<Grid item xs={1}>
 					<TextField
 						inputProps={{ maxLength: 1 }}
 						size="small"
@@ -65,10 +69,10 @@ export default function FilaLateral() {
 						margin="dense"
 						value={state.CantHeb}
 						onChange={handleChange}
-						className={classes.textField}
+						className={estiloII.textfcantpadchico}
 					/>
 				</Grid>
-				<Grid item>
+				<Grid item xs={3}>
 					{state.CantHeb !== 0 && (
 						<TextField
 							id="tipoheb"
@@ -76,9 +80,14 @@ export default function FilaLateral() {
 							label="Hebillas"
 							variant="outlined"
 							value={state.tipoheb}
+							className={estilo.selectField}
 							onChange={handleChange}
+							InputLabelProps={{
+								className: estilo.selectLabel,
+							}}
 							SelectProps={{
 								native: true,
+								className: estilo.menuItem,
 							}}
 							helperText="Seleccionar tipo hebillas incluye placa"
 						>
@@ -96,7 +105,7 @@ export default function FilaLateral() {
 						</TextField>
 					)}
 				</Grid>
-				<Grid item xs={2}>
+				<Grid item xs={1}>
 					<TextField
 						inputProps={{ maxLength: 1 }}
 						size="small"
@@ -107,7 +116,7 @@ export default function FilaLateral() {
 						margin="dense"
 						value={state.CantCarro}
 						onChange={handleChange}
-						className={classes.textField}
+						className={estiloII.textfcantpadchico}
 					/>
 				</Grid>
 				<Grid item xs={3}>
@@ -119,8 +128,13 @@ export default function FilaLateral() {
 							label="Carro"
 							value={state.tipocarro}
 							onChange={handleChange}
+							className={estilo.selectField}
+							InputLabelProps={{
+								className: estilo.selectLabel,
+							}}
 							SelectProps={{
 								native: true,
+								className: estilo.menuItem,
 							}}
 							helperText="Seleccionar tipo carro"
 						>
@@ -138,7 +152,7 @@ export default function FilaLateral() {
 						</TextField>
 					)}
 				</Grid>
-				<Grid item xs={2}>
+				<Grid item xs={1}>
 					<TextField
 						inputProps={{ maxLength: 1 }}
 						size="small"
@@ -149,7 +163,7 @@ export default function FilaLateral() {
 						margin="dense"
 						value={state.CantPlaca}
 						onChange={handleChange}
-						className={classes.textField}
+						className={estiloII.textfcantpadchico}
 					/>
 				</Grid>
 				<Grid item xs={3}>
@@ -161,8 +175,13 @@ export default function FilaLateral() {
 							label="Placa Ajuste"
 							value={state.tipoplaca}
 							onChange={handleChange}
+							className={estilo.selectField}
+							InputLabelProps={{
+								className: estilo.selectLabel,
+							}}
 							SelectProps={{
 								native: true,
+								className: estilo.menuItem,
 							}}
 							helperText="Seleccionar placa ajuste"
 						>
@@ -180,10 +199,12 @@ export default function FilaLateral() {
 						</TextField>
 					)}
 				</Grid>
-				<Grid item xs={2}>
+				<Grid item spacing={2} xs={4}>
 					<FormControlLabel
+						className={estiloIII.formControlLabelCheck}
 						control={
 							<Checkbox
+								className={estiloIII.check}
 								checked={chcolocacion}
 								onChange={handleChecked}
 								name="checkedColocacion"

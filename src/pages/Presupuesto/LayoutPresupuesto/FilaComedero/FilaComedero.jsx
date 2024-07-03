@@ -123,6 +123,7 @@ export default function FilaComedero(props) {
 							className={estiloI.formControlLabel1}
 						/>
 						<FormControlLabel
+							className={estiloI.formControlLabel1}
 							size="small"
 							value="br"
 							label="BR"
@@ -137,7 +138,6 @@ export default function FilaComedero(props) {
 									}}
 								/>
 							}
-							className={estiloI.formControlLabel}
 						/>
 					</RadioGroup>
 					<FormHelperText>Ojales de hierro o bronce</FormHelperText>

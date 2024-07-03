@@ -7,8 +7,8 @@ import {
 	FormControlLabel,
 	TextField,
 } from "@mui/material";
-import styles from "../styles.module.css";
-
+import estiloI from "../../../../Styles/RadioGroup.module.css";
+import estiloII from "../../../../Styles/TextField.module.css";
 // Context
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
@@ -28,85 +28,71 @@ export default function FilaAbolinada(props) {
 		setState({ ...state, PresupOB: event.target.value });
 	};
 
-	const classes = styles;
-
 	return (
 		<>
-			<Grid item xs={2}>
-				<TextField
-					inputProps={{ maxLength: 3 }}
-					size="small"
-					variant="outlined"
-					id="PresupOjalesC"
-					type="number"
-					label="Ojales cada, en cm :  "
-					fullWidth
-					margin="dense"
-					value={state.PresupOjalesC}
-					onChange={handleChange}
-					className={classes.textField}
-				/>
-			</Grid>
-			<Grid item xs={2}>
-				<RadioGroup
-					row
-					size="small"
-					name="tipoOjal"
-					value={ojalbronce}
-					onChange={handleChange2}
-					margin="dense"
-				>
-					<FormControlLabel
+			<Grid container spacing={2} xs={8}>
+				<Grid item>
+					<TextField
+						inputProps={{ maxLength: 3 }}
 						size="small"
-						value="hz"
-						control={<Radio />}
-						label="HZ"
-						labelPlacement="top"
-						disabled={props.disable}
+						variant="outlined"
+						id="PresupOjalesC"
+						type="number"
+						label="Ojales cada, en cm :  "
+						fullWidth
 						margin="dense"
+						value={state.PresupOjalesC}
+						onChange={handleChange}
+						className={estiloII.textfcantidad}
 					/>
-					<FormControlLabel
+				</Grid>
+				<Grid item xs={2}>
+					<RadioGroup
+						className={estiloI.radioGroup1}
+						row
 						size="small"
-						value="br"
-						control={<Radio />}
-						label="BR"
-						labelPlacement="top"
-						disabled={props.disable}
+						name="tipoOjal"
+						value={ojalbronce}
+						onChange={handleChange2}
 						margin="dense"
-					/>
-				</RadioGroup>
+					>
+						<FormControlLabel
+							size="small"
+							value="hz"
+							control={
+								<Radio
+									classes={{
+										root: estiloI.radio1,
+										checked: estiloI.radioChecked1,
+									}}
+								/>
+							}
+							className={estiloI.formControlLabel1}
+							label="HZ"
+							labelPlacement="top"
+							disabled={props.disable}
+							margin="dense"
+						/>
+						<FormControlLabel
+							size="small"
+							value="br"
+							control={
+								<Radio
+									classes={{
+										root: estiloI.radio1,
+										checked: estiloI.radioChecked1,
+									}}
+								/>
+							}
+							className={estiloI.formControlLabel1}
+							label="BR"
+							labelPlacement="top"
+							disabled={props.disable}
+							margin="dense"
+						/>
+					</RadioGroup>
+				</Grid>
 			</Grid>
-
-			{/* <Grid item xs={3}>
-        <TextField
-          inputProps={{ maxLength: 12 }}
-          size="small"
-          variant="outlined"
-          id="DescripPresup"
-          margin="dense"
-          label="Descripción"
-          // fullWidth
-          value={state.DescripPresup}
-          helperText='No imprime medidas'
-          onChange={handleChange3}
-          className={classes.textField}
-        />
-      </Grid>
-      <Grid item xs={3}>
-        <TextField
-          inputProps={{ maxLength: 25 }}
-          size="small"
-          variant="outlined"
-          id="DetallePresup"
-          margin="dense"
-          label="Detalle Presupuesto "
-          // fullWidth
-          value={state.DetallePresup}
-          helperText='Saca la descripción por defecto'
-          onChange={handleChange4}
-          className={classes.textField}
-        />
-      </Grid> */}
 		</>
 	);
 }
