@@ -28,10 +28,8 @@ export const GeneraDCalculo = (props, presuptipo, cotidivisa) => {
 			signomonet: props.signomoneda,
 		};
 	}
-	console.log("datosobligatorios GeneraDCalculo  ", datosobligatorios);
 	let objetoModificado = { ...datosobligatorios };
 
-	console.log(" despues datosobligatorios GeneraDCalculo  ", datosobligatorios);
 	if (presuptipo === "CONFECCIONADA") {
 		objetoModificado.tipoconf = props.PresupCsSs;
 		objetoModificado.tipoojale = props.PresupOB;
@@ -108,53 +106,5 @@ export const GeneraDCalculo = (props, presuptipo, cotidivisa) => {
 		objetoModificado.stkrubroabrtbr = props.StkRubroAbrTBR;
 		objetoModificado.altovolado = props.AltoVolado;
 	}
-	console.log("datosobligatorios GeneraDCalculo al final  ", datosobligatorios);
 	return objetoModificado;
 };
-// var dcalculo = [
-// 	{
-// 		StkRubroAbr: state.StkRubroAbr,
-// 		minmay: state.PresupMnMy,
-// 		ivasn: state.PresupIVA,
-// 		cantidad: state.PresupCantidad,
-// 		veces: state.PresupVeces,
-// 		largo: state.PresupLargo,
-// 		ancho: state.PresupAncho,
-// 		largon: state.PresupLargoN,
-// 		anchon: state.PresupAnchoN,
-// 		tipoconf: state.PresupCsSs,
-// 		tipoojale: state.PresupOB,
-// 		drenajesn: state.PresupDrenaje,
-// 		detallep: state.DetallePresup,
-// 		detaller: state.DetalleRenglon,
-// 		tamfaja: state.TamFaja,
-// 		tamcristal: state.TamCristal,
-// 		altovolado: state.AltoVolado,
-// 		presupojalesc: state.PresupOjalesC,
-// 		sobrantemarco: state.SobranteMarco,
-// 		tipomedeleg: state.TipoMedidaEleg,
-// 		termbordeeleg: state.TermBordeEleg,
-// 		anchopared: state.AnchoPared,
-// 		medida: state.Medida,
-// 		//para el alto del tanque
-// 		alto: state.Alto,
-// 		stkrubroabrtbr: state.StkRubroAbrTBR,
-// 		tipomecanismo: state.TipoMecanismo,
-// 		anchocomedero: state.AnchoComederoEleg,
-// 		lonanuestraafuera: state.PreuspLNLF,
-// 		cantbrazos: state.CantBrazos,
-// 		largobrazo: state.LargoBrazo,
-// 		voladosd: state.VolDS,
-// 		fajabrazo: state.FajaBrazoEleg,
-// 		cantHeb: state.CantHeb,
-// 		cantCarro: state.CantCarro,
-// 		tipocarro: state.tipocarro,
-// 		tipoheb: state.tipoheb,
-// 		colocacion: state.colocacion,
-// 		tipoplaca: state.tipoplaca,
-// 		cantPlaca: state.CantPlaca,
-// 		tipopresup: presuptipo,
-// 		cotdivisa: cotidivisa,
-// 		signomonet: state.signomoneda,
-// 	},
-// ];

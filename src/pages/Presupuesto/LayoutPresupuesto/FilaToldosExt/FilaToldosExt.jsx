@@ -7,6 +7,9 @@ import {
 	TextField,
 } from "@mui/material";
 import styles from "../styles.module.css";
+import estilo from "../../../../Styles/TextFieldSelect.module.css";
+import estiloI from "../../../../Styles/RadioGroup.module.css";
+import estiloII from "../../../../Styles/TextField.module.css";
 import { stkrubroleetbr } from "../../../Tablas/StkRubros/StkRubroLeeTBR";
 // Context
 import { useContext } from "react";
@@ -61,81 +64,112 @@ export default function FilaToldosExt(props) {
 
 	return (
 		<>
-			{/* <Grid container item xs={12}> */}
-			{/* <Grid container item direction="row" xs={12}> */}
-
-			{/* <Grid container item xs={12}> */}
-			<Grid item xs={3}>
-				<RadioGroup
-					row
-					size="small"
-					name="Mecanismo"
-					label="Movido por :"
-					value={mecanismo}
-					onChange={tipomecanismo}
-					margin="dense"
-				>
-					<FormControlLabel
+			<Grid container spacing={2}>
+				<Grid item xs={3}>
+					<RadioGroup
+						className={estiloI.radioGroup1}
+						row
 						size="small"
-						value="Manual"
-						control={<Radio />}
-						label="Manual"
-						labelPlacement="top"
-						disabled={props.disable}
+						name="Mecanismo"
+						label="Movido por :"
+						value={mecanismo}
+						onChange={tipomecanismo}
 						margin="dense"
-					/>
-					<FormControlLabel
+					>
+						<FormControlLabel
+							size="small"
+							value="Manual"
+							control={
+								<Radio
+									classes={{
+										root: estiloI.radio1,
+										checked: estiloI.radioChecked1,
+									}}
+								/>
+							}
+							className={estiloI.formControlLabel1}
+							label="Manual"
+							labelPlacement="top"
+							disabled={props.disable}
+							margin="dense"
+						/>
+						<FormControlLabel
+							size="small"
+							value="MotorCT"
+							control={
+								<Radio
+									classes={{
+										root: estiloI.radio1,
+										checked: estiloI.radioChecked1,
+									}}
+								/>
+							}
+							className={estiloI.formControlLabel1}
+							label="Motor c/Tecla"
+							labelPlacement="top"
+							disabled={props.disable}
+							margin="dense"
+						/>
+						<FormControlLabel
+							size="small"
+							value="MotorCC"
+							control={
+								<Radio
+									classes={{
+										root: estiloI.radio1,
+										checked: estiloI.radioChecked1,
+									}}
+								/>
+							}
+							className={estiloI.formControlLabel1}
+							label="Motor c/control"
+							labelPlacement="top"
+							disabled={props.disable}
+							margin="dense"
+						/>
+					</RadioGroup>
+				</Grid>
+				<Grid item xs={3}>
+					{tamtoldo.map((data) => (
+						<TextField
+							id={data.id}
+							key={data.id}
+							size="small"
+							select
+							label={data.label}
+							margin="dense"
+							value={data.value}
+							onChange={handleChange}
+							className={estilo.selectField}
+							InputLabelProps={{
+								className: estilo.selectLabel,
+							}}
+							SelectProps={{
+								native: true,
+								className: estilo.menuItem,
+							}}
+							variant="outlined"
+							helperText="Medida Toldo"
+						>
+							{data.mapeo}
+						</TextField>
+					))}
+				</Grid>
+				<Grid item xs={1}>
+					<TextField
+						inputProps={{ maxLength: 3 }}
 						size="small"
-						value="MotorCT"
-						control={<Radio />}
-						label="Motor c/Tecla"
-						labelPlacement="top"
-						disabled={props.disable}
+						variant="outlined"
+						id="AltoVolado"
+						type="number"
+						label="Volado en cm :  "
+						fullWidth
 						margin="dense"
+						value={state.AltoVolado}
+						onChange={handleChange}
+						className={estiloII.textfcantidad}
 					/>
-					<FormControlLabel
-						size="small"
-						value="MotorCC"
-						control={<Radio />}
-						label="Motor c/control"
-						labelPlacement="top"
-						disabled={props.disable}
-						margin="dense"
-					/>
-				</RadioGroup>
-			</Grid>
-			{tamtoldo.map((data) => (
-				<TextField
-					id={data.id}
-					key={data.id}
-					size="small"
-					select
-					label={data.label}
-					margin="dense"
-					value={data.value}
-					onChange={handleChange}
-					SelectProps={{ native: true }}
-					variant="outlined"
-					helperText="Medida Toldo"
-				>
-					{data.mapeo}
-				</TextField>
-			))}
-
-			<Grid item xs={1}>
-				<TextField
-					inputProps={{ maxLength: 3 }}
-					size="small"
-					variant="outlined"
-					id="AltoVolado"
-					type="number"
-					label="Volado en cm :  "
-					fullWidth
-					margin="dense"
-					value={state.AltoVolado}
-					onChange={handleChange}
-					className={classes.textField}
-				/>
+				</Grid>
 			</Grid>
 		</>
 	);

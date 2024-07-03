@@ -4,7 +4,7 @@ import { Grid, Radio, RadioGroup, FormControlLabel } from "@mui/material";
 // Context
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
-
+import estiloI from "../../../../Styles/RadioGroup.module.css";
 export default function FilaCambPanio(props) {
 	const [selectedValue, setSelectedValue] = React.useState("LN");
 	const { state, setState } = useContext(PresupPant);
@@ -24,6 +24,7 @@ export default function FilaCambPanio(props) {
 		<>
 			<Grid item xs={2}>
 				<RadioGroup
+					className={estiloI.radioGroup1}
 					row
 					size="small"
 					name="lonadeAca"
@@ -34,7 +35,15 @@ export default function FilaCambPanio(props) {
 					<FormControlLabel
 						size="small"
 						value="LN"
-						control={<Radio />}
+						control={
+							<Radio
+								classes={{
+									root: estiloI.radio1,
+									checked: estiloI.radioChecked1,
+								}}
+							/>
+						}
+						className={estiloI.formControlLabel1}
 						label="LN"
 						labelPlacement="top"
 						disabled={props.disable}
@@ -43,7 +52,15 @@ export default function FilaCambPanio(props) {
 					<FormControlLabel
 						size="small"
 						value="LA"
-						control={<Radio />}
+						control={
+							<Radio
+								classes={{
+									root: estiloI.radio1,
+									checked: estiloI.radioChecked1,
+								}}
+							/>
+						}
+						className={estiloI.formControlLabel1}
 						label="LA"
 						labelPlacement="top"
 						disabled={props.disable}
@@ -53,6 +70,7 @@ export default function FilaCambPanio(props) {
 			</Grid>
 			<Grid item xs={2}>
 				<RadioGroup
+					className={estiloI.radioGroup1}
 					row
 					size="small"
 					name="tipoOjal"
@@ -63,7 +81,15 @@ export default function FilaCambPanio(props) {
 					<FormControlLabel
 						size="small"
 						value="hz"
-						control={<Radio />}
+						control={
+							<Radio
+								classes={{
+									root: estiloI.radio1,
+									checked: estiloI.radioChecked1,
+								}}
+							/>
+						}
+						className={estiloI.formControlLabel1}
 						label="HZ"
 						labelPlacement="top"
 						disabled={props.disable}
@@ -72,7 +98,15 @@ export default function FilaCambPanio(props) {
 					<FormControlLabel
 						size="small"
 						value="br"
-						control={<Radio />}
+						control={
+							<Radio
+								classes={{
+									root: estiloI.radio1,
+									checked: estiloI.radioChecked1,
+								}}
+							/>
+						}
+						className={estiloI.formControlLabel1}
 						label="BR"
 						labelPlacement="top"
 						disabled={props.disable}

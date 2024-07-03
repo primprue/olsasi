@@ -1,13 +1,8 @@
 import React from "react";
-import {
-	Grid,
-	Radio,
-	RadioGroup,
-	FormControlLabel,
-	TextField,
-} from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import styles from "../styles.module.css";
-
+import estilo from "../../../../Styles/TextFieldSelect.module.css";
+import estiloII from "../../../../Styles/TextField.module.css";
 // Context
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
@@ -65,88 +60,103 @@ export default function FilaTanques() {
 
 	return (
 		<>
-			{/* <Grid item > */}
-			<Grid item>
-				{tipomedidatanque.map((data) => (
+			<Grid container spacing={2}>
+				<Grid item>
+					{tipomedidatanque.map((data) => (
+						<TextField
+							id={data.id}
+							key={data.id}
+							size="small"
+							select
+							label={data.label}
+							margin="dense"
+							value={data.value}
+							onChange={handleChange}
+							className={estilo.selectField}
+							InputLabelProps={{
+								className: estilo.selectLabel,
+							}}
+							SelectProps={{
+								native: true,
+								className: estilo.menuItem,
+							}}
+							variant="outlined"
+							helperText="Qué medida tenemos?"
+						>
+							{data.mapeo}
+						</TextField>
+					))}
+				</Grid>
+				<Grid item xs={2}>
+					{terminacionborde.map((data) => (
+						<TextField
+							id={data.id}
+							key={data.id}
+							size="small"
+							select
+							label={data.label}
+							margin="dense"
+							value={data.value}
+							onChange={handleChange}
+							className={estilo.selectField}
+							InputLabelProps={{
+								className: estilo.selectLabel,
+							}}
+							SelectProps={{
+								native: true,
+								className: estilo.menuItem,
+							}}
+							variant="outlined"
+							helperText="Cómo termina el Bolsón"
+						>
+							{data.mapeo}
+						</TextField>
+					))}
+				</Grid>
+				<Grid item xs={2}>
 					<TextField
-						id={data.id}
-						key={data.id}
+						inputProps={{ maxLength: 3 }}
 						size="small"
-						select
-						label={data.label}
-						margin="dense"
-						value={data.value}
-						onChange={handleChange}
-						SelectProps={{ native: true }}
 						variant="outlined"
-						helperText="Qué medida tenemos?"
-					>
-						{data.mapeo}
-					</TextField>
-				))}
-			</Grid>
-			<Grid item xs={1}>
-				{terminacionborde.map((data) => (
-					<TextField
-						id={data.id}
-						key={data.id}
-						size="small"
-						select
-						label={data.label}
+						id="AnchoPared"
 						margin="dense"
-						value={data.value}
+						label="Pared en cm : "
+						// fullWidth
+						value={state.AnchoPared}
 						onChange={handleChange}
-						SelectProps={{ native: true }}
-						variant="outlined"
-						helperText="Cómo termina el Bolsón"
-					>
-						{data.mapeo}
-					</TextField>
-				))}
-			</Grid>
-			<Grid item xs={1}>
-				<TextField
-					inputProps={{ maxLength: 3 }}
-					size="small"
-					variant="outlined"
-					id="AnchoPared"
-					margin="dense"
-					label="Pared en cm : "
-					// fullWidth
-					value={state.AnchoPared}
-					onChange={handleChange}
-					className={classes.textField}
-					helperText="Si tiene pared"
-				/>
-			</Grid>
+						className={estiloII.textfcantidad}
+						helperText="Si tiene pared"
+					/>
+				</Grid>
 
-			<Grid item xs={1}>
-				<TextField
-					inputProps={{ maxLength: 5 }}
-					size="small"
-					variant="outlined"
-					id="Medida"
-					margin="dense"
-					label="Medida/Cant."
-					value={state.Medida}
-					onChange={handleChange}
-					className={classes.textField}
-					helperText="Medida o Cantidad de chapas"
-				/>
-			</Grid>
-			<Grid item xs={1}>
-				<TextField
-					inputProps={{ maxLength: 4 }}
-					size="small"
-					variant="outlined"
-					id="Alto"
-					margin="dense"
-					label="Alto"
-					value={state.Alto}
-					onChange={handleChange}
-					className={classes.textField}
-					helperText="Altura del tanque"
-				/>
+				<Grid item xs={2}>
+					<TextField
+						inputProps={{ maxLength: 5 }}
+						size="small"
+						variant="outlined"
+						id="Medida"
+						margin="dense"
+						label="Medida/Cant."
+						value={state.Medida}
+						onChange={handleChange}
+						className={estiloII.textfcantidad}
+						helperText="Medida o Cantidad de chapas"
+					/>
+				</Grid>
+				<Grid item xs={2}>
+					<TextField
+						inputProps={{ maxLength: 4 }}
+						size="small"
+						variant="outlined"
+						id="Alto"
+						margin="dense"
+						label="Alto"
+						value={state.Alto}
+						onChange={handleChange}
+						className={estiloII.textfcantidad}
+						helperText="Altura del tanque"
+					/>
+				</Grid>
 			</Grid>
 		</>
 	);

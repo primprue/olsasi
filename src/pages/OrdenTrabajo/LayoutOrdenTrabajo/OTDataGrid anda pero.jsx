@@ -17,14 +17,13 @@ import { CurrencyTextField } from "../../../hooks/useCurrencyTextField.jsx";
 import estilotabla from "../../../Styles/Tabla.module.css";
 import EstTF from "../../../Styles/TextField.module.css";
 import { AlignVerticalCenterSharp } from "@mui/icons-material";
-import OTGenera from "./OTGenera.jsx";
+import OTGenera from "./OTGenera tiene cosas que pueden servir.jsx";
 
 export default function OTDataGrid() {
 	const [columns, setColumns] = useState([]);
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
 	const { datosgenot, setDatosgenot } = useContext(OrdTrabajo);
 	const [renglonot, setRenglonot] = useState([]);
-	const [renglondef, setRenglondef] = useState();
 	const [gridKey, setGridKey] = useState(0);
 	const [presuptipo, setPresuptipo] = useState("");
 	const [datospot, setDatospot] = useState([]);
@@ -35,7 +34,7 @@ export default function OTDataGrid() {
 	const [open, setOpen] = useState(false);
 	const [marcaaccion, setMarcaAccion] = useState(false);
 	const cambiamarcaaccion = () => setMarcaAccion(true);
-	// const [idfiladc, setidfiladc] = useState();
+	const [idfiladc, setidfiladc] = useState();
 	const handleOpen = () => setAbregenera(true);
 	const handleClose = () => setAbregenera(false);
 	const [snackbar, setSnackbar] = React.useState(null);
@@ -62,15 +61,19 @@ export default function OTDataGrid() {
 	}, []);
 
 	async function fcionotrosdatos(event) {
+		//console.log("event  ", event);
 		//tomo la fila en la que se hizo click, tiene un id que es el nro de fila
 		var datorenglon = event.row;
-
-		// setidfiladc(event.row);
-		let paramObjeto = JSON.parse(datorenglon.PresupRenglonParamInt);
-		paramObjeto.idrenglon = datorenglon.id;
+		setidfiladc(event.row);
+		const paramObjeto = JSON.parse(datorenglon.PresupRenglonParamInt);
 		setPresuptipo(paramObjeto.tipopresup);
 		setDatospot(paramObjeto);
 	}
+
+	const handleChange = (event) => {
+		const id = event.target.id;
+		setOTdatos({ ...otdatos, [id]: event.target.value });
+	};
 
 	const actionsColumn = {
 		field: "actions",
@@ -109,10 +112,16 @@ export default function OTDataGrid() {
 		) {
 			handleOpen();
 		} else handleClose();
+	};
+	const loadData = (data) => {
+		// const newData = [...rows, { id: rows.length + 1, data }];
+		// setRows(newData);
+		const newData = [...renglonot, { id: renglonot.length + 1, data }];
+		setRenglonot(newData);
+	};
 
-		if (renglondef === undefined) {
-			setRenglondef(otdatos.renglonespresup);
-		}
+	const handleRowSelect = ({ row }) => {
+		setRowSel(row);
 	};
 
 	const [rowv, setRowv] = useState();
@@ -136,8 +145,25 @@ export default function OTDataGrid() {
 
 	const mutateRow = useFakeMutation();
 
+	const cargadatosconf = () => {
+		let claves = Object.keys(datosgenot);
+		let valores = Object.values(datosgenot);
+		for (let i = 0; i < claves.length; i++) {
+			const columnasnuevas = {
+				headerName: claves[i],
+				field: claves[i],
+				value: valores[i],
+			};
+			columns.push(columnasnuevas);
+			setColumns(() => columns);
+		}
+	};
+
 	const processRowUpdate = React.useCallback(
 		async (newRow, oldRow) => {
+			// if (datosgenot !== "") {
+			// 	newRow.DatosConf = JSON.stringify(datosgenot);
+			// } else {
 			if (oldRow.PresupRenglonLargo !== 0 || oldRow.PresupRenglonAncho !== 0)
 				newRow.PresupRenglonImpUnit = Math.round(
 					(oldRow.PresupRenglonImpUnit /
@@ -157,21 +183,24 @@ export default function OTDataGrid() {
 			setRowv(oldRow);
 			setRown(newRow);
 			const response = await mutateRow(newRow);
-			const renglonesOT = {
-				...otdatos,
-				renglonespresup: otdatos.renglonespresup.map((renglon) => {
-					renglon.forEach((objeto, index) => {
-						if (objeto.id === newRow.id) {
-							renglon[index] = newRow;
-						}
-					});
-					return renglon;
-				}),
-			};
+			// setSnackbar({
+			// 	children: "Modificado no confirmado",
+			// 	severity: "success",
+			// });
 
 			setOTdatos({ ...otdatos, otrenglon: newRow });
-			setRenglondef(renglonesOT.renglonespresup);
 
+			//zotdatos.renglonespresup.splice(newRow.id, 1, newRow);
+
+			// otdatos.renglonespresup.map((primer) => {
+			// 	primer.map((segundo) => {
+			// 		segundo.id === newRow.id && (segundo = newRow);
+			// 		console.log("segundo  ", segundo);
+			// 		setOTdatos({ ...otdatos, renglonespresup: segundo });
+			// 	});
+			// });
+
+			//setOTdatos({ ...otdatos, renglonpresup: newRow });
 			return response;
 		},
 		[mutateRow]
@@ -192,6 +221,13 @@ export default function OTDataGrid() {
 				<b></b>
 				<b></b>
 				<GridToolbarExport></GridToolbarExport>
+
+				<AddShoppingCartIcon
+					onClick={cargadatosconf}
+					style={{ color: blue[500] }}
+					fontSize="medium"
+					titleAccess="Sumar"
+				/>
 
 				<AddShoppingCartIcon
 					onClick={sumaimporte}
@@ -217,7 +253,6 @@ export default function OTDataGrid() {
 					open={abregenera}
 					handleClose={handleClose}
 					datospot={datospot}
-					renglondef={renglondef}
 				></OTGenera>
 			)}
 
@@ -241,40 +276,3 @@ export default function OTDataGrid() {
 		</Grid>
 	);
 }
-/* 
-	const loadData = (data) => {
-		// const newData = [...rows, { id: rows.length + 1, data }];
-		// setRows(newData);
-		const newData = [...renglonot, { id: renglonot.length + 1, data }];
-		setRenglonot(newData);
-	};
-
-	const handleRowSelect = ({ row }) => {
-		setRowSel(row);
-	};
-
-const handleChange = (event) => {
-		const id = event.target.id;
-		setOTdatos({ ...otdatos, [id]: event.target.value });
-	};
-
-*/
-// if (datosgenot !== "") {
-// 	newRow.DatosConf = JSON.stringify(datosgenot);
-// } else {
-// setSnackbar({
-// 	children: "Modificado no confirmado",
-// 	severity: "success",
-// });
-
-//zotdatos.renglonespresup.splice(newRow.id, 1, newRow);
-
-// otdatos.renglonespresup.map((primer) => {
-// 	primer.map((segundo) => {
-// 		segundo.id === newRow.id && (segundo = newRow);
-// 		console.log("segundo  ", segundo);
-// 		setOTdatos({ ...otdatos, renglonespresup: segundo });
-// 	});
-// });
-
-//setOTdatos({ ...otdatos, renglonpresup: newRow });

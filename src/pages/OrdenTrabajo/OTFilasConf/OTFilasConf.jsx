@@ -1,4 +1,5 @@
 import {
+	Button,
 	Checkbox,
 	FormControl,
 	FormControlLabel,
@@ -17,29 +18,28 @@ import { OTDatosLeer } from "../OTVarios/OTDatosLeer";
 export default function OTFilasConf(props) {
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
 	const { datosgenot, setDatosgenot } = useContext(OrdTrabajo);
+	const [datosconfec, setDatosConfec] = useState();
 	const [checked, setChecked] = useState(false);
-
 	const { datospot } = props;
 	const [items, setItems] = useState([]);
 	let idCliente, idItems, coloreleg, datorest1;
 	const [datosrestantes, setDatosRestantes] = useState([]);
 
 	async function leedatosot() {
-		setDatosgenot("");
+		setDatosgenot({ ...datosgenot, idrenglon: datospot.idrenglon });
 		const result = await OTDatosLeer(datospot.tipopresup);
 
 		const datos = result.map((row) => ({
 			nombre: row.OTDatosDesc,
 			opciones: JSON.parse(row.OTDatosOpciones),
 			tipocomponete: row.OTDatosTipoPed,
-			cantidaddeveces: row.OTDatosVeces,
 			requerido: row.OTDatosRequerido,
 		}));
-		const countRequiredN = datos.filter(
+		const countRequiredS = datos.filter(
 			(item) => item.requerido === "S"
 		).length;
 		setDatosRestantes(datos);
-		setOTdatos({ ...otdatos, totaldatos: countRequiredN });
+		setOTdatos({ ...otdatos, totaldatos: countRequiredS });
 	}
 	async function stkleeitemsrubro(cuallee) {
 		const result = await StkItemsLeeAbrRub(cuallee);
@@ -74,13 +74,16 @@ export default function OTFilasConf(props) {
 	const handleChangeG = (event) => {
 		const id = event.target.id;
 		setDatosgenot({ ...datosgenot, [id]: event.target.value });
-		// setOTdatos({ ...otdatos, [id]: event.target.value });
+	};
+
+	const Terminocarga = () => {
+		setOTdatos({ ...otdatos, datosconfec: datosgenot });
 	};
 	const [backgroundColor, setBackgroundColor] = useState("");
 
 	const handleChange = (selectedIndex, event) => {
 		setDatosgenot({ ...datosgenot, ColorMaterial: event.target.value });
-		// setOTdatos({ ...otdatos, StkItemsDesc: event.target.value });
+
 		const indice = selectedIndex;
 		let paños = (datospot.largo * 1 + 0.08) / 1.48;
 		const decimalPart = parseFloat(paños) - parseInt(paños);
@@ -99,7 +102,6 @@ export default function OTFilasConf(props) {
 		}
 	};
 	const { largo } = datospot;
-	const classes = styles;
 
 	return (
 		<div>
@@ -148,7 +150,6 @@ export default function OTFilasConf(props) {
 								SelectProps={{
 									native: true, // Esto es importante para que funcione como un campo de texto select
 								}}
-								// className={styles.select}
 							>
 								{Object.keys(dato.opciones).map((opcion, index) => (
 									<option key={index} value={opcion}>
@@ -173,6 +174,7 @@ export default function OTFilasConf(props) {
 						)}{" "}
 					</div>
 				))}
+				<Button onClick={Terminocarga}>OK</Button>
 			</Grid>
 		</div>
 	);

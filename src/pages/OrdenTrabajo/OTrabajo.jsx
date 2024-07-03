@@ -6,7 +6,7 @@ import OTRecRenglon from "./LayoutOrdenTrabajo/OTRecRenglon.jsx";
 import OrdTrabajo from "../../context/OrdTrabajo";
 export default function OTrabajo() {
 	const { setValor } = useContext(StaticContexto);
-	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
+	// const { otdatos, setOTdatos } = useContext(OrdTrabajo);
 	const { inicializaOT } = useContext(OrdTrabajo);
 
 	useEffect(() => {

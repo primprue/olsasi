@@ -48,7 +48,6 @@ export default function OTRecRenglon() {
 					direction="row"
 					useFlexGap
 					flexWrap="wrap"></Stack> */}
-
 				<Box
 					height={50}
 					width={1600}
@@ -76,7 +75,6 @@ export default function OTRecRenglon() {
 						Explicacion: {otdatos.datosencab[0][0].PresupEncabExplic}
 					</Item>
 				</Box>
-
 				{(otdatos.datosencab.length > 1 && (
 					<Box
 						height={50}
@@ -172,7 +170,8 @@ export default function OTRecRenglon() {
 							</Item>
 						</Box>
 					))}
-				<OTDataGrid data={otdatos.renglonespresup} />
+				<OTDataGrid />
+				{/* data={otdatos.renglonespresup} */}
 			</div>
 		);
 	}
