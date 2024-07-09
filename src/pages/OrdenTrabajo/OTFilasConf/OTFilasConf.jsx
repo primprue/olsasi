@@ -14,6 +14,7 @@ import { useContext } from "react";
 import OrdTrabajo from "../../../context/OrdTrabajo";
 import { StkItemsLeeAbrRub } from "../../Tablas/StkItems/StkItemsLeeAbrRub";
 import styles from "../styles.module.css";
+import estilos from "../../../Styles/Boton.module.css";
 import { OTDatosLeer } from "../OTVarios/OTDatosLeer";
 export default function OTFilasConf(props) {
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
@@ -113,6 +114,7 @@ export default function OTFilasConf(props) {
 						className={`${styles.textField} ${
 							backgroundColor && styles[backgroundColor]
 						}`}
+						// style={{ background: "#7a7af318" }}
 						key={data.id}
 						id={data.id}
 						size="small"
@@ -120,6 +122,7 @@ export default function OTFilasConf(props) {
 						select
 						label={data.label}
 						value={data.value}
+						helperText="Requerido"
 						onChange={(event) =>
 							handleChange(event.target.selectedIndex, event)
 						}
@@ -141,12 +144,20 @@ export default function OTFilasConf(props) {
 								select
 								onChange={handleChangeG}
 								defaultValue={dato.nombre}
-								// value={dato.nombre}
+								sx={{ input: { color: "#00000f" } }}
 								label={dato.nombre}
-								//placeholder={dato.nombre}
+								placeholder={dato.nombre}
+								helperText={dato.requerido === "S" ? "Requerido" : "------"}
 								variant="outlined" // Puedes cambiar el tipo de variante según tus preferencias
 								margin="dense"
-								inputProps={{ maxLength: 3 }}
+								style={
+									dato.requerido === "S"
+										? { background: "#7a7af318" }
+										: { background: "#94fcd42b" }
+								}
+								inputProps={{
+									maxLength: 3,
+								}}
 								SelectProps={{
 									native: true, // Esto es importante para que funcione como un campo de texto select
 								}}
@@ -164,9 +175,16 @@ export default function OTFilasConf(props) {
 								size="small"
 								variant="outlined"
 								id={dato.nombre}
+								sx={{ input: { color: "#00000f" } }}
 								label={dato.nombre}
 								placeholder={dato.nombre}
+								helperText={dato.requerido === "S" ? "Requerido" : "-----"}
 								fullWidth
+								style={
+									dato.requerido === "S"
+										? { background: "#7a7af318" }
+										: { background: "#94fcd42b" }
+								}
 								margin="dense"
 								value={otdatos.OTDatosDesc}
 								onChange={handleChangeG}
@@ -174,12 +192,18 @@ export default function OTFilasConf(props) {
 						)}{" "}
 					</div>
 				))}
-				<Button onClick={Terminocarga}>OK</Button>
+				<Button onClick={Terminocarga} className={estilos.botonfincargadatos}>
+					Fin de Carga
+				</Button>
 			</Grid>
 		</div>
 	);
 }
 {
+	/*  style: {
+          minWidth: calculateMinWidth(elemento[nombrePropiedad]),
+          maxWidth: calculateMaxWidth(elemento[nombrePropiedad]),
+        }, */
 	/* 
 	{/* <Grid item xs={4}>
 						<FormControl component="fieldset">

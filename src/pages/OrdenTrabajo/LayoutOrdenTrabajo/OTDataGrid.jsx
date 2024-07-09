@@ -1,22 +1,21 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import {
 	DataGrid,
 	GridToolbarContainer,
 	GridToolbarExport,
 } from "@mui/x-data-grid";
-import Snackbar from "@mui/material/Snackbar";
+import swal from "sweetalert";
 import { llenarcolumns } from "./columns.jsx";
 import OrdTrabajo from "../../../context/OrdTrabajo.jsx";
 import OTFilaGral from "../OTFilas/OTFilaGral/OTFilaGral.jsx";
-import { Alert, Button, Grid, TextField } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import OTFilasConf from "../OTFilasConf/OTFilasConf.jsx";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FitbitIcon from "@mui/icons-material/Fitbit";
-import { common, deepOrange, green, blue } from "@mui/material/colors";
+import { common, deepOrange, green, blueGrey } from "@mui/material/colors";
 import { CurrencyTextField } from "../../../hooks/useCurrencyTextField.jsx";
 import estilotabla from "../../../Styles/Tabla.module.css";
 import EstTF from "../../../Styles/TextField.module.css";
-import { AlignVerticalCenterSharp } from "@mui/icons-material";
 import OTGenera from "./OTGenera.jsx";
 
 export default function OTDataGrid() {
@@ -28,20 +27,32 @@ export default function OTDataGrid() {
 	const [gridKey, setGridKey] = useState(0);
 	const [presuptipo, setPresuptipo] = useState("");
 	const [datospot, setDatospot] = useState([]);
-	const [rowsel, setRowSel] = useState();
+
 	const [totalpresup, setTotalpresup] = useState(0);
 	const [abregenera, setAbregenera] = useState(false);
-	let senia = 0;
-	const [open, setOpen] = useState(false);
-	const [marcaaccion, setMarcaAccion] = useState(false);
-	const cambiamarcaaccion = () => setMarcaAccion(true);
-	// const [idfiladc, setidfiladc] = useState();
+
 	const handleOpen = () => setAbregenera(true);
 	const handleClose = () => setAbregenera(false);
-	const [snackbar, setSnackbar] = React.useState(null);
-	const handleCloseSnackbar = () => setSnackbar(null);
-	const flattenedData = otdatos.renglonespresup.flatMap((nivel1) => nivel1); //flatMap lo que hace es aplanar un array en este caso aplana el array del array
+	let datosadicionales = "N";
+	let indicenounidad = [];
 
+	const flattenedData = otdatos.renglonespresup.flatMap((nivel1) => nivel1); //flatMap lo que hace es aplanar un array en este caso aplana el array del array
+	for (var i = 0; i < flattenedData.length; i++) {
+		if (flattenedData[i].PresupRenglonParamInt) {
+			let paramObjeto1 = JSON.parse(flattenedData[i].PresupRenglonParamInt);
+			console.log(" paramObjeto1 ", flattenedData[i]);
+			console.log(" paramObjeto1 ", paramObjeto1.tipopresup);
+			if (paramObjeto1.tipopresup !== "UNIDAD") {
+				datosadicionales = "S";
+				console.log(
+					" flattenedData[i].idPresupRenglon ",
+					flattenedData[i].idPresupRenglon
+				);
+				indicenounidad.push(flattenedData[i].idPresupRenglon);
+			}
+		}
+	}
+	console.log("indicenounidad  ", indicenounidad);
 	async function columnsFetch() {
 		var col = await llenarcolumns(flattenedData);
 		col.push(actionsColumn);
@@ -50,7 +61,6 @@ export default function OTDataGrid() {
 
 	async function dataFetch() {
 		setRenglonot(flattenedData);
-		// setRows(flattenedData);
 	}
 	async function initialFetch() {
 		dataFetch();
@@ -64,8 +74,7 @@ export default function OTDataGrid() {
 	async function fcionotrosdatos(event) {
 		//tomo la fila en la que se hizo click, tiene un id que es el nro de fila
 		var datorenglon = event.row;
-
-		// setidfiladc(event.row);
+		console.log("event fcionotrosdatos ", event.row);
 		let paramObjeto = JSON.parse(datorenglon.PresupRenglonParamInt);
 		paramObjeto.idrenglon = datorenglon.id;
 		setPresuptipo(paramObjeto.tipopresup);
@@ -80,10 +89,34 @@ export default function OTDataGrid() {
 		renderCell: (params) => (
 			<Button
 				variant="text"
-				style={{ color: deepOrange[800] }}
-				onClick={() => fcionotrosdatos(params)}
-				startIcon={<FitbitIcon />}
+				style={
+					indicenounidad[params.id - 1] === params.id
+						? { color: deepOrange[800] }
+						: { color: blueGrey[100] }
+				}
+				// style={{ color: deepOrange[800] }}
+				onClick={
+					indicenounidad[params.id - 1] === params.id ? (
+						() => fcionotrosdatos(params)
+					) : (
+						<></>
+					)
+				}
+				startIcon={
+					indicenounidad[params.id - 1] === params.id ? <FitbitIcon /> : <></>
+				}
 			/>
+			// (
+			// 	<input
+			// 		value={
+			// 			indicenounidad +
+			// 			" " +
+			// 			params.id +
+			// 			" " +
+			// 			indicenounidad[params.id - 1]
+			// 		}
+			// 	></input>
+			// )
 		),
 	};
 
@@ -102,13 +135,29 @@ export default function OTDataGrid() {
 
 	const generaorden = () => {
 		presuptipo === "UNIDAD" ? handleOpen() : handleClose();
-
 		if (
 			Object.keys(datosgenot).length > otdatos.totaldatos ||
 			Object.keys(datosgenot).length === 0
 		) {
 			handleOpen();
-		} else handleClose();
+		} else {
+			swal({
+				title: "Faltan Datos",
+				text: "No cargó los datos suficientes",
+				icon: "success",
+				button: "OK!",
+			});
+			handleClose();
+		}
+		if (datosadicionales === "S" && otdatos.datosconfec === undefined) {
+			swal({
+				title: "Faltan Datos",
+				text: "No cargó los datos suficientes",
+				icon: "success",
+				button: "OK!",
+			});
+			handleClose();
+		}
 
 		if (renglondef === undefined) {
 			setRenglondef(otdatos.renglonespresup);

@@ -5,10 +5,14 @@ import {
 	Input,
 	InputAdornment,
 	Stack,
+	Tab,
+	Tabs,
+	TextareaAutosize,
 	TextField,
 	Typography,
 } from "@mui/material";
 import estilos from "../../../Styles/CampoMuestra.module.css";
+import estilos1 from "../../../Styles/CampoDinamico.module.css";
 import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
 import Table from "@mui/material/Table";
@@ -19,12 +23,18 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 export function CampoMuestra({ arreglodef }) {
-	console.log("arreglodef CampoMuestra ", arreglodef);
+	function calculateMinWidth(value) {
+		const valueLength = value.length;
+		const minWidth = Math.max(valueLength * 3); // Adjust 10 based on your desired minimum width per character
+		return minWidth;
+	}
 
-	// {
-	// 	nombre.substring(0, 13) !== "PresupRenglon" && <span>{nombre}:</span>;
-	// }
-	// PresupRenglon;
+	function calculateMaxWidth(value) {
+		//const maxWidth = 200; // Adjust this value to your desired maximum width
+		const valueLength = value.length;
+		const maxWidth = Math.max(valueLength * 10, 100);
+		return maxWidth;
+	}
 	const mostrarElementos = arreglodef.map((elemento, index1) => {
 		delete elemento.PresupRenglonNroPresup;
 		delete elemento.id;
@@ -32,50 +42,78 @@ export function CampoMuestra({ arreglodef }) {
 		delete elemento.idPresupRenglon;
 		delete elemento.PresupRenglonImpUnit;
 		delete elemento.PresupRenglonParamInt;
-		console.log("elemento  ", elemento);
 		const nombresPropiedades = Object.keys(elemento);
 		return (
-			<div key={index1}>
-				{nombresPropiedades.map(
-					(nombrePropiedad, index) =>
-						(nombrePropiedad.substring(0, 13) !== "PresupRenglon" && (
-							<TextField
-								key={index}
-								value={elemento[nombrePropiedad]}
-								className={estilos.textfield}
-								InputProps={{
-									startAdornment: (
-										<InputAdornment position="start">
-											{nombrePropiedad}
-										</InputAdornment>
-									),
-								}}
-							></TextField>
-						)) || (
-							<TextField
-								key={index}
-								label={nombrePropiedad}
-								value={elemento[nombrePropiedad]}
-								className={estilos.textfield}
-							></TextField>
-						)
-				)}
-				{/* {nombresPropiedades.map((nombrePropiedad, index) => (
-					<TextField
-						key={index}
-						label={nombrePropiedad}
-						value={elemento[nombrePropiedad]}
-						className={estilos.textfield}
-					></TextField>
-				
-				))} */}
-			</div>
+			<span className={estilos1.contenedordiv}>
+				<Grid container>
+					<Grid item>
+						<div key={index1}>
+							{nombresPropiedades.map(
+								(nombrePropiedad, index) =>
+									(nombrePropiedad.substring(0, 13) !== "PresupRenglon" && (
+										<TextField
+											key={index}
+											value={elemento[nombrePropiedad]}
+											variant="standard"
+											InputProps={{
+												startAdornment: (
+													<InputAdornment position="start">
+														{nombrePropiedad}
+													</InputAdornment>
+												),
+											}}
+										></TextField>
+									)) || (
+										<TextField
+											key={index}
+											value={elemento[nombrePropiedad]}
+											variant="standard"
+											inputProps={{
+												startAdornment: (
+													<InputAdornment position="start">
+														{nombrePropiedad}
+													</InputAdornment>
+												),
+												// style: {
+												// 	minWidth: calculateMinWidth(
+												// 		elemento[nombrePropiedad]
+												// 	),
+												// 	maxWidth: calculateMaxWidth(
+												// 		elemento[nombrePropiedad]
+												// 	),
+												// },
+											}}
+										></TextField>
+									)
+							)}
+						</div>
+					</Grid>
+				</Grid>
+			</span>
 		);
 		// }
 	});
 	return (
 		<div>
+			{/* <Grid container spacing={2} alignItems="center"> */}
+			{/* <Input item xs={2}>
+					Cantidad
+				</Input>
+				<Input item xs={8}>
+					Descripción
+				</Input>
+				<Input item xs={2}>
+					Largo
+				</Input>
+				<Input item xs={2}>
+					Ancho
+				</Input>
+				<Input item xs={4}>
+					Importe Item
+				</Input> */}
+			{/* <span className={estilos1.contenedordiv}></span> */}
 			{mostrarElementos}
+			{/* </Grid> */}
 			{/* <div className={estilos.contenedordiv}>{dato}</div> // (<div className={estilos.contenedordiv}>{dato}</div>))*/}
 
 			{/* {nombre.substring(0, 13) !== "PresupRenglon" &&
@@ -88,4 +126,46 @@ export function CampoMuestra({ arreglodef }) {
 			{/* </Box> */}
 		</div>
 	);
+}
+
+/*((
+								<TextField
+									label="Cantidad"
+									value={elemento.PresupRenglonCant}
+								></TextField>
+							),
+							(
+								<TextField
+									label="Descripción"
+									value={elemento.PresupRenglonDesc}
+								></TextField>
+							),
+							(
+								<TextField
+									label="Largo"
+									value={elemento.PresupRenglonLargo}
+								></TextField>
+							),
+							(
+								<TextField
+									label="Ancho"
+									value={elemento.PresupRenglonAncho}
+								></TextField>
+							),
+							(
+								<TextField
+									label="Importe Item"
+									value={elemento.PresupRenglonImpItem}
+								></TextField>
+							)) */
+{
+	/* {nombresPropiedades.map((nombrePropiedad, index) => (
+					<TextField
+						key={index}
+						label={nombrePropiedad}
+						value={elemento[nombrePropiedad]}
+						className={estilos.textfield}
+					></TextField>
+				
+				))} */
 }

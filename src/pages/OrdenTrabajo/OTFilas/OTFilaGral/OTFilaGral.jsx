@@ -16,7 +16,7 @@ import {
 import { ClientesLeer } from "../../../Tablas/Clientes/ClientesLeer.jsx";
 import { clientesleercod } from "../../../Tablas/Clientes/ClientesLeerCod.jsx";
 import estilos from "../../../OrdenTrabajo/styles.module.css";
-import styles from "../../../../Styles/Tabla.module.css";
+import styles from "../../../../Styles/Boton.module.css";
 import { StyleOutlined } from "@mui/icons-material";
 export default function OTFilaGral(props) {
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
@@ -97,7 +97,7 @@ export default function OTFilaGral(props) {
 						onClick={buscaclientes}
 						variant="contained"
 						color="primary"
-						// className={styles.botontablamuestrarenglon}
+						className={styles.botonabreselect}
 					>
 						Cambia Cliente
 					</Button>

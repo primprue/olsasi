@@ -1,6 +1,9 @@
 // import React from "react";
 import Mensaje from "./Mensaje";
 function MuestraMensaje(err, ruta) {
+
+
+  console.log('err.status  ', err.status)
   switch (err.status) {
     case 409:
       Mensaje("error", "Código/Clave ingresado EXISTENTE no se puede duplicar ");
@@ -23,7 +26,9 @@ function MuestraMensaje(err, ruta) {
     case 414:
       Mensaje("error", "Faltan datos para leer información en tabla");
       break;
-
+    case 515:
+      Mensaje("warning", "Faltan datos");
+      break;
     case 460:
       Mensaje("error", "error clave duplicada");
       break;
@@ -34,6 +39,7 @@ function MuestraMensaje(err, ruta) {
       Mensaje("success", "Operación exitosa ");
       break;
     default:
+
       Mensaje("error", "Error ", err.status, " ", err.err);
   }
 }
