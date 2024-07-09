@@ -20,9 +20,9 @@ export default function OTrabajo() {
 			alignItems="center"
 			padding={10}
 		>
-			<OTRecRenglon />
-
-			<Button onClick={inicializaOT}>Cerrar</Button>
+			<OTRecRenglon />{" "}
+			{/* muestra encabezado y llama a Datagrid con los datos de la orden de trabajo */}
+			{/* <Button onClick={inicializaOT}>Cerrar</Button> */}
 		</Grid>
 	);
 }

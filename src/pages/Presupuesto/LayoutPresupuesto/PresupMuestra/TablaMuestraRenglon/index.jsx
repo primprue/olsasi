@@ -39,6 +39,10 @@ export function TablaMuestraRenglon(props) {
 		//campos de la orden de trabajo original
 		//idOTRenglon, OTRenglonNroPresup, OTRenglonCant, OTRenglonDesc, OTRenglonLargo, OTRenglonAncho, OTRenglonImpUnit, OTRenglonImpItem, OTRenglonParamInt
 		//los mando por Context a la OT
+		console.log(
+			" renglonespresup ",
+			selectionModel[0][0].PresupRenglonParamInt
+		);
 		setOTdatos({ ...otdatos, renglonespresup: selectionModel });
 		// handleClose();
 	}

@@ -23,6 +23,7 @@ export function StkMonedasAgregar(props) {
 				.send({ StkMonedasSigno: StkMonedasSigno })
 				.set("X-API-Key", "foobar")
 				.then(function (res) {
+					console.log("monedas res  ", res);
 					MuestraMensaje(res);
 				})
 				.catch((err) => MuestraMensaje(err));

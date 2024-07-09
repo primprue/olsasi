@@ -1,9 +1,11 @@
 .textfield {
-    border: 0px;
-    background-color: rgba(227, 234, 241, 0.301);
-    font-size: 15px;
-    min-width: 15px;
-    max-width: 440px;
+
+    background-color: rgba(16, 122, 228, 0.904);
+    font-size: 250%;
+    width: auto
+        /* min-width: 15px;
+    max-width: 440px; */
+
 
 
 }
