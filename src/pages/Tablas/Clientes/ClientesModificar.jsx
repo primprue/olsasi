@@ -6,12 +6,9 @@ export function ClientesModificar(props) {
 	return new Promise(function () {
 		setTimeout(() => {
 			const {
-				idClientes,
+				id,
 				ClientesDesc,
-				ClientesCalle,
-				ClientesNroCalle,
-				ClientesPiso,
-				ClientesDto,
+				ClientesDomicilio,
 				ClientesCodPos,
 				ClientesLoc,
 				ClientesPcia,
@@ -20,18 +17,17 @@ export function ClientesModificar(props) {
 				ClientesIVA,
 				ClientesCUIT,
 				ClientesTipo,
+				ClientesContacto,
+				ClientesCategoria,
+				ClientesObserv1,
+				ClientesObserv2,
 			} = props;
-
-			const url = IpServidor + "/clientesmodificar/" + idClientes;
-
+			const url = IpServidor + "/clientesmodificar/" + id;
 			request
 				.post(url)
 				.set("Content-Type", "application/json")
 				.send({ ClientesDesc: ClientesDesc })
-				.send({ ClientesCalle: ClientesCalle })
-				.send({ ClientesNroCalle: ClientesNroCalle })
-				.send({ ClientesPiso: ClientesPiso })
-				.send({ ClientesDto: ClientesDto })
+				.send({ ClientesDomicilio: ClientesDomicilio })
 				.send({ ClientesCodPos: ClientesCodPos })
 				.send({ ClientesLoc: ClientesLoc })
 				.send({ ClientesPcia: ClientesPcia })
@@ -40,6 +36,10 @@ export function ClientesModificar(props) {
 				.send({ ClientesIVA: ClientesIVA })
 				.send({ ClientesCUIT: ClientesCUIT })
 				.send({ ClientesTipo: ClientesTipo })
+				.send({ ClientesContacto: ClientesContacto })
+				.send({ ClientesCategoria: ClientesCategoria })
+				.send({ ClientesObserv1: ClientesObserv1 })
+				.send({ ClientesObserv2: ClientesObserv2 })
 
 				.set("X-API-Key", "foobar")
 				.then(function (res) {

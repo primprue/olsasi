@@ -1,28 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import OrdTrabajo from "../../../../context/OrdTrabajo.jsx";
-import {
-	Button,
-	Checkbox,
-	Dialog,
-	FormControl,
-	FormControlLabel,
-	FormGroup,
-	FormLabel,
-	Grid,
-	Paper,
-	TextField,
-} from "@mui/material";
+import { llenarcolumns } from "../../../Tablas/Clientes/columns.jsx";
+import { formdata } from "../../../Tablas/Clientes/formdata.js";
+import { Button, Grid, TextField } from "@mui/material";
 import { ClientesLeer } from "../../../Tablas/Clientes/ClientesLeer.jsx";
 import { clientesleercod } from "../../../Tablas/Clientes/ClientesLeerCod.jsx";
-import estilos from "../../../OrdenTrabajo/styles.module.css";
 import styles from "../../../../Styles/Boton.module.css";
-import { StyleOutlined } from "@mui/icons-material";
+import { DialogoDatos } from "../../../../components/DialogoDatos.jsx";
+import TablasContexto from "../../../../context/TablasContext.jsx";
+import { ClientesLeerUltimo } from "../../../Tablas/Clientes/ClientesLeerUltimo.jsx";
 export default function OTFilaGral(props) {
+	const { formdatos, setFormdatos } = useContext(TablasContexto);
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
 	const [clientesleidos, setClientesleidos] = useState([]);
 	const [items, setItems] = useState([]);
 	const { datospot } = props;
+	// para el alta del nuevo cliente
+	const [columns, setColumns] = useState([]);
+	const [open, setOpen] = React.useState(false);
+	const [nombreboton, setNombreBoton] = useState("");
+	const [titulodial, setTituloDial] = useState("");
+	const [paramsbor, setParamsBor] = useState(0);
 
 	let idCliente;
 	let colorfondo = "";
@@ -40,9 +39,32 @@ export default function OTFilaGral(props) {
 		const datosclientes = await ClientesLeer();
 		setClientesleidos(datosclientes);
 	}
-	const handleChangeC = (event) => {
-		setChecked(event.target.checked);
+
+	async function buscaclientesultimo() {
+		const datosclientes = await ClientesLeerUltimo();
+		console.log("datosclientes  ", datosclientes);
+		setClientesleidos(datosclientes);
+	}
+	// para el alta del nuevo cliente
+
+	async function columnsFetch() {
+		var col = await llenarcolumns();
+		setColumns(() => col);
+	}
+
+	const handleAlta = () => {
+		setFormdatos(formdata);
+		columnsFetch();
+		setNombreBoton("Enviar");
+		setTituloDial(`Alta de ${formdatos.tablabase}`);
+		setOpen(true);
 	};
+
+	const handleClose = () => {
+		setOpen(false);
+		buscaclientesultimo();
+	};
+
 	let textdata;
 	if (clientesleidos.length > 0) {
 		textdata = [
@@ -121,6 +143,24 @@ export default function OTFilaGral(props) {
 								{data.mapeo}
 							</TextField>
 						))}
+				</Grid>
+				<DialogoDatos
+					open={open}
+					columns={columns}
+					handleClose={handleClose}
+					nombrebtn={nombreboton}
+					paramsbor={paramsbor}
+					titulodial={titulodial}
+				/>
+				<Grid item xs={2}>
+					<Button
+						onClick={handleAlta}
+						variant="contained"
+						color="primary"
+						className={styles.botonabreselect}
+					>
+						Nuevo Cliente
+					</Button>
 				</Grid>
 			</Grid>
 		</div>

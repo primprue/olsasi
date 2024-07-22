@@ -15,6 +15,7 @@ import TableChartTwoToneIcon from "@mui/icons-material/TableChartTwoTone";
 import CabinTwoToneIcon from "@mui/icons-material/CabinTwoTone";
 import { useContext, useEffect } from "react";
 import StaticContext from "../../context/StaticContext";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import moment from "moment";
 import { clientestraeNuevos } from "../../pages/Tablas/Clientes/ClientesTraeNuevos";
 import { clientesCobol } from "../../pages/Tablas/Clientes/ClientesCobol";
@@ -307,8 +308,11 @@ function Header() {
 						aria-label="menu"
 						sx={{ mr: 2 }}
 						onClick={handleClick3}
-					></IconButton>
+					>
+						<MoreVertIcon />
+					</IconButton>
 				</Typography>
+
 				<Menu
 					id="basic-menu"
 					anchorEl={anchorEl3}

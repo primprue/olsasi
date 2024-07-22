@@ -17,6 +17,7 @@ const StkUnMed = lazy(() => import("./pages/Tablas/UnidadMedidas"));
 const UbFisica = lazy(() => import("./pages/Tablas/UbicacionFisica"));
 const PresupDetPie = lazy(() => import("./pages/Tablas/PresupDetPie"));
 const PresupConfTipo = lazy(() => import("./pages/Tablas/PresupConfTipo"));
+const BackupDiario = lazy(() => import("./pages/ProcInternos/BackupDiario"));
 // const PresupPant = lazy(() => import("./context/PresupPant.jsx"));
 const Presupuesto = lazy(() => import("./pages/Presupuesto"));
 const OTrabajo = lazy(() => import("./pages/OrdenTrabajo/OTrabajo"));
@@ -186,6 +187,14 @@ export default function App() {
 									element={
 										<Suspense fallback={<>...</>}>
 											<PresupConfTipo />
+										</Suspense>
+									}
+								/>
+								<Route
+									path="/BackupDiario"
+									element={
+										<Suspense fallback={<>...</>}>
+											<BackupDiario />
 										</Suspense>
 									}
 								/>

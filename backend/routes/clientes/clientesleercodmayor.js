@@ -20,7 +20,13 @@ var router = express();
 
 router.get('/', async function (req, res) {
     indice = req.query.id;
-    var q = ['select ClientesDesc from BasesGenerales.Clientes where idClientes = (SELECT  max(idClientes) FROM BasesGenerales.Clientes)'].join(' ')
+    //var q = ['select ClientesDesc from BasesGenerales.Clientes where idClientes = (SELECT  max(idClientes) FROM BasesGenerales.Clientes)'].join(' ')
+    var q = ['select  idClientes as id, ClientesDesc, ClientesDomicilio, ClientesCodPos, ',
+        'ClientesLoc, ClientesPcia, ClientesTel, ClientesMail, ClientesIVA, ClientesCUIT, ',
+        'ClientesTipo, ClientesContacto, ClientesCategoria, ClientesObserv1, ClientesObserv2, ',
+        'ClientesFecha from BasesGenerales.Clientes where idClientes = (SELECT  max(idClientes) FROM BasesGenerales.Clientes)'].join(' ')
+
+
     conexion.query(q,
         function (err, result) {
             if (err) {

@@ -31,7 +31,6 @@ router.get("/", async function (req, res) {
           if (err) {
             console.log(err);
           } else {
-            console.log('result en presupencableeenro Clientes ', result)
             datosenvio.unshift(result);
           }
         })
