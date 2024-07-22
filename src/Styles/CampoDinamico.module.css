@@ -16,11 +16,11 @@
 }
 
 .contenedordiv {
-    background-color: rgba(0, 255, 234, 0.151);
+    background-color: rgba(137, 199, 23, 0.151);
     border: 1px solid blue;
     border-radius: 10px;
     /* display: grid; */
-    grid-template-columns: repeat(minmax(250px, 1fr));
+    grid-template-columns: (1fr);
     grid-gap: 1rem;
 }
 

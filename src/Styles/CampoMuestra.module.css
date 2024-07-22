@@ -1,11 +1,34 @@
 .textfield {
+    border-radius: 10px;
+    outline: none;
+    background-color: rgba(10, 123, 236, 0.938);
 
-    background-color: rgba(16, 122, 228, 0.904);
-    font-size: 250%;
     width: auto
         /* min-width: 15px;
     max-width: 440px; */
 
 
 
+}
+
+.columnas {
+    border-radius: 10px;
+    outline: none;
+    grid-template-columns: 1fr 4.5fr 1fr 1fr 1fr;
+    background-color: rgba(60, 255, 1, 0.336);
+    /* grid-template-columns: 150px,
+        fit-content(400px),
+        150px */
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 10% 70% 10% 10% 15%;
+    /* grid-template-columns: 1fr 4.5fr 1fr 1fr 1fr; */
+}
+
+.wrapper1 {
+    display: grid;
+    /* grid-template-columns: 55% 10% 10% 15%; */
+    grid-template-columns: 40% 40%
 }

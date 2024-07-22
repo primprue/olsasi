@@ -30,7 +30,6 @@ router.get('/', async function (req, res) {
                 }
             }
             else {
-                console.log('result en otdasleer  ', result)
                 res.json(result);
 
             }

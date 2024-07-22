@@ -8,10 +8,7 @@ export function ClientesAgregar(props) {
 		setTimeout(() => {
 			const {
 				ClientesDesc,
-				ClientesCalle,
-				ClientesNroCalle,
-				ClientesPiso,
-				ClientesDto,
+				ClientesDomicilio,
 				ClientesCodPos,
 				ClientesLoc,
 				ClientesPcia,
@@ -20,16 +17,17 @@ export function ClientesAgregar(props) {
 				ClientesIVA,
 				ClientesCUIT,
 				ClientesTipo,
+				ClientesContacto,
+				ClientesCategoria,
+				ClientesObserv1,
+				ClientesObserv2,
 			} = props;
 			const url = IpServidor + "/clientesagregar";
 			request
 				.post(url)
 				.set("Content-Type", "application/json")
 				.send({ cliendesc: ClientesDesc })
-				.send({ cliencalle: ClientesCalle })
-				.send({ cliennrocalle: ClientesNroCalle })
-				.send({ clienpiso: ClientesPiso })
-				.send({ cliendto: ClientesDto })
+				.send({ cliendomicilio: ClientesDomicilio })
 				.send({ cliencodpostal: ClientesCodPos })
 				.send({ clienlocalidad: ClientesLoc })
 				.send({ clienprovincia: ClientesPcia })
@@ -38,6 +36,10 @@ export function ClientesAgregar(props) {
 				.send({ clieniva: ClientesIVA })
 				.send({ cliencuit: ClientesCUIT })
 				.send({ clientipo: ClientesTipo })
+				.send({ cliencontacto: ClientesContacto })
+				.send({ cliencategoria: ClientesCategoria })
+				.send({ clienobserv1: ClientesObserv1 })
+				.send({ clienobserv2: ClientesObserv2 })
 				.set("X-API-Key", "foobar")
 				.then(function (res) {
 					MuestraMensaje(res);

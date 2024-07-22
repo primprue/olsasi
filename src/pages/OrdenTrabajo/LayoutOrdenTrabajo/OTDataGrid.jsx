@@ -40,19 +40,14 @@ export default function OTDataGrid() {
 	for (var i = 0; i < flattenedData.length; i++) {
 		if (flattenedData[i].PresupRenglonParamInt) {
 			let paramObjeto1 = JSON.parse(flattenedData[i].PresupRenglonParamInt);
-			console.log(" paramObjeto1 ", flattenedData[i]);
-			console.log(" paramObjeto1 ", paramObjeto1.tipopresup);
 			if (paramObjeto1.tipopresup !== "UNIDAD") {
 				datosadicionales = "S";
-				console.log(
-					" flattenedData[i].idPresupRenglon ",
-					flattenedData[i].idPresupRenglon
-				);
-				indicenounidad.push(flattenedData[i].idPresupRenglon);
+				//creo el array con el mismo indice que id del renglón del preuspuesto para poder manejar el ícono de agregar datos en la tabla
+				indicenounidad[flattenedData[i].idPresupRenglon] =
+					flattenedData[i].idPresupRenglon;
 			}
 		}
 	}
-	console.log("indicenounidad  ", indicenounidad);
 	async function columnsFetch() {
 		var col = await llenarcolumns(flattenedData);
 		col.push(actionsColumn);
@@ -73,12 +68,15 @@ export default function OTDataGrid() {
 
 	async function fcionotrosdatos(event) {
 		//tomo la fila en la que se hizo click, tiene un id que es el nro de fila
-		var datorenglon = event.row;
-		console.log("event fcionotrosdatos ", event.row);
-		let paramObjeto = JSON.parse(datorenglon.PresupRenglonParamInt);
-		paramObjeto.idrenglon = datorenglon.id;
-		setPresuptipo(paramObjeto.tipopresup);
-		setDatospot(paramObjeto);
+		// if (indicenounidad[event.row.id - 1] === event.row.id) {
+		if (indicenounidad[event.row.id] === event.row.id) {
+			var datorenglon = event.row;
+
+			let paramObjeto = JSON.parse(datorenglon.PresupRenglonParamInt);
+			paramObjeto.idrenglon = datorenglon.id;
+			setPresuptipo(paramObjeto.tipopresup);
+			setDatospot(paramObjeto);
+		}
 	}
 
 	const actionsColumn = {
@@ -90,33 +88,19 @@ export default function OTDataGrid() {
 			<Button
 				variant="text"
 				style={
-					indicenounidad[params.id - 1] === params.id
+					indicenounidad[params.id] === params.row.idPresupRenglon
 						? { color: deepOrange[800] }
 						: { color: blueGrey[100] }
 				}
-				// style={{ color: deepOrange[800] }}
-				onClick={
-					indicenounidad[params.id - 1] === params.id ? (
-						() => fcionotrosdatos(params)
+				onClick={() => fcionotrosdatos(params)}
+				startIcon={
+					indicenounidad[params.id] === params.row.idPresupRenglon ? (
+						<FitbitIcon />
 					) : (
 						<></>
 					)
 				}
-				startIcon={
-					indicenounidad[params.id - 1] === params.id ? <FitbitIcon /> : <></>
-				}
 			/>
-			// (
-			// 	<input
-			// 		value={
-			// 			indicenounidad +
-			// 			" " +
-			// 			params.id +
-			// 			" " +
-			// 			indicenounidad[params.id - 1]
-			// 		}
-			// 	></input>
-			// )
 		),
 	};
 
@@ -260,7 +244,6 @@ export default function OTDataGrid() {
 		<Grid style={{ height: 400, width: "100%" }}>
 			{datospot !== "" && <OTFilaGral datospot={datospot}></OTFilaGral>}
 			{presuptipo !== "" && <OTFilasConf datospot={datospot}></OTFilasConf>}
-			{/* {datosgenot !== "" && cargadatosconf()} */}
 			{abregenera && (
 				<OTGenera
 					open={abregenera}
@@ -290,40 +273,3 @@ export default function OTDataGrid() {
 		</Grid>
 	);
 }
-/* 
-	const loadData = (data) => {
-		// const newData = [...rows, { id: rows.length + 1, data }];
-		// setRows(newData);
-		const newData = [...renglonot, { id: renglonot.length + 1, data }];
-		setRenglonot(newData);
-	};
-
-	const handleRowSelect = ({ row }) => {
-		setRowSel(row);
-	};
-
-const handleChange = (event) => {
-		const id = event.target.id;
-		setOTdatos({ ...otdatos, [id]: event.target.value });
-	};
-
-*/
-// if (datosgenot !== "") {
-// 	newRow.DatosConf = JSON.stringify(datosgenot);
-// } else {
-// setSnackbar({
-// 	children: "Modificado no confirmado",
-// 	severity: "success",
-// });
-
-//zotdatos.renglonespresup.splice(newRow.id, 1, newRow);
-
-// otdatos.renglonespresup.map((primer) => {
-// 	primer.map((segundo) => {
-// 		segundo.id === newRow.id && (segundo = newRow);
-// 		console.log("segundo  ", segundo);
-// 		setOTdatos({ ...otdatos, renglonespresup: segundo });
-// 	});
-// });
-
-//setOTdatos({ ...otdatos, renglonpresup: newRow });

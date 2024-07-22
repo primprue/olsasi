@@ -32,7 +32,7 @@ function columnsFill(tipoprov, monedas) {
 				placeholder: "_________________",
 				editable: true,
 				required: true,
-				maxLength: 10,
+				maxLength: 145,
 				width: 250,
 				pattern: /^/,
 				headerClassName: estilotabla.encabcolumns,

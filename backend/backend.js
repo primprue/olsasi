@@ -208,7 +208,7 @@ var copiafact = require("./routes/procinternos/copiafact");
 // var otarmatabla = require("./routes/ordentrabajo/otarmatabla")
 var otorigenpresupagregar = require("./routes/ordentrabajo/otorigenpresupagregar")
 var otdatosleer = require("./routes/ordentrabajo/otdatosleer")
-
+var otgraba = require("./routes/ordentrabajo/otgraba")
 
 
 // const { RouterSharp } = require("@material-ui/icons");
@@ -458,6 +458,8 @@ app.use("/copiafact", copiafact);
 // app.use("/otarmatabla", otarmatabla);
 app.use("/otorigenpresupagregar", otorigenpresupagregar);
 app.use("/otdatosleer", otdatosleer);
+app.use("/otgraba", otgraba);
+
 
 
 app.use("/", proveedoresleer);
