@@ -5,10 +5,11 @@ import {
 	GridToolbarExport,
 } from "@mui/x-data-grid";
 import swal from "sweetalert";
+import Alert from "@mui/material/Alert";
 import { llenarcolumns } from "./columns.jsx";
 import OrdTrabajo from "../../../context/OrdTrabajo.jsx";
 import OTFilaGral from "../OTFilas/OTFilaGral/OTFilaGral.jsx";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
 import OTFilasConf from "../OTFilasConf/OTFilasConf.jsx";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FitbitIcon from "@mui/icons-material/Fitbit";
@@ -29,17 +30,23 @@ export default function OTDataGrid() {
 	const [datospot, setDatospot] = useState([]);
 
 	const [totalpresup, setTotalpresup] = useState(0);
+	const [totalpresupsiva, setTotalpresupsiva] = useState(0);
+	const [seniapresup, setSeniapresup] = useState();
+	const [fechaprom, setFechaProm] = useState();
 	const [abregenera, setAbregenera] = useState(false);
 
 	const handleOpen = () => setAbregenera(true);
 	const handleClose = () => setAbregenera(false);
 	let datosadicionales = "N";
 	let indicenounidad = [];
-
-	const flattenedData = otdatos.renglonespresup.flatMap((nivel1) => nivel1); //flatMap lo que hace es aplanar un array en este caso aplana el array del array
+	let tieneiva = "";
+	const flattenedData = otdatos.renglonespresup.flatMap((nivel1) => nivel1);
+	//flatMap lo que hace es aplanar un array en este caso aplana el array del array
 	for (var i = 0; i < flattenedData.length; i++) {
 		if (flattenedData[i].PresupRenglonParamInt) {
 			let paramObjeto1 = JSON.parse(flattenedData[i].PresupRenglonParamInt);
+			tieneiva = paramObjeto1.ivasn;
+
 			if (paramObjeto1.tipopresup !== "UNIDAD") {
 				datosadicionales = "S";
 				//creo el array con el mismo indice que id del renglón del preuspuesto para poder manejar el ícono de agregar datos en la tabla
@@ -73,6 +80,7 @@ export default function OTDataGrid() {
 			var datorenglon = event.row;
 
 			let paramObjeto = JSON.parse(datorenglon.PresupRenglonParamInt);
+			console.log("datorenglon.id  ", datorenglon.id);
 			paramObjeto.idrenglon = datorenglon.id;
 			setPresuptipo(paramObjeto.tipopresup);
 			setDatospot(paramObjeto);
@@ -104,20 +112,71 @@ export default function OTDataGrid() {
 		),
 	};
 
+	const handleChange = (event) => {
+		let impsenia = event.target.value;
+		setSeniapresup(impsenia);
+
+		setOTdatos({ ...otdatos, ImporteSenia: impsenia });
+	};
+	const handleChangeFP = (event) => {
+		const fechahoy = new Date().toJSON().slice(0, 10);
+
+		if (fechahoy > event.target.value) {
+			swal({
+				title: "Fecha Promesa",
+				text: "La fecha de promesa no puede ser menor a la de hoy",
+				icon: "success",
+				button: "OK!",
+			});
+			<Alert severity="warning">
+				La fecha de promesa no puede ser menor a la de hoy
+			</Alert>;
+		}
+		//setFechaProm(event.target.value);
+		setOTdatos({ ...otdatos, FechaPromesa: event.target.value });
+	};
+	const handleChange1 = (event) => {};
 	const sumaimporte = () => {
 		let TotalPresupuesto = 0;
+		let TotalPresupuestoSIVA = 0;
+		// if (rown === undefined)
+		otdatos.renglonespresup.map((renglon) => {
+			//TotalPresupuesto += renglon[0].PresupRenglonImpItem;
+			if (tieneiva === "CIVA") {
+				TotalPresupuestoSIVA += Math.round(
+					renglon[0].PresupRenglonImpItem / 1.21,
+					2
+				);
+				TotalPresupuesto += Math.round(renglon[0].PresupRenglonImpItem);
+			} else {
+				TotalPresupuesto += Math.round(
+					renglon[0].PresupRenglonImpItem * 1.21,
+					2
+				);
+				TotalPresupuestoSIVA += Math.round(renglon[0].PresupRenglonImpItem, 2);
+			}
+		});
 
-		if (rown === undefined)
-			otdatos.renglonespresup.map((renglon) => {
-				TotalPresupuesto += renglon[0].PresupRenglonImpItem;
-			});
-		else TotalPresupuesto += rown.PresupRenglonImpItem;
-		setTotalpresup(TotalPresupuesto);
-
-		setOTdatos({ ...otdatos, TotalPresupuesto: TotalPresupuesto });
+		setOTdatos({
+			...otdatos,
+			TotalPresupuesto,
+			TotalPresupuestoSIVA,
+			OTsinIVA: 0,
+		});
 	};
 
+	const sacaiva = () => {
+		setOTdatos({
+			...otdatos,
+			OTsinIVA: 1,
+		});
+	};
 	const generaorden = () => {
+		console.log(
+			"Object.keys(datosgenot).length  ",
+			Object.keys(datosgenot).length
+		);
+		console.log("otdatos.totaldatos  ", otdatos.totaldatos);
 		presuptipo === "UNIDAD" ? handleOpen() : handleClose();
 		if (
 			Object.keys(datosgenot).length > otdatos.totaldatos ||
@@ -137,6 +196,15 @@ export default function OTDataGrid() {
 			swal({
 				title: "Faltan Datos",
 				text: "No cargó los datos suficientes",
+				icon: "success",
+				button: "OK!",
+			});
+			handleClose();
+		}
+		if (otdatos.FechaPromesa === undefined) {
+			swal({
+				title: "Fecha de Promesa",
+				text: "Por favor elija fecha de Promesa",
 				icon: "success",
 				button: "OK!",
 			});
@@ -212,27 +280,25 @@ export default function OTDataGrid() {
 	function CustomToolbar() {
 		return (
 			<GridToolbarContainer className={estilotabla.tablapresupuestoslot}>
-				<CurrencyTextField
+				{/* <CurrencyTextField
 					id="Total"
 					size="small"
 					label="Importe Total"
 					value={totalpresup}
-					className={EstTF.tfcurrency}
-				></CurrencyTextField>
+					className={EstTF.tfcurrencyI}
+				></CurrencyTextField> */}
 
 				<b></b>
 				<b></b>
 				<b></b>
 				<b></b>
 				<GridToolbarExport></GridToolbarExport>
-
 				<AddShoppingCartIcon
 					onClick={sumaimporte}
 					style={{ color: green[500] }}
 					fontSize="medium"
 					titleAccess="Sumar"
 				/>
-
 				<Button onClick={generaorden} variant="contained" color="primary">
 					Genera Orden
 				</Button>
@@ -252,7 +318,54 @@ export default function OTDataGrid() {
 					renglondef={renglondef}
 				></OTGenera>
 			)}
-
+			<Grid container spacing={2}>
+				{/* {tieneiva === "CIVA" && ( */}
+				<Grid item>
+					<h5>Importe total c/IVA</h5>
+					<CurrencyTextField
+						id="Total"
+						size="small"
+						label="Importe Total"
+						value={otdatos.TotalPresupuesto}
+						onChange={handleChange1}
+						className={EstTF.tfcurrencyI}
+					></CurrencyTextField>
+				</Grid>
+				{/* )}{" "} */}
+				<Grid item>
+					<h5>Importe s/IVA</h5>
+					<CurrencyTextField
+						id="TotalSIVA"
+						size="small"
+						label="Importe SIVA"
+						value={otdatos.TotalPresupuestoSIVA}
+						onChange={handleChange1}
+						className={EstTF.tfcurrencyI}
+					></CurrencyTextField>
+				</Grid>
+				<Button onClick={sacaiva}>.</Button>
+				<Grid item>
+					<h5>Importe Seña</h5>
+					<CurrencyTextField
+						id="seniapresup"
+						size="small"
+						label="Importe Seña"
+						value={seniapresup}
+						onChange={handleChange}
+						className={EstTF.tfcurrencyI}
+					></CurrencyTextField>
+				</Grid>
+				<Grid item>
+					<h5>Fecha Promesa</h5>
+					<TextField
+						id="fechaprom"
+						size="small"
+						type="date"
+						value={fechaprom}
+						onChange={handleChangeFP}
+					></TextField>
+				</Grid>
+			</Grid>
 			<DataGrid
 				columnHeaderHeight={35}
 				key={gridKey}

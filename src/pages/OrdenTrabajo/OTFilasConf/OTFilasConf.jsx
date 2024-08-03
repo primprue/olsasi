@@ -27,7 +27,11 @@ export default function OTFilasConf(props) {
 	const [datosrestantes, setDatosRestantes] = useState([]);
 
 	async function leedatosot() {
-		setDatosgenot({ ...datosgenot, idrenglon: datospot.idrenglon });
+		setDatosgenot({
+			...datosgenot,
+			idrenglon: datospot.idrenglon,
+			Material: datospot.StkRubroAbr,
+		});
 		const result = await OTDatosLeer(datospot.tipopresup);
 
 		const datos = result.map((row) => ({

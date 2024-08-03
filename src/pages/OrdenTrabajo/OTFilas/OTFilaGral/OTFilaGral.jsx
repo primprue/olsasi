@@ -42,7 +42,6 @@ export default function OTFilaGral(props) {
 
 	async function buscaclientesultimo() {
 		const datosclientes = await ClientesLeerUltimo();
-		console.log("datosclientes  ", datosclientes);
 		setClientesleidos(datosclientes);
 	}
 	// para el alta del nuevo cliente

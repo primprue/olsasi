@@ -22,6 +22,17 @@
 	font-size: 18px;
 	color: #277909;
 	height: 30px;
+
+}
+
+.tfcurrencyI {
+	/* padding: 5px; */
+	background-color: rgba(235, 241, 241, 0.514);
+	width: 150px;
+	text-align: right;
+	font-size: 18px;
+	color: #097279;
+	height: 30px;
 }
 
 .textfcantidad {
@@ -92,4 +103,16 @@
 	/* border-bottom: 2px solid rgba(5, 3, 119, 0.973); */
 
 	box-shadow: 0 4px 8px rgba(3, 104, 245, 0.568);
+}
+
+
+.tfecha {
+	padding: 5px;
+	background-color: rgba(249, 245, 227, 0.514);
+	width: 150px;
+	text-align: right;
+	font-size: 18px;
+	color: #277909;
+	height: 30px;
+
 }

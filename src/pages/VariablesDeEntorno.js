@@ -1,5 +1,5 @@
 // Variables de entorno para usar en todos mis componentes
-
+// "pdfjs-dist": "^4.5.136",
 const IpServidor = "http://localhost:4000"
 
 

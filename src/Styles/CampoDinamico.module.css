@@ -16,8 +16,8 @@
 }
 
 .contenedordiv {
-    background-color: rgba(137, 199, 23, 0.151);
-    border: 1px solid blue;
+    background-color: rgba(137, 199, 23, 0.082);
+    border: 1px solid rgb(53, 53, 59);
     border-radius: 10px;
     /* display: grid; */
     grid-template-columns: (1fr);

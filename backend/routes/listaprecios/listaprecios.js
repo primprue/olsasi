@@ -28,6 +28,7 @@ router.get('/', function (req, res, next) {
                 'StkRubroAncho, StkRubroPres, ',
                 'date_format(StkRubroFecha, "%d-%m-%Y") as StkRubroFecha,  ',
                 'round((StkRubroCosto * StkMonedasCotizacion * ' + coefmin + ' ),0) as PPub, ',
+                'round((StkRubroCosto * StkMonedasCotizacion / 1.21 * ' + coefmin + ' ),0) as PPubSIVA, ',
                 'round((StkRubroCosto * StkMonedasCotizacion * ' + coefmay + ' ),0) as PMay ',
                 'from StkRubro JOIN StkGrupo, BasesGenerales.Proveedores, StkMonedas ',
                 'where StkRubroCodGrp = idStkGrupo',
@@ -35,12 +36,13 @@ router.get('/', function (req, res, next) {
                 'and StkRubroTM = idStkMonedas ',
                 'and StkRubroCodGrp = idStkGrupo ',
                 'order by StkRubroCodGrp, idStkRubro',].join(' ')
-
+            console.log('q en lista de precios ', q)
             conexion.query(q,
                 function (err, result) {
                     if (err) {
                         console.log(err);
                     } else {
+                        console.log('result   ', result);
                         res.json(result);
                     }
                 });
