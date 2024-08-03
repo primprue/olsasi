@@ -1,11 +1,12 @@
 import request from "superagent";
 import IpServidor from "../../VariablesDeEntorno";
-export const OTGrabar = (datosconfec, renglonespresup, datosencab) => {
+export const OTGrabar = (otdatos) => {
 	//esta forma de pasar los datos la tome de chatgpt funciona igual que la forma que yo uso habitualmente
 	const payload = {
-		datosconfec: datosconfec,
-		renglonespresup: renglonespresup,
-		datosencab: datosencab,
+		// datosconfec: datosconfec,
+		// renglonespresup: renglonespresup,
+		// datosencab: datosencab,
+		otdatos: otdatos,
 	};
 	return new Promise((resolve) => {
 		const url = IpServidor + "/otgraba";

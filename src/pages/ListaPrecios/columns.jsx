@@ -1,3 +1,4 @@
+import { red } from "@mui/material/colors";
 import React from "react";
 export async function llenarcolumns() {
 	return columnsFill();
@@ -66,10 +67,26 @@ function columnsFill() {
 				align: "right", //alinea el contenido
 				headerAlign: "center", //alinea el encabezado
 				xs: 4,
-				// pattern: /^[0-9]{0,6}.[0-9]{0,2}$/,
-				// renderCell: (params) => (
-				// 	<div>{params.value && `$ ${params.value}`} </div>
-				// ),
+				pattern: /^[0-9]{0,6}.[0-9]{0,2}$/,
+				renderCell: (params) => (
+					<div>{params.value && `$ ${params.value}`} </div>
+				),
+			},
+			{
+				headerName: "Pco. s/IVA",
+				field: "PPubSIVA",
+				width: 150,
+				editable: false,
+				type: "text",
+				//header ClassName: "encabcolumns",
+				maxLength: 9,
+				align: "right", //alinea el contenido
+				headerAlign: "center", //alinea el encabezado
+				xs: 4,
+				pattern: /^[0-9]{0,6}.[0-9]{0,2}$/,
+				renderCell: (params) => (
+					<div>{params.value && `$ ${params.value}`} </div>
+				),
 			},
 			{
 				headerName: "Mayorista",
@@ -80,11 +97,13 @@ function columnsFill() {
 				//header ClassName: "encabcolumns",
 				maxLength: 9,
 				xs: 4,
+				backgroundColor: "#f44336",
+
 				align: "right", //alinea el contenido
 				headerAlign: "center", //alinea el encabezado
-				// renderCell: (params) => (
-				// 	<div>{params.value && `$ ${params.value}`} </div>
-				// ),
+				renderCell: (params) => (
+					<div>{params.value && `$ ${params.value}`} </div>
+				),
 			},
 			{
 				headerName: "Fecha",

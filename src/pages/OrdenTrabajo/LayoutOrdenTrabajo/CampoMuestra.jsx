@@ -15,15 +15,16 @@ import {
 import estilos from "../../../Styles/CampoMuestra.module.css";
 import estilos1 from "../../../Styles/CampoDinamico.module.css";
 import { DataGrid } from "@mui/x-data-grid";
-import React from "react";
+import React, { useContext, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-
+import { CurrencyTextField } from "../../../hooks/useCurrencyTextField";
 export function CampoMuestra({ arreglodef }) {
+	let totalot = 0.0;
 	const titulosColumnas = {
 		PresupRenglonCant: "Cantidad",
 		PresupRenglonDesc: "Detalle",
@@ -71,6 +72,7 @@ export function CampoMuestra({ arreglodef }) {
 				</TableRow>
 			);
 		});
+
 	const mostrarElementosSinPresupRenglon = elementosSinPresupRenglon.map(
 		(elemento, index1) => {
 			const nombresPropiedades = Object.keys(elemento);
@@ -123,6 +125,7 @@ export function CampoMuestra({ arreglodef }) {
 				</TableHead>
 				<TableBody>{mostrarElementos}</TableBody>
 			</Table>
+
 			<div style={{ marginTop: "20px" }}>
 				{mostrarElementosSinPresupRenglon}
 			</div>
