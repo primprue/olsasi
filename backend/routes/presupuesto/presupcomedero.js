@@ -70,7 +70,6 @@ router.get("/", (req, res, next) => {
           }
         }
 
-        console.log('cantidadcob  ', cantidadcob)
         ganancia = result[0].coefgancsoga
 
         if (datos.minmay == 'my') {

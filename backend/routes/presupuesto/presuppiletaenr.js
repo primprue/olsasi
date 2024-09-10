@@ -35,10 +35,8 @@ router.get("/", (req, res, next) => {
       minutosdren = 0.0;
       // var enteroancho = 0,
       //   decimancho = 0.0;
-      console.log(' req.query.datoscalculo presuppiletaenr ', req.query.datoscalculo)
       datosrec = JSON.parse(req.query.datoscalculo);
       // totalreg = datosrec.length;
-      console.log(' datosrec presuppiletaenr ', datosrec)
       datosrec.map(datos => {
         cantidad = datos.cantidad;
         drenajesn = datos.drenajesn;

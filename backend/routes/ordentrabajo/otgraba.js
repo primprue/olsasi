@@ -16,21 +16,21 @@ conexion.connect(function (err) {
 });
 
 router.all("/", async function (req, res) {
+
     var d = new Date();
     finalDate = d.toISOString().split("T")[0];
-    // console.log('req.body  ', req.body)
-    // console.log('req.bodyrenglonespresup  ', req.body.otdatos.datosconfec.renglonespresup)
-    // console.log('req.body.datosencab  ', req.body.otdatos.datosencab)
-    console.log('req.body.otdatos  ', req.body.otdatos)
-
     var cliente = 0; clientenoreg = ''; importtotal = 0.00; importsenia = 0.00
     var i = 0;
     var registro = {}
+
+    if (!req.body.otdatos.transporte || req.body.otdatos.transporte === undefined) {
+        transporte = '';
+    } else {
+        transporte = req.body.otdatos.transporte.TransporteDesc;
+    }
     if (req.body.otdatos.datosencab.length > 1) {
         cliente = req.body.otdatos.datosencab[1][0].idClientes;
         clientenoreg = '';
-
-
     } else {
         cliente = 0;
         clientenoreg = req.body.otdatos.datosencab[0][0].PresupEncabCliente;
@@ -45,9 +45,16 @@ router.all("/", async function (req, res) {
     else
         importsenia = parseFloat(req.body.otdatos.ImporteSenia)
 
-
-
-
+    if (!req.body.otdatos.OTEncabOC || req.body.otdatos.OTEncabOC === undefined) {
+        OTEncabOC = '';
+    } else {
+        OTEncabOC = req.body.otdatos.OTEncabOC;
+    }
+    if (!req.body.otdatos.OTEncabDetalles || req.body.otdatos.OTEncabDetalles === undefined) {
+        OTEncabDetalles = '';
+    } else {
+        OTEncabDetalles = req.body.otdatos.OTEncabDetalles;
+    }
     registro = {
         OTEncabCliente: cliente,
         OTEncabEstado: 1,
@@ -55,9 +62,11 @@ router.all("/", async function (req, res) {
         OTEncabFecha: finalDate,
         OTEncabFechaPromesa: req.body.otdatos.FechaPromesa,
         OTEncabImpTotal: importtotal,
-        OTEncabSenia: importsenia
+        OTEncabSenia: importsenia,
+        OTEncabTransporte: transporte,
+        OTEncabOC: OTEncabOC,
+        OTEncabDetalles: OTEncabDetalles
     }
-    console.log('registro  ', registro)
     conexion.query("INSERT INTO BasesOrdenes.OTEncab SET ?", registro, function (err, result) {
         if (err) {
             if (err.errno == 1062) {
@@ -70,24 +79,19 @@ router.all("/", async function (req, res) {
             console.log('insertó todo bien en BasesOrdenes.OTEncab')
             res.json(result);
             nroot = result.insertId
-            console.log('nroot  ', nroot)
         }
 
-
         req.body.otdatos.renglonespresup.map(renglon => {
-            console.log('renglon  ', renglon)
-            console.log('req.body.datosconfec  ', req.body.otdatos.datosconfec)
             var registro1 = {
                 OTRenglonNro: i + 1,
                 idOTRenglonNroOT: nroot,
-                OTRenglonCant: renglon[i].PresupRenglonCant,
-                OTRenglonDesc: renglon[i].PresupRenglonDesc,
-                OTRenglonLargo: renglon[i].PresupRenglonLargo,
-                OTRenglonAncho: renglon[i].PresupRenglonAncho,
-                OTRenglonImpItem: renglon[i].PresupRenglonImpItem,
-                OTRenglonDetalles: req.body.otdatos.datosconfec
+                OTRenglonCant: renglon[0].PresupRenglonCant,
+                OTRenglonDesc: renglon[0].PresupRenglonDesc,
+                OTRenglonLargo: renglon[0].PresupRenglonLargo,
+                OTRenglonAncho: renglon[0].PresupRenglonAncho,
+                OTRenglonImpItem: renglon[0].PresupRenglonImpItem,
+                OTRenglonDetalles: JSON.stringify(req.body.otdatos.datosconfec)
             }
-            console.log('registro 1 ', registro1)
             conexion.query("INSERT INTO BasesOrdenes.OTRenglon SET ?", registro1,
                 function (err, result) {
                     if (err) {

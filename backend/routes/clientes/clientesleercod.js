@@ -20,6 +20,7 @@ var router = express();
 
 router.get('/', async function (req, res) {
     indice = req.query.id;
+    console.log('indice clientesleercod  ', indice)
     var q = ['SELECT * FROM BasesGenerales.Clientes where idClientes = ' + indice].join(' ')
     conexion.query(q,
         function (err, result) {

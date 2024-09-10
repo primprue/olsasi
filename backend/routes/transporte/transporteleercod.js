@@ -20,8 +20,10 @@ var router = express();
 
 router.get('/', async function (req, res) {
     indice = req.query.id;
+
     //  'SELECT idProveedores, ProveedoresDesc, ProveedoresTipo, ProveedoresCUIT, ProveedoresCalle, ProveedoresNroCalle, ProveedoresPiso, ProveedoresDto, ProveedoresCodPos, ProveedoresLoc, ProveedoresPcia, ProveedoresTel, ProveedoresContacto, ProveedoresMail, ProveedoresWeb, ProveedoresCodMon FROM BasesGenerales.Proveedores where idProveedores = ' + indice,
     var q = ['SELECT * FROM BasesGenerales.Transporte where idTransporte = ' + indice].join(' ')
+    console.log('q transporteleercod ', q)
     conexion.query(q,
         function (err, result) {
             if (err) {

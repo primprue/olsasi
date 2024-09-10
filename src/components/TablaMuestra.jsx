@@ -33,6 +33,12 @@ import { StkUnMedModificar } from "../pages/Tablas/UnidadMedidas/StkUnMedModific
 
 import { StkUbFisicaLee } from "../pages/Tablas/UbicacionFisica/StkUbFisicaLee.jsx";
 
+import { ParamCompLeer } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompLeer.jsx";
+import { ParamCompModificar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompModificar.jsx";
+
+import { OTCondPagoLeer } from "../pages/Tablas/OTCondPago/OTCondPagoLeer.jsx";
+import { OTCondPagoModificar } from "../pages/Tablas/OTCondPago/OTCondPagoModificar.jsx";
+
 // import { TablaMuestraRenglon } from "../pages/Presupuesto/LayoutPresupuesto/PresupMuestra/TablaMuestraRenglon/index.jsx";
 // import { presupDatos } from "../pages/Presupuesto/LayoutPresupuesto/PresupMuestra/presupDatos.jsx";
 import { useState } from "react";
@@ -59,16 +65,12 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { DialogoDatos } from "./DialogoDatos.jsx";
 import { useContext } from "react";
-import StaticContexto from "../../context/StaticContext.jsx";
 import TablasContexto from "../context/TablasContext.jsx";
-// import { formdata } from "./formdata.js";
 import SelecCampos from "../pages/Impresion/SelecCampos.jsx";
 import { Box, IconButton, Tooltip } from "@mui/material";
 export default function TablaMuestra(props) {
 	const { rows1, columns1, formdatos } = props;
-	//const { formdatos, setFormdatos } = useContext(TablasContexto);
 	const { datoborrado, setDatoborrado } = useContext(TablasContexto);
-	// const { valor, setValor } = useContext(StaticContexto);
 	const [imprimirTF, setImprimirTF] = useState(false);
 	const [columns, setColumns] = useState([]);
 	const [rows, setRows] = useState([]);
@@ -92,25 +94,6 @@ export default function TablaMuestra(props) {
 		var data = rows1;
 		setRows(data);
 	}
-	//empiezan las cosas del sistema
-	// async function columnsFetch() {
-	// 	var col = await llenarcolumns();
-	// 	setColumns(() => col);
-	// }
-	// async function dataFetch() {
-	// 	const data = await leerTransporte();
-	// 	setRows(data);
-	// }
-	// async function initialFetch() {
-	// 	columnsFetch();
-	// 	dataFetch();
-	// }
-
-	// useEffect(() => {
-	// initialFetch();
-	// setValor("Transportes");
-	// setFormdatos(formdata);
-	// }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const [open, setOpen] = React.useState(false);
 	const [rowv, setRowv] = useState();
@@ -120,9 +103,6 @@ export default function TablaMuestra(props) {
 	const handleCloseImprimir = () => {
 		setImprimirTF(false);
 	};
-	// const handleDeleteClick = (id) => () => {
-	// 	setRows(rows.filter((row) => row.id !== id));
-	// };
 
 	async function relee() {
 		if (formdatos.tablabase === "Transportes") {
@@ -170,17 +150,22 @@ export default function TablaMuestra(props) {
 			const data = await StkUbFisicaLee();
 			setRows(data);
 		}
-		// if (formdatos.tablabase === "MuestraPresupuesto") {
-		// 	const data = await presupDatos();
-		// 	setRows(data);
-		// }
+
+		if (formdatos.tablabase === "ParamComp") {
+			const data = await ParamCompLeer();
+			setRows(data);
+		}
+
+		if (formdatos.tablabase === "OTCondPago") {
+			const data = await OTCondPagoLeer();
+			setRows(data);
+		}
 	}
 	const handleClose = () => {
 		relee();
 		if (datoborrado !== 0)
 			setRows(rows.filter((row) => row.id !== paramsbor.id));
 		setOpen(false);
-		// initialFetch();
 	};
 
 	const handleAlta = () => {
@@ -202,10 +187,9 @@ export default function TablaMuestra(props) {
 			if (formdatos.tablabase === "Rubros") StkRubroModificar(params);
 			if (formdatos.tablabase === "Items") StkItemsModificar(params);
 			if (formdatos.tablabase === "UniMedidas") StkUnMedModificar(params);
-			// if (formdatos.tablabase === "MuestraPresupuesto")
-			//console.log("esta en muestrapresupuesto  ", params);
-			//AbreMuestraRenglon(params);
-			// TablaMuestraRenglon(true, false, rowsel.id);
+			if (formdatos.tablabase === "ParamComp") ParamCompModificar(params);
+			if (formdatos.tablabase === "OTCondPago") OTCondPagoModificar(params);
+
 			relee();
 		}, 100);
 	};
@@ -261,14 +245,6 @@ export default function TablaMuestra(props) {
 	function CustomToolbar() {
 		return (
 			<GridToolbarContainer className={estilotabla.tablasgenerales}>
-				{/* <div>
-					<Typography
-						className={estilotabla.titulartablas}
-						// variant="h4"
-					>
-						{formdatos.tablabase}
-					</Typography>
-				</div> */}
 				<GridToolbarColumnsButton className={estilotabla.coloropcioncol} />
 				<GridToolbarFilterButton className={estilotabla.coloropcioncol} />
 				<GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
@@ -352,11 +328,7 @@ export default function TablaMuestra(props) {
 				paramsbor={paramsbor}
 				titulodial={titulodial}
 			/>
-			{/* <TablaMuestraRenglon
-				open={openmr}
-				handleClose={CierraMuestraRenglon}
-				Presup={nropresup}
-			/> */}
+
 			<SelecCampos
 				columns={columns}
 				datos={rows}
@@ -377,20 +349,3 @@ export default function TablaMuestra(props) {
 		</Box>
 	);
 }
-
-// sx={{
-// 	//esto es el estilo del encabezado de las columnas
-// 	height: 700,
-// 	width: "100%",
-// 	"& .encabcolumns": {
-// 		backgroundColor: "rgba(57, 192, 68, 0.651)",
-// 		textJustify: "center",
-// 		fontSize: "15px",
-// 		fontWeight: "bold",
-// 		color: "rgba(22, 53, 25, 0.7)",
-// 		borderRadius: 1,
-// 		boxShadow: 3,
-// 		bgcolor: "rgba(224, 211, 29, 0.144)",
-// 		height: 4,
-// 	},
-// }}

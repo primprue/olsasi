@@ -20,7 +20,6 @@ var router = express();
 router.get('/', async function (req, res) {
 
     var q = ['SELECT idClientes, ClientesDesc FROM BasesGenerales.Clientes order by ClientesDesc'].join(' ')
-    console.log('q en clientes leer desc  ', q)
     conexion.query(q,
         function (err, result) {
             if (err) {

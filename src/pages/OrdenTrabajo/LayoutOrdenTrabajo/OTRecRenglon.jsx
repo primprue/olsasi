@@ -19,7 +19,6 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function OTRecRenglon() {
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
-	console.log("otdatos en OTRecREnglon  ", otdatos);
 	async function datosencab() {
 		//acá lee el encabezado del preuspuesto y los datos del cliente
 		const encabezamiento = await OTLeeEncPresup(
@@ -40,7 +39,6 @@ export default function OTRecRenglon() {
 	};
 
 	if (otdatos.datosencab) {
-		console.log(" otdatos.datosencab[0][0] ", otdatos.datosencab[0][0]);
 		const dateValue = new Date(otdatos.datosencab[0][0].PresupEncabFecha);
 		const formattedDate = dateValue.toLocaleDateString();
 		return (

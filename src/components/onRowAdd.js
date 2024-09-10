@@ -7,6 +7,8 @@ import { StkItemsAgregar } from "../pages/Tablas/StkItems/StkItemsAgregar";
 import { StkUnMedAgregar } from "../pages/Tablas/UnidadMedidas/StkUnMedAgregar";
 import { PresupDetPieAgregar } from "../pages/Tablas/PresupDetPie/PresupDetPieAgregar";
 import { ClientesAgregar } from "../pages/Tablas/Clientes/ClientesAgregar";
+import { ParamCompAgregar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompAgregar";
+import { OTCondPagoAgregar } from "../pages/Tablas/OTCondPago/OTCondPagoAgregar";
 export function onRowAdd(newData) {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -36,6 +38,12 @@ export function onRowAdd(newData) {
       }
       if (newData.tablabase === 'PresupDetPie') {
         PresupDetPieAgregar(newData);
+      }
+      if (newData.tablabase === 'ParamComp') {
+        ParamCompAgregar(newData);
+      }
+      if (newData.tablabase === 'OTCondPago') {
+        OTCondPagoAgregar(newData);
       }
       resolve(50);
     }, 500);

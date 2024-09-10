@@ -11,7 +11,7 @@ var conexion = mysql.createConnection({
   database: "BaseStock",
   port: 3306
 });
-
+console.log('esta en conexion  ', conexion)
 //var ip = 'localhost';
 
 module.exports = conexion;
