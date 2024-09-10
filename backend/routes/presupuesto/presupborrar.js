@@ -68,7 +68,6 @@ router.delete("/", function (req, res, next) {
         }
       } else {
         respuesta.push(result)
-        console.log('respuesta al final  ', respuesta)
         res.json(respuesta);
         respuesta = [];
       }

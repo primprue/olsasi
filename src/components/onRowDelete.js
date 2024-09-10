@@ -6,6 +6,8 @@ import { StkRubroBorrar } from "../pages/Tablas/StkRubros/StkRubroBorrar";
 import { StkItemsBorrar } from "../pages/Tablas/StkItems/StkItemsBorrar";
 import { StkUnMedBorrar } from "../pages/Tablas/UnidadMedidas/StkUnMedBorrar";
 import { PresupDetPieBorrar } from "../pages/Tablas/PresupDetPie/PresupDetPieBorrar";
+import { ParamCompBorrar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompBorrar";
+import { OTCondPagoBorrar } from "../pages/Tablas/OTCondPago/OTCondPagoBorrar";
 // import { PresupBorrar } from "../pages/Presupuesto/LayoutPresupuesto/PrespuConMod/PresupBorrar";
 export function onRowDelete(paramsid, newData) {
   return new Promise((resolve) => {
@@ -33,6 +35,12 @@ export function onRowDelete(paramsid, newData) {
       }
       if (newData.tablabase === 'PresupDetPie') {
         PresupDetPieBorrar(paramsid)
+      }
+      if (newData.tablabase === 'ParamComp') {
+        ParamCompBorrar(paramsid)
+      }
+      if (newData.tablabase === 'OTCondPago') {
+        OTCondPagoBorrar(paramsid)
       }
       // if (newData.tablabase === 'MuestraPresupuesto') {
       //   PresupBorrar(paramsid)

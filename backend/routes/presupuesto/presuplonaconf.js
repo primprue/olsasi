@@ -33,7 +33,6 @@ router.get("/", (req, res, next) => {
         ancho = 0.0;
       // var enteroancho = 0,
       //   decimancho = 0.0;
-      console.log('req.que conf ', req.query.datoscalculo)
       datosrec = JSON.parse(req.query.datoscalculo);
       // totalreg = datosrec.length;
       datosrec.map(datos => {

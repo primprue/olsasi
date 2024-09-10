@@ -15,7 +15,6 @@ var router = express();
 
 router.post("/", async function (req, res, next) {
   indice = req.query.id;
-  console.log('req.bo  ', req.body)
   PresupConfTipoLargo = req.body.PresupConfTipoLargo,
     PresupConfTipoAncho = req.body.PresupConfTipoAncho,
     PresupConfTipoAnexo = req.body.PresupConfTipoAnexo.toUpperCase(),

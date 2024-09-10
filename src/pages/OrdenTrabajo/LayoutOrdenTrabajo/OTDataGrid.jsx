@@ -22,6 +22,7 @@ import OTGenera from "./OTGenera.jsx";
 export default function OTDataGrid() {
 	const [columns, setColumns] = useState([]);
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
+
 	const { datosgenot, setDatosgenot } = useContext(OrdTrabajo);
 	const [renglonot, setRenglonot] = useState([]);
 	const [renglondef, setRenglondef] = useState();
@@ -80,7 +81,6 @@ export default function OTDataGrid() {
 			var datorenglon = event.row;
 
 			let paramObjeto = JSON.parse(datorenglon.PresupRenglonParamInt);
-			console.log("datorenglon.id  ", datorenglon.id);
 			paramObjeto.idrenglon = datorenglon.id;
 			setPresuptipo(paramObjeto.tipopresup);
 			setDatospot(paramObjeto);
@@ -172,11 +172,6 @@ export default function OTDataGrid() {
 		});
 	};
 	const generaorden = () => {
-		console.log(
-			"Object.keys(datosgenot).length  ",
-			Object.keys(datosgenot).length
-		);
-		console.log("otdatos.totaldatos  ", otdatos.totaldatos);
 		presuptipo === "UNIDAD" ? handleOpen() : handleClose();
 		if (
 			Object.keys(datosgenot).length > otdatos.totaldatos ||

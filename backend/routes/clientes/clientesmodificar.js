@@ -72,7 +72,6 @@ router.post("/?:id", function (req, res) {
 
     indice
   ].join("");
-  console.log('q en modifica clientes  ', q)
   conexion.query(q, function (err, result) {
     if (err) {
       if (err.errno == 1062) {

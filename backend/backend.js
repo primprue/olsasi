@@ -27,6 +27,9 @@ var clientesleerdescmayigual = require("./routes/clientes/clientesleerdescmayigu
 var clientesleerpresup = require("./routes/clientes/clientesleerpresup");
 var clientestraenuevos = require("./routes/clientes/clientestraenuevos");
 var clientescobol = require("./routes/clientes/clientescobol");
+var clientesleerot = require("./routes/clientes/clientesleerot");
+var clientesleerencabot = require("./routes/clientes/clientesleerencabot");
+var clientesleerdescod = require("./routes/clientes/clientesleerdescod");
 
 // var clientespresupagregar = require("./routes/clientes/clientespresupagregar");
 
@@ -209,6 +212,26 @@ var copiafact = require("./routes/procinternos/copiafact");
 var otorigenpresupagregar = require("./routes/ordentrabajo/otorigenpresupagregar")
 var otdatosleer = require("./routes/ordentrabajo/otdatosleer")
 var otgraba = require("./routes/ordentrabajo/otgraba")
+var otleeencab = require("./routes/ordentrabajo/otleeencab")
+var otestadoleer = require("./routes/ordentrabajo/otestadoleer")
+var otrengleerpot = require("./routes/ordentrabajo/otrengleerpot")
+var otguardapdf = require("./routes/ordentrabajo/otguardapdf")
+
+
+var otcondpagoleer = require("./routes/otcondpago/otcondpagoleer");
+var otcondpagoleercod = require("./routes/otcondpago/otcondpagoleercod");
+var otcondpagoagregar = require("./routes/otcondpago/otcondpagoagregar");
+var otcondpagomodificar = require("./routes/otcondpago/otcondpagomodificar");
+var otcondpagoborrar = require("./routes/otcondpago/otcondpagoborrar");
+
+
+//para ctacte
+// var conectaafip = require("./routes/afip/conectaafip")
+
+var paramcompleer = require("./routes/ctacte/paramcomp/paramcompleer")
+var paramcompborrar = require("./routes/ctacte/paramcomp/paramcompborrar")
+var paramcompagregar = require("./routes/ctacte/paramcomp/paramcompagregar")
+var paramcompmodificar = require("./routes/ctacte/paramcomp/paramcompmodificar")
 
 
 // const { RouterSharp } = require("@material-ui/icons");
@@ -273,6 +296,9 @@ app.use("/clientesleerdescmayigual", clientesleerdescmayigual);
 app.use("/clientesleerpresup", clientesleerpresup);
 app.use("/clientestraenuevos", clientestraenuevos);
 app.use("/clientescobol", clientescobol);
+app.use("/clientesleerot", clientesleerot);
+app.use("/clientesleerencabot", clientesleerencabot);
+app.use("/clientesleerdescod", clientesleerdescod);
 
 // app.use("/clientespresupagregar", clientespresupagregar);
 
@@ -281,7 +307,6 @@ app.use("/transporteleercod", transporteleercod);
 app.use("/transporteagregar", transporteagregar);
 app.use("/transportemodificar", transportemodificar);
 app.use("/transporteborrar", transporteborrar);
-
 
 app.use("/stkbgsubrubroleer", stkbgsubrubroleer);
 
@@ -459,6 +484,26 @@ app.use("/copiafact", copiafact);
 app.use("/otorigenpresupagregar", otorigenpresupagregar);
 app.use("/otdatosleer", otdatosleer);
 app.use("/otgraba", otgraba);
+app.use("/otleeencab", otleeencab);
+app.use("/otestadoleer", otestadoleer);
+app.use("/otrengleerpot", otrengleerpot);
+app.use("/otguardapdf", otguardapdf);
+
+
+app.use("/otcondpagoleer", otcondpagoleer);
+app.use("/otcondpagoleercod", otcondpagoleercod);
+app.use("/otcondpagoagregar", otcondpagoagregar);
+app.use("/otcondpagomodificar", otcondpagomodificar);
+app.use("/otcondpagoborrar", otcondpagoborrar);
+
+
+//temas ctacte
+// app.use("/conectaafip", conectaafip);
+app.use("/paramcompleer", paramcompleer);
+app.use("/paramcompborrar", paramcompborrar);
+app.use("/paramcompagregar", paramcompagregar);
+app.use("/paramcompmodificar", paramcompmodificar);
+
 
 
 

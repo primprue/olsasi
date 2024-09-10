@@ -16,7 +16,6 @@ router.get("/", function (req, res, next) {
 
   var q = ["Select idPresupDetPie as id, PresupDetPieLeyenda, PresupDetPieSelec from BasePresup.PresupDetPie order by PresupDetPieLeyenda"].join(" ");
 
-  console.log('q  ', q)
   conexion.query(q, function (err, result) {
     if (err) {
       console.log(err);

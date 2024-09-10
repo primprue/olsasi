@@ -39,6 +39,7 @@ export default function OTFilasConf(props) {
 			opciones: JSON.parse(row.OTDatosOpciones),
 			tipocomponete: row.OTDatosTipoPed,
 			requerido: row.OTDatosRequerido,
+			anchocomp: row.OTDatosAncho,
 		}));
 		const countRequiredS = datos.filter(
 			(item) => item.requerido === "S"
@@ -183,7 +184,10 @@ export default function OTFilasConf(props) {
 								label={dato.nombre}
 								placeholder={dato.nombre}
 								helperText={dato.requerido === "S" ? "Requerido" : "-----"}
-								fullWidth
+								// fullWidth
+								inputProps={{
+									maxLength: dato.anchocomp,
+								}}
 								style={
 									dato.requerido === "S"
 										? { background: "#7a7af318" }

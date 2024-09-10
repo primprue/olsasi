@@ -46,7 +46,6 @@ router.get("/", async function (req, res) {
       //   // datosenvio.unshift(result[0].PresupEncabCliente);
       //   datosenvio.unshift(Clientesindatos);
       // }
-      console.log('datosenvio presupencableenro  ', datosenvio)
       res.json(datosenvio);
       datosenvio = [];
     }

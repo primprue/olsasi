@@ -16,7 +16,6 @@ var router = express();
 
 router.get('/', function (req, res, next) {
     q1 = ['select * from BasePresup.PresupParam'].join(' ')
-    console.log('q1  ', q1)
     conexion.query(q1,
         function (err, result) {
             if (err) {
@@ -36,13 +35,11 @@ router.get('/', function (req, res, next) {
                 'and StkRubroTM = idStkMonedas ',
                 'and StkRubroCodGrp = idStkGrupo ',
                 'order by StkRubroCodGrp, idStkRubro',].join(' ')
-            console.log('q en lista de precios ', q)
             conexion.query(q,
                 function (err, result) {
                     if (err) {
                         console.log(err);
                     } else {
-                        console.log('result   ', result);
                         res.json(result);
                     }
                 });

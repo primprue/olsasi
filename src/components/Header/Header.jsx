@@ -72,12 +72,21 @@ function Header() {
 	const handleClose3 = () => {
 		setAnchorEl3(null);
 	};
+	const [anchorEl4, setAnchorEl4] = React.useState(null);
+	const open4 = Boolean(anchorEl4);
+
+	const handleClick4 = (event) => {
+		setAnchorEl4(event.currentTarget);
+	};
+	const handleClose4 = () => {
+		setAnchorEl4(null);
+	};
 
 	const diafecha = moment().format("DD-MM-YYYY");
 	// const [state, setState] = useState(initial_state);
 	useEffect(() => {
-		// clientestraeNuevos();
-		clientesCobol();
+		clientestraeNuevos();
+		//clientesCobol();
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 	return (
 		<div>
@@ -152,6 +161,14 @@ function Header() {
 						onClick={handleClose}
 					>
 						Modifica Precios
+					</MenuItem>
+					<MenuItem
+						className={PropBarra.botonitem}
+						component={Link}
+						to="/OTMovimiento"
+						onClick={handleClose}
+					>
+						OT Movimiento
 					</MenuItem>
 				</Menu>
 				<a
@@ -291,6 +308,54 @@ function Header() {
 							onClick={handleClose2}
 						>
 							Pie de Presupuesto
+						</MenuItem>
+
+						<MenuItem
+							component={Link}
+							className={PropBarra.botonitem}
+							to="/OTCondPago"
+							onClick={handleClose2}
+						>
+							Condiciones Pago OT
+						</MenuItem>
+					</div>
+				</Menu>
+				<a
+					className={PropBarra.a}
+					id="basic-button2"
+					aria-controls={open4 ? "basic-button2" : undefined}
+					aria-haspopup="true"
+					aria-expanded={open4 ? "true" : undefined}
+					onClick={handleClick4}
+					// startIcon={<TableChartTwoToneIcon />}
+				>
+					Cuentas Corrientes
+				</a>
+				<Menu
+					id="basic-menu"
+					anchorEl={anchorEl4}
+					open={open4}
+					onClose={handleClose4}
+					MenuListProps={{
+						"aria-labelledby": "basic-button2",
+					}}
+				>
+					<div>
+						<MenuItem
+							component={Link}
+							className={PropBarra.botonitem}
+							to="/CtasCtes"
+							onClick={handleClose2}
+						>
+							Ctas Ctes
+						</MenuItem>
+						<MenuItem
+							component={Link}
+							className={PropBarra.botonitem}
+							to="/ParamComp"
+							onClick={handleClose2}
+						>
+							Parametros Comprobantes
 						</MenuItem>
 					</div>
 				</Menu>

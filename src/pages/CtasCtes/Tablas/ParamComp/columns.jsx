@@ -1,0 +1,125 @@
+import React from "react";
+import estilotabla from "../../../../Styles/Tabla.module.css";
+export async function llenarcolumns() {
+	return columnsFill();
+}
+
+function columnsFill() {
+	return new Promise(function (resolve) {
+		resolve([
+			// {
+			// 	headerName: "id",
+			// 	field: "id",
+			// 	placeholder: "_________________",
+			// 	editable: false,
+			// 	required: true,
+			// 	maxLength: 10,
+			// 	width: 50,
+			// 	pattern: /^/,
+			// 	xs: 8,
+			// 	headerClassName: estilotabla.encabcolumns,
+			// },
+			{
+				headerName: "Letra",
+				field: "ParamCompLetra",
+				placeholder: "_________________",
+				editable: true,
+				required: true,
+				maxLength: 1,
+				width: 100,
+				pattern: /^/,
+				xs: 8,
+				headerClassName: estilotabla.encabcolumns,
+			},
+			{
+				headerName: "Suc",
+				field: "ParamCompSuc",
+				placeholder: "_________________",
+				editable: true,
+				required: true,
+				maxLength: 4,
+				width: 100,
+				pattern: /^/,
+				xs: 8,
+				headerClassName: estilotabla.encabcolumns,
+			},
+			{
+				headerName: "Nro",
+				field: "ParamCompNro",
+				placeholder: "_________________",
+				editable: true,
+				required: true,
+				maxLength: 8,
+				width: 100,
+				pattern: /^/,
+				xs: 8,
+				headerClassName: estilotabla.encabcolumns,
+			},
+
+			{
+				headerName: "Abrev.",
+				field: "ParamCompAbrev",
+				placeholder: "_________________",
+				editable: true,
+				required: true,
+				maxLength: 4,
+				width: 100,
+				pattern: /^/,
+				xs: 8,
+				headerClassName: estilotabla.encabcolumns,
+			},
+			{
+				headerName: "Descripción",
+				field: "ParamCompDesc",
+				placeholder: "_________________",
+				editable: true,
+				required: true,
+				maxLength: 25,
+				width: 120,
+				pattern: /^/,
+				xs: 8,
+				headerClassName: estilotabla.encabcolumns,
+			},
+			{
+				headerName: "Suma/Resta",
+				field: "ParamCompSR",
+				placeholder: "_________________",
+				editable: true,
+				required: true,
+				maxLength: 1,
+				width: 120,
+				pattern: /^/,
+				xs: 8,
+				headerClassName: estilotabla.encabcolumns,
+			},
+			{
+				headerName: "Discr.IVA?",
+				field: "ParamCompDisc",
+				placeholder: "_________________",
+				editable: true,
+				required: true,
+				maxLength: 1,
+				width: 120,
+				pattern: /^/,
+				xs: 8,
+				headerClassName: estilotabla.encabcolumns,
+			},
+			{
+				headerName: "Cód.IVA",
+				field: "ParamCompIVAAsoc",
+				placeholder: "_________________",
+				editable: true,
+				required: true,
+				maxLength: 1,
+				width: 120,
+				pattern: /^/,
+				xs: 8,
+				headerClassName: estilotabla.encabcolumns,
+			},
+		]);
+	});
+}
+
+// inputProps: {
+// 	"data-testid": `validated-textfield-ProveedoresDesc`,
+// },

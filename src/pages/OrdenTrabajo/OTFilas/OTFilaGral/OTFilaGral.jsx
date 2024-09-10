@@ -6,6 +6,9 @@ import { formdata } from "../../../Tablas/Clientes/formdata.js";
 import { Button, Grid, TextField } from "@mui/material";
 import { ClientesLeer } from "../../../Tablas/Clientes/ClientesLeer.jsx";
 import { clientesleercod } from "../../../Tablas/Clientes/ClientesLeerCod.jsx";
+import { leerTransporte } from "../../../Tablas/Transporte/TransporteLeer.jsx";
+import { TransporteLeerCod } from "../../../Tablas/Transporte/TransporteLeerCod.jsx";
+// import { TransporteLeerTodo } from "../../../Tablas/Transporte/TransporteLeerTodo.jsx";
 import styles from "../../../../Styles/Boton.module.css";
 import { DialogoDatos } from "../../../../components/DialogoDatos.jsx";
 import TablasContexto from "../../../../context/TablasContext.jsx";
@@ -14,6 +17,7 @@ export default function OTFilaGral(props) {
 	const { formdatos, setFormdatos } = useContext(TablasContexto);
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
 	const [clientesleidos, setClientesleidos] = useState([]);
+	const [transportes, setTransportes] = useState([]);
 	const [items, setItems] = useState([]);
 	const { datospot } = props;
 	// para el alta del nuevo cliente
@@ -24,6 +28,9 @@ export default function OTFilaGral(props) {
 	const [paramsbor, setParamsBor] = useState(0);
 
 	let idCliente;
+	let idTransporte;
+	let OTEncabOC;
+	let OTEncabDetalles;
 	let colorfondo = "";
 	const [checked, setChecked] = useState(false);
 
@@ -34,7 +41,11 @@ export default function OTFilaGral(props) {
 			colorfondo = "#ffffa6ca";
 		}
 	}
+	async function buscatransporte() {
+		const datostransporte = await leerTransporte();
 
+		setTransportes(datostransporte);
+	}
 	async function buscaclientes() {
 		const datosclientes = await ClientesLeer();
 		setClientesleidos(datosclientes);
@@ -63,12 +74,15 @@ export default function OTFilaGral(props) {
 		setOpen(false);
 		buscaclientesultimo();
 	};
+	useEffect(() => {
+		buscatransporte();
+	}, []);
 
 	let textdata;
 	if (clientesleidos.length > 0) {
 		textdata = [
 			{
-				id: "idCliente",
+				id: "id",
 				label: "Clientes",
 				value: idCliente,
 				mapeo: (
@@ -84,11 +98,44 @@ export default function OTFilaGral(props) {
 			},
 		];
 	}
+	let textdata1;
 
+	if (transportes.length > 0) {
+		textdata1 = [
+			{
+				id: "id",
+				label: "Transportes",
+				value: idTransporte,
+				mapeo: (
+					<>
+						<option />
+						{transportes.map((option) => (
+							<option key={option.id} value={option.id}>
+								{option.TransporteDesc}
+							</option>
+						))}
+					</>
+				),
+			},
+		];
+	}
 	const handleChange = (event) => {
 		const id = event.target.id;
+		console.log("event.target.id  ", event.target.id);
+		console.log("event.target.value  ", event.target.value);
 		setOTdatos({ ...otdatos, [id]: event.target.value });
 	};
+
+	async function handleChanget(event) {
+		// const id = event.target.id;
+		if (event.target.value === "") {
+			setOTdatos({ ...otdatos, transporte: "" });
+		} else {
+			var transporte = await TransporteLeerCod(event.target.value);
+			setOTdatos({ ...otdatos, transporte: transporte[0] });
+		}
+	}
+
 	async function handleChange1(event) {
 		const datosnuevocliente = await clientesleercod(event.target.value);
 		if (otdatos.datosencab.length === 1) {
@@ -160,6 +207,58 @@ export default function OTFilaGral(props) {
 					>
 						Nuevo Cliente
 					</Button>
+				</Grid>
+				<Grid item xs={2}>
+					{transportes.length > 0 &&
+						textdata1.map((data) => (
+							<TextField
+								key={data.id}
+								id={data.id}
+								size="small"
+								inputProps={{ maxLength: 3 }}
+								select
+								label={data.label}
+								value={data.value}
+								onChange={handleChanget}
+								SelectProps={{ native: true }}
+								variant="outlined"
+								margin="dense"
+							>
+								{data.mapeo}
+							</TextField>
+						))}
+				</Grid>
+				<Grid item xs={2}>
+					<TextField
+						inputProps={{ maxLength: 45 }}
+						size="small"
+						variant="outlined"
+						id="OTEncabOC"
+						type="text"
+						label="Orden de Compra"
+						placeholder="Orden de Compra"
+						fullWidth
+						margin="dense"
+						value={OTEncabOC}
+						onChange={handleChange}
+						// className={styles.textField}
+					/>
+				</Grid>
+				<Grid item xs={2}>
+					<TextField
+						inputProps={{ maxLength: 45 }}
+						size="small"
+						variant="outlined"
+						id="OTEncabDetalles"
+						type="text"
+						label="Detalles"
+						placeholder="Detalles"
+						fullWidth
+						margin="dense"
+						value={OTEncabDetalles}
+						onChange={handleChange}
+						// className={styles.textField}
+					/>
 				</Grid>
 			</Grid>
 		</div>
