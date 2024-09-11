@@ -31,6 +31,7 @@ var clientesleerot = require("./routes/clientes/clientesleerot");
 var clientesleerencabot = require("./routes/clientes/clientesleerencabot");
 var clientesleerdescod = require("./routes/clientes/clientesleerdescod");
 
+
 // var clientespresupagregar = require("./routes/clientes/clientespresupagregar");
 
 
@@ -508,7 +509,6 @@ app.use("/paramcompmodificar", paramcompmodificar);
 
 
 app.use("/", proveedoresleer);
-
 
 app.use(function (req, res, next) {
   var err = new Error("El programa de backend no se encuentra");

@@ -20,6 +20,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export function TablaMuestraRenglon(props) {
 	const { open, handleClose, OTNro } = props;
 	let OTNroBuscar = OTNro;
+<<<<<<< Updated upstream
+=======
+	console.log("OTNro TablaMuestraRenglon ", OTNro);
+>>>>>>> Stashed changes
 	const [renglon, setRenglon] = useState([]);
 	const [columns, setColumns] = useState([]);
 	const Cierra = () => {

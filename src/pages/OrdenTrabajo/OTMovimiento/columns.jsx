@@ -1,11 +1,19 @@
 // import { ClientesLeerPresup } from "../../../Tablas/Clientes/ClientesLeerPresup";
 import estilotabla from "../../../Styles/Tabla.module.css";
+<<<<<<< Updated upstream
 import { ClientesLeerEncabOT } from "../../Tablas/Clientes/ClientesLeerEncabOT";
+=======
+import { ClientesLeerOT } from "../../Tablas/Clientes/ClientesLeerOT";
+>>>>>>> Stashed changes
 import { OTEstadoLeer } from "./OTEstadoLeer";
 export async function llenarcolumns() {
 	// const clientepresup = await ClientesLeerPresup();
 	const estado = await OTEstadoLeer();
+<<<<<<< Updated upstream
 	const clientes = await ClientesLeerEncabOT();
+=======
+	const clientes = await ClientesLeerOT();
+>>>>>>> Stashed changes
 	return columnsFill(estado, clientes);
 }
 
@@ -16,10 +24,15 @@ function columnsFill(estado, clientes) {
 				headerName: "Nro.",
 				field: "id",
 				editable: "never",
+<<<<<<< Updated upstream
 				width: 80,
 				headerClassName: estilotabla.encabcolumns,
 			},
 
+=======
+				headerClassName: estilotabla.encabcolumns,
+			},
+>>>>>>> Stashed changes
 			{
 				headerName: "Cliente ",
 				field: "OTEncabCliente",
@@ -32,10 +45,16 @@ function columnsFill(estado, clientes) {
 				headerClassName: estilotabla.encabcolumns,
 			},
 			{
+<<<<<<< Updated upstream
 				headerName: "Cliente no Registrado ",
 				field: "OTEncabClienteNoReg",
 				width: 200,
 				editable: "false",
+=======
+				headerName: "Cliente ",
+				field: "OTEncabClienteNoReg",
+				width: 250,
+>>>>>>> Stashed changes
 				headerClassName: estilotabla.encabcolumns,
 			},
 			{

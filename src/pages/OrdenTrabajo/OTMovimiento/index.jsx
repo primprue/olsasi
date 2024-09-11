@@ -12,6 +12,7 @@ import CtasCtesContext from "../../../context/CtasCtesContext.jsx";
 import FitbitIcon from "@mui/icons-material/Fitbit";
 import DescriptionTwoToneIcon from "@mui/icons-material/DescriptionTwoTone";
 import FindInPageTwoToneIcon from "@mui/icons-material/FindInPageTwoTone";
+<<<<<<< Updated upstream
 import PreviewTwoToneIcon from "@mui/icons-material/PreviewTwoTone";
 import {
 	common,
@@ -29,11 +30,24 @@ import { ClientesLeerDesCod } from "../../Tablas/Clientes/ClientesLeerDesCod.jsx
 import { Route, useNavigate } from "react-router-dom";
 export default function OTMovimiento() {
 	// console.log("OTMovimiento  ");
+=======
+import { common, deepOrange, green, blueGrey } from "@mui/material/colors";
+import { formdata } from "./formdata.js";
+import TablaMuestra from "../../../components/TablaMuestra.jsx";
+import { Button } from "@mui/material";
+import { TablaMuestraRenglon } from "./TablaMuestraRenglon/index.jsx";
+// import OTFacturacion from "../../CtasCtes/Facturacion/index.jsx";
+import { Route, useNavigate } from "react-router-dom";
+export default function OTMovimiento() {
+>>>>>>> Stashed changes
 	const { formdatos, setFormdatos } = useContext(TablasContexto);
 	const { fcdatos, setFCdatos } = useContext(CtasCtesContext);
 	const { valor, setValor } = useContext(StaticContexto);
 	const [rows, setRows] = useState([]);
+<<<<<<< Updated upstream
 	const [pdfUrl, setPdfUrl] = useState(null);
+=======
+>>>>>>> Stashed changes
 	const [columns, setColumns] = useState([]);
 	const [open, setOpen] = useState(false);
 	const [open1, setOpen1] = useState(false);
@@ -46,7 +60,10 @@ export default function OTMovimiento() {
 		col.push(actionsColumn);
 		col.push(actionsColumn1);
 		col.push(actionsColumn2);
+<<<<<<< Updated upstream
 		col.push(actionsColumn3);
+=======
+>>>>>>> Stashed changes
 		setColumns(() => col);
 	}
 	async function dataFetch() {
@@ -65,9 +82,15 @@ export default function OTMovimiento() {
 	const handleClose = () => {
 		setOpen(!open);
 	};
+<<<<<<< Updated upstream
 	const handleClose1 = () => {
 		setOpen1(!open1);
 	};
+=======
+	// const handleClose1 = () => {
+	// 	setOpen1(!open1);
+	// };
+>>>>>>> Stashed changes
 	async function fcionotrosdatos(event) {
 		setNroordeleg(event.row.id);
 		setOpen(true);
@@ -83,6 +106,7 @@ export default function OTMovimiento() {
 	async function comprobrelac(event) {
 		console.log(event.row);
 	}
+<<<<<<< Updated upstream
 	const agregarCeros = (numero, digitos) => {
 		return numero.toString().padStart(digitos, "0");
 	};
@@ -120,6 +144,8 @@ export default function OTMovimiento() {
 			console.error("Error en WebSocket:", error);
 		};
 	};
+=======
+>>>>>>> Stashed changes
 	const actionsColumn = {
 		field: "actions",
 		headerName: "Detalles",
@@ -157,12 +183,17 @@ export default function OTMovimiento() {
 			<Button
 				size="large"
 				variant="text"
+<<<<<<< Updated upstream
 				style={{ color: common[150] }}
+=======
+				style={{ color: common[400] }}
+>>>>>>> Stashed changes
 				onClick={() => comprobrelac(params)}
 				startIcon={<FindInPageTwoToneIcon />}
 			/>
 		),
 	};
+<<<<<<< Updated upstream
 	const actionsColumn3 = {
 		field: "verot",
 		headerName: "Muestra OT",
@@ -178,6 +209,8 @@ export default function OTMovimiento() {
 			/>
 		),
 	};
+=======
+>>>>>>> Stashed changes
 	return (
 		<>
 			<TablaMuestra
@@ -192,6 +225,7 @@ export default function OTMovimiento() {
 					OTNro={nroordeleg}
 				/>
 			)}
+<<<<<<< Updated upstream
 			<Dialog
 				open={open1}
 				onClose={handleClose1}
@@ -210,6 +244,8 @@ export default function OTMovimiento() {
 					)}
 				</DialogContent>
 			</Dialog>
+=======
+>>>>>>> Stashed changes
 			{/* {encabfact !== 0 && (
 				<OTFacturacion
 					open1={open1}

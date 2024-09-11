@@ -18,7 +18,11 @@ router.get('/', function (req, res, next) {
     // var q = ['Select * from StkMonedas ' ].join(' ')
     var q = ['Select idOTEncab  as id, OTEncabCliente, OTEncabClienteNoReg, OTEncabEstado, ',
         'date_format(OTEncabFecha, "%d-%m-%Y") as OTEncabFecha, ',
+<<<<<<< Updated upstream
         ' date_format(OTEncabFechaPromesa, "%d-%m-%Y") as OTEncabFechaPromesa, OTEncabImpTotal, OTEncabSenia, OTEncabTransporte from BasesOrdenes.OTEncab order by idOTEncab desc '].join(' ')
+=======
+        ' date_format(OTEncabFechaPromesa, "%d-%m-%Y") as OTEncabFechaPromesa, OTEncabImpTotal, OTEncabSenia, OTEncabTransporte from BasesOrdenes.OTEncab '].join(' ')
+>>>>>>> Stashed changes
     conexion.query(q,
         function (err, result) {
             if (err) {

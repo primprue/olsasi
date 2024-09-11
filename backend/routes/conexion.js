@@ -3,9 +3,10 @@ var express = require("express");
 
 var conexion = mysql.createConnection({
   // user: "root",
-  // host: "192.168.2.11",
   // password: "drasan",
-  user: "root",
+  //cuando tuve el problema que no me podía conectar, era que el usuario root en esta máquina no tiene
+  //los permisos suficientes y debo entrar con sandra
+  user: "sandra",
   password: "drasan141",
   host: "localhost",
   database: "BaseStock",

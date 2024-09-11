@@ -1,7 +1,21 @@
 import React, { useContext, useState, useRef } from "react";
 import OrdTrabajo from "../../../context/OrdTrabajo.jsx";
 import IpServidor from "../../VariablesDeEntorno.js";
+<<<<<<< Updated upstream
 import { Button, Dialog, DialogContent } from "@mui/material";
+=======
+import {
+	Box,
+	Button,
+	Dialog,
+	DialogContent,
+	Grid,
+	Input,
+	Paper,
+	TextField,
+	Typography,
+} from "@mui/material";
+>>>>>>> Stashed changes
 import { format } from "date-fns";
 import { CampoMuestra } from "./CampoMuestra.jsx";
 import { CampoEncab } from "./CamposEncab.jsx";
@@ -154,6 +168,7 @@ export default function OTGenera(props) {
 
 	const sendPDFViaWebSocket = (pdfData, nombrearch) => {
 		const socket = new WebSocket("ws://localhost:3000");
+<<<<<<< Updated upstream
 		const payload = {
 			action: "save",
 			nombrearch: nombrearch,
@@ -161,15 +176,23 @@ export default function OTGenera(props) {
 		};
 		socket.onopen = () => {
 			socket.send(JSON.stringify(payload));
+=======
+
+		socket.onopen = () => {
+			socket.send(JSON.stringify({ nombrearch, pdfData }));
+>>>>>>> Stashed changes
 		};
 
 		socket.onmessage = (event) => {
 			console.log("Respuesta del servidor:", event.data);
 			socket.close();
 		};
+<<<<<<< Updated upstream
 	};
 	const agregarCeros = (numero, digitos) => {
 		return numero.toString().padStart(digitos, "0");
+=======
+>>>>>>> Stashed changes
 	};
 	async function creaPDF() {
 		// const creaPDF = () => {
@@ -197,7 +220,11 @@ export default function OTGenera(props) {
 		let ancho = 40; // Ancho del recuadro
 		let alto = 4;
 		let dencliente = arregloencab[0].idClientes;
+<<<<<<< Updated upstream
 		// dencliente = dencliente.slice(0, 30);
+=======
+		dencliente = dencliente.slice(0, 30);
+>>>>>>> Stashed changes
 		var columns = ["    Cliente  ", "Telefono", "Localidad", "CUIT"];
 		var data = [
 			[
@@ -553,9 +580,14 @@ export default function OTGenera(props) {
 		const dataUri = doc.output("dataurlstring");
 		setPdfData(dataUri);
 		if (numeroOT !== 0) {
+<<<<<<< Updated upstream
 			var numeroOTcero = agregarCeros(numeroOT, 6);
 			const pdfData = doc.output("datauristring");
 			const nombrearch = `OT Nro ${numeroOTcero} ${Cliente}.pdf`;
+=======
+			const pdfData = doc.output("datauristring");
+			const nombrearch = `OT ${Cliente} Nro ${numeroOT}.pdf`;
+>>>>>>> Stashed changes
 
 			sendPDFViaWebSocket(pdfData, nombrearch);
 		}

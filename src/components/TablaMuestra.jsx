@@ -160,6 +160,13 @@ export default function TablaMuestra(props) {
 			const data = await OTCondPagoLeer();
 			setRows(data);
 		}
+<<<<<<< Updated upstream
+=======
+		// if (formdatos.tablabase === "MuestraPresupuesto") {
+		// 	const data = await presupDatos();
+		// 	setRows(data);
+		// }
+>>>>>>> Stashed changes
 	}
 	const handleClose = () => {
 		relee();
@@ -189,7 +196,14 @@ export default function TablaMuestra(props) {
 			if (formdatos.tablabase === "UniMedidas") StkUnMedModificar(params);
 			if (formdatos.tablabase === "ParamComp") ParamCompModificar(params);
 			if (formdatos.tablabase === "OTCondPago") OTCondPagoModificar(params);
+<<<<<<< Updated upstream
 
+=======
+			// if (formdatos.tablabase === "MuestraPresupuesto")
+			//console.log("esta en muestrapresupuesto  ", params);
+			//AbreMuestraRenglon(params);
+			// TablaMuestraRenglon(true, false, rowsel.id);
+>>>>>>> Stashed changes
 			relee();
 		}, 100);
 	};
