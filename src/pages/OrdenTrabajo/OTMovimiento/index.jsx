@@ -173,7 +173,7 @@ export default function OTMovimiento() {
 			<Button
 				size="large"
 				variant="text"
-				style={{ color: pink[600] }}
+				style={{ color: yellow[600] }}
 				onClick={() => muestraOT(params)}
 				startIcon={<PreviewTwoToneIcon />}
 			/>
