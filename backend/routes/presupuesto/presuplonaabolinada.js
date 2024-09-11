@@ -145,6 +145,7 @@ router.get("/", (req, res, next) => {
           "'"
         ].join("");
 
+
         conexion.query(mcuadcob, function (err, result) {
           if (err) {
             console.log("error en mysql mcuadcob");
@@ -194,36 +195,45 @@ router.get("/", (req, res, next) => {
               // costooriginal =
               //   datosenvio[j][0].CostoCobMC + datosenvio[j][0].CostoRefuerzo;
               costooriginal = datosenvio[j][0].CostoCobMC
+              console.log('costooriginal = datosenvio[j][0].CostoCobMC  ', datosenvio[j][0].CostoCobMC)
               j++;
               //traía el valor del chicote de 1,50 que se calcula 1 por m2
               //estoy calculando por m2 4 mts.de soga más el 25% para abolinar
               //guarda el valor de la soga para después calcular la soga para abolinar
               costooriginal = costooriginal + (datosenvio[j][0].CostoMSChicote);
+              console.log('costooriginal = datosenvio[j][0].CostoMSChicote  ', datosenvio[j][0].CostoMSChicote)
               j++;
               // costooriginal = costooriginal + datosenvio[j][0].CostoMSDobladillo;
               costooriginal = costooriginal + datosenvio[j][0].CostoMSDobladillo;
+              console.log('costooriginal = datosenvio[j][0].CostoMSDobladillo  ', datosenvio[j][0].CostoMSDobladillo)
               j++;
               costooriginal =
                 costooriginal +
                 datosenvio[j][0].StkMonedasCotizacion * valorflete +
                 +(datosenvio[j][0].StkMonedasCotizacion * valorMOT);
+              console.log('costooriginal = datosenvio[j][0].valorflete  ', valorflete)
+              console.log('costooriginal = datosenvio[j][0].valorMOT  ', valorMOT)
               j++;
 
 
               metroscuad = anchoreal * largoreal
-
+              console.log('anchoreal  ', anchoreal)
+              console.log('largoreal  ', largoreal)
+              console.log('metroscuad  ', metroscuad)
               //estaba así como se calcula la lona tipo
               //   costooriginal = costooriginal + datosenvio[j][0].CostoOjalM2;
               //le agregué la cantidad de ojales por metro cuadrado
               valorojales = datosenvio[j][0].CostoOjalM2
-
-
+              console.log('datosenvio[j][0].CostoOjalM2  ', datosenvio[j][0].CostoOjalM2)
               j++;
               costooriginal = costooriginal * ganancia * coefimpuesto;
-
+              console.log('costooriginal  ', costooriginal)
+              console.log('ganancia  ', ganancia)
+              console.log('coefimpuesto  ', coefimpuesto)
+              console.log('metroscuad  ', metroscuad)
               costooriginal = costooriginal * metroscuad
               //suma la soga para abolinar
-
+              console.log('costooriginal  ', costooriginal)
               ciclo = (metroscuad < 12) ? 3 : 0
               ciclo = (metroscuad < 16 && metroscuad >= 12) ? 2 : 0
               ciclo = (metroscuad < 22 && metroscuad >= 16) ? 1 : ciclo = 0
