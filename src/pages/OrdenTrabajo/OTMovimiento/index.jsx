@@ -28,11 +28,13 @@ import { TablaMuestraRenglon } from "./TablaMuestraRenglon/index.jsx";
 import { ClientesLeerDesCod } from "../../Tablas/Clientes/ClientesLeerDesCod.jsx";
 // import OTFacturacion from "../../CtasCtes/Facturacion/index.jsx";
 import { Route, useNavigate } from "react-router-dom";
+import OrdTrabajo from "../../../context/OrdTrabajo.jsx";
 export default function OTMovimiento() {
 	// console.log("OTMovimiento  ");
 	const { formdatos, setFormdatos } = useContext(TablasContexto);
 	const { fcdatos, setFCdatos } = useContext(CtasCtesContext);
 	const { valor, setValor } = useContext(StaticContexto);
+	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
 	const [rows, setRows] = useState([]);
 	const [pdfUrl, setPdfUrl] = useState(null);
 	const [columns, setColumns] = useState([]);
@@ -42,6 +44,7 @@ export default function OTMovimiento() {
 	// const [encabfact, setEncabfact] = useState("");
 	const navigate = useNavigate();
 	//empiezan las cosas del sistema
+
 	async function columnsFetch() {
 		var col = await llenarcolumns();
 		col.push(actionsColumn);
@@ -76,6 +79,7 @@ export default function OTMovimiento() {
 
 	async function datosafacturar(event) {
 		// let nroordafac = event.row;
+		console.log("otdatos en datosafacturar  ", otdatos);
 		setFCdatos({ ...fcdatos, nroordafac: event.row });
 		// setFCdatos(nroordafac);
 		navigate("/CtasCtes");
@@ -173,7 +177,7 @@ export default function OTMovimiento() {
 			<Button
 				size="large"
 				variant="text"
-				style={{ color: yellow[600] }}
+				style={{ color: pink[600] }}
 				onClick={() => muestraOT(params)}
 				startIcon={<PreviewTwoToneIcon />}
 			/>

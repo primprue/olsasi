@@ -117,6 +117,12 @@ function columnsFill(estado, clientes) {
 				headerClassName: estilotabla.encabcolumns,
 			},
 			{
+				headerName: "IVA",
+				field: "OTconIVA",
+				width: 12,
+				headerClassName: estilotabla.encabcolumns,
+			},
+			{
 				headerName: "Transporte",
 				field: "OTEncabTransporte",
 				width: 150,

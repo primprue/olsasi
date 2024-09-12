@@ -9,6 +9,7 @@ export const formdata = {
   OTEncabFechaPromesa: '',
   OTEncabImpTotal: 0.00,
   OTEncabSenia: 0.00,
+  OTconIVA: '',
   OTEncabTransporte: '',
   OTEncabOC: '',
   OTEncabDetalles: '',

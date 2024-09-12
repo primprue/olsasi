@@ -113,7 +113,7 @@ export default function OTGenera(props) {
 	var valorImp = 0.0;
 	var textoImpI = "";
 	var valorImpI = 0.0;
-	if (otdatos.OTsinIVA === 1) {
+	if (otdatos.OTconIVA === "N") {
 		textoImpI = "Importe c/IVA";
 		valorImpI = formatCurrency(0);
 		textoImp = "Importe s/IVA";

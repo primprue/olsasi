@@ -7,6 +7,7 @@ export function ClientesLeer() {
 	return new Promise((resolve) => {
 		setTimeout(() => {
 			const url = IpServidor + "/clientesleer";
+			// + "&t=" + new Date().getTime();
 			request
 				.get(url)
 				.set("Content-Type", "application/json")

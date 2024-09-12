@@ -22,7 +22,7 @@ router.all("/", async function (req, res) {
     var cliente = 0; clientenoreg = ''; importtotal = 0.00; importsenia = 0.00
     var i = 0;
     var registro = {}
-
+    console.log('req.body.otdatos  ', req.body.otdatos)
     if (!req.body.otdatos.transporte || req.body.otdatos.transporte === undefined) {
         transporte = '';
     } else {
@@ -63,6 +63,7 @@ router.all("/", async function (req, res) {
         OTEncabFechaPromesa: req.body.otdatos.FechaPromesa,
         OTEncabImpTotal: importtotal,
         OTEncabSenia: importsenia,
+        OTconIVA: req.body.otdatos.OTconIVA,
         OTEncabTransporte: transporte,
         OTEncabOC: OTEncabOC,
         OTEncabDetalles: OTEncabDetalles
