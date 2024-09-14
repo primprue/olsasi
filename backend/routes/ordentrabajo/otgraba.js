@@ -63,7 +63,7 @@ router.all("/", async function (req, res) {
         OTEncabFechaPromesa: req.body.otdatos.FechaPromesa,
         OTEncabImpTotal: importtotal,
         OTEncabSenia: importsenia,
-        OTconIVA: req.body.otdatos.OTconIVA,
+        OTEncabconIVA: req.body.otdatos.OTEncabconIVA,
         OTEncabTransporte: transporte,
         OTEncabOC: OTEncabOC,
         OTEncabDetalles: OTEncabDetalles

@@ -161,14 +161,14 @@ export default function OTDataGrid() {
 			...otdatos,
 			TotalPresupuesto,
 			TotalPresupuestoSIVA,
-			OTconIVA: "N",
+			OTEncabconIVA: "N",
 		});
 	};
 
 	const sacaiva = () => {
 		setOTdatos({
 			...otdatos,
-			OTconIVA: "S",
+			OTEncabconIVA: "S",
 		});
 	};
 	const generaorden = () => {
