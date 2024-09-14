@@ -104,6 +104,7 @@ export default function OTGenera(props) {
 	// 	currency: "PES",
 	// 	minimumFractionDigits: 2,
 	// });
+
 	async function OTGraba() {
 		const nroOT = await OTGrabar(otdatos);
 		setNumeroOT(nroOT);
@@ -249,14 +250,17 @@ export default function OTGenera(props) {
 		if (!otdatos.transporte || otdatos.transporte === undefined) {
 			doc.text(`Transporte :                   `, x, y);
 		} else {
-			doc.text(`Transporte : ${otdatos.transporte.TransporteDesc}`, x, y);
+			let textoOriginal = otdatos.transporte.TransporteDesc;
+			let textoLimitado = textoOriginal.substring(0, 20); // O puedes usar slice(0, 30)
+
+			doc.text(`Transporte : ${textoLimitado}`, x, y);
 		}
-		x += 50;
+		x += 68;
 		doc.text(`Presup. Nro : ${otdatos.datosencab[0][0].idPresupEncab}`, x, y);
-		x += 50;
+		x += 45;
 
 		doc.text(`Fecha : ${FechaHoy}`, x + 2, y);
-		x += 45;
+		x += 40;
 
 		doc.text(` Promesa : ${FechaProm}`, x + 2, y);
 		y += 5;
