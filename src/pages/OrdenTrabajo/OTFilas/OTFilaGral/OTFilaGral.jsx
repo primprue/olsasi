@@ -3,11 +3,12 @@ import { useContext } from "react";
 import OrdTrabajo from "../../../../context/OrdTrabajo.jsx";
 import { llenarcolumns } from "../../../Tablas/Clientes/columns.jsx";
 import { formdata } from "../../../Tablas/Clientes/formdata.js";
-import { Button, Grid, TextField } from "@mui/material";
+import { Box, Button, Grid, TextField } from "@mui/material";
 import { ClientesLeer } from "../../../Tablas/Clientes/ClientesLeer.jsx";
 import { clientesleercod } from "../../../Tablas/Clientes/ClientesLeerCod.jsx";
 import { leerTransporte } from "../../../Tablas/Transporte/TransporteLeer.jsx";
 import { TransporteLeerCod } from "../../../Tablas/Transporte/TransporteLeerCod.jsx";
+import { OTCondPagoLeer } from "../../../Tablas/OTCondPago/OTCondPagoLeer.jsx";
 // import { TransporteLeerTodo } from "../../../Tablas/Transporte/TransporteLeerTodo.jsx";
 import styles from "../../../../Styles/Boton.module.css";
 import { DialogoDatos } from "../../../../components/DialogoDatos.jsx";
@@ -18,6 +19,7 @@ export default function OTFilaGral(props) {
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
 	const [clientesleidos, setClientesleidos] = useState([]);
 	const [transportes, setTransportes] = useState([]);
+	const [otcondpago, setOtcondpago] = useState([]);
 	const [items, setItems] = useState([]);
 	const { datospot } = props;
 	// para el alta del nuevo cliente
@@ -45,6 +47,11 @@ export default function OTFilaGral(props) {
 		const datostransporte = await leerTransporte();
 
 		setTransportes(datostransporte);
+	}
+	async function buscaotcondpago() {
+		const otcondpago = await OTCondPagoLeer();
+
+		setOtcondpago(otcondpago);
 	}
 	async function buscaclientes() {
 		const datosclientes = await ClientesLeer();
@@ -76,6 +83,7 @@ export default function OTFilaGral(props) {
 	};
 	useEffect(() => {
 		buscatransporte();
+		buscaotcondpago();
 	}, []);
 
 	let textdata;
@@ -119,10 +127,28 @@ export default function OTFilaGral(props) {
 			},
 		];
 	}
+	let textdata2;
+	if (otcondpago.length > 0) {
+		textdata2 = [
+			{
+				id: "id",
+				label: "CondPago",
+				value: idTransporte,
+				mapeo: (
+					<>
+						<option />
+						{otcondpago.map((option) => (
+							<option key={option.id} value={option.id}>
+								{option.OTCondPagoDesc}
+							</option>
+						))}
+					</>
+				),
+			},
+		];
+	}
 	const handleChange = (event) => {
 		const id = event.target.id;
-		console.log("event.target.id  ", event.target.id);
-		console.log("event.target.value  ", event.target.value);
 		setOTdatos({ ...otdatos, [id]: event.target.value });
 	};
 
@@ -135,7 +161,14 @@ export default function OTFilaGral(props) {
 			setOTdatos({ ...otdatos, transporte: transporte[0] });
 		}
 	}
-
+	async function handleChangecp(event) {
+		if (event.target.value === "") {
+			setOTdatos({ ...otdatos, condpago: "" });
+		} else {
+			var condpago = await TransporteLeerCod(event.target.value);
+			setOTdatos({ ...otdatos, condpago: condpago[0] });
+		}
+	}
 	async function handleChange1(event) {
 		const datosnuevocliente = await clientesleercod(event.target.value);
 		if (otdatos.datosencab.length === 1) {
@@ -160,17 +193,17 @@ export default function OTFilaGral(props) {
 				// alignItems="center"
 			>
 				{/* si se quiere cambiar el cliente */}
-				<Grid item xs={2}>
+				<Grid>
 					<Button
 						onClick={buscaclientes}
 						variant="contained"
 						color="primary"
 						className={styles.botonabreselect}
 					>
-						Cambia Cliente
+						Otro Cliente
 					</Button>
 				</Grid>
-				<Grid item>
+				<Grid>
 					{clientesleidos.length > 0 &&
 						textdata.map((data) => (
 							<TextField
@@ -198,7 +231,7 @@ export default function OTFilaGral(props) {
 					paramsbor={paramsbor}
 					titulodial={titulodial}
 				/>
-				<Grid item xs={2}>
+				<Grid>
 					<Button
 						onClick={handleAlta}
 						variant="contained"
@@ -208,7 +241,7 @@ export default function OTFilaGral(props) {
 						Nuevo Cliente
 					</Button>
 				</Grid>
-				<Grid item xs={2}>
+				<Grid>
 					{transportes.length > 0 &&
 						textdata1.map((data) => (
 							<TextField
@@ -228,7 +261,7 @@ export default function OTFilaGral(props) {
 							</TextField>
 						))}
 				</Grid>
-				<Grid item xs={2}>
+				<Grid>
 					<TextField
 						inputProps={{ maxLength: 45 }}
 						size="small"
@@ -244,7 +277,7 @@ export default function OTFilaGral(props) {
 						// className={styles.textField}
 					/>
 				</Grid>
-				<Grid item xs={2}>
+				<Grid>
 					<TextField
 						inputProps={{ maxLength: 45 }}
 						size="small"
@@ -259,6 +292,26 @@ export default function OTFilaGral(props) {
 						onChange={handleChange}
 						// className={styles.textField}
 					/>
+				</Grid>
+				<Grid>
+					{otcondpago.length > 0 &&
+						textdata2.map((data) => (
+							<TextField
+								key={data.id}
+								id={data.id}
+								size="small"
+								inputProps={{ maxLength: 3 }}
+								select
+								label={data.label}
+								value={data.value}
+								onChange={handleChangecp}
+								SelectProps={{ native: true }}
+								variant="outlined"
+								margin="dense"
+							>
+								{data.mapeo}
+							</TextField>
+						))}
 				</Grid>
 			</Grid>
 		</div>

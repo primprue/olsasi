@@ -250,23 +250,14 @@ function perimitirCrossDomain(req, res, next) {
 var app = express();
 app.use(cors()); //esto estaba antes de que se colgara
 
-//puse lo siguiente y se siguió colgando volví como estaba
-// app.use(cors(
-//   {
-//     origin: 'http://localhost:5173',
-//     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//     credentials: true, // Habilitar el intercambio de cookies a través de las solicitudes
-//     optionsSuccessStatus: 204,
-//   }
-// ))
-// routes.initialize(app);
-
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
-
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// app.use(cors({
+//   origin: 'http://localhost:5173', // O puedes usar '*' para permitir cualquier origen
+//   methods: 'GET,POST,PUT,DELETE',
+//   allowedHeaders: 'Content-Type, Authorization'
+// }));
+// app.listen(4000, () => {
+//   console.log('Servidor escuchando en el puerto 4000');
+// });
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
