@@ -22,6 +22,7 @@ export function onRowAdd(newData) {
         StkMonedasAgregar(newData);
       }
       if (newData.tablabase === 'Transportes') {
+        console.log('newData Transportes ', newData);
         TransporteAgregar(newData);
       }
       if (newData.tablabase === 'Grupos') {
@@ -43,6 +44,7 @@ export function onRowAdd(newData) {
         ParamCompAgregar(newData);
       }
       if (newData.tablabase === 'OTCondPago') {
+        console.log('newData  ', newData);
         OTCondPagoAgregar(newData);
       }
       resolve(50);

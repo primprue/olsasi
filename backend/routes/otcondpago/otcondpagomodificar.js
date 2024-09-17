@@ -19,11 +19,13 @@ var router = express();
 router.post("/?:id", function (req, res) {
   indice = req.params.id;
   var otcondpagodesc = req.body.OTCondPagoDesc;
+  var otcondpagolinea = req.body.OTCondPagolinea;
 
   var q = [
     'update BasesOrdenes.OTCondPago set OTCondPagoDesc = "',
     otcondpagodesc,
-
+    '" , OTCondPagolinea = "',
+    otcondpagolinea,
     '" where idOTCondPago = ',
     indice
   ].join("");

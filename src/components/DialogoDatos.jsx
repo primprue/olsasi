@@ -30,6 +30,7 @@ export function DialogoDatos(props) {
 		event.preventDefault(); // Evita la recarga de la página al enviar el formulario
 		setTimeout(() => {
 			if (nombrebtn === "Enviar") {
+				console.log("formdatos en DialogoDatos  ", formdatos);
 				onRowAdd(formdatos);
 			} else {
 				let valorresuelto = onRowDelete(paramsbor.id, formdatos);
@@ -45,6 +46,7 @@ export function DialogoDatos(props) {
 			<DialogContent>
 				<form onSubmit={handleSubmit}>
 					<Grid container spacing={2} alignItems="center">
+						{console.log("columns  ", columns)}
 						{columns &&
 							// , -1
 							columns.slice(length).map(
