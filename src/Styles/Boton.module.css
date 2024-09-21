@@ -201,3 +201,25 @@
 	font-size: 15px;
 	padding: 2;
 }
+
+
+.botoncierracargadatos {
+	font-size: 15px;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	color: rgba(243, 18, 18, 0.945);
+	background-color: rgba(212, 5, 5, 0.363);
+	border-color: rgba(253, 6, 18, 0.5);
+	display: flex;
+	margin: 14px;
+	border: 14px;
+	border-radius: 8px;
+	padding: 2;
+
+}
+
+.botoncierracargadatos:hover {
+	background-color: rgba(212, 5, 5, 0.363);
+	color: rgba(243, 18, 18, 0.945);
+	font-size: 15px;
+	padding: 2;
+}

@@ -11,6 +11,7 @@ import { ParamCompAgregar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompAg
 import { OTCondPagoAgregar } from "../pages/Tablas/OTCondPago/OTCondPagoAgregar";
 export function onRowAdd(newData) {
   return new Promise((resolve) => {
+    console.log(' newData onRowAdd ', newData)
     setTimeout(() => {
       if (newData.tablabase === 'Clientes') {
         ClientesAgregar(newData)
@@ -22,7 +23,7 @@ export function onRowAdd(newData) {
         StkMonedasAgregar(newData);
       }
       if (newData.tablabase === 'Transportes') {
-        console.log('newData Transportes ', newData);
+
         TransporteAgregar(newData);
       }
       if (newData.tablabase === 'Grupos') {
@@ -33,6 +34,7 @@ export function onRowAdd(newData) {
       }
       if (newData.tablabase === 'UniMedidas') {
         StkUnMedAgregar(newData);
+
       }
       if (newData.tablabase === 'Items') {
         StkItemsAgregar(newData);
@@ -44,9 +46,10 @@ export function onRowAdd(newData) {
         ParamCompAgregar(newData);
       }
       if (newData.tablabase === 'OTCondPago') {
-        console.log('newData  ', newData);
+
         OTCondPagoAgregar(newData);
       }
+      console.log(' resolve ', resolve)
       resolve(50);
     }, 500);
   });

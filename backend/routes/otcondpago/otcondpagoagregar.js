@@ -20,7 +20,7 @@ conexion.connect(function (err) {
 router.post('/', function (req, res) {
     var registro = {
         OTCondPagoDesc: req.body.otcondpagodesc,
-        OTCondPagolinea: req.body.otcondpagodesc,
+
     }
     console.log('registro en otcondpagoagre  ', registro)
 

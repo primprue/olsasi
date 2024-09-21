@@ -17,7 +17,7 @@ conexion.connect(function (err) {
 var router = express();
 
 router.get('/', function (req, res, next) {
-    const q = ['Select idOTCondPago as id, OTCondPagoDesc, OTCondPagolinea from BasesOrdenes.OTCondPago '].join(' ');
+    const q = ['Select idOTCondPago as id, OTCondPagoDesc from BasesOrdenes.OTCondPago '].join(' ');
     conexion.query(q,
         function (err, result) {
             if (err) {

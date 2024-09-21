@@ -170,7 +170,9 @@ export default function TablaMuestra(props) {
 
 	const handleAlta = () => {
 		setNombreBoton("Enviar");
-		setTituloDial(`Alta de ${formdatos.tablabase}`);
+		setTituloDial(
+			`Alta de ${formdatos.tablabase} (moverse por los campos con enter o tab)`
+		);
 		setOpen(true);
 	};
 

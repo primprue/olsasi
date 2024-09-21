@@ -18,14 +18,14 @@ export async function llenarcolumns() {
 function columnsFill(tipoprov, monedas) {
 	return new Promise(function (resolve) {
 		resolve([
-			{
-				headerName: "id",
-				field: "id",
-				type: "number",
-				width: 25,
-				editable: true,
-				headerClassName: estilotabla.encabcolumns,
-			},
+			// {
+			// 	headerName: "id",
+			// 	field: "id",
+			// 	type: "number",
+			// 	width: 25,
+			// 	editable: false,
+			// 	headerClassName: estilotabla.encabcolumns,
+			// },
 			{
 				headerName: "Descripción",
 				field: "ProveedoresDesc",

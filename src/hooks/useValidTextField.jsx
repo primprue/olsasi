@@ -10,6 +10,7 @@ export function ValidatedTextField(props) {
 	const label = props.label;
 	const handleKeyPress = (event) => {
 		if (event.key === "Enter" || event.key === "Tab") {
+			//if (event.key === "Tab") {
 			// Realiza la verificación o ejecución aquí
 			handleChange(event);
 		}
@@ -29,16 +30,20 @@ export function ValidatedTextField(props) {
 				datoserroneos: !isValidValue,
 			});
 		}
-
-		// valueFormatter: ({ value }) => {
-		// 	if (!value || typeof value !== "number") {
-		// 		return value;
-		// 	}
-		// 	return `${value.toLocaleString()}$`;
-		// };
-		// Realiza aquí tu lógica de validación según tus requerimientos
-		//setIsValid(value.length >= 5); // Ejemplo de validación: longitud mínima de 5 caracteres
 	};
+	const handleMouseDown = (event) => {
+		event.preventDefault(); // Evita que el campo reciba foco
+	};
+
+	// valueFormatter: ({ value }) => {
+	// 	if (!value || typeof value !== "number") {
+	// 		return value;
+	// 	}
+	// 	return `${value.toLocaleString()}$`;
+	// };
+	// Realiza aquí tu lógica de validación según tus requerimientos
+	//setIsValid(value.length >= 5); // Ejemplo de validación: longitud mínima de 5 caracteres
+
 	// const classes = CssTextField();
 	//inputProps={{ "data-testid": `validated-textfield-${label}` }} Añade un	atributo data-testid 	único
 	return (
@@ -55,6 +60,7 @@ export function ValidatedTextField(props) {
 				// startAdornment: isValid ? <CheckCircleIcon /> : <ErrorIcon />,
 			}}
 			onKeyDown={handleKeyPress}
+			onMouseDown={handleMouseDown}
 			// onChange={handleChange}
 		/>
 	);

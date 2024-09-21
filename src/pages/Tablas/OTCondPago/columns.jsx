@@ -10,9 +10,8 @@ function columnsFill() {
 			// {
 			// 	headerName: "CondPago(ID)",
 			// 	field: "id",
-			// 	editable: false,
-			// 	required: false,
-			// 	order: true,
+			// 	editable: "never",
+			// 	type: "number",
 			// 	headerClassName: estilotabla.encabcolumns,
 			// },
 			{
@@ -27,19 +26,7 @@ function columnsFill() {
 				xs: 8,
 				placeholder: "_________________",
 				headerClassName: estilotabla.encabcolumns,
-			},
-			{
-				headerName: "DescriOTCondPagolineapción",
-				field: "OTCondPagolinea",
-				order: true,
-				width: 250,
-				editable: true,
-				required: true,
-				maxLength: 45,
-				pattern: /^/,
-				xs: 8,
-				placeholder: "_________________",
-				headerClassName: estilotabla.encabcolumns,
+				alignItems: "left",
 			},
 		]);
 	});

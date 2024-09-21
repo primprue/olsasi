@@ -6,7 +6,6 @@ export function OTCondPagoAgregar(props) {
 	return new Promise(function () {
 		setTimeout(() => {
 			const { OTCondPagoDesc, OTCondPagolinea } = props;
-			console.log(" OTCondPagoDesc ", OTCondPagoDesc);
 			const url = IpServidor + "/otcondpagoagregar";
 			request
 				.post(url)

@@ -3,7 +3,6 @@ import Mensaje from "./Mensaje";
 function MuestraMensaje(err, ruta) {
 
 
-  console.log('err.status  ', err.status)
   switch (err.status) {
     case 409:
       Mensaje("error", "Código/Clave ingresado EXISTENTE no se puede duplicar ");
