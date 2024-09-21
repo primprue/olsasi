@@ -11,7 +11,6 @@ import { ParamCompAgregar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompAg
 import { OTCondPagoAgregar } from "../pages/Tablas/OTCondPago/OTCondPagoAgregar";
 export function onRowAdd(newData) {
   return new Promise((resolve) => {
-    console.log(' newData onRowAdd ', newData)
     setTimeout(() => {
       if (newData.tablabase === 'Clientes') {
         ClientesAgregar(newData)
@@ -49,7 +48,6 @@ export function onRowAdd(newData) {
 
         OTCondPagoAgregar(newData);
       }
-      console.log(' resolve ', resolve)
       resolve(50);
     }, 500);
   });

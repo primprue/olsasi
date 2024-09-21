@@ -1,9 +1,7 @@
 // import React from "react";
 import Mensaje from "./Mensaje";
 function CodigoError(err) {
-  console.log('en CodigoError err.status  ', err.status)
-  console.log('en CodigoError err.err  ', err.err)
-  console.log('en CodigoError err  ', err)
+
   switch (err.status) {
     case 409:
       Mensaje("error", "Código/Clave ingresado EXISTENTE no se puede duplicar ");

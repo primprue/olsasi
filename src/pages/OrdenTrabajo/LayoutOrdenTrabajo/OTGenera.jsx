@@ -33,8 +33,7 @@ export default function OTGenera(props) {
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
 	//trae las caracteristicas de lo que se presupuesto y los renglonespresup
 	const { inicializaOT } = useContext(OrdTrabajo);
-	const [importeorden, setImporteOrden] = useState(0);
-	const [pdfURL, setPdfURL] = useState(null);
+
 	const [pdfData, setPdfData] = useState(null);
 	const [numeroOT, setNumeroOT] = useState(0);
 	let colorfondo = "";
@@ -99,11 +98,6 @@ export default function OTGenera(props) {
 			blue = 252;
 		}
 	}
-	// const formattedAmount = new Intl.NumberFormat("ar-AR", {
-	// 	style: "currency",
-	// 	currency: "PES",
-	// 	minimumFractionDigits: 2,
-	// });
 
 	async function OTGraba() {
 		const nroOT = await OTGrabar(otdatos);
@@ -123,7 +117,6 @@ export default function OTGenera(props) {
 		textoImpI = "Importe c/IVA";
 		valorImpI = formatCurrency(otdatos.TotalPresupuesto);
 		textoImp = "Importe s/IVA";
-		// valorImp = otdatos.TotalPresupuestoSIVA;
 		valorImp = formatCurrency(otdatos.TotalPresupuestoSIVA);
 	}
 	var textoSeniaI = "Importe Seña";
@@ -131,27 +124,6 @@ export default function OTGenera(props) {
 	if (otdatos.ImporteSenia !== 0 && otdatos.ValorSenia !== undefined) {
 		valorSeniaI = formatCurrency(otdatos.ImporteSenia);
 	}
-
-	// red = 235;
-	// green = 244;
-	// blue = 129;
-	const onChange = (event) => {
-		console.log("event  ", event);
-	};
-
-	const mostrarElementos = () => {
-		arregloencab.map((elemento, index1) => {
-			delete elemento.ClientesTipo;
-			delete elemento.ClientesContacto;
-			delete elemento.ClientesCategoria;
-			delete elemento.ClientesObserv1;
-			delete elemento.ClientesObserv2;
-			delete elemento.ClientesFecha;
-
-			const nombresPropiedades = Object.keys(elemento);
-			return elemento[nombresPropiedades];
-		});
-	};
 
 	const sendPDFViaWebSocket = (pdfData, nombrearch) => {
 		const socket = new WebSocket("ws://localhost:3000");
@@ -165,7 +137,6 @@ export default function OTGenera(props) {
 		};
 
 		socket.onmessage = (event) => {
-			console.log("Respuesta del servidor:", event.data);
 			socket.close();
 		};
 	};
@@ -242,7 +213,6 @@ export default function OTGenera(props) {
 		});
 		// Obtén la posición actual
 		const lastY = doc.lastAutoTable?.finalY;
-		console.log(" lastY ", lastY);
 		doc.setFontSize(10);
 		y += 15;
 		x = 9;
@@ -599,232 +569,3 @@ export default function OTGenera(props) {
 		</>
 	);
 }
-// <Dialog
-// 	open={open}
-// 	onClose={handleClose}
-// 	maxWidth={false}
-// 	fullWidth={true}
-// 	sx={{
-// 		backgroundColor: colorfondo,
-// 	}}
-// >
-// 	<DialogContent ref={pdfRef} id="pdfContent">
-// 		<Typography variant="h5" align="center" gutterBottom>
-// 			Orden de Trabajo
-// 		</Typography>
-// 		<Paper style={{ padding: 10, marginBottom: 16 }}>
-// 			<Grid container spacing={2}>
-// 				<Grid item xs={12}>
-// 					{/* justifyContent="flex-end" */}
-// 					<Box
-// 						display="flex"
-// 						justifyContent="flex-center"
-// 						alignItems="center"
-// 					>
-// 						<Typography
-// 							variant="h7"
-// 							style={{
-// 								fontWeight: "bold",
-// 								fontFamily: "system-ui",
-// 								marginRight: 20,
-// 							}}
-// 						>
-// 							{tipoorden}
-// 						</Typography>
-
-// 						<Typography variant="body1" style={{ marginRight: 3 }}>
-// 							Fecha
-// 						</Typography>
-// 						<Typography
-// 							variant="subtitle1"
-// 							style={{ fontWeight: "bold", marginRight: 16 }}
-// 						>
-// 							{FechaHoy}
-// 						</Typography>
-// 						<Typography variant="subtitle1" style={{ marginRight: 3 }}>
-// 							Fecha Promesa
-// 						</Typography>
-// 						<Typography
-// 							variant="body1"
-// 							style={{ fontWeight: "bold", marginRight: 16 }}
-// 						>
-// 							{FechaProm}
-// 						</Typography>
-// 					</Box>
-// 				</Grid>
-// 			</Grid>
-// 		</Paper>
-
-// 		<Box
-// 			component="form"
-// 			sx={{
-// 				"& .MuiTextField-root": { m: 1, width: "calc(30% - 16px)" },
-// 			}}
-// 			noValidate
-// 			autoComplete="off"
-// 		>
-// 			<CampoEncab
-// 				arregloencab={arregloencab}
-// 				nropresup={otdatos.datosencab[0][0].idPresupEncab}
-// 			></CampoEncab>
-// 			<Grid container spacing={2}>
-// 				{(otdatos.OTsinIVA === 1 && (
-// 					<Grid item>
-// 						<h5>Importe total s/IVA</h5>
-// 						<CurrencyTextField
-// 							id="Total"
-// 							size="small"
-// 							label="Importe Total"
-// 							value={otdatos.TotalPresupuestoSIVA}
-// 							className={EstTF.tfcurrency}
-// 						></CurrencyTextField>
-// 					</Grid>
-// 				)) || (
-// 					<Grid item>
-// 						<h5>Importe total c/IVA</h5>
-// 						<CurrencyTextField
-// 							id="Total"
-// 							size="small"
-// 							label="Importe Total"
-// 							value={otdatos.TotalPresupuesto}
-// 							className={EstTF.tfcurrency}
-// 						></CurrencyTextField>
-// 					</Grid>
-// 				)}
-// 				<Grid item>
-// 					<h5>Importe Seña</h5>
-// 					<CurrencyTextField
-// 						id="ImporteSenia"
-// 						size="small"
-// 						label="Importe Seña"
-// 						value={otdatos.ImporteSenia}
-// 						className={EstTF.tfcurrency}
-// 					></CurrencyTextField>
-// 				</Grid>
-// 			</Grid>
-// 			<CampoMuestra arreglodef={arreglodef}></CampoMuestra>
-// 			<Button onClick={OTGraba}>Graba</Button>
-// 		</Box>
-// 	</DialogContent>
-// 	<Button onClick={generatePDF} style={{ margin: 10 }}>
-// 		Generate PDF
-// 	</Button>
-
-// </Dialog>
-// );
-// }
-
-// arregloencab.map((elemento, index1) => {
-// 	delete elemento.ClientesTipo;
-// 	delete elemento.ClientesContacto;
-// 	delete elemento.ClientesCategoria;
-// 	delete elemento.ClientesObserv1;
-// 	delete elemento.ClientesObserv2;
-// 	delete elemento.ClientesFecha;
-
-// 	const nombresPropiedades = Object.keys(elemento);
-// 	var fila = 15;
-// 	var colum = 1;
-// 	doc.setFontSize(8);
-// 	nombresPropiedades.map((nombrePropiedad, index) => {
-// 		console.log("fila  ", fila);
-// 		doc.text(
-// 			`${nombrePropiedad.replace("Clientes", "")} : ${
-// 				elemento[nombrePropiedad]
-// 			}`,
-// 			colum,
-// 			fila
-// 		);
-// 		if (colum > 40) {
-// 			colum = 1;
-// 			fila = fila + 5;
-// 		} else {
-// 			colum = colum + 15;
-// 		}
-// 	});
-// });
-
-// if (i % 6 === 0) {
-// 	doc.autoTable({
-// 		startY: ytabladet,
-// 		head: [coldetalles],
-// 		body: [rows1],
-// 		theme: "grid", // O prueba con otros temas si es necesario
-// 		styles: {
-// 			textColor: [0, 0, 0],
-// 			fillColor: [255, 255, 255], //Color de fondo para las celdas
-// 			overflow: "linebreak", // Ajustar el texto largo
-// 			cellPadding: 1, // Ajustar el relleno de las celdas
-// 			fontSize: 10, // Ajustar el tamaño de la fuente
-// 		},
-// 		headStyles: {
-// 			textColor: [0, 0, 0], // Color del texto
-// 			fillColor: [255, 255, 255], //Color de fondo para las celdas
-// 			fontSize: 8, // Tamaño de fuente en la cabecera
-// 			lineWidth: 0.05, // Ancho de las líneas (bordes)
-// 			lineColor: [0, 0, 0],
-// 			cellPadding: 0.5,
-// 			fontStyle: "bold", // Estilo de la fuente en la cabecera
-// 		},
-// 		margin: { top: 10, left: 10, right: 10, bottom: 10 }, // Ajustar márgenes si es necesario
-// 	});
-// 	coldetalles = []; //
-// 	rows1 = []; //
-// 	ytabladet = ytabladet + 10;
-// 	cuentaentrada++;
-// } else {
-// 	if (cuentaentrada >= Math.trunc(nombresPropiedades.length / 6)) {
-// 		doc.autoTable({
-// 			startY: ytabladet,
-// 			head: [coldetalles],
-// 			body: [rows1],
-// 			theme: "grid", // O prueba con otros temas si es necesario
-// 			styles: {
-// 				textColor: [0, 0, 0], // Color del texto
-// 				fillColor: [255, 255, 255], //Color de fondo para las celdas
-// 				overflow: "linebreak", // Ajustar el texto largo
-// 				cellPadding: 1, // Ajustar el relleno de las celdas
-// 				fontSize: 10, // Ajustar el tamaño de la fuente
-// 			},
-// 			headStyles: {
-// 				textColor: [0, 0, 0], // Color del texto
-// 				fillColor: [255, 255, 255], //Color de fondo para las celdas
-// 				fontSize: 8, // Tamaño de fuente en la cabecera
-// 				lineWidth: 0.05, // Ancho de las líneas (bordes)
-// 				lineColor: [0, 0, 0],
-// 				cellPadding: 0.5,
-// 				fontStyle: "bold", // Estilo de la fuente en la cabecera
-// 			},
-// 			margin: { top: 10, left: 10, right: 10, bottom: 10 }, // Ajustar márgenes si es necesario
-// 		});
-// 	}
-// }
-
-/*const nroOT = await OTGrabar(otdatos);
-		setNumeroOT(nroOT);
-		// const pdfOutput = doc.output("datauristring");
-		const pdfBlob = doc.output("blob");
-
-		const formData = new FormData();
-		formData.append('file', pdfBlob, 'nombre_del_archivo.pdf');
-
-		// Crear una instancia de XMLHttpRequest
-		const xhr = new XMLHttpRequest();
-		// xhr.open('POST', 'https://tu-servidor.com/guardar-pdf', true);
-		xhr.open('POST', 'https://http://localhost:5173/guardar-pdf', true);
-
-		xhr.onload = function () {
-			if (xhr.status === 200) {
-				console.log('PDF guardado exitosamente en el servidor');
-			} else {
-				console.error('Error al guardar el PDF en el servidor');
-			}
-		};
-
-		xhr.onerror = function () {
-			console.error('Error de conexión.');
-		};
-
-		// Enviar la solicitud con los datos del PDF
-		xhr.send(formData);
-	};*/

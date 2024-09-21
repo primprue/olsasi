@@ -2,8 +2,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Mensaje(type, message) {
-	console.log("menssage  ", message);
-	console.log("type  ", type);
 	switch (type) {
 		case "error": // default color red
 			toast.error(message);

@@ -2,7 +2,6 @@ import request from "superagent";
 import IpServidor from "../../VariablesDeEntorno";
 var nroOrdTrab = 0;
 export const OTGrabar = (otdatos) => {
-	console.log("otdatos  ", otdatos);
 	return new Promise((resolve) => {
 		const url = IpServidor + "/otgraba";
 		request

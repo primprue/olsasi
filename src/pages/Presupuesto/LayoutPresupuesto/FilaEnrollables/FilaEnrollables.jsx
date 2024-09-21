@@ -15,7 +15,6 @@ import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
 
 export default function FilaEnrollables(props) {
-	console.log("props en fila enrollables  ", props);
 	const { state, setState } = useContext(PresupPant);
 	const [faja, setFaja] = React.useState("2P");
 	const [cristal, setCristal] = React.useState("PVC05");

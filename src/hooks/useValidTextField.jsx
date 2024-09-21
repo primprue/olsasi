@@ -9,10 +9,14 @@ export function ValidatedTextField(props) {
 	const [isValid, setIsValid] = useState(true);
 	const label = props.label;
 	const handleKeyPress = (event) => {
-		if (event.key === "Enter" || event.key === "Tab") {
-			//if (event.key === "Tab") {
+		//if (event.key === "Enter" || event.key === "Tab") {
+		if (event.key === "Tab") {
 			// Realiza la verificación o ejecución aquí
 			handleChange(event);
+		}
+		if (event.key === "Enter") {
+			// Realiza la verificación o ejecución aquí
+			event.preventDefault();
 		}
 	};
 	const handleChange = (event) => {
@@ -50,6 +54,7 @@ export function ValidatedTextField(props) {
 		<TextField
 			{...props}
 			label={label}
+			helperText="<Tab> pasa al siguiente campo"
 			inputProps={{ "data-testid": `validated-textfield-${label}` }}
 			InputProps={{
 				startAdornment: isValid ? (

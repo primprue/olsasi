@@ -184,9 +184,9 @@
 .botonfincargadatos {
 	font-size: 15px;
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
-	color: rgba(29, 75, 3, 0.945);
-	background-color: rgba(53, 212, 5, 0.76);
-	border-color: rgb(125, 253, 6);
+	color: rgba(246, 250, 243, 0.945);
+	background-color: rgba(52, 133, 28, 0.76);
+	border-color: rgb(158, 248, 79);
 	display: flex;
 	margin: 14px;
 	border: 14px;
@@ -196,7 +196,7 @@
 }
 
 .botonfincargadatos:hover {
-	background-color: rgba(29, 75, 3, 0.438);
+	background-color: rgba(112, 224, 47, 0.438);
 	color: rgba(29, 75, 3, 0.945);
 	font-size: 15px;
 	padding: 2;
@@ -206,9 +206,9 @@
 .botoncierracargadatos {
 	font-size: 15px;
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
-	color: rgba(243, 18, 18, 0.945);
+	color: rgba(250, 240, 240, 0.945);
 	background-color: rgba(212, 5, 5, 0.363);
-	border-color: rgba(253, 6, 18, 0.5);
+	border-color: rgba(235, 23, 23, 0.5);
 	display: flex;
 	margin: 14px;
 	border: 14px;
@@ -219,7 +219,7 @@
 
 .botoncierracargadatos:hover {
 	background-color: rgba(212, 5, 5, 0.363);
-	color: rgba(243, 18, 18, 0.945);
+	color: rgba(248, 28, 12, 0.945);
 	font-size: 15px;
 	padding: 2;
 }

@@ -31,10 +31,6 @@ export function DialogoDatos(props) {
 	const handleSubmit = (event) => {
 		event.preventDefault(); // Evita la recarga de la página al enviar el formulario
 
-		// if (event.key === "Enter") {
-		// 	event.preventDefault(); // Evita que el formulario se envíe automáticamente
-		// 	submitButtonRef.current.focus(); // Mueve el foco al botón de envío
-		// }
 		setTimeout(() => {
 			if (nombrebtn === "Enviar") {
 				onRowAdd(formdatos);
@@ -43,8 +39,6 @@ export function DialogoDatos(props) {
 				setDatoborrado(valorresuelto);
 			}
 		}, 500);
-		console.log("formdatos DialogoDatos ", formdatos);
-		// handleClose();
 	};
 
 	return (
@@ -107,12 +101,12 @@ export function DialogoDatos(props) {
 						{/* <Grid container spacing={2} alignItems="center"> */}
 						<Button
 							type="submit"
-							variant="outlined"
-							ref={submitButtonRef}
-							// className={estilos.botonfincargadatos}
-							// sx={{ mt: 2 }}
+							// variant="outlined"
+							// ref={submitButtonRef}
+							className={estilos.botonfincargadatos}
+							//  sx={{ mt: 2 }}
 						>
-							{/* {nombrebtn} */}
+							{nombrebtn}
 						</Button>
 						<Button
 							onClick={handleClose}

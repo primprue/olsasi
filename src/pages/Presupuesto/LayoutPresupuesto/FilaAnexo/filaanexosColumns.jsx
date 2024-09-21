@@ -1,13 +1,5 @@
-import leePresupConfTipoLeeAnexo from "../../leePresupConfTipoLeeAnexo";
 import React from "react";
-import estilotabla from "../../../../Styles/Tabla.module.css";
 export async function filaanexosColumns() {
-	//     const tipoanexo = await leePresupConfTipoLeeAnexo('S');
-	//     console.log('tipoanexo ', tipoanexo)
-	//     return columnsFill(tipoanexo);
-	// }
-
-	// function columnsFill(tipoanexo) {
 	return new Promise(function (resolve) {
 		resolve([
 			// {
