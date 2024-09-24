@@ -38,6 +38,7 @@ router.get("/", function (req, res) {
     var comando = "cp -a " + variables.dirpresupdocumento
         + nombrepresupeleg + " " +
         variables.caminoynombrearch + 'basics.pdf'
+
     exec(comando, (error, stdout, stderr) => {
         if (error) {
             console.log(`error: ${error.message}`);

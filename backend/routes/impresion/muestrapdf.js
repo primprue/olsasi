@@ -5,7 +5,6 @@ const app = express();
 
 app.get('/', (req, res) => {
     const pdfPath = variables.caminoynombrearch + 'basics.pdf';
-    console.log(' pdfPath ', pdfPath)
     fs.readFile(pdfPath, (error, data) => {
         if (error) {
             res.status(500).send('Error al leer el archivo PDF');

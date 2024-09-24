@@ -26,9 +26,7 @@ export const PresupPreview = (props) => {
 					</button>
 				</DialogTitle>
 				<iframe
-					// src={srcarch}
-					src="dist/basics.pdf"
-					//"dist/basics.pdf" // Reemplaza con la ruta de tu archivo PDF
+					src="/basics.pdf"
 					title="Visualizador de PDF"
 					width="100%"
 					height="500px"

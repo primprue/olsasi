@@ -42,6 +42,9 @@ import { OrdenTrabajo } from "./context/OrdTrabajo.jsx";
 import { PresupPant } from "./context/PresupPant";
 import { CtaCteContext } from "./context/CtasCtesContext.jsx";
 export default function App() {
+	{
+		console.log("estoy en la app  ");
+	}
 	return (
 		<StaticContexto>
 			<div>

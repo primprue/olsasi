@@ -5,7 +5,6 @@ import { ToastContainer } from "react-toastify"; //para los mensajes de error o 
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-//import { StyledEngineProvider } from "@mui/material/styles";
 let theme = createTheme({});
 theme = createTheme(theme, {
 	// Custom colors created with augmentColor go here
@@ -25,10 +24,8 @@ theme = createTheme(theme, {
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
 		<BrowserRouter>
-			{/* <StyledEngineProvider injectFirst> */}
 			<ThemeProvider theme={theme}>
 				<App />
-				{/* </StyledEngineProvider> */}
 			</ThemeProvider>
 		</BrowserRouter>
 		<ToastContainer />
