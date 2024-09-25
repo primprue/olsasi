@@ -19,6 +19,7 @@ const PresupDetPie = lazy(() => import("./pages/Tablas/PresupDetPie"));
 const PresupConfTipo = lazy(() => import("./pages/Tablas/PresupConfTipo"));
 const OTCondPago = lazy(() => import("./pages/Tablas/OTCondPago"));
 const BackupDiario = lazy(() => import("./pages/ProcInternos/BackupDiario"));
+
 // const PresupPant = lazy(() => import("./context/PresupPant.jsx"));
 const Presupuesto = lazy(() => import("./pages/Presupuesto"));
 const OTrabajo = lazy(() => import("./pages/OrdenTrabajo/OTrabajo"));
@@ -31,6 +32,7 @@ const PresupMuestra = lazy(() =>
 	import("./pages/Presupuesto/LayoutPresupuesto/PresupMuestra")
 );
 const MovStockPant = lazy(() => import("./pages/MovStock/MovStockPant.jsx"));
+const Inventario = lazy(() => import("./pages/MovStock/Inventario"));
 const CtasCtes = lazy(() => import("./pages/CtasCtes/index.jsx"));
 const ParamComp = lazy(() =>
 	import("./pages/CtasCtes/Tablas/ParamComp/index.jsx")
@@ -42,9 +44,6 @@ import { OrdenTrabajo } from "./context/OrdTrabajo.jsx";
 import { PresupPant } from "./context/PresupPant";
 import { CtaCteContext } from "./context/CtasCtesContext.jsx";
 export default function App() {
-	{
-		console.log("estoy en la app  ");
-	}
 	return (
 		<StaticContexto>
 			<div>
@@ -117,6 +116,14 @@ export default function App() {
 										element={
 											<Suspense fallback={<>...</>}>
 												<MovStockPant />
+											</Suspense>
+										}
+									/>
+									<Route
+										path="/Inventario"
+										element={
+											<Suspense fallback={<>...</>}>
+												<Inventario />
 											</Suspense>
 										}
 									/>

@@ -199,6 +199,14 @@ function Header() {
 					>
 						Movimiento Stock
 					</MenuItem>
+					<MenuItem
+						className={PropBarra.botonitem}
+						component={Link}
+						to="/Inventario"
+						onClick={handleClose1}
+					>
+						Inventario
+					</MenuItem>
 				</Menu>
 				<a
 					className={PropBarra.a}

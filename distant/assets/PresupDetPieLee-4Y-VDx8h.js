@@ -1,1 +1,0 @@
-import{r as n,I as p}from"./index-r_yxv9AL.js";function i(){return new Promise(function(t){const r=p+"/presupdetpieleer";n.get(r).set("Content-Type","application/json").then(e=>{const s=JSON.parse(e.text);t(s)}).catch(e=>MuestraMensaje(e))})}export{i as P};

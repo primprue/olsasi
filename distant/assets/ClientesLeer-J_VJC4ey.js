@@ -1,1 +1,0 @@
-import{r,M as o,I as a}from"./index-r_yxv9AL.js";function c(){return new Promise(t=>{setTimeout(()=>{const s=a+"/clientesleer";r.get(s).set("Content-Type","application/json").then(e=>{const n=JSON.parse(e.text);t(n)}).catch(e=>o(e))})},500)}export{c as C};

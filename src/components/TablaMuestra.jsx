@@ -160,6 +160,11 @@ export default function TablaMuestra(props) {
 			const data = await OTCondPagoLeer();
 			setRows(data);
 		}
+
+		if (formdatos.tablabase === "OTCondPago") {
+			const data = await OTCondPagoLeer();
+			setRows(data);
+		}
 	}
 	const handleClose = () => {
 		relee();

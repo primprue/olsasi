@@ -4,7 +4,6 @@ import IpServidor from "../../VariablesDeEntorno";
 import request from "superagent";
 
 export function clientestraeNuevos() {
-	console.log("esta en clientes trae   ");
 	return new Promise(function (resolve) {
 		setTimeout(() => {
 			const url = IpServidor + "/clientestraenuevos";

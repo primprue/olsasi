@@ -1,1 +1,0 @@
-import{e}from"./esES-o6LdUFzd.js";async function a(){return r()}function r(){return new Promise(function(_){_([{headerName:"Detalle",field:"PresupDetPieLeyenda",order:!0,width:500,editable:!0,required:!0,maxLength:120,pattern:/^/,xs:8,placeholder:"__________________________________________________________",headerClassName:e.encabcolumns}])})}export{a as l};

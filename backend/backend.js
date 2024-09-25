@@ -143,6 +143,7 @@ var modprecios = require("./routes/listaprecios/modprecios");
 
 //Movimiento Stock
 var leestock = require("./routes/movstock/leestock");
+var inventario = require("./routes/movstock/inventario");
 
 //CONSULTAS
 //var consultastock = require("./routes/consultas/consultastock");
@@ -407,7 +408,7 @@ app.use("/modprecios", modprecios);
 
 //Movimiento stock
 app.use("/leestock", leestock);
-
+app.use("/inventario", inventario);
 
 //PRESUPUESTO
 app.use("/presupunid", presupunid);
