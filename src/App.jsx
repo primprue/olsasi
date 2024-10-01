@@ -5,6 +5,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import { useNavigate, Route, Routes } from 'react-router-dom';
 import styles from './Styles/App.module.css'
+
 // Lazy-loaded components
 const Proveedores = lazy(() => import("./pages/Tablas/Proveedores/index.jsx"));
 const Clientes = lazy(() => import("./pages/Tablas/Clientes/index.jsx"));
@@ -43,7 +44,9 @@ const App = () => {
   const [openSubMenu, setOpenSubMenu] = useState(false);
   const [openSubMenuStock, setOpenSubMenuStock] = useState(false);
   const [openSubMenuTablas, setOpenSubMenuTablas] = useState(false);
-  const [openSubMenuExtra, setOpenSubMenuExtra] = useState(false);
+  const [openSubMenuTGenerales, setOpenSubMenuTGenerales] = useState(false);
+  const [openSubMenuTPresupuesto, setOpenSubMenuTPresupuesto] = useState(false);
+  const [openSubMenuTOT, setOpenSubMenuTOT] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null); 
   const navigate = useNavigate(); // Hook para manejar la navegación
 
@@ -60,10 +63,16 @@ const App = () => {
   const handleSubMenuClickTablas = () => {
     setOpenSubMenuTablas(!openSubMenuTablas);
   };
-  const handleSubMenuExtraClick = () => {
-    setOpenSubMenuExtra(!openSubMenuExtra);
+  const handleSubMenuTGenerales = () => {
+    setOpenSubMenuTGenerales(!openSubMenuTGenerales);
+  };
+  const handleSubMenuTPresupuesto = () => {
+    setOpenSubMenuTPresupuesto(!openSubMenuTPresupuesto);
   };
 
+  const handleSubMenuTOT = () => {
+    setOpenSubMenuTOT(!openSubMenuTOT);
+  };
   const handleNavigation = (path, index) => {
     setSelectedIndex(index);
     navigate(path); // Navega a la ruta especificada
@@ -148,27 +157,128 @@ const App = () => {
               {openSubMenuTablas ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
            
+               {/* Tablas Generales principal */}
             <Collapse in={openSubMenuTablas} timeout="auto" unmountOnExit>
-            <ListItem
-                  onClick={handleSubMenuExtraClick} // Controla el segundo submenú
+                <ListItem
+                 sx={{ pl: 4 }}
+                  onClick={handleSubMenuTGenerales} // Controla el segundo submenú
                   className={`${styles.menuItem} ${selectedIndex === 2 ? styles.selected : ''}`} // Aplica estilos
                 >
-                  <ListItemText primary="Submenú con Extra" />
-                  {openSubMenuExtra ? <ExpandLess /> : <ExpandMore />}
+                  <ListItemText primary="Generales" />
+                  {openSubMenuTGenerales ? <ExpandLess /> : <ExpandMore />}
                 </ListItem>
-            
+
+               
+
+                <Collapse in={openSubMenuTGenerales} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
-                <ListItem  sx={{ pl: 4 }}   
-                className={`${styles.menuItem} ${selectedIndex === 2 ? styles.selected : ''}`}  
+                <ListItem  sx={{ pl: 8 }}   
+                className={`${styles.menuItem} ${selectedIndex === 4 ? styles.selected : ''}`}  
                 onClick={() => handleNavigation('/Proveedores')}>
                   <ListItemText primary="Proveedores" />
                 </ListItem>
-                <ListItem     sx={{ pl: 4 }}   
-                className={`${styles.menuItem} ${selectedIndex === 3 ? styles.selected : ''}`} 
+                <ListItem     sx={{ pl: 8 }}   
+                className={`${styles.menuItem} ${selectedIndex === 5 ? styles.selected : ''}`} 
                  onClick={() => handleNavigation('/Clientes')}>
                   <ListItemText primary="Clientes" />
                 </ListItem>
+                <ListItem     sx={{ pl: 8 }}   
+                className={`${styles.menuItem} ${selectedIndex === 6 ? styles.selected : ''}`} 
+                 onClick={() => handleNavigation('/StkMonedas')}>
+                  <ListItemText primary="Monedas" />
+                </ListItem>
+                <ListItem     sx={{ pl: 8 }}   
+                className={`${styles.menuItem} ${selectedIndex === 7 ? styles.selected : ''}`} 
+                 onClick={() => handleNavigation('/Transporte')}>
+                  <ListItemText primary="Transporte" />
+                </ListItem>
                 </List>
+                </Collapse>
+
+ {/* termina tablas generales */}
+
+
+{/* Tablas Presupuesto  */}
+                <ListItem
+                 sx={{ pl: 4 }}
+                  onClick={handleSubMenuTPresupuesto} // Controla el segundo submenú
+                  className={`${styles.menuItem} ${selectedIndex === 3 ? styles.selected : ''}`} // Aplica estilos
+                >
+                  <ListItemText primary="Presupuesto" />
+                  {openSubMenuTPresupuesto ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+
+
+{/* Tablas Presupuesto items */}
+          <Collapse in={openSubMenuTPresupuesto} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItem  sx={{ pl: 8 }}   
+                className={`${styles.menuItem} ${selectedIndex === 8 ? styles.selected : ''}`}  
+                onClick={() => handleNavigation('/StkGrupos')}>
+                  <ListItemText primary="Grupos" />
+                </ListItem>
+                <ListItem     sx={{ pl: 8 }}   
+                className={`${styles.menuItem} ${selectedIndex === 9 ? styles.selected : ''}`} 
+                 onClick={() => handleNavigation('/StkRubros')}>
+                  <ListItemText primary="Rubros" />
+                </ListItem>
+                <ListItem     sx={{ pl: 8 }}   
+                className={`${styles.menuItem} ${selectedIndex === 10 ? styles.selected : ''}`} 
+                 onClick={() => handleNavigation('/StkItems')}>
+                  <ListItemText primary="Items" />
+                </ListItem>
+                <ListItem     sx={{ pl: 8 }}   
+                className={`${styles.menuItem} ${selectedIndex === 11 ? styles.selected : ''}`} 
+                 onClick={() => handleNavigation('/StkUnMed')}>
+                  <ListItemText primary="Unidad de Medidas" />
+                </ListItem>
+                <ListItem     sx={{ pl: 8 }}   
+                className={`${styles.menuItem} ${selectedIndex === 12 ? styles.selected : ''}`} 
+                 onClick={() => handleNavigation('/UbFisica')}>
+                  <ListItemText primary="Ubicación Física" />
+                </ListItem>
+                <ListItem     sx={{ pl: 8 }}   
+                className={`${styles.menuItem} ${selectedIndex === 13 ? styles.selected : ''}`} 
+                 onClick={() => handleNavigation('/PresupDetPie')}>
+                  <ListItemText primary="Pie Presupuesto" />
+                </ListItem>
+                <ListItem     sx={{ pl: 8 }}   
+                className={`${styles.menuItem} ${selectedIndex === 14 ? styles.selected : ''}`} 
+                 onClick={() => handleNavigation('/PresupConfTipo')}>
+                  <ListItemText primary="Tipo Confección" />
+                </ListItem>
+               
+                </List>
+                </Collapse>
+                {/* </Collapse> */}
+            {/* termina tablas Presupuesto */}
+
+
+{/* Tablas OT  */}
+          <ListItem
+                 sx={{ pl: 4 }}
+                  onClick={handleSubMenuTOT} // Controla el segundo submenú
+                  className={`${styles.menuItem} ${selectedIndex === 4 ? styles.selected : ''}`} // Aplica estilos
+                >
+                  <ListItemText primary="Orden de Trabajo" />
+                  {openSubMenuTOT ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+
+
+{/* Tablas OT items */}
+          <Collapse in={openSubMenuTOT} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItem  sx={{ pl: 8 }}   
+                className={`${styles.menuItem} ${selectedIndex === 15 ? styles.selected : ''}`}  
+                onClick={() => handleNavigation('/OTCondPago')}>
+                  <ListItemText primary="Condiciones de Pago" />
+                </ListItem>
+                    
+                </List>
+                </Collapse>
+            {/* termina tablas OT */}
+
+            
             </Collapse>
           </List>
         </Box>
@@ -191,6 +301,20 @@ const App = () => {
           <Route path="/Inventario" element={<Inventario />} />
           <Route path="/Proveedores" element={<Proveedores />} />
           <Route path="/Clientes" element={<Clientes />} />
+          <Route path="/StkMonedas" element={<StkMonedas />} />
+          <Route path="/Transporte" element={<Transporte />} />
+
+          <Route path="/StkGrupos" element={<StkGrupos />} />
+          <Route path="/StkRubros" element={<StkRubros />} />
+          <Route path="/StkItems" element={<StkItems />} />
+          <Route path="/StkUnMed" element={<StkUnMed />} />
+          <Route path="/UbFisica" element={<UbFisica />} />
+          <Route path="/PresupDetPie" element={<PresupDetPie />} />
+          <Route path="/PresupConfTipo" element={<PresupConfTipo />} />
+
+
+          <Route path="/OTCondPago" element={<OTCondPago />} />
+
         </Routes>
       </Suspense>
 	  </CtaCteContext>
