@@ -27,6 +27,7 @@ const OTMovimiento = lazy(() => import("./pages/OrdenTrabajo/OTMovimiento/index.
 const ListaPrecios = lazy(() => import("./pages/ListaPrecios/index.jsx"));
 const MovStockPant = lazy(() => import("./pages/MovStock/MovStockPant.jsx"));
 const Inventario = lazy(() => import("./pages/MovStock/Inventario/index.jsx"));
+const Reparacion = lazy(() => import("./pages/Reparacion/index.jsx"))
 const CtasCtes = lazy(() => import("./pages/CtasCtes/index.jsx"));
 const ParamComp = lazy(() =>
 	import("./pages/CtasCtes/Tablas/ParamComp/index.jsx")
@@ -39,6 +40,25 @@ import { DatosTablas } from "./context/TablasContext.jsx";
 import { OrdenTrabajo } from "./context/OrdTrabajo.jsx";
 import { PresupPant } from "./context/PresupPant.jsx";
 import { CtaCteContext } from "./context/CtasCtesContext.jsx";
+
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+
+// Configuración personalizada de breakpoints
+const theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1000,
+      xl: 1200,
+    },
+  },
+});
+
+
 const App = () => {
   const [open, setOpen] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState(false);
@@ -80,8 +100,10 @@ const App = () => {
   };
 
   return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
     <div>
-      <AppBar position="static">
+      <AppBar position="static" >
         <Toolbar>
           <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
             <MenuIcon />
@@ -280,6 +302,10 @@ const App = () => {
 
             
             </Collapse>
+            <ListItem   className={`${styles.menuItem} ${selectedIndex === 0 ? styles.selected : ''}`}  
+            onClick={() => handleNavigation('/Reparacion')}>
+              <ListItemText primary="Reparación" />
+            </ListItem>
           </List>
         </Box>
       </Drawer>
@@ -314,7 +340,8 @@ const App = () => {
 
 
           <Route path="/OTCondPago" element={<OTCondPago />} />
-
+          
+          <Route path="/Reparacion" element={<Reparacion />} />
         </Routes>
       </Suspense>
 	  </CtaCteContext>
@@ -323,6 +350,7 @@ const App = () => {
 				</PresupPant>
 				</StaticContexto>
     </div>
+    </ThemeProvider>
   );
 };
 

@@ -1,0 +1,8 @@
+.even-row {
+    background-color: #f0f0f0; /* Color para las filas pares */
+  }
+  
+  .odd-row {
+    background-color: #ffffff; /* Color para las filas impares */
+  }
+  

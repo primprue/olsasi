@@ -14,10 +14,15 @@ conexion.connect(function (err) {
 var router = express();
 router.get("/", function (req, res, next) {
     // router.get("/", async function (req, res, next) {
-
+        var q = ["SET @numero=0 "].join(" ");
+        conexion.query(q, function (err, result) {
+            if (err) {
+                console.log(err);
+            }
+        });
     var StkRubroAbr = req.query.abr;
     var q = [
-        'Select idStkRubro, StkRubroCodGrp, StkRubroDesc, StkItems.idStkItems,  StkGrupo.StkGrupoDesc as GrupoDesc, ',
+        'Select  @numero:=@numero+1 as id, idStkRubro, StkRubroCodGrp, StkRubroDesc, StkItems.idStkItems,  StkGrupo.StkGrupoDesc as GrupoDesc, ',
         'StkItemsDesc, BasesGenerales.Proveedores.ProveedoresDesc, StkRubroPresDes, StkRubroAncho, StkRubroPres, ',
         'StkItemsMin, StkItemsMax, StkItemsCantidad, StkItemsCantDisp, StkRubroUM, ',
         'date_format(StkItemsFAct, "%d-%m-%Y") as StkItemsFAct ',

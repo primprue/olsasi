@@ -234,6 +234,7 @@ var paramcompborrar = require("./routes/ctacte/paramcomp/paramcompborrar")
 var paramcompagregar = require("./routes/ctacte/paramcomp/paramcompagregar")
 var paramcompmodificar = require("./routes/ctacte/paramcomp/paramcompmodificar")
 
+var reparacionleer = require("./routes/reparacion/reparacionleer")
 
 // const { RouterSharp } = require("@material-ui/icons");
 
@@ -496,7 +497,7 @@ app.use("/paramcompborrar", paramcompborrar);
 app.use("/paramcompagregar", paramcompagregar);
 app.use("/paramcompmodificar", paramcompmodificar);
 
-
+app.use("/reparacionleer", reparacionleer);
 
 
 app.use("/", proveedoresleer);

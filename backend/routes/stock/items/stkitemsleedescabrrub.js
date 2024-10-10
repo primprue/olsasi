@@ -18,7 +18,6 @@ router.get("/?:StkItemsRubroAbr", function (req, res, next) {
 
   var q = [
     "Select idStkItems as value, StkItemsDesc as label from StkItems where StkItemsRubroAbr = '" + StkRubroAbr + "'"].join(" ");
-  console.log('q  ', q)
   conexion.query(q, function (err, result) {
     if (err) {
       if (err.errno === 1064) {

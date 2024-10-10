@@ -11,7 +11,7 @@ import { sumaingreso } from "./SumaIngreso";
 // Context
 import { useContext } from "react";
 import { MovStockPantContext } from "../../MovStockPant";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, esES } from "@mui/x-data-grid";
 
 export default function PantallaIngreso(props) {
 	const { state, setState } = useContext(MovStockPantContext);
@@ -154,11 +154,18 @@ export default function PantallaIngreso(props) {
 					columns={columns}
 					localeText={esES.components.MuiDataGrid.defaultProps.localeText}
 					onRowClick={(evt, selectedRow) => {
-						setSelectedRow(selectedRow.tableData.id);
-						miraitem(selectedRow.tableData.id);
+						
+					setSelectedRow(evt.id);
+						miraitem(evt.id);
 						setTimeout(() => {
 							textInput.current.focus();
 						}, 100);
+					
+						// setSelectedRow(selectedRow.tableData.id);
+						// miraitem(selectedRow.tableData.id);
+						// setTimeout(() => {
+						// 	textInput.current.focus();
+						// }, 100);
 					}}
 				/>
 				{/* <MaterialTable

@@ -9,11 +9,18 @@
   .menuItem:hover {
     background-color: #c9d9f4;
     font-weight: bold; /* Cambiar el peso de la fuente al estar seleccionado */
-    font-size: xx-large;
+    font-size: small;
     font-family: 'Arial', sans-serif; 
   }
   .selected {
     background-color: #7ec0e0;
  
   }
+
+.tamañogral {
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: small;
+}
+
   

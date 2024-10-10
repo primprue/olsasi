@@ -4,6 +4,12 @@ export function columnasdi() {
   return new Promise(function (resolve) {
     resolve([
       {
+        headerName: "id",
+        field: "id",
+        editable: "never",
+        //   order: true,
+      },
+      {
         headerName: "Items",
         field: "StkItemsDesc",
         editable: "never",
@@ -13,7 +19,7 @@ export function columnasdi() {
       {
         headerName: "Fecha ",
         field: "StkItemsFAct",
-        type: "date",
+        // type: "date",
         editable: "never",
       },
       {
