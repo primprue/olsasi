@@ -5,4 +5,13 @@
   .odd-row {
     background-color: #ffffff; /* Color para las filas impares */
   }
-  
+  .columnZero {
+	  background-color: '#d4e157  !important'; /* Color para la columna 0*/
+    font-weight: 'bold';
+	
+	}
+
+  .headerCustom {
+	  background-color: '#d4e157 !important'; /* Color personalizado para el header*/
+	  font-weight: 'bold';
+	}

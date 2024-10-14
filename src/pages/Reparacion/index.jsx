@@ -1,25 +1,59 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from "@mui/material";
 import {
 	DataGrid,
+	GridToolbarContainer,
+	useGridApiRef,
 } from "@mui/x-data-grid";
 import { LeeParamRep } from "./LeeParamRep.jsx";
 import { useContext } from "react";
 import StaticContexto from "../../context/StaticContext.jsx";
 import estilos from '../../Styles/TabRep.module.css'
+import EstTF from "../../Styles/TextField.module.css";
 import  {datosrep}  from "./datosrep.js";
 import { CreaTabla } from "./CreaTabla.jsx";
-// import {CreaTabla} from "./CreaTabla.jsx";
+import { CurrencyTextField } from "../../hooks/useCurrencyTextField.jsx";
+import { llenarcolumnsparches } from "./columparches.jsx";
+import { llenarcolumnschicotes } from "./columchicotes.jsx";
 export default function Reparacion() {
-	// const [datosrep2, setDatosRep2] = useState(datosrep);
 	const { setValor } = useContext(StaticContexto);
 	const [rows, setRows] = useState()
-	const [columns, setColumns] = useState()
-
-
 	const [valora, setValorA] = useState(0)
 	const [valorb, setValorB] = useState(0)
+	//tabla que recepciona los parches elegidos
+	const [open, setOpen] = useState(false);
+	const [inputValue, setInputValue] = useState('');
+	const inputRef = useRef(null); // Referencia al campo de texto
+	const [valorparche, setValorParche] = useState(0)
+	const [medidaparche, setMedidaParche] = useState('')
+	const [selectionModel, setSelectionModel] = useState([]);
+	const [columns, setColumns] = useState([]);
+	const [colchicotes, setColChicotes] = useState([])
+	 const [rowschicotes, setRowsChicotes] = useState([])
+	const [colparches, setColParches] = useState([])
+	const [rowsparches, setRowsParches] = useState([])
+	const [sumaParches, setSumaParches] = useState(0);
+	  const apiRef = useGridApiRef();
+
+
+	  const handleCellKeyDown = (params, event) => {
+		if (event.key === 'Enter') {
+		  event.preventDefault(); // Evita el comportamiento predeterminado de avanzar hacia abajo
+	
+		  const { id, field } = params;
+			setCellFocus(5, 'medchicote');
+		//   if (id === 0 && field === 'medchicote') {
+		// 	// Mover el foco a la celda [1, 'medchicote']
+		// 	apiRef.current.setCellFocus(1, 'medchicote');
+		//   } else if (id === 1 && field === 'medchicote') {
+		// 	// Mover el foco a la celda [1, 'cantchicote']
+		// 	apiRef.current.setCellFocus(1, 'cantchicote');
+		//   }
+		}
+	  };
+
+	
 	async function dataFetch() {
 		const data = await LeeParamRep();
 		setValorA(data[0].REPValorA)
@@ -34,55 +68,39 @@ export default function Reparacion() {
 	async function initialFetch() {
 		dataFetch();
 		columnsFetch();
+		columnsParches();
+		columnsChicotes();
+		setRowsChicotes(Array.from({ length: 20 }, (_, i) => ({ id: i, cantchicote: '', medchicote: '', impchicote: '', imptchicote: '' })));
 	}
 
-	useEffect(() => {
-		initialFetch();
-		setValor("Reparacion");
-	}, [valora]); // eslint-disable-line react-hooks/exhaustive-deps
-
-
-
 useEffect(() => {
+	initialFetch();
+	setValor("Reparacion");
+}, [valora]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
- setValor("Reparacion");
-}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-const [selectionModel, setSelectionModel] = useState([]);
-const handleCellClick= (params) => {
-
-	console.log('params ', params )
-	console.log('params.id ', params.id )
-	console.log('params.field ', params.field )
-	// const cantidad = prompt('Ingrese la cantidad:');
-	// console.log('cantidad ', cantidad )
-	// const newQuantity = window.prompt('Ingrese la cantidad:');
-	// console.log('newQuantity ', newQuantity )
- setMedidaParche(`${params.field} x ${params.id}`)
+const handleCellClick = (params) => {
+	setMedidaParche(`${params.field} x ${params.id}`)
 	setValorParche(params.value)
 	setInputValue('');
 	setSelectionModel([]); 
-	setOpen(true);
+	params.field !== 'id' && setOpen(true);
 };
 
 const handleClose = () => {
 		setOpen(false);
 	};
-//tabla que recepciona los parches elegidos
-const [open, setOpen] = useState(false);
-const [inputValue, setInputValue] = useState('');
-const inputRef = useRef(null); // Referencia al campo de texto
-const [valorparche, setValorParche] = useState(0)
-const [medidaparche, setMedidaParche] = useState('')
-const colparches = [
-		// { field: 'id', headerName: 'ID', width: 70},
-		{ field: 'cantparche', headerName: 'Cant', width: 130 },
-		{ field: 'medparche', headerName: 'Medida', width: 130 },
-		{ field: 'impparche', headerName: 'Imp.', width: 130 },
-		{ field: 'imptparche', headerName: 'Importe', type: 'number', width: 90 },
-	];
-	const [rowsparches, setRowsParches] = useState([])
+
+async function columnsParches() {
+	var col = await llenarcolumnsparches();
+	setColParches(() => col);
+}
+async function columnsChicotes() {
+	var col = await llenarcolumnschicotes();
+	setColChicotes(() => col);
+}
+
 	const handleConfirm = () => {
 		const newId = rowsparches.length + 1; // Generar un nuevo ID basado en el número de filas
 		const newRow = { id: newId, 
@@ -92,6 +110,7 @@ const colparches = [
 			imptparche: (Number(inputValue) * valorparche)  };
 
 		setRowsParches((prevRows) => [...prevRows, newRow]); // Agregar la nueva fila
+		setSumaParches(sumaParches + newRow.imptparche)
 		setOpen(false);
 	};
 	const handleKeyDown = (event) => {
@@ -110,6 +129,21 @@ const colparches = [
 		}
 	}, [open]);
 
+	function CustomToolbar() {
+		return (
+			<GridToolbarContainer >
+		
+				<CurrencyTextField
+					id="Total"
+					size="small"
+					label="Total"
+					value={sumaParches}
+					className={EstTF.tfcurrency}
+				></CurrencyTextField>
+			
+			</GridToolbarContainer>
+		);
+	}
 	return (
 		<Box
 			sx={{
@@ -120,49 +154,69 @@ const colparches = [
 				padding: 5,
 			}}
 		>
- {rows !== undefined && columns !== undefined &&
-		<div style={{ height: 500, width: '100%' }}>
-			<DataGrid
-				rows={rows}
-				columns={columns}
-				pageSize={10}
-				rowsPerPageOptions={[10]}
-				onCellClick={handleCellClick}
-				onSelectionModelChange={(newSelection) => {
-					console.log('newSelection', newSelection)
-          setSelectionModel(newSelection); // Control de selección
-        }}
-				showCellVerticalBorder={true}
-				showCellHorizontalBorder={true}
-				columnHeaderHeight={25}
-				disableSelectionOnClick
-				disableColumnMenu
-				getRowClassName={(params) =>
-          params.indexRelativeToCurrentPage % 2 === 0 ? 'even-row' : 'odd-row'
-        }
-				
-				// sx={{
-        //   boxShadow: 2,
-        //   border: 2,
-        //   borderColor: 'primary.light',
-        //   '& .MuiDataGrid-cell:hover': {
-        //     color: 'primary.main',
-        //   },
-        // }}
-			/>
-		</div>}
-
-	<div style={{ height: 200, width: '20%' }}>
-			<DataGrid
-				rows={rowsparches}
-				columns={colparches}
-				pageSize={10}
-				rowsPerPageOptions={[10]}
-				
-			
-			/>
-		</div>
-
+		{rows !== undefined && columns !== undefined &&
+				<div style={{ height: 400, width: '75%' }}>
+					<DataGrid
+						rows={rows}
+						columns={columns}
+						pageSize={10}
+						hideFooter={true}
+						rowsPerPageOptions={[10]}
+						onCellClick={handleCellClick}
+						onSelectionModelChange={(newSelection) => {
+							setSelectionModel(newSelection); // Control de selección
+						}}
+						showCellVerticalBorder={true}
+						showCellHorizontalBorder={true}
+						columnHeaderHeight={25}
+						disableSelectionOnClick
+						disableColumnMenu
+						getRowClassName={() => `super-app-theme--Open`} //son las propiedades de las filas
+						rowHeight={20}
+							sx={{
+							'& .MuiDataGrid-columnHeaders': {
+							backgroundColor: '#5787e1a7', // Color del header
+							},
+							'& .MuiDataGrid-columnHeaderTitle': {
+							fontWeight: 'bold', // Negrita para el texto del header
+							}
+							}}
+					/>
+				</div>}
+		<br/>
+<Grid container spacing={2}>
+				<div style={{ height: 200, width: '21%' }}>
+						<DataGrid
+							rows={rowsparches}
+							columns={colparches}
+							pageSize={10}
+							rowsPerPageOptions={[10]}
+							hideFooter={true}
+							rowHeight={20}
+							columnHeaderHeight={25}
+							slots={{
+								toolbar: CustomToolbar,
+							}}
+						/>
+						</div>
+						<br/><br/>
+						<div style={{ height: 200, width: '21%' }}>
+							<DataGrid
+								apiRef={apiRef}
+								rows={rowschicotes}
+								columns={colchicotes}
+								pageSize={10}
+								rowsPerPageOptions={[10]}
+								hideFooter
+								rowHeight={20}
+								columnHeaderHeight={25}
+								showCellVerticalBorder
+								showCellHorizontalBorder
+								editMode="cell"
+								onCellKeyDown={handleCellKeyDown}
+						/>
+					</div>
+					</Grid>
 	 {/* Diálogo para ingresar la cantidad */}
 	 <Dialog open={open} onClose={handleClose}>
 				<DialogTitle>Ingrese la cantidad</DialogTitle>

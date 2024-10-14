@@ -256,7 +256,6 @@ export default function FilaAnexo(props) {
 							onProcessRowUpdateError={handleProcessRowUpdateError}
 							processRowUpdate={(params) => handleCellEditCommit(params)}
 							onRowClick={handleRowSelection}
-							// checkboxSelection
 							slots={{
 								toolbar: CustomToolbar,
 							}}
@@ -266,130 +265,13 @@ export default function FilaAnexo(props) {
 								},
 							}}
 							pageSizeOptions={[10, 10]}
-							// slots={{
-							// 	toolbar: CustomToolbar,
-							// }}
-							// onCellEditCommit={(params) => {
-							// 	const updatedRows = rows.map((row) =>
-							// 		row.id === params.id
-							// 			? { ...row, [params.field]: params.props.value }
-							// 			: row
-							// 	);
-							// 	setRows(updatedRows);
-							// }}
+						
 						/>
 
-						{/* <button onClick={handleAddRow}>Add Row</button> */}
-						{/* <DataGrid
-							columns={columns}
-							rows={datosanexo}
-							autoPageSize
-							slots={{
-								toolbar: CustomToolbar,
-							}}
-						></DataGrid> */}
+						
 					</div>
-					{/* </Grid> */}
 				</Box>
 			</Dialog>
 		</>
 	);
 }
-/*
-
-	<MaterialTable
-						localization={localization}
-						style={props.style}
-						title={
-							<CurrencyTextField
-								label={
-									<tableIcons.AddShoppingCart
-										style={{ color: teal[500] }}
-										onClick={() => sumar()}
-									/>
-								}
-								//label='Suma Total'
-								color="#FF0000"
-								value={sumaanexo}
-							>
-								{" "}
-							</CurrencyTextField>
-						}
-						icons={tableIcons}
-						columns={columns}
-						data={datosanexo}
-						options={{
-							search: false,
-							addRowPosition: "first",
-							actionsColumnIndex: -1,
-							pagesize: 2,
-						}}
-						actions={[
-							{
-								icon: () => <tableIcons.Cancel style={{ color: red[500] }} />,
-								tooltip: "Cerrar",
-								isFreeAction: true,
-								onClick: () => cierraanexos1(),
-							},
-						]}
-						editable={{
-							onRowAdd: (newData) =>
-								new Promise((resolve) => {
-									setTimeout(() => {
-										var datoscalculos = JSON.stringify(dcalculo);
-										var datosrenglon1 = presupcalculador(
-											// "", "",
-											"",
-											datoscalculos,
-											newData.PresupConfTipoDesc
-										);
-
-										Promise.resolve(datosrenglon1).then((jsonResults) => {
-											newData.importea = jsonResults[0] * newData.AnexoMedida;
-											newData.PresupConfTipoImprime = jsonResults[1];
-											//   newData.importea = jsonResults * newData.AnexoMedida
-											setDatosAnexo([...datosanexo, newData]);
-										});
-										resolve();
-									}, 1000);
-								}),
-
-							onRowUpdate: (newData, oldData) =>
-								new Promise((resolve) => {
-									setTimeout(() => {
-										const dataUpdate = [...datosanexo];
-										var datoscalculos = JSON.stringify(dcalculo);
-										var datosrenglon1 = presupcalculador(
-											// "", "",
-											"",
-											datoscalculos,
-											newData.PresupConfTipoDesc
-										);
-										Promise.resolve(datosrenglon1).then((jsonResults) => {
-											//   newData.importea = jsonResults[0].ImpUnitario * newData.AnexoMedida
-											// newData.importea = jsonResults * newData.AnexoMedida
-											newData.importea = jsonResults[0] * newData.AnexoMedida;
-											newData.PresupConfTipoImprime = jsonResults[1];
-											const index = oldData.tableData.id;
-											dataUpdate[index] = newData;
-
-											setDatosAnexo([...dataUpdate]);
-										});
-										resolve();
-									}, 1000);
-								}),
-
-							onRowDelete: (oldData) =>
-								new Promise((resolve) => {
-									setTimeout(() => {
-										const dataDelete = [...datosanexo];
-										const index = oldData.tableData.id;
-										dataDelete.splice(index, 1);
-										setDatosAnexo([...dataDelete]);
-
-										resolve();
-									}, 1000);
-								}),
-						}}
-					/>
-*/

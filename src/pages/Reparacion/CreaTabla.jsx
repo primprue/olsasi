@@ -1,3 +1,4 @@
+import { he } from 'date-fns/locale';
 import React from 'react'
 
 export function CreaTabla(valora, valorb) {
@@ -16,16 +17,30 @@ const rowTitles = generateNumbers(5, 100, 5);    // De 10 en 10 para las filas
 
 // Crear columnas para el DataGrid, con identificador y título
 const columns = [
-    { field: 'id', headerName: '', width: 50}, // Columna de filas
+    { field: 'id', headerName: '', width: 50,   sortable: false,
+        showCellVerticalBorder: true,
+    
+        renderCell: (params) => (
+            <div style={{ textAlign: "right",   backgroundColor: '#5787e1a7', fontWeight: 'bold',  }}>
+             {params.value}
+            </div>
+        ),
+    }, // Columna de filas
     ...columnTitles.map((num) => ({
-    //   field: `col_${num}`,
+        renderCell: (params) => (
+            <div style={{ backgroundColor: '#c7e0ee3c', width: '100%', height: '100%' }}>
+              {params.value}
+            </div>
+          ),
+  
     field: `${num}`,
         headerName: num.toString(),
-        width: 70,
-         headerClassName: 'super-app-theme--header',
+        width: 50,
         headerAlign: 'center',
         sortable: false,
         showCellVerticalBorder: true,
+    
+        // headerClassName: 'super-app-theme--header',
     }))
 ];
 let fila = 0
@@ -41,18 +56,19 @@ const rows = rowTitles.map((rowNum) => {
         fila++
             let rowData = { id: rowNum }; // Primer campo es el identificador de la fila
 
-        colum = 0
+            colum = 0
+            
             columnTitles.forEach((colNum) => {
             colum++
-        
             NroA = 5.00 * colum;
             NroB = 5.00 * fila;
             PrimerValor = ((NroA * NroB * valora * valorb) / 100);
             SegundoValor = (NroA * NroB * valora);
-            ValorParc = 0.00;
+            ValorParc = 0;
             ValorParc = ((PrimerValor - SegundoValor)/10) + ( 25.00 * valora)
-            rowData[`${colNum}`] = ValorParc; // Valor de la celda
+            rowData[`${colNum}`] = Math.round(ValorParc,0); // Valor de la celda
             });
+            
             return rowData;
 });
 
