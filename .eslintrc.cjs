@@ -1,9 +1,12 @@
+
+
 module.exports = {
   root: true,
   env: { browser: true, es2020: true },
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
+     "prettier",
     'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
     'eslint-config-prettier'
@@ -11,9 +14,10 @@ module.exports = {
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
   settings: { react: { version: '18.2' } },
-  plugins: ['react-refresh'],
+  plugins: ['react-refresh']["prettier"],
   rules: {
-    "no-unused-vars": "warn",
+     "prettier/prettier": "error",  // Muestra errores cuando el código no sigue las reglas de Prettier
+    "no-unused-vars": "warn"   ,    // Otras reglas de ESLint
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },

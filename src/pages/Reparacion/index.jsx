@@ -6,11 +6,13 @@ import {
 	GridToolbarContainer,
 	useGridApiRef,
 } from "@mui/x-data-grid";
+
+import { pruebatabla } from "./pruebatabla.jsx";
 import { LeeParamRep } from "./LeeParamRep.jsx";
 import { useContext } from "react";
 import StaticContexto from "../../context/StaticContext.jsx";
-import estilos from '../../Styles/TabRep.module.css'
-import EstTF from "../../Styles/TextField.module.css";
+
+import estilo from "../../Styles/Reparacion.module.css";
 import  {datosrep}  from "./datosrep.js";
 import { CreaTabla } from "./CreaTabla.jsx";
 import { CurrencyTextField } from "../../hooks/useCurrencyTextField.jsx";
@@ -22,38 +24,35 @@ export default function Reparacion() {
 	const [valora, setValorA] = useState(0)
 	const [valorb, setValorB] = useState(0)
 	//tabla que recepciona los parches elegidos
+	const [eligechicotes, setEligeChicotes] = useState(false);
 	const [open, setOpen] = useState(false);
 	const [inputValue, setInputValue] = useState('');
+	const [inputValue2, setInputValue2] = useState('');
 	const inputRef = useRef(null); // Referencia al campo de texto
-	const [valorparche, setValorParche] = useState(0)
+	const inputRef2 = useRef(null); // Referencia al segundo campo de texto
+	const botonRef = useRef(null); // Referencia al botón
 	const [medidaparche, setMedidaParche] = useState('')
+	const [valorparche, setValorParche] = useState(0)
+
 	const [selectionModel, setSelectionModel] = useState([]);
 	const [columns, setColumns] = useState([]);
+
 	const [colchicotes, setColChicotes] = useState([])
-	 const [rowschicotes, setRowsChicotes] = useState([])
+	const [rowschicotes, setRowsChicotes] = useState([])
+	const [sumaChicotes, setSumaChicotes] = useState(0);
+	
 	const [colparches, setColParches] = useState([])
 	const [rowsparches, setRowsParches] = useState([])
 	const [sumaParches, setSumaParches] = useState(0);
-	  const apiRef = useGridApiRef();
 
+	const [colvarios, setColVarios] = useState([ { field: 'id', headerName: 'id', width: 150 },
+  { field: 'cantvarios', headerName: 'Cantidad', width: 110 }, { field: 'impvarios', headerName: 'Importe', width: 110 }])
+	const [rowsvarios, setRowsVarios] = useState([])
+	const [sumavarios, setSumaVarios] = useState(0);
 
-	  const handleCellKeyDown = (params, event) => {
-		if (event.key === 'Enter') {
-		  event.preventDefault(); // Evita el comportamiento predeterminado de avanzar hacia abajo
-	
-		  const { id, field } = params;
-			setCellFocus(5, 'medchicote');
-		//   if (id === 0 && field === 'medchicote') {
-		// 	// Mover el foco a la celda [1, 'medchicote']
-		// 	apiRef.current.setCellFocus(1, 'medchicote');
-		//   } else if (id === 1 && field === 'medchicote') {
-		// 	// Mover el foco a la celda [1, 'cantchicote']
-		// 	apiRef.current.setCellFocus(1, 'cantchicote');
-		//   }
-		}
-	  };
+	const apiRef = useGridApiRef();
+	const apiRefVarios = useGridApiRef();
 
-	
 	async function dataFetch() {
 		const data = await LeeParamRep();
 		setValorA(data[0].REPValorA)
@@ -70,7 +69,7 @@ export default function Reparacion() {
 		columnsFetch();
 		columnsParches();
 		columnsChicotes();
-		setRowsChicotes(Array.from({ length: 20 }, (_, i) => ({ id: i, cantchicote: '', medchicote: '', impchicote: '', imptchicote: '' })));
+		setRowsVarios(Array.from({ length: 20 }, (_, i) => ({ id: i, cantvarios: '', impvarios: ''})));
 	}
 
 useEffect(() => {
@@ -86,9 +85,11 @@ const handleCellClick = (params) => {
 	setInputValue('');
 	setSelectionModel([]); 
 	params.field !== 'id' && setOpen(true);
+
 };
 
-const handleClose = () => {
+	const handleClose = () => {
+		setEligeChicotes(false)
 		setOpen(false);
 	};
 
@@ -102,20 +103,44 @@ async function columnsChicotes() {
 }
 
 	const handleConfirm = () => {
-		const newId = rowsparches.length + 1; // Generar un nuevo ID basado en el número de filas
-		const newRow = { id: newId, 
-			cantparche: Number(inputValue), 
-			medparche: medidaparche, 
-			impparche: (valorparche),
-			imptparche: (Number(inputValue) * valorparche)  };
+		if (eligechicotes) { 
+			const newId = rowschicotes.length + 1;
+				const newRow = {
+				id: newId,
+				cantchicote: Number(inputValue),
+				medchicote: Number(inputValue2),
+				impchicote: (10),
+				imptchicote: (Number(inputValue) * 10)
+				};
+			setRowsChicotes((prevRows) => [...prevRows, newRow]); // Agregar la nueva fila
+			setSumaChicotes(sumaChicotes + newRow.imptchicote)
+			setInputValue('')
+			setInputValue2('')
+			inputRef.current.focus(); 
 
-		setRowsParches((prevRows) => [...prevRows, newRow]); // Agregar la nueva fila
-		setSumaParches(sumaParches + newRow.imptparche)
-		setOpen(false);
+
+
+		} else {
+			const newId = rowsparches.length + 1; // Generar un nuevo ID basado en el número de filas
+			const newRow = {
+				id: newId,
+				cantparche: Number(inputValue),
+				medparche: medidaparche,
+				impparche: (valorparche),
+				imptparche: (Number(inputValue) * valorparche)
+			};
+
+			setRowsParches((prevRows) => [...prevRows, newRow]); // Agregar la nueva fila
+			setSumaParches(sumaParches + newRow.imptparche)
+			setOpen(false);
+		}
+
 	};
-	const handleKeyDown = (event) => {
+	const handleKeyDown = (event, nextElementRef) => {
 		if (event.key === 'Enter') {
-			handleConfirm(); // Confirmar cuando se presiona Enter
+			if (eligechicotes) { nextElementRef.current.focus() }
+				else
+					handleConfirm(); // Confirmar cuando se presiona Enter
 		}
 	};
 	useEffect(() => {
@@ -129,6 +154,13 @@ async function columnsChicotes() {
 		}
 	}, [open]);
 
+
+	const cargachicotes = () => {
+		setEligeChicotes(true);
+		setOpen(true);
+	}
+
+
 	function CustomToolbar() {
 		return (
 			<GridToolbarContainer >
@@ -138,12 +170,51 @@ async function columnsChicotes() {
 					size="small"
 					label="Total"
 					value={sumaParches}
-					className={EstTF.tfcurrency}
+					className={estilo.tfcurrency}
 				></CurrencyTextField>
 			
 			</GridToolbarContainer>
 		);
 	}
+	
+	function CustomToolbarChicotes() {
+		return (
+			<GridToolbarContainer >
+		
+				<CurrencyTextField
+					id="Total"
+					size="small"
+					label="Total"
+					value={sumaChicotes}
+					className={estilo.tfcurrency}
+				></CurrencyTextField>
+			
+				<Button className={estilo.botonabredialogo} onClick={() => cargachicotes()}>Chicotes</Button>
+			</GridToolbarContainer>
+		);
+	}
+
+
+
+	const handleKeyDownVs = (params, event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Evita el comportamiento predeterminado de avanzar hacia abajo
+
+      const columnIndex = params.field; // Índice de la columna actual
+      const nextRowId = params.id; // ID de la fila actual
+
+      // Obtener el elemento DOM de la celda actual
+      const currentCell = apiRefVarios.current.getCellElement(nextRowId, columnIndex);
+      
+      if (currentCell) {
+        // Mover el foco al siguiente elemento DOM (simula "Tab")
+        const nextCell = currentCell.nextElementSibling;
+        if (nextCell) {
+          nextCell.focus();
+        }
+      }
+    }
+  };
 	return (
 		<Box
 			sx={{
@@ -154,8 +225,9 @@ async function columnsChicotes() {
 				padding: 5,
 			}}
 		>
+			<Grid container >
 		{rows !== undefined && columns !== undefined &&
-				<div style={{ height: 400, width: '75%' }}>
+				<div style={{ height: 435, width: '74%', paddingBottom:5 }}>
 					<DataGrid
 						rows={rows}
 						columns={columns}
@@ -183,8 +255,12 @@ async function columnsChicotes() {
 							}}
 					/>
 				</div>}
-		<br/>
-<Grid container spacing={2}>
+		
+	</Grid>
+			<div style={{ height: 150, width: '100%', paddingTop: 15 }}>
+	
+			<Grid container spacing={2} >
+				
 				<div style={{ height: 200, width: '21%' }}>
 						<DataGrid
 							rows={rowsparches}
@@ -200,8 +276,10 @@ async function columnsChicotes() {
 						/>
 						</div>
 						<br/><br/>
-						<div style={{ height: 200, width: '21%' }}>
-							<DataGrid
+					
+				<div style={{ height: 200, width: '21%', paddingLeft: 10}}>
+			
+						<DataGrid
 								apiRef={apiRef}
 								rows={rowschicotes}
 								columns={colchicotes}
@@ -213,31 +291,68 @@ async function columnsChicotes() {
 								showCellVerticalBorder
 								showCellHorizontalBorder
 								editMode="cell"
-								onCellKeyDown={handleCellKeyDown}
-						/>
+								slots={{
+									toolbar: CustomToolbarChicotes,
+							}}/>
 					</div>
-					</Grid>
+
+							
+				<div style={{ height: 200, width: '21%', paddingLeft: 10}}>
+			
+						<DataGrid
+							apiRef={apiRefVarios}
+							rows={rowsvarios}
+							columns={colvarios}
+							pageSize={10}
+							rowsPerPageOptions={[10]}
+							hideFooter
+							rowHeight={20}
+							columnHeaderHeight={25}
+							showCellVerticalBorder
+							showCellHorizontalBorder
+							editMode="cell"
+							onCellKeyDown={handleKeyDownVs} 
+								slots={{
+									toolbar: CustomToolbarChicotes,
+							}}/>
+					</div>
+			</Grid>
+			</div>
 	 {/* Diálogo para ingresar la cantidad */}
-	 <Dialog open={open} onClose={handleClose}>
+	<Dialog open={open} onClose={handleClose}>
 				<DialogTitle>Ingrese la cantidad</DialogTitle>
 				<DialogContent>
 					<TextField
-							inputRef={inputRef} // Asignar la referencia al campo de texto
-				autoFocus
-				margin="dense"
-				label="Cantidad"
-				type="number"
-				fullWidth
-				value={inputValue}
-				onChange={(e) => setInputValue(e.target.value)}
-				onKeyDown={handleKeyDown} // Escuchar la tecla Enter
-					/>
+						inputRef={inputRef} // Asignar la referencia al campo de texto
+						autoFocus
+						margin="dense"
+						label="Cantidad"
+						type="number"
+						fullWidth
+						value={inputValue}
+						onChange={(e) => setInputValue(e.target.value)}
+						onKeyDown={(e) => handleKeyDown(e, inputRef2)}
+							/>
+					{eligechicotes &&
+						<TextField
+							inputRef={inputRef2} // Asignar la referencia al campo de texto
+							autoFocus
+							margin="dense"
+							label="Largo"
+							type="number"
+							fullWidth
+							value={inputValue2}
+							onChange={(e) => setInputValue2(e.target.value)}
+							onKeyDown={(e) => handleKeyDown(e, botonRef)}
+							/>}
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={handleClose}>Cancelar</Button>
-					<Button onClick={handleConfirm}>Confirmar</Button>
+					<Button ref={botonRef} onClick={handleConfirm}>Confirmar</Button>
+					<Button onClick={handleClose}>Cerrar</Button>
 				</DialogActions>
 			</Dialog>
+
+			
 		</Box>
 	);
 }
