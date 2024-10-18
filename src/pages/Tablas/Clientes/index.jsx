@@ -1,5 +1,3 @@
-import React from "react";
-
 import { ClientesLeer } from "./ClientesLeer.jsx";
 import { llenarcolumns } from "./columns.jsx";
 import { useEffect } from "react";

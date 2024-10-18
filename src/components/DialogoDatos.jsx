@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { ValidatedTextField } from "../hooks/useValidTextField";
 import { Grid } from "@mui/material";
@@ -12,9 +12,8 @@ export function DialogoDatos(props) {
 	const { formdatos, setFormdatos } = useContext(TablasContexto);
 	const submitButtonRef = useRef(null);
 	const { datoborrado, setDatoborrado } = useContext(TablasContexto);
-	const [selectedOption, setSelectedOption] = React.useState("");
-	const { open, handleClose, columns, nombrebtn, paramsbor, titulodial } =
-		props;
+	const [selectedOption, setSelectedOption] = useState("");
+	const { open, handleClose, columns, nombrebtn, paramsbor, titulodial } = props;
 
 	const [error, setError] = useState({
 		error: false,
@@ -80,7 +79,7 @@ export function DialogoDatos(props) {
 											key={index}
 											id={columns[index].field}
 											label={columns[index].headerName}
-											variant="outlined"
+											// variant = "outlined"
 											defaultValue={paramsbor[columns[index].field]}
 											required={columns[index].required}
 											onChange={handleSelectChange}
@@ -104,7 +103,7 @@ export function DialogoDatos(props) {
 							// variant="outlined"
 							// ref={submitButtonRef}
 							className={estilos.botonfincargadatos}
-							//  sx={{ mt: 2 }}
+						//  sx={{ mt: 2 }}
 						>
 							{nombrebtn}
 						</Button>
@@ -112,7 +111,7 @@ export function DialogoDatos(props) {
 							onClick={handleClose}
 							variant="outlined"
 							className={estilos.botoncierracargadatos}
-							// sx={{ mt: 2 }}
+						// sx={{ mt: 2 }}
 						>
 							Cerrar
 						</Button>
@@ -123,5 +122,4 @@ export function DialogoDatos(props) {
 	);
 }
 
-{
-}
+
