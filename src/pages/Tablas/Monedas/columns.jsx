@@ -47,7 +47,7 @@ function columnsFill() {
 				),
 				headerClassName: estilotabla.encabcolumns,
 			},
-			,
+
 			{
 				headerName: "Signo",
 				field: "StkMonedasSigno",

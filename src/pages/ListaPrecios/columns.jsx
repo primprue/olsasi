@@ -66,10 +66,11 @@ function columnsFill() {
 				maxLength: 9,
 				align: "right", //alinea el contenido
 				headerAlign: "center", //alinea el encabezado
+				textAlign: "right",
 				xs: 4,
 				pattern: /^[0-9]{0,6}.[0-9]{0,2}$/,
 				renderCell: (params) => (
-					<div>{params.value && `$ ${params.value}`} </div>
+					<div>{params.value && `$ ${Number(params.value).toFixed(2)}`}{" "} </div>
 				),
 			},
 			{
@@ -80,12 +81,12 @@ function columnsFill() {
 				type: "text",
 				//header ClassName: "encabcolumns",
 				maxLength: 9,
-				align: "right", //alinea el contenido
+				textAlign: "right", //alinea el contenido
 				headerAlign: "center", //alinea el encabezado
 				xs: 4,
 				pattern: /^[0-9]{0,6}.[0-9]{0,2}$/,
 				renderCell: (params) => (
-					<div>{params.value && `$ ${params.value}`} </div>
+					<div>{params.value && `$ ${Number(params.value).toFixed(2)}`}{" "} </div>
 				),
 			},
 			{
@@ -99,10 +100,10 @@ function columnsFill() {
 				xs: 4,
 				backgroundColor: "#f44336",
 
-				align: "right", //alinea el contenido
+				textAlign: "right", //alinea el contenido
 				headerAlign: "center", //alinea el encabezado
 				renderCell: (params) => (
-					<div>{params.value && `$ ${params.value}`} </div>
+					<div>{params.value && `$ ${Number(params.value).toFixed(2)}`}{" "} </div>
 				),
 			},
 			{
