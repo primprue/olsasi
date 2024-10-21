@@ -13,7 +13,7 @@ function columnsFill() {
 				headerName: 'Cant',
 				type: 'number',
 				width: 10,
-				editable: true,
+				// editable: true,
 				textAlign: "right",
 				renderCell: (params) => (
 					<div style={{ textAlign: "right" }}>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Box, TextField } from "@mui/material";
 import {
 	DataGrid,
 	esES,
@@ -23,16 +22,7 @@ import FilaAnexo from "../FilaAnexo/FilaAnexo";
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant.jsx";
 
-// export function CustomFooterStatusComponent(suma) {
-// 	const sumar = suma.suma;
-// 	return (
-// 		<Box sx={{ p: 1, display: "flex" }}>
-// 			<TextField value={sumar}></TextField>
 
-// 			{/* Status {props.status} */}
-// 		</Box>
-// 	);
-// }
 export default function TablaPresup(props) {
 	const { state } = useContext(PresupPant);
 	const { datosrenglon, setDatosRenglon } = useContext(PresupPant);
@@ -59,15 +49,11 @@ export default function TablaPresup(props) {
 		columnsFetch();
 	}, [datosrenglon]); // eslint-disable-line react-hooks/exhaustive-deps
 
-	// const handleDeleteClick = (id: GridRowId) => () => {
-	// 	setRows(rows.filter((row) => row.id !== id));
-	// };
+
 	function CustomToolbar() {
 		return (
 			<GridToolbarContainer className={estilotabla.tablapresupuestoslot}>
-				{/* <GridToolbarColumnsButton /> */}
-				{/* <GridToolbarFilterButton /> */}
-				{/* <GridToolbarDensitySelector /> */}
+
 				{state.renglonanexo.length !== 0 && <h3>Tiene Anexos</h3>}
 				<CurrencyTextField
 					id="Total"

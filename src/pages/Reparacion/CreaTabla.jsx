@@ -26,20 +26,19 @@ export function CreaTabla(valora, valorb) {
                 showCellVerticalBorder: true,
                 textAlign: "right",
                 type: 'number',
-                // renderCell: (params) => (
-                //     <div style={{
-                //         textAlign: "right",
-                //         backgroundColor: 'rgba(157, 255, 118, 0.49)',
-                //         // backgroundColor: '#5787e1a7',
-                //         color: '#1a3e72',
-                //         fontWeight: 'bold',
-                //         width: '100%',
-                //         height: "100%",
+                renderCell: (params) => (
+                    <div style={{
+                        textAlign: "right",
+                        backgroundColor: '#5787e1a7',
+                        color: '#1a3e72',
+                        fontWeight: 'bold',
+                        width: '100%',
+                        height: "100%",
 
-                //     }}>
-                //         {params.value}
-                //     </div>
-                // ),
+                    }}>
+                        {params.value}
+                    </div>
+                ),
             }, // Columna de filas
             ...columnTitles.map((num) => ({
                 renderCell: (params) => (
@@ -61,7 +60,7 @@ export function CreaTabla(valora, valorb) {
                 sortable: false,
                 showCellVerticalBorder: true,
 
-                // headerClassName: 'super-app-theme--header',
+                headerClassName: 'super-app-theme--header',
             }))
         ];
         let fila = 0

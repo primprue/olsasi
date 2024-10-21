@@ -3,9 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, gridClasses, TextField } from "@mui/material";
 import {
 	DataGrid,
-	esES,
 	GridToolbarContainer,
-	useGridApiRef,
 } from "@mui/x-data-grid";
 
 import { LeeParamRep } from "./LeeParamRep.jsx";
@@ -22,6 +20,7 @@ export default function Reparacion() {
 	const { setValor } = useContext(StaticContexto);
 	const [valora, setValorA] = useState(0)
 	const [valorb, setValorB] = useState(0)
+	const [rowSelectionModel, setRowSelectionModel] = useState([]);
 	//tabla que recepciona los parches elegidos
 	const [labeldecarga, setLabeldecarga] = useState('Largo')
 	const [titulodialogo, setTituloDialogo] = useState('')
@@ -52,8 +51,7 @@ export default function Reparacion() {
 	const [rowsvarios, setRowsVarios] = useState([])
 	const [sumaVarios, setSumaVarios] = useState(0);
 
-	const apiRef = useGridApiRef();
-	const apiRefVarios = useGridApiRef();
+
 
 	async function datosParches() {
 		const data = await LeeParamRep();
@@ -137,8 +135,6 @@ export default function Reparacion() {
 
 				const newId = rowsvarios.length + 1;
 				const imptvarios1 = Number(inputValue) * Number(inputValue2)
-				console.log('Number(inputValue2))', Number(inputValue2))
-				console.log('typeof Number(inputValue2))', typeof Number(inputValue2))
 				const newRow = {
 					id: newId,
 					cantvarios: Number(inputValue),
@@ -178,6 +174,7 @@ export default function Reparacion() {
 				handleConfirm(); // Confirmar cuando se presiona Enter
 		}
 	};
+
 	useEffect(() => {
 		if (open) {
 			const focusInput = setInterval(() => {
@@ -204,12 +201,24 @@ export default function Reparacion() {
 		setTituloDialogo('Ingreso de Varios')
 		setOpen(true);
 	}
+	const borrafila = () => {
 
-	const borrafila = (params) => {
-		console.log('params ', params)
+		console.log('DataGrid.name  ', DataGrid.name)
+		let filtrados = []
+		if (rowSelectionModel.length !== 0) {
 
+			rowSelectionModel.map((row) => {
+				console.log('row', row)
+				setRowsVarios(rowsvarios.filter((rows) => rows.id !== row))
+				filtrados = rowsvarios.filter((rows) => rows.id !== row)
+			}
+			);
+		}
+		if (filtrados.length !== 0) {
+			const totalAmount = filtrados.reduce((sum, row) => sum + row.imptvarios, 0);
+			setSumaVarios(totalAmount)
+		}
 	}
-
 
 	function CustomToolbar() {
 		return (
@@ -263,32 +272,33 @@ export default function Reparacion() {
 			</GridToolbarContainer>
 		);
 	}
+
 	return (
 		<Box
+			// sx={{
+			// 	width: "100%",
+			// 	align: "center",
+			// 	justifycontent: "center",
+			// 	boxShadow: 5,
+			// 	padding: 5,
+
+			// 	height: 300,
+			// 	[`.${gridClasses.cell}.cold`]: {
+			// 		backgroundColor: '#b9d5ff91',
+			// 		color: '#1a3e72',
+			// 	},
+			// 	[`.${gridClasses.cell}.hot`]: {
+			// 		backgroundColor: '#ff943975',
+			// 		color: '#1a3e72',
+			// 	},
+			// }}
 			sx={{
 				width: "100%",
 				align: "center",
 				justifycontent: "center",
 				boxShadow: 5,
 				padding: 5,
-
-				height: 300,
-				[`.${gridClasses.cell}.cold`]: {
-					backgroundColor: '#b9d5ff91',
-					color: '#1a3e72',
-				},
-				[`.${gridClasses.cell}.hot`]: {
-					backgroundColor: '#ff943975',
-					color: '#1a3e72',
-				},
 			}}
-		// sx={{
-		// 	width: "100%",
-		// 	align: "center",
-		// 	justifycontent: "center",
-		// 	boxShadow: 5,
-		// 	padding: 5,
-		// }}
 		>
 			<Grid container >
 				{rowsparches !== undefined && columnsparches !== undefined &&
@@ -308,23 +318,17 @@ export default function Reparacion() {
 							columnHeaderHeight={25}
 							disableSelectionOnClick
 							disableColumnMenu
-							// getRowClassName={() => `super-app-theme--Open`} //son las propiedades de las filas
+							getRowClassName={() => `super-app-theme--Open`} //son las propiedades de las filas
 							rowHeight={20}
-							// sx={{
-							// 	'& .MuiDataGrid-columnHeaders': {
-							// 		backgroundColor: '#5787e1a7', // Color del header
-							// 	},
-							// 	'& .MuiDataGrid-columnHeaderTitle': {
-							// 		fontWeight: 'bold', // Negrita para el texto del header
-							// 	}
-							// }}
-							getCellClassName={(params) => {
-								if (params.field === 'id' || params.value == null) {
-									return '';
+							sx={{
+								'& .MuiDataGrid-columnHeaders': {
+									backgroundColor: '#5787e1a7', // Color del header
+								},
+								'& .MuiDataGrid-columnHeaderTitle': {
+									fontWeight: 'bold', // Negrita para el texto del header
 								}
-								{ console.log('params', params) }
-								return params.field === 'id' ? 'hot' : 'cold';
 							}}
+
 						/>
 					</div>}
 
@@ -352,9 +356,7 @@ export default function Reparacion() {
 					<br /><br />
 
 					<div style={{ height: 200, width: '21%', paddingLeft: 10 }}>
-
 						<DataGrid
-							apiRef={apiRef}
 							rows={rowschicotes}
 							columns={colchicotes}
 							pageSize={10}
@@ -364,18 +366,18 @@ export default function Reparacion() {
 							columnHeaderHeight={25}
 							showCellVerticalBorder
 							showCellHorizontalBorder
-							editMode="cell"
+							onCellKeyDown={borrafila}
+							onRowSelectionModelChange={(newRowSelectionModel) => {
+								setRowSelectionModel(newRowSelectionModel);
+							}}
 							slots={{
 								toolbar: CustomToolbarChicotes,
 							}} />
 					</div>
 
-
 					<div style={{ height: 200, width: '21%', paddingLeft: 10 }}>
-
 						<DataGrid
-							apiRef={apiRefVarios}
-							// localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+							name="tablavarios"
 							rows={rowsvarios}
 							columns={colvarios}
 							pageSize={10}
@@ -385,8 +387,10 @@ export default function Reparacion() {
 							columnHeaderHeight={25}
 							showCellVerticalBorder
 							showCellHorizontalBorder
-							editMode="row"
-							onCellDoubleClick={borrafila}
+							onCellKeyDown={borrafila}
+							onRowSelectionModelChange={(newRowSelectionModel) => {
+								setRowSelectionModel(newRowSelectionModel);
+							}}
 							slots={{
 								toolbar: CustomToolbarVarios,
 							}} />
