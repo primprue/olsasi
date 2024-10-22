@@ -6,20 +6,23 @@ import {
 	GridToolbarContainer,
 } from "@mui/x-data-grid";
 
-import { LeeParamRep } from "./LeeParamRep.jsx";
+// import { LeeParamRep } from "./LeeParamRep.jsx";
 import { useContext } from "react";
 import StaticContexto from "../../context/StaticContext.jsx";
-
+import { presupcalculador } from "../Presupuesto/PresupCalculador.jsx";
 import estilo from "../../Styles/Reparacion.module.css";
+import { LeeParamRep } from "./LeeParamRep.jsx";
+import { RepLeeValorHs } from "./RepLeeValorHs.jsx";
 import { CreaTabla } from "./CreaTabla.jsx";
+
 import { CurrencyTextField } from "../../hooks/useCurrencyTextField.jsx";
 import { llenarcolumnsparcheleg } from "./columparcheleg.jsx";
 import { llenarcolumnschicotes } from "./columchicotes.jsx";
 import { llenarcolumnsvarios } from "./columvarios.jsx";
+import { llenarcolumnsmot1 } from "./colummot1.jsx";
 export default function Reparacion() {
 	const { setValor } = useContext(StaticContexto);
 	const [valora, setValorA] = useState(0)
-	const [valorb, setValorB] = useState(0)
 	const [rowSelectionModel, setRowSelectionModel] = useState([]);
 	//tabla que recepciona los parches elegidos
 	const [labeldecarga, setLabeldecarga] = useState('Largo')
@@ -42,7 +45,8 @@ export default function Reparacion() {
 	const [colchicotes, setColChicotes] = useState([])
 	const [rowschicotes, setRowsChicotes] = useState([])
 	const [sumaChicotes, setSumaChicotes] = useState(0);
-
+	const [valormtChicotes, setValormtChicotes] = useState(0);
+	// let valormtChicotes = 0
 	const [colparcheleg, setColParcheleg] = useState([])
 	const [rowsparcheleg, setRowsParcheleg] = useState([])
 	const [sumaParcheleg, setSumaParcheleg] = useState(0);
@@ -51,16 +55,21 @@ export default function Reparacion() {
 	const [rowsvarios, setRowsVarios] = useState([])
 	const [sumaVarios, setSumaVarios] = useState(0);
 
+	const [eligeMot1, setEligeMot1] = useState(false);
+	const [colMot1, setColMot1] = useState([])
+	const [rowsMot1, setRowsMot1] = useState([])
+	const [sumaMot1, setSumaMot1] = useState(0);
+	const [valorhoramot1, setValorHoraMot1] = useState(0);
+	const [valorhoramot2, setValorHoraMot2] = useState(0);
 
 
 	async function datosParches() {
 		const data = await LeeParamRep();
-		setValorA(data[0].REPValorA)
-		setValorB(data[0].REPValorB)
+		setValorA(data[0].ValorMCC)
 	}
 
 	async function columnsParches() {
-		const data = await CreaTabla(valora, valorb);
+		const data = await CreaTabla(valora);
 		setRowsParches(data[0])
 		setColumnsParches(data[1])
 	}
@@ -78,15 +87,50 @@ export default function Reparacion() {
 		var col = await llenarcolumnsvarios();
 		setColVarios(() => col);
 	}
+	async function columnsMOT1() {
+		var col = await llenarcolumnsmot1();
+		setColMot1(() => col);
+	}
+
+
 	async function initialFetch() {
 		datosParches();
 		columnsParches();
 		columnsParcheleg();
 		columnsChicotes();
 		columnsVarios();
+		columnsMOT1();
 		//setRowsVarios(Array.from({ length: 20 }, (_, i) => ({ id: i, cantvarios: '', impvarios: '' })));
 	}
+	var dcalculo = [
+		{
+			StkRubroAbr: '',
+			minmay: 'mn',
+			cantidad: 5,
+			largo: 1.5,
+			ancho: 0,
+			tipoconf: '',
+			tipoojale: '',
+			ivasn: 'CIVA',
+		},
+	];
 
+	//calcula el metro de chicote según el cálculo en el anexo 
+	async function CalculaChicotes() {
+		var anexoelegido = "CHICOTE P/METRO";
+		var datoscalculos = JSON.stringify(dcalculo);
+		const datosrenglon1 = await presupcalculador(
+			"",
+			datoscalculos,
+			anexoelegido
+		);
+		setValormtChicotes(datosrenglon1[0])
+	}
+	async function BuscaValorHora() {
+		const datosrenglon1 = await RepLeeValorHs();
+		setValorHoraMot1(datosrenglon1[0])
+		setValorHoraMot2(datosrenglon1[1])
+	}
 	useEffect(() => {
 		initialFetch();
 		setValor("Reparacion");
@@ -120,8 +164,8 @@ export default function Reparacion() {
 					id: newId,
 					cantchicote: Number(inputValue),
 					medchicote: Number(inputValue2),
-					impchicote: (10),
-					imptchicote: (Number(inputValue) * 10)
+					impchicote: (valormtChicotes * Number(inputValue2)),
+					imptchicote: (Number(inputValue) * (valormtChicotes * Number(inputValue2)))
 				};
 				setRowsChicotes((prevRows) => [...prevRows, newRow]); // Agregar la nueva fila
 				setSumaChicotes(sumaChicotes + newRow.imptchicote)
@@ -144,6 +188,29 @@ export default function Reparacion() {
 
 				setRowsVarios((prevRows) => [...prevRows, newRow]); // Agregar la nueva fila
 				setSumaVarios(sumaVarios + newRow.imptvarios)
+				setInputValue('')
+				setInputValue2('')
+				inputRef.current.focus();
+			}
+
+
+			if (eligeMot1) {
+				console.log('valorhoramot1', valorhoramot1)
+				let mindesde = ((Math.trunc(Number(inputValue))) * 60) + (((Number(inputValue)) - Math.trunc(Number(inputValue))) * 100)
+				let minhasta = ((Math.trunc(Number(inputValue2))) * 60) + (((Number(inputValue2)) - Math.trunc(Number(inputValue2))) * 100)
+				console.log('mindesde', mindesde)
+
+				const newId = rowsMot1.length + 1;
+				const impMot1 = (minhasta - mindesde) * (valorhoramot1 / 60)
+				const newRow = {
+					id: newId,
+					mot1desde: Number(inputValue),
+					mot1hasta: Number(inputValue2),
+					mot1importe: impMot1
+				};
+
+				setRowsMot1((prevRows) => [...prevRows, newRow]); // Agregar la nueva fila
+				setSumaMot1(sumaMot1 + newRow.mot1importe)
 				setInputValue('')
 				setInputValue2('')
 				inputRef.current.focus();
@@ -188,6 +255,7 @@ export default function Reparacion() {
 
 
 	const cargachicotes = () => {
+		CalculaChicotes()
 		setEligeChicotes(true);
 		setPideSegundoValor(true)
 		setLabeldecarga('Largo')
@@ -201,14 +269,19 @@ export default function Reparacion() {
 		setTituloDialogo('Ingreso de Varios')
 		setOpen(true);
 	}
+	const cargaMot1 = () => {
+		BuscaValorHora()
+		setEligeMot1(true);
+		setPideSegundoValor(true)
+		setLabeldecarga('Importe')
+		setTituloDialogo('Ingreso MOT 1Pers')
+		setOpen(true);
+	}
 	const borrafila = () => {
-
-		console.log('DataGrid.name  ', DataGrid.name)
 		let filtrados = []
 		if (rowSelectionModel.length !== 0) {
 
 			rowSelectionModel.map((row) => {
-				console.log('row', row)
 				setRowsVarios(rowsvarios.filter((rows) => rows.id !== row))
 				filtrados = rowsvarios.filter((rows) => rows.id !== row)
 			}
@@ -237,6 +310,7 @@ export default function Reparacion() {
 	}
 
 	function CustomToolbarChicotes() {
+
 		return (
 			<GridToolbarContainer >
 
@@ -269,6 +343,23 @@ export default function Reparacion() {
 				></CurrencyTextField>
 
 				<Button className={estilo.botonabredialogo} onClick={() => cargavarios()}>Varios</Button>
+			</GridToolbarContainer>
+		);
+	}
+	function CustomToolbarMot1() {
+		return (
+			<GridToolbarContainer >
+
+				<CurrencyTextField
+					id="Total"
+					size="small"
+					label="Total"
+					value={sumaMot1}
+					className={estilo.tfcurrency}
+					tyle={{ textAlign: "right" }}
+				></CurrencyTextField>
+
+				<Button className={estilo.botonabredialogo} onClick={() => cargaMot1()}>MOT 1Pers</Button>
 			</GridToolbarContainer>
 		);
 	}
@@ -357,6 +448,7 @@ export default function Reparacion() {
 
 					<div style={{ height: 200, width: '21%', paddingLeft: 10 }}>
 						<DataGrid
+							id="tablachicotes"
 							rows={rowschicotes}
 							columns={colchicotes}
 							pageSize={10}
@@ -377,7 +469,7 @@ export default function Reparacion() {
 
 					<div style={{ height: 200, width: '21%', paddingLeft: 10 }}>
 						<DataGrid
-							name="tablavarios"
+							id="tablavarios"
 							rows={rowsvarios}
 							columns={colvarios}
 							pageSize={10}
@@ -393,6 +485,26 @@ export default function Reparacion() {
 							}}
 							slots={{
 								toolbar: CustomToolbarVarios,
+							}} />
+					</div>
+					<div style={{ height: 200, width: '21%', paddingLeft: 10 }}>
+						<DataGrid
+							id="horasdesde"
+							rows={rowsMot1}
+							columns={colMot1}
+							pageSize={10}
+							rowsPerPageOptions={[10]}
+							hideFooter
+							rowHeight={20}
+							columnHeaderHeight={25}
+							showCellVerticalBorder
+							showCellHorizontalBorder
+							onCellKeyDown={borrafila}
+							onRowSelectionModelChange={(newRowSelectionModel) => {
+								setRowSelectionModel(newRowSelectionModel);
+							}}
+							slots={{
+								toolbar: CustomToolbarMot1,
 							}} />
 					</div>
 				</Grid>

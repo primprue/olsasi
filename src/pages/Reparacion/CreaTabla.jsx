@@ -2,7 +2,7 @@ import { gridClasses } from '@mui/material';
 import { he } from 'date-fns/locale';
 import React from 'react'
 
-export function CreaTabla(valora, valorb) {
+export function CreaTabla(valora) {
     return new Promise((resolve) => {
         // Definir los títulos de las columnas en múltiplos de 10
         const generateNumbers = (start, end, step) => {
@@ -78,12 +78,16 @@ export function CreaTabla(valora, valorb) {
             colum = 0
             columnTitles.forEach((colNum) => {
                 colum++
-                NroA = 5.00 * colum;
-                NroB = 5.00 * fila;
-                PrimerValor = ((NroA * NroB * valora * valorb) / 100);
-                SegundoValor = (NroA * NroB * valora);
+                NroA = valora / 100 / 100
+                NroB = NroA * fila * 5 * colum * 5
                 ValorParc = 0;
-                ValorParc = ((PrimerValor - SegundoValor) / 10) + (25.00 * valora)
+                ValorParc = NroB
+                // NroA = 5.00 * colum;
+                // NroB = 5.00 * fila;
+                // PrimerValor = ((NroA * NroB * valora * valorb) / 100);
+                // SegundoValor = (NroA * NroB * valora);
+                // ValorParc = 0;
+                // ValorParc = ((PrimerValor - SegundoValor) / 10) + (25.00 * valora)
                 rowData[`${colNum}`] = Math.round(ValorParc, 0); // Valor de la celda
             });
 

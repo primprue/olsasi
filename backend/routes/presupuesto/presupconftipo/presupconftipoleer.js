@@ -11,7 +11,6 @@ conexion.connect(function (err) {
   }
 });
 
-var router = express();
 
 router.get("/", function (req, res, next) {
   //'Select * from StkGrupo '

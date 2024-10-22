@@ -12,10 +12,16 @@ conexion.connect(function (err) {
 });
 
 var datosenvio = []
-var router = express();
+
 router.get('/', (req, res, next) => {
   var q, i = 0
-  var coeficiente = 0, cantidad = 0.00, StkRubroAbrP = '', largo = 0, valorMOTmup = 0.00, impunion = 0.00, impcorte = 0.00, coefMOT = 0.00, veces = 0
+  var coeficiente = 0, cantidad = 0, veces = 0, StkRubroAbrP = '', largo = 0.00, valorMOTmup = 0.00
+  var valorMOTcorte = 0.00, impunion = 0.00, impcorte = 0.00, importeMOTtotal = 0.00
+  var callargo = 0.00, anchoreal = 0.00
+  var detallep = '', ivasn = '', coefMOT = 0.00
+  var detalle = ''
+
+
   q = ['select * from BasePresup.PresupParam'].join(' ')
   conexion.query(q,
     function (err, result) {
@@ -24,8 +30,8 @@ router.get('/', (req, res, next) => {
       }
 
 
-      datosrec = JSON.parse(req.query.datoscalculo)
-      totalreg = datosrec.length
+      let datosrec = JSON.parse(req.query.datoscalculo)
+      let totalreg = datosrec.length
 
       datosrec.map(datos => {
         cantidad = datos.cantidad;
@@ -45,7 +51,7 @@ router.get('/', (req, res, next) => {
         }
 
         //busco el ancho de la tela para calcular medio paño
-        q2 = ['Select StkRubroAncho as anchotela from BaseStock.StkRubro where StkRubro.StkRubroAbr = "' + StkRubroAbrP + '" '].join(' ')
+        let q2 = ['Select StkRubroAncho as anchotela from BaseStock.StkRubro where StkRubro.StkRubroAbr = "' + StkRubroAbrP + '" '].join(' ')
         conexion.query(q2,
           function (err, result2) {
             if (err) {

@@ -13,13 +13,14 @@ conexion.connect(function (err) {
 });
 
 var datosenvio = []
-var router = express();
 router.get('/', (req, res, next) => {
 
   var q, i = 0
   var coeficiente = 0, largoabanico1 = 0, largoabanico = 0, StkRubroAbrP = '', largo = 0.00, ancho = 0.00
   var enteropanios = 0, telacubrecaños = 0.00, altovolado = 0.00, telavolado = 0.00, telatapas = 0.00, paniostapas = 0, telatotal = 0.00, paniosfrente = 0.00
   var minMOT1 = 0.00, minMOT2 = 0.00, minMOT3 = 0.00, minMOT4 = 0.00, minMOT5 = 0.00, minMOT6 = 0.00, minMOTtotal = 0.00
+  var cantbrazos = 0, largobrazo = 0.00, fajabrazo = 0.00, voladosd = 0.00, detallep = '', ivasn = '', coefMOT = 0.00, valorMOTmin = 0.00
+  var MOTarmado = 0.0, detalle = ''
 
 
   q = ['select * from BasePresup.PresupParam'].join(' ')
@@ -29,8 +30,8 @@ router.get('/', (req, res, next) => {
       if (err) {
         console.log(err);
       }
-      datosrec = JSON.parse(req.query.datoscalculo)
-      totalreg = datosrec.length
+      let datosrec = JSON.parse(req.query.datoscalculo)
+      let totalreg = datosrec.length
 
       datosrec.map(datos => {
         cantbrazos = datos.cantbrazos * 1

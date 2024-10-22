@@ -1,6 +1,6 @@
 var express = require('express');
-var router = express.Router();
-var path = require('path');
+// var router = express.Router();
+// var path = require('path');
 var conexion = require('../conexion');
 //var param = require('../parametros')
 
@@ -15,6 +15,7 @@ conexion.connect(function (err) {
 var router = express();
 
 router.get('/', function (req, res, next) {
+    let q1
     q1 = ['select * from BasePresup.PresupParam'].join(' ')
     conexion.query(q1,
         function (err, result) {

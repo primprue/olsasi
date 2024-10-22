@@ -12,15 +12,14 @@ conexion.connect(function (err) {
 });
 
 
-var router = express();
 
 var datosenvio = [];
 router.get("/", function (req, res, next) {
-  tipo = req.query.tipo;
+  let tipo = req.query.tipo;
 
-  var minmay = '', coefgcia = 0, vlrMOT = 0, vlrMAT = 0, TotalValor = 0, ImpUnitario = 0
+  var minmay = '', coefgcia = 0, vlrMOT = 0, vlrMAT = 0, TotalValor = 0, ImpUnitario = 0, ivasn = ''
   var ImprimeSN = ''
-  datosrec = JSON.parse(req.query.datoscalculo);
+  let datosrec = JSON.parse(req.query.datoscalculo);
   datosrec.map(datos => {
     minmay = datos.minmay
     ivasn = datos.ivasn
@@ -28,7 +27,7 @@ router.get("/", function (req, res, next) {
 
   //para sacar el costo de MOT
   //SELECT (PresupConfMinMOT * costoMOT / 60) as CostoMotCon FROM BasePresup.PresupConfTipo, BasePresup.PresupParam where PresupConfTipoDesc ='MORRAL' and PresupConfMinMOT <> 0;
-  q2 = ['select * from BasePresup.PresupParam'].join(' ')
+  let q2 = ['select * from BasePresup.PresupParam'].join(' ')
 
 
   conexion.query(q2,
@@ -78,7 +77,6 @@ router.get("/", function (req, res, next) {
             'where  PresupConfTipoRubro = BaseStock.StkRubro.StkRubroAbr and ' +
             'BaseStock.StkRubro.StkRubroTM = BaseStock.StkMonedas.idStkMonedas and ' +
             'PresupConfTipoDesc = "' + tipo + '"'].join("");
-          console.log('q en presupconftipocalc  ', q)
           conexion.query(q, function (err, result) {
             if (err) {
               console.log(err);

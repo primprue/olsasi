@@ -5,7 +5,7 @@ import MuestraMensaje from "../../components/lib/MuestraMensaje";
 
 export const LeeParamRep = () => {
 	return new Promise((resolve) => {
-		const url = IpServidor + "/reparacionleer";
+		const url = IpServidor + "/repleecob";
 		request
 			.get(url)
 			.set("Content-Type", "application/json")

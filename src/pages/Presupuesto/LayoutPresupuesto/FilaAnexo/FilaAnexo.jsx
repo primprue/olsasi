@@ -186,10 +186,10 @@ export default function FilaAnexo(props) {
 		const updatedRows = rows.map((row) =>
 			row.id === params.id
 				? {
-						...row,
-						importet: params.importea * params.AnexoMedida,
-						AnexoMedida: params.AnexoMedida,
-				  }
+					...row,
+					importet: params.importea * params.AnexoMedida,
+					AnexoMedida: params.AnexoMedida,
+				}
 				: row
 		);
 		setRows(updatedRows);
@@ -265,10 +265,10 @@ export default function FilaAnexo(props) {
 								},
 							}}
 							pageSizeOptions={[10, 10]}
-						
+
 						/>
 
-						
+
 					</div>
 				</Box>
 			</Dialog>
