@@ -11,6 +11,7 @@ export function CurrencyTextField(props) {
 					target: {
 						name: props.name,
 						value: values.value,
+						label: props.label,
 					},
 				});
 			}}

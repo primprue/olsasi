@@ -39,7 +39,7 @@ function columnsFill() {
 				field: 'imptvarios',
 				headerName: 'Importe',
 				type: 'number',
-				width: 140,
+				width: 120,
 				placeholder: "999999,00",
 				textAlign: "right",
 				renderCell: (params) => (

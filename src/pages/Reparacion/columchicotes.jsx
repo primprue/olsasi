@@ -23,8 +23,8 @@ function columnsFill() {
 
 			{
 				field: 'medchicote',
-				headerName: 'Medida',
-				width: 80,
+				headerName: 'Mts',
+				width: 50,
 				type: 'number',
 				textAlign: "right",
 				editable: true,

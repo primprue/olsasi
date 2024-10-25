@@ -1,25 +1,33 @@
 import { useEffect, useRef, useState } from "react";
 
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, gridClasses, TextField } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, gridClasses, Input, TextField } from "@mui/material";
 import {
 	DataGrid,
 	GridToolbarContainer,
 } from "@mui/x-data-grid";
 
-// import { LeeParamRep } from "./LeeParamRep.jsx";
 import { useContext } from "react";
 import StaticContexto from "../../context/StaticContext.jsx";
 import { presupcalculador } from "../Presupuesto/PresupCalculador.jsx";
-import estilo from "../../Styles/Reparacion.module.css";
 import { LeeParamRep } from "./LeeParamRep.jsx";
 import { RepLeeValorHs } from "./RepLeeValorHs.jsx";
 import { CreaTabla } from "./CreaTabla.jsx";
+import { validaMinutos, validaHoras, calculaminutos, convhoraminutos } from "./utilidades.js";
 
-import { CurrencyTextField } from "../../hooks/useCurrencyTextField.jsx";
+import Mensaje from "../../components/lib/Mensaje";
 import { llenarcolumnsparcheleg } from "./columparcheleg.jsx";
 import { llenarcolumnschicotes } from "./columchicotes.jsx";
 import { llenarcolumnsvarios } from "./columvarios.jsx";
 import { llenarcolumnsmot1 } from "./colummot1.jsx";
+import { llenarcolumnsmot2 } from "./colummot2.jsx";
+import CustomDataGrid from "./CustomDataGrid.jsx";
+import CustomToolbarChicotes from "./CustomToolbarChicotes.jsx";
+import CustomToolbarVarios from "./CustomToolbarVarios.jsx";
+import CustomToolbarMot1 from "./CustomToolbarMot1.jsx";
+import CustomToolbarMot2 from "./CustomToolbarMot2.jsx";
+import CustomToolbarParchEleg from "./CustomToolbarParchEleg.jsx";
+import DialogoCarga from "./DialogoCarga.jsx";
+
 export default function Reparacion() {
 	const { setValor } = useContext(StaticContexto);
 	const [valora, setValorA] = useState(0)
@@ -41,7 +49,6 @@ export default function Reparacion() {
 	const [selectionModel, setSelectionModel] = useState([]);
 	const [rowsparches, setRowsParches] = useState()
 	const [columnsparches, setColumnsParches] = useState([]);
-
 	const [colchicotes, setColChicotes] = useState([])
 	const [rowschicotes, setRowsChicotes] = useState([])
 	const [sumaChicotes, setSumaChicotes] = useState(0);
@@ -59,9 +66,19 @@ export default function Reparacion() {
 	const [colMot1, setColMot1] = useState([])
 	const [rowsMot1, setRowsMot1] = useState([])
 	const [sumaMot1, setSumaMot1] = useState(0);
+	const [thsMot1, setTHsMot1] = useState(0);
+	const [tminMot1, setTMinMot1] = useState(0);
+
+	const [eligeMot2, setEligeMot2] = useState(false);
+	const [colMot2, setColMot2] = useState([])
+	const [rowsMot2, setRowsMot2] = useState([])
+	const [sumaMot2, setSumaMot2] = useState(0);
+	const [thsMot2, setTHsMot2] = useState(0);
+	const [tminMot2, setTMinMot2] = useState(0);
+
+
 	const [valorhoramot1, setValorHoraMot1] = useState(0);
 	const [valorhoramot2, setValorHoraMot2] = useState(0);
-
 
 	async function datosParches() {
 		const data = await LeeParamRep();
@@ -92,6 +109,10 @@ export default function Reparacion() {
 		setColMot1(() => col);
 	}
 
+	async function columnsMOT2() {
+		var col = await llenarcolumnsmot2();
+		setColMot2(() => col);
+	}
 
 	async function initialFetch() {
 		datosParches();
@@ -100,6 +121,7 @@ export default function Reparacion() {
 		columnsChicotes();
 		columnsVarios();
 		columnsMOT1();
+		columnsMOT2();
 		//setRowsVarios(Array.from({ length: 20 }, (_, i) => ({ id: i, cantvarios: '', impvarios: '' })));
 	}
 	var dcalculo = [
@@ -151,6 +173,8 @@ export default function Reparacion() {
 	const handleClose = () => {
 		setEligeChicotes(false)
 		setEligeVarios(false)
+		setEligeMot1(false)
+		setEligeMot2(false)
 		setOpen(false);
 	};
 
@@ -169,14 +193,10 @@ export default function Reparacion() {
 				};
 				setRowsChicotes((prevRows) => [...prevRows, newRow]); // Agregar la nueva fila
 				setSumaChicotes(sumaChicotes + newRow.imptchicote)
-				setInputValue('')
-				setInputValue2('')
-				inputRef.current.focus();
+
 			}
 
-
 			if (eligevarios) {
-
 				const newId = rowsvarios.length + 1;
 				const imptvarios1 = Number(inputValue) * Number(inputValue2)
 				const newRow = {
@@ -188,50 +208,124 @@ export default function Reparacion() {
 
 				setRowsVarios((prevRows) => [...prevRows, newRow]); // Agregar la nueva fila
 				setSumaVarios(sumaVarios + newRow.imptvarios)
-				setInputValue('')
-				setInputValue2('')
-				inputRef.current.focus();
-			}
 
+			}
 
 			if (eligeMot1) {
-				console.log('valorhoramot1', valorhoramot1)
-				let mindesde = ((Math.trunc(Number(inputValue))) * 60) + (((Number(inputValue)) - Math.trunc(Number(inputValue))) * 100)
-				let minhasta = ((Math.trunc(Number(inputValue2))) * 60) + (((Number(inputValue2)) - Math.trunc(Number(inputValue2))) * 100)
-				console.log('mindesde', mindesde)
+				let valorcorrecto = true
+				let mincarg = calculaminutos(Number(inputValue2)) - calculaminutos(Number(inputValue))
+				if (!validaMinutos(Number(inputValue))) {
+					Mensaje("error", "Los minutos no pueden ser mayor a en desde 59")
+					valorcorrecto = false
+				}
+				if (mincarg < 0) {
+					Mensaje("error", "La hora desde debe ser menor a hasta")
+					valorcorrecto = false
+				}
+				if (!validaHoras(Number(inputValue))) {
+					Mensaje("error", `El valor es incorrecto en horas desde ${inputValue}`)
+					valorcorrecto = false
+				}
+				if (!validaMinutos(Number(inputValue2))) {
+					Mensaje("error", `Los minutos no pueden ser mayor a en hasta 59`)
+					valorcorrecto = false
+				}
 
-				const newId = rowsMot1.length + 1;
-				const impMot1 = (minhasta - mindesde) * (valorhoramot1 / 60)
-				const newRow = {
-					id: newId,
-					mot1desde: Number(inputValue),
-					mot1hasta: Number(inputValue2),
-					mot1importe: impMot1
-				};
-
-				setRowsMot1((prevRows) => [...prevRows, newRow]); // Agregar la nueva fila
-				setSumaMot1(sumaMot1 + newRow.mot1importe)
-				setInputValue('')
-				setInputValue2('')
-				inputRef.current.focus();
+				if (!validaHoras(Number(inputValue2))) {
+					Mensaje("error", `El valor es incorrecto en horas hasta ${inputValue2}`)
+					valorcorrecto = false
+				}
+				if (valorcorrecto) {
+					const { horas, minutos, impMot1 } = convhoraminutos(mincarg, valorhoramot1)
+					const newId = rowsMot1.length + 1;
+					const newRow = {
+						id: newId,
+						mot1desde: Number(inputValue),
+						mot1hasta: Number(inputValue2),
+						horamot1: horas,
+						minutmot1: minutos,
+						mot1importe: Number(impMot1, 2),
+					};
+					setRowsMot1((prevRows) => [...prevRows, newRow]); // Agregar la nueva fila
+					setSumaMot1(sumaMot1 + (newRow.mot1importe))
+					let horasacum = thsMot1
+					let minutosacum = tminMot1
+					if (minutosacum + newRow.minutmot1 > 59) {
+						horasacum++
+						minutosacum = minutosacum - 60
+					}
+					setTHsMot1(horasacum + newRow.horamot1)
+					setTMinMot1(minutosacum + newRow.minutmot1)
+				}
 			}
+			if (eligeMot2) {
+				let valorcorrecto = true
+				let mincarg = calculaminutos(Number(inputValue2)) - calculaminutos(Number(inputValue))
+				if (!validaMinutos(Number(inputValue))) {
+					Mensaje("error", "Los minutos no pueden ser mayor a en desde 59")
+					valorcorrecto = false
+				}
+				if (mincarg < 0) {
+					Mensaje("error", "La hora desde debe ser menor a hasta")
+					valorcorrecto = false
+				}
+				if (!validaHoras(Number(inputValue))) {
+					Mensaje("error", `El valor es incorrecto en horas desde ${inputValue}`)
+					valorcorrecto = false
+				}
+				if (!validaMinutos(Number(inputValue2))) {
+					Mensaje("error", `Los minutos no pueden ser mayor a en hasta 59`)
+					valorcorrecto = false
+				}
+
+				if (!validaHoras(Number(inputValue2))) {
+					Mensaje("error", `El valor es incorrecto en horas hasta ${inputValue2}`)
+					valorcorrecto = false
+				}
+				if (valorcorrecto) {
+					const { horas, minutos, impMot1 } = convhoraminutos(mincarg, valorhoramot2)
+					const newId = rowsMot2.length + 1;
+					const newRow = {
+						id: newId,
+						mot2desde: Number(inputValue),
+						mot2hasta: Number(inputValue2),
+						horamot2: horas,
+						minutmot2: minutos,
+						mot2importe: Number(impMot1, 2),
+					};
+					setRowsMot2((prevRows) => [...prevRows, newRow]); // Agregar la nueva fila
+					setSumaMot2(sumaMot2 + (newRow.mot2importe))
+					let horasacum = thsMot2
+					let minutosacum = tminMot2
+					if (minutosacum + newRow.minutmot2 > 59) {
+						horasacum++
+						minutosacum = minutosacum - 60
+					}
+					setTHsMot2(horasacum + newRow.horamot2)
+					setTMinMot2(minutosacum + newRow.minutmot2)
+				}
+			}
+
+			setInputValue('')
+			setInputValue2('')
+			inputRef.current.focus();
 		}
 		else {
-			{
-				const newId = rowsparcheleg.length + 1; // Generar un nuevo ID basado en el número de filas
-				const newRow = {
-					id: newId,
-					cantparche: Number(inputValue),
-					medparche: medidaparche,
-					impparche: (valorparche),
-					imptparche: (Number(inputValue) * valorparche)
-				};
 
-				setRowsParcheleg((prevRows) => [...prevRows, newRow]); // Agregar la nueva fila
-				setSumaParcheleg(sumaParcheleg + newRow.imptparche)
-				setOpen(false);
-				setPideSegundoValor(false)
-			}
+			const newId = rowsparcheleg.length + 1; // Generar un nuevo ID basado en el número de filas
+			const newRow = {
+				id: newId,
+				cantparche: Number(inputValue),
+				medparche: medidaparche,
+				impparche: (valorparche),
+				imptparche: (Number(inputValue) * valorparche)
+			};
+
+			setRowsParcheleg((prevRows) => [...prevRows, newRow]); // Agregar la nueva fila
+			setSumaParcheleg(sumaParcheleg + newRow.imptparche)
+			setOpen(false);
+			setPideSegundoValor(false)
+
 		}
 	};
 	const handleKeyDown = (event, nextElementRef) => {
@@ -277,112 +371,76 @@ export default function Reparacion() {
 		setTituloDialogo('Ingreso MOT 1Pers')
 		setOpen(true);
 	}
-	const borrafila = () => {
+	const cargaMot2 = () => {
+		BuscaValorHora()
+		setEligeMot2(true);
+		setPideSegundoValor(true)
+		setLabeldecarga('Importe')
+		setTituloDialogo('Ingreso MOT 2Pers')
+		setOpen(true);
+	}
+	const borrafila = (gridId, rowId) => {
+
 		let filtrados = []
 		if (rowSelectionModel.length !== 0) {
 
 			rowSelectionModel.map((row) => {
-				setRowsVarios(rowsvarios.filter((rows) => rows.id !== row))
-				filtrados = rowsvarios.filter((rows) => rows.id !== row)
+				if (gridId === 'parcheleg') {
+					setRowsParcheleg(rowsparcheleg.filter((rows) => rows.id !== row))
+					filtrados = rowsparcheleg.filter((rows) => rows.id !== row)
+				}
+				if (gridId === 'chicotes') {
+					setRowsChicotes(rowschicotes.filter((rows) => rows.id !== row))
+					filtrados = rowschicotes.filter((rows) => rows.id !== row)
+				}
+				if (gridId === 'varios') {
+					setRowsVarios(rowsvarios.filter((rows) => rows.id !== row))
+					filtrados = rowsvarios.filter((rows) => rows.id !== row)
+				}
+				if (gridId === 'mot1') {
+					setRowsMot1(rowsMot1.filter((rows) => rows.id !== row))
+					filtrados = rowsMot1.filter((rows) => rows.id !== row)
+				}
+				if (gridId === 'mot2') {
+					setRowsMot2(rowsMot2.filter((rows) => rows.id !== row))
+					filtrados = rowsMot2.filter((rows) => rows.id !== row)
+				}
 			}
 			);
 		}
 		if (filtrados.length !== 0) {
-			const totalAmount = filtrados.reduce((sum, row) => sum + row.imptvarios, 0);
-			setSumaVarios(totalAmount)
+			if (gridId === 'parcheleg') {
+				const totalAmount = filtrados.reduce((sum, row) => sum + row.imptparche, 0);
+				setSumaParcheleg(totalAmount)
+			}
+			if (gridId === 'chicotes') {
+				const totalAmount = filtrados.reduce((sum, row) => sum + row.imptchicote, 0);
+				setSumaChicotes(totalAmount)
+			}
+			if (gridId === 'varios') {
+				const totalAmount = filtrados.reduce((sum, row) => sum + row.imptvarios, 0);
+				setSumaVarios(totalAmount)
+			}
+			if (gridId === 'mot1') {
+				const totalAmountH = filtrados.reduce((sum, row) => sum + row.horamot1, 0);
+				const totalAmountM = filtrados.reduce((sum, row) => sum + row.minutmot1, 0);
+				const totalAmount = (totalAmountH * 60 + totalAmountM) * valorhoramot1 / 60;
+				setSumaMot1(totalAmount)
+			}
+			if (gridId === 'mot2') {
+				const totalAmountH = filtrados.reduce((sum, row) => sum + row.horamot2, 0);
+				const totalAmountM = filtrados.reduce((sum, row) => sum + row.minutmot2, 0);
+				const totalAmount = (totalAmountH * 60 + totalAmountM) * valorhoramot2 / 60;
+				setSumaMot2(totalAmount)
+			}
+
 		}
 	}
 
-	function CustomToolbar() {
-		return (
-			<GridToolbarContainer >
-
-				<CurrencyTextField
-					id="Total"
-					size="small"
-					label="Total"
-					value={sumaParcheleg}
-					className={estilo.tfcurrency}
-				></CurrencyTextField>
-
-			</GridToolbarContainer>
-		);
-	}
-
-	function CustomToolbarChicotes() {
-
-		return (
-			<GridToolbarContainer >
-
-				<CurrencyTextField
-					id="Total"
-					size="small"
-					label="Total"
-					value={sumaChicotes}
-					className={estilo.tfcurrency}
-				></CurrencyTextField>
-
-				<Button className={estilo.botonabredialogo} onClick={() => cargachicotes()}>Chicotes</Button>
-			</GridToolbarContainer>
-		);
-	}
-
-
-
-	function CustomToolbarVarios() {
-		return (
-			<GridToolbarContainer >
-
-				<CurrencyTextField
-					id="Total"
-					size="small"
-					label="Total"
-					value={sumaVarios}
-					className={estilo.tfcurrency}
-					tyle={{ textAlign: "right" }}
-				></CurrencyTextField>
-
-				<Button className={estilo.botonabredialogo} onClick={() => cargavarios()}>Varios</Button>
-			</GridToolbarContainer>
-		);
-	}
-	function CustomToolbarMot1() {
-		return (
-			<GridToolbarContainer >
-
-				<CurrencyTextField
-					id="Total"
-					size="small"
-					label="Total"
-					value={sumaMot1}
-					className={estilo.tfcurrency}
-					tyle={{ textAlign: "right" }}
-				></CurrencyTextField>
-
-				<Button className={estilo.botonabredialogo} onClick={() => cargaMot1()}>MOT 1Pers</Button>
-			</GridToolbarContainer>
-		);
-	}
 
 	return (
 		<Box
-			// sx={{
-			// 	width: "100%",
-			// 	align: "center",
-			// 	justifycontent: "center",
-			// 	boxShadow: 5,
-			// 	padding: 5,
 
-			// 	height: 300,
-			// 	[`.${gridClasses.cell}.cold`]: {
-			// 		backgroundColor: '#b9d5ff91',
-			// 		color: '#1a3e72',
-			// 	},
-			// 	[`.${gridClasses.cell}.hot`]: {
-			// 		backgroundColor: '#ff943975',
-			// 		color: '#1a3e72',
-			// 	},
-			// }}
 			sx={{
 				width: "100%",
 				align: "center",
@@ -425,124 +483,75 @@ export default function Reparacion() {
 
 			</Grid>
 			<div style={{ height: 150, width: '100%', paddingTop: 15 }}>
+				<Grid container spacing={2}>
+					<CustomDataGrid
+						id="parcheleg"
+						rows={rowsparcheleg}
+						columns={colparcheleg}
+						onDeleteRow={borrafila}
+						toolbar={() => <CustomToolbarParchEleg sumaParcheleg={sumaParcheleg} />}
+						onRowSelectionModelChange={(newRowSelectionModel) => setRowSelectionModel(newRowSelectionModel)}
+						customStyles={{ width: '21%', paddingLeft: 0 }}
+					/>
 
-				<Grid container spacing={2} >
+					<CustomDataGrid
+						id="chicotes"
+						rows={rowschicotes}
+						columns={colchicotes}
+						onDeleteRow={borrafila}
+						toolbar={() => <CustomToolbarChicotes sumaChicotes={sumaChicotes} cargachicotes={cargachicotes} />}
+						onRowSelectionModelChange={(newRowSelectionModel) => setRowSelectionModel(newRowSelectionModel)}
+						customStyles={{ width: '20%', paddingLeft: 10 }}
+					/>
 
-					<div style={{ height: 200, width: '21%' }}>
-						<DataGrid
-							rows={rowsparcheleg}
-							columns={colparcheleg}
-							pageSize={10}
-							rowsPerPageOptions={[10]}
-							hideFooter={true}
-							rowHeight={20}
-							columnHeaderHeight={25}
-							showCellVerticalBorder
-							showCellHorizontalBorder
-							slots={{
-								toolbar: CustomToolbar,
-							}}
-						/>
-					</div>
-					<br /><br />
+					<CustomDataGrid
+						id="varios"
+						rows={rowsvarios}
+						columns={colvarios}
+						toolbar={() => <CustomToolbarVarios sumaVarios={sumaVarios} cargavarios={cargavarios} />}
+						onDeleteRow={borrafila}
+						onRowSelectionModelChange={(newRowSelectionModel) => setRowSelectionModel(newRowSelectionModel)}
+						customStyles={{ width: '19%', paddingLeft: 10 }}
+					/>
 
-					<div style={{ height: 200, width: '21%', paddingLeft: 10 }}>
-						<DataGrid
-							id="tablachicotes"
-							rows={rowschicotes}
-							columns={colchicotes}
-							pageSize={10}
-							rowsPerPageOptions={[10]}
-							hideFooter
-							rowHeight={20}
-							columnHeaderHeight={25}
-							showCellVerticalBorder
-							showCellHorizontalBorder
-							onCellKeyDown={borrafila}
-							onRowSelectionModelChange={(newRowSelectionModel) => {
-								setRowSelectionModel(newRowSelectionModel);
-							}}
-							slots={{
-								toolbar: CustomToolbarChicotes,
-							}} />
-					</div>
+					<CustomDataGrid
+						id="mot1"
+						rows={rowsMot1}
+						columns={colMot1}
+						toolbar={() => <CustomToolbarMot1 sumaMot1={sumaMot1} cargaMot1={cargaMot1} thsMot1={thsMot1} tminMot1={tminMot1} />}
+						onDeleteRow={borrafila}
+						onRowSelectionModelChange={(newRowSelectionModel) => setRowSelectionModel(newRowSelectionModel)}
+						customStyles={{ width: '20%', paddingLeft: 10 }}
+					/>
 
-					<div style={{ height: 200, width: '21%', paddingLeft: 10 }}>
-						<DataGrid
-							id="tablavarios"
-							rows={rowsvarios}
-							columns={colvarios}
-							pageSize={10}
-							rowsPerPageOptions={[10]}
-							hideFooter
-							rowHeight={20}
-							columnHeaderHeight={25}
-							showCellVerticalBorder
-							showCellHorizontalBorder
-							onCellKeyDown={borrafila}
-							onRowSelectionModelChange={(newRowSelectionModel) => {
-								setRowSelectionModel(newRowSelectionModel);
-							}}
-							slots={{
-								toolbar: CustomToolbarVarios,
-							}} />
-					</div>
-					<div style={{ height: 200, width: '21%', paddingLeft: 10 }}>
-						<DataGrid
-							id="horasdesde"
-							rows={rowsMot1}
-							columns={colMot1}
-							pageSize={10}
-							rowsPerPageOptions={[10]}
-							hideFooter
-							rowHeight={20}
-							columnHeaderHeight={25}
-							showCellVerticalBorder
-							showCellHorizontalBorder
-							onCellKeyDown={borrafila}
-							onRowSelectionModelChange={(newRowSelectionModel) => {
-								setRowSelectionModel(newRowSelectionModel);
-							}}
-							slots={{
-								toolbar: CustomToolbarMot1,
-							}} />
-					</div>
+					<CustomDataGrid
+						id="mot2"
+						rows={rowsMot2}
+						columns={colMot2}
+						toolbar={() => <CustomToolbarMot2 sumaMot2={sumaMot2} cargaMot2={cargaMot2} thsMot2={thsMot2} tminMot2={tminMot2} />}
+						onDeleteRow={borrafila}
+						onRowSelectionModelChange={(newRowSelectionModel) => setRowSelectionModel(newRowSelectionModel)}
+						customStyles={{ width: '20%', paddingLeft: 10 }}
+					/>
 				</Grid>
 			</div>
-			{/* Diálogo para ingresar la cantidad */}
-			<Dialog open={open} onClose={handleClose} style={{ height: 350, width: '20%' }}>
-				<DialogTitle>{titulodialogo}</DialogTitle>
-				<DialogContent>
-					<TextField
-						inputRef={inputRef} // Asignar la referencia al campo de texto
-						autoFocus
-						margin="dense"
-						label="Cantidad"
-						type="number"
-						fullWidth
-						value={inputValue}
-						onChange={(e) => setInputValue(e.target.value)}
-						onKeyDown={(e) => handleKeyDown(e, inputRef2)}
-					/>
-					{pidesegundovalor &&
-						<TextField
-							inputRef={inputRef2} // Asignar la referencia al campo de texto
-							autoFocus
-							margin="dense"
-							label={labeldecarga}
-							type="number"
-							fullWidth
-							value={inputValue2}
-							onChange={(e) => setInputValue2(e.target.value)}
-							onKeyDown={(e) => handleKeyDown(e, botonRef)}
-						/>}
-				</DialogContent>
-				<DialogActions>
-					<Button ref={botonRef} onClick={handleConfirm}>Confirmar</Button>
-					<Button onClick={handleClose}>Cerrar</Button>
-				</DialogActions>
-			</Dialog>
 
+			{/* Diálogo para ingresar la cantidad */}
+			<DialogoCarga
+				open={open}
+				handleClose={handleClose}
+				titulodialogo={titulodialogo}
+				inputRef={inputRef}
+				inputValue={inputValue}
+				setInputValue={setInputValue}
+				inputRef2={inputRef2}
+				inputValue2={inputValue2}
+				setInputValue2={setInputValue2}
+				pidesegundovalor={pidesegundovalor}
+				labeldecarga={labeldecarga}
+				botonRef={botonRef}
+				handleKeyDown={handleKeyDown}
+				handleConfirm={handleConfirm} />
 
 		</Box>
 	);

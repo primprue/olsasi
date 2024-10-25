@@ -1,5 +1,5 @@
 import estilotabla from "../../Styles/Tabla.module.css";
-export async function llenarcolumnsmot1() {
+export async function llenarcolumnsmot2() {
 	return columnsFill();
 }
 
@@ -8,14 +8,14 @@ function columnsFill() {
 		resolve([
 			// {headerName: 'id', field: 'id'},
 			{
-				field: 'mot1desde',
+				field: 'mot2desde',
 				headerName: 'Desde',
 				type: 'number',
 				width: 60,
 				textAlign: "right",
 			},
 			{
-				field: 'mot1hasta',
+				field: 'mot2hasta',
 				headerName: 'Hasta',
 				type: 'number',
 				width: 60,
@@ -23,7 +23,7 @@ function columnsFill() {
 				editable: true
 			},
 			{
-				field: 'horamot1',
+				field: 'horamot2',
 				headerName: 'Hora',
 				type: 'number',
 				width: 60,
@@ -31,7 +31,7 @@ function columnsFill() {
 				editable: true
 			},
 			{
-				field: 'minutmot1',
+				field: 'minutmot2',
 				headerName: 'Minuto',
 				type: 'number',
 				width: 60,

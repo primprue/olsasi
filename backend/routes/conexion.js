@@ -12,7 +12,7 @@ var conexion = mysql.createConnection({
   port: 3306
 });
 //var ip = 'localhost';
-
+console.log('conexion ', conexion)
 module.exports = conexion;
 
 // ignorado
