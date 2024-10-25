@@ -41,6 +41,16 @@ export default function SelecCampos(props) {
 			setChecked(campoVisible);
 		} else setChecked([]);
 	}
+
+	const abredialog = () => {
+		setAbrePrint(true);
+	}
+
+	const cierradialog = () => {
+		setAbrePrint(false);
+	}
+
+
 	const handleToggle = (value) => () => {
 		const currentIndex = checked.indexOf(value);
 		const newChecked = [...checked];
@@ -119,7 +129,8 @@ export default function SelecCampos(props) {
 						color="primary"
 						onClick={() => {
 							mapeo();
-							setAbrePrint(true);
+							abredialog()
+							// setAbrePrint(true);
 						}}
 					>
 						Imprimir
@@ -129,8 +140,8 @@ export default function SelecCampos(props) {
 						variant="contained"
 						color="secondary"
 						onClick={props.handleClose}
-						// onClick={props.ImprimirTF(false)}
-						// onClick={() => props.toggleImprimir()}
+					// onClick={props.ImprimirTF(false)}
+					// onClick={() => props.toggleImprimir()}
 					>
 						Cerrar
 					</Button>
@@ -146,10 +157,9 @@ export default function SelecCampos(props) {
 				<ImprimirPantalla
 					datos={props.datos}
 					properties={properties}
-					// abreprint={abreprint}
-					onClose={setAbrePrint}
-					// toggleImprimir={props.toggleImprimir}
-					// properties={checked}
+
+				// toggleImprimir={props.toggleImprimir}
+				// properties={checked}
 				/>
 			)}
 		</>

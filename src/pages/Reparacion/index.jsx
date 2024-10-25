@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, gridClasses, Input, TextField } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Grid, gridClasses, Input, Paper, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import {
 	DataGrid,
 	GridToolbarContainer,
@@ -13,7 +13,7 @@ import { LeeParamRep } from "./LeeParamRep.jsx";
 import { RepLeeValorHs } from "./RepLeeValorHs.jsx";
 import { CreaTabla } from "./CreaTabla.jsx";
 import { validaMinutos, validaHoras, calculaminutos, convhoraminutos } from "./utilidades.js";
-
+import estilo from "../../Styles/Reparacion.module.css";
 import Mensaje from "../../components/lib/Mensaje";
 import { llenarcolumnsparcheleg } from "./columparcheleg.jsx";
 import { llenarcolumnschicotes } from "./columchicotes.jsx";
@@ -27,6 +27,7 @@ import CustomToolbarMot1 from "./CustomToolbarMot1.jsx";
 import CustomToolbarMot2 from "./CustomToolbarMot2.jsx";
 import CustomToolbarParchEleg from "./CustomToolbarParchEleg.jsx";
 import DialogoCarga from "./DialogoCarga.jsx";
+import RadioButtonLNLA from "./RadioButtonLNLA.jsx";
 
 export default function Reparacion() {
 	const { setValor } = useContext(StaticContexto);
@@ -76,9 +77,11 @@ export default function Reparacion() {
 	const [thsMot2, setTHsMot2] = useState(0);
 	const [tminMot2, setTMinMot2] = useState(0);
 
+	const [valorhoramotN, setValorHoraMotN] = useState(0);
+	const [valorhoramotA, setValorHoraMotA] = useState(0);
 
-	const [valorhoramot1, setValorHoraMot1] = useState(0);
-	const [valorhoramot2, setValorHoraMot2] = useState(0);
+	const [lonaAN, setLonaAN] = useState("LN");
+	const [ImpTotalRep, setImpTotalRep] = useState(0);
 
 	async function datosParches() {
 		const data = await LeeParamRep();
@@ -122,7 +125,6 @@ export default function Reparacion() {
 		columnsVarios();
 		columnsMOT1();
 		columnsMOT2();
-		//setRowsVarios(Array.from({ length: 20 }, (_, i) => ({ id: i, cantvarios: '', impvarios: '' })));
 	}
 	var dcalculo = [
 		{
@@ -150,8 +152,8 @@ export default function Reparacion() {
 	}
 	async function BuscaValorHora() {
 		const datosrenglon1 = await RepLeeValorHs();
-		setValorHoraMot1(datosrenglon1[0])
-		setValorHoraMot2(datosrenglon1[1])
+		setValorHoraMotN(datosrenglon1[0])
+		setValorHoraMotA(datosrenglon1[1])
 	}
 	useEffect(() => {
 		initialFetch();
@@ -159,6 +161,20 @@ export default function Reparacion() {
 	}, [valora]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
+	const ImpLimp = () => {
+		setRowsVarios([])
+		setSumaVarios(0)
+		setRowsChicotes([])
+		setSumaChicotes(0)
+		setRowsMot1([])
+		setSumaMot1(0)
+		setRowsMot2([])
+		setSumaMot2(0)
+		setSumaParcheleg(0)
+		setRowsParcheleg([])
+		setImpTotalRep(0)
+
+	}
 
 	const handleCellClick = (params) => {
 		setMedidaParche(`${params.field} x ${params.id}`)
@@ -236,7 +252,7 @@ export default function Reparacion() {
 					valorcorrecto = false
 				}
 				if (valorcorrecto) {
-					const { horas, minutos, impMot1 } = convhoraminutos(mincarg, valorhoramot1)
+					const { horas, minutos, impMot1 } = convhoraminutos(mincarg, valorhoramotN)
 					const newId = rowsMot1.length + 1;
 					const newRow = {
 						id: newId,
@@ -283,7 +299,7 @@ export default function Reparacion() {
 					valorcorrecto = false
 				}
 				if (valorcorrecto) {
-					const { horas, minutos, impMot1 } = convhoraminutos(mincarg, valorhoramot2)
+					const { horas, minutos, impMot1 } = convhoraminutos(mincarg, valorhoramotN)
 					const newId = rowsMot2.length + 1;
 					const newRow = {
 						id: newId,
@@ -291,7 +307,7 @@ export default function Reparacion() {
 						mot2hasta: Number(inputValue2),
 						horamot2: horas,
 						minutmot2: minutos,
-						mot2importe: Number(impMot1, 2),
+						mot2importe: Number(impMot1 * 2, 2),
 					};
 					setRowsMot2((prevRows) => [...prevRows, newRow]); // Agregar la nueva fila
 					setSumaMot2(sumaMot2 + (newRow.mot2importe))
@@ -328,6 +344,34 @@ export default function Reparacion() {
 
 		}
 	};
+
+	const handleChange = (event) => {
+		setLonaAN(event.target.value);
+		const minutosmot1 = thsMot1 * 60 + tminMot1
+		const minutosmot2 = thsMot2 * 60 + tminMot2
+		let importemot1 = 0
+		let importemot2 = 0
+		if (event.target.value === "LN") {
+			importemot1 = valorhoramotN * minutosmot1 / 60
+			setSumaMot1(importemot1)
+			importemot2 = valorhoramotN * minutosmot2 / 60
+			setSumaMot2(importemot2)
+		}
+		if (event.target.value === "LA") {
+			importemot1 = valorhoramotA * minutosmot1 / 60
+			setSumaMot1(importemot1)
+			importemot2 = valorhoramotA * minutosmot2 / 60
+			setSumaMot2(importemot2)
+		}
+		const valorA = sumaParcheleg + importemot2 + importemot1 + sumaVarios + sumaChicotes
+		setImpTotalRep(valorA)
+	}
+
+	const CalculaReparacion = () => {
+		const valorA = sumaParcheleg + sumaMot2 + sumaMot1 + sumaVarios + sumaChicotes
+		setImpTotalRep(valorA)
+	}
+
 	const handleKeyDown = (event, nextElementRef) => {
 		if (event.key === 'Enter') {
 			if (pidesegundovalor) { nextElementRef.current.focus() }
@@ -379,7 +423,7 @@ export default function Reparacion() {
 		setTituloDialogo('Ingreso MOT 2Pers')
 		setOpen(true);
 	}
-	const borrafila = (gridId, rowId) => {
+	const borrafila = (gridId) => {
 
 		let filtrados = []
 		if (rowSelectionModel.length !== 0) {
@@ -424,13 +468,13 @@ export default function Reparacion() {
 			if (gridId === 'mot1') {
 				const totalAmountH = filtrados.reduce((sum, row) => sum + row.horamot1, 0);
 				const totalAmountM = filtrados.reduce((sum, row) => sum + row.minutmot1, 0);
-				const totalAmount = (totalAmountH * 60 + totalAmountM) * valorhoramot1 / 60;
+				const totalAmount = (totalAmountH * 60 + totalAmountM) * valorhoramotN / 60;
 				setSumaMot1(totalAmount)
 			}
 			if (gridId === 'mot2') {
 				const totalAmountH = filtrados.reduce((sum, row) => sum + row.horamot2, 0);
 				const totalAmountM = filtrados.reduce((sum, row) => sum + row.minutmot2, 0);
-				const totalAmount = (totalAmountH * 60 + totalAmountM) * valorhoramot2 / 60;
+				const totalAmount = (totalAmountH * 60 + totalAmountM) * valorhoramotN / 60;
 				setSumaMot2(totalAmount)
 			}
 
@@ -480,7 +524,33 @@ export default function Reparacion() {
 
 						/>
 					</div>}
-
+				<div style={{ height: 435, width: '20%', paddingBottom: 5, paddingLeft: 15 }}>
+					<Button className={estilo.botoncalculo} onClick={() => CalculaReparacion()}>Calcular</Button>
+					<RadioButtonLNLA lonaAN={lonaAN} handleChange={handleChange} />
+					<Paper elevation={2} sx={{ padding: 1, textAlign: 'center', width: 150 }}>
+						<Typography variant="subtitle2" color="textSecondary">
+							Importe Con IVA
+						</Typography>
+						<Box mt={1}>
+							<Typography variant="h8" color="primary">
+								${ImpTotalRep.toFixed(2)}
+							</Typography>
+						</Box>
+					</Paper>
+					<br />
+					<Paper elevation={2} sx={{ padding: 1, textAlign: 'center', width: 150 }}>
+						<Typography variant="subtitle2" color="textSecondary">
+							Importe Sin IVA
+						</Typography>
+						<Box mt={1}>
+							<Typography variant="h8" color="primary">
+								${(ImpTotalRep / 1.21).toFixed(2)}
+							</Typography>
+						</Box>
+					</Paper>
+					<br />
+					<Button className={estilo.botoncalculo} onClick={() => ImpLimp()}>Limpia</Button>
+				</div>
 			</Grid>
 			<div style={{ height: 150, width: '100%', paddingTop: 15 }}>
 				<Grid container spacing={2}>

@@ -1,22 +1,24 @@
 import printJS from "print-js";
 
-export default function (props) {
-	const handleClose = () => {
-		setImprimirTF(false);
-	};
-	console.log("props en printj  ", props);
+export default function ImprimirPantalla({ datos, properties }) {
+
 	printJS({
 		maxWidth: 800,
-		properties: props.properties,
+		properties: properties,
 		scanStyles: false,
-		printable: props.datos,
+		printable: datos,
 		type: "json",
 		header: '<h3 class="custom-h3">My custom header</h3>',
 		onPrintDialogClose: () => {
-			props.abreprint;
+			console.log("El cuadro de impresión se ha cerrado")
 		},
-		// onPrintDialogClose: () => props.handleClose(),
-		// gridStyle: "border: 2px solid #3971A5;background: blue",
-		// style: "background: blue",
+
 	});
 }
+
+// const handleClose = () => {
+// 	setImprimirTF(false);
+// };
+// onPrintDialogClose: () => props.handleClose(),
+// gridStyle: "border: 2px solid #3971A5;background: blue",
+// style: "background: blue",

@@ -24,6 +24,33 @@
 	width: 75px;
 	transform: scale(1.1);
 }
+
+.botoncalculo {
+	display: inline-flex;
+	background: linear-gradient(50deg, #dbdff0 10%, #1b83fa8e 90%);
+	width: 120px;
+	height: 25px;
+	color: #380f02;
+	font-size: 14px;
+	font-family: Arial, Helvetica, sans-serif;
+	text-align: center;
+	text-indent: 10%;
+	/* text-size-adjust: 8%; */
+	position: relative;
+	border-radius: 8%;
+	border-color: #03056b;
+	transform: scale(1);
+	transition: background-color 2s, color 2s, transform 3s;
+	margin-right: 10px;
+	margin-left: 10px;
+}
+
+.botoncalculo:hover {
+	background-color: #032d6b;
+	color: #fcf7f6;
+	width: 120px;
+	transform: scale(1.1);
+}
 .tfcurrency {
 	padding: 5px;
 	background-color: rgba(249, 245, 227, 0.514);
@@ -43,4 +70,33 @@
     font-weight: bold;
 	color: #3e07a5e0;
 	height: 30px;
+}
+/* RadioButton.module.css */
+.radioGroup {
+    display: flex;
+    flex-direction: row;
+    gap: 16px; /* Espacio entre radios */
+    align-items: center;
+	color: #a50707e0;
+}
+
+.radio {
+    color: var(--primary-color); 
+}
+
+.checkedRadio {
+     color: var(--secondary-color);  /* Color cuando el radio está seleccionado */
+}
+
+.label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #100250;
+}
+
+.title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #555;
 }

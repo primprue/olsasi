@@ -12,7 +12,7 @@ import TablaMuestra from "../../../components/TablaMuestra.jsx";
 export default function Clientes() {
 	const { formdatos, setFormdatos } = useContext(TablasContexto);
 	const { valor, setValor } = useContext(StaticContexto);
-	const [rows, setRows] = React.useState([]);
+	const [rows, setRows] = useState([]);
 	const [columns, setColumns] = useState([]);
 	//empiezan las cosas del sistema
 	async function columnsFetch() {

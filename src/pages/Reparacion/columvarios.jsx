@@ -1,4 +1,3 @@
-import estilotabla from "../../Styles/Tabla.module.css";
 export async function llenarcolumnsvarios() {
 	return columnsFill();
 }
@@ -13,7 +12,6 @@ function columnsFill() {
 				headerName: 'Cant',
 				type: 'number',
 				width: 10,
-				// editable: true,
 				textAlign: "right",
 				renderCell: (params) => (
 					<div style={{ textAlign: "right" }}>
