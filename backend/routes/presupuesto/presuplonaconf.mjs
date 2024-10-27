@@ -1,0 +1,272 @@
+import express from "express";
+var router = express.Router();
+import path from "path";
+import conexion from "../conexion.mjs";
+
+conexion.connect(function (err) {
+  if (!err) {
+    console.log("base de datos conectada en presuplonaconf");
+  } else {
+    console.log("no se conecto en presuplonaconf");
+  }
+});
+
+var datosenvio = [];
+
+router.get("/", (req, res, next) => {
+  var q,
+    i = 0, j = 0, ciclo = 0;
+  let detalle = '', ganancia = 0, coefimpuesto = 0, ivasn = '', tipoojal = '', tipochicote = '', sogachicote = '', sogadobladillo = ''
+  let minutosunion = 0, cantidadojales = 0, valorflete = 0, valorMOT = 0, codmoneda = 0
+  q = ['select * from BasePresup.PresupParam'].join(' ')
+  conexion.query(q,
+    function (err, result) {
+      if (err) {
+        console.log(err);
+      }
+
+      var costooriginal = 0.00;
+      var coeficiente = 0,
+        cantidad = 0,
+        metroscuad = 0,
+        StkRubroAbrP = "",
+        largo = 0,
+        ancho = 0.0;
+      // var enteroancho = 0,
+      //   decimancho = 0.0;
+      let datosrec = JSON.parse(req.query.datoscalculo);
+      // totalreg = datosrec.length;
+      datosrec.map(datos => {
+        cantidad = datos.cantidad;
+        let tipoconf = datos.tipoconf;
+        let tipoojale = datos.tipoojale;
+        let detallep = datos.detallep
+        StkRubroAbrP = datos.StkRubroAbr;
+        let ivasn = datos.ivasn;
+        let largoreal = (datos.largo * 1)
+        let anchoreal = (datos.ancho * 1)
+        largo = (datos.largo * 1) + 0.08;
+        ancho = (datos.ancho * 1) + 0.08;
+
+
+        if (tipoconf == 'cs') {
+          if (detallep == '') {
+            detalle = "Lona con ojales reforzados, chicotes y soga en dobladillo"
+          }
+          else {
+            detalle = detallep + ''
+          }
+          ganancia = result[0].coefgancsoga
+        } else {
+          if (detallep == '') {
+            detalle = "Lona con ojales reforzados, chicotes sin soga en dobladillo"
+          }
+          else {
+            detalle = detallep + ''
+          }
+          ganancia = result[0].coefganssoga
+        }
+        if (datos.minmay == 'my') {
+          coeficiente = result[0].coeficientemay;
+          tipoojal = result[0].abrojales28;
+          sogachicote = result[0].sogachicotemay;
+          ganancia = result[0].coefganmay
+          ivasn = 'CIVA'
+        }
+        else {
+          coeficiente = result[0].coeficientemin;
+          sogachicote = result[0].sogachicotemin;
+
+        }
+        if (tipoojale == 'hz') {
+          tipoojal = result[0].abrojales3hz
+          detalle = detalle + ' en : '
+        }
+        else {
+          tipoojal = result[0].abrojales3b
+          detalle = detalle + ' c/ojales de bronce en : '
+        }
+        minutosunion = (datos.ancho + 0.08) * largo * 5;
+        sogadobladillo = result[0].sogadobladillo;
+        valorflete = result[0].flete;
+        valorMOT = result[0].MOTpM2;
+        codmoneda = result[0].codmoneda;
+        coefimpuesto = result[0].coefimpuestos
+
+        let mcuadcob = [
+          "Select ",
+          "StkRubroDesc, StkRubroAbr, ",
+          //      "(StkRubroCosto * StkMonedasCotizacion / 1.50 * 1.02 ) as CostoCobMC, ",
+          "(StkRubroCosto * StkMonedasCotizacion / StkRubroAncho * 1.02 ) as CostoCobMC, ",
+          "(StkRubroCosto * StkMonedasCotizacion * 0.20 / 11 ) as CostoRefuerzo ",
+          "from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ",
+          'where StkRubro.StkRubroAbr = "',
+          StkRubroAbrP,
+          '" ',
+          "and StkRubro.StkRubroTM = idStkMonedas"
+        ].join("");
+
+        let msogachicote = [
+          "Select ",
+          "(StkRubroCosto * StkMonedasCotizacion  * 1.65) as CostoMSChicote ",
+          "from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ",
+          "where StkRubro.StkRubroAbr = '",
+          sogachicote,
+          "'",
+          "and StkRubro.StkRubroTM = idStkMonedas"
+        ].join("");
+
+
+        let msogadobladillo = [
+          "Select ",
+          "(StkRubroCosto * StkMonedasCotizacion) as CostoMSDobladillo ",
+          "from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ",
+          "where StkRubro.StkRubroAbr = '",
+          sogadobladillo,
+          "'",
+          "and StkRubro.StkRubroTM = idStkMonedas"
+        ].join("");
+
+        let ojales = [
+          "Select ",
+          "(StkRubroCosto * StkMonedasCotizacion / 144) as CostoOjalM2 ",
+          "from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ",
+          "where StkRubro.StkRubroAbr = '",
+          tipoojal,
+          "'",
+          " and StkRubro.StkRubroTM = idStkMonedas"
+        ].join("");
+
+        let cotizacion = [
+          "Select ",
+          "StkMonedasCotizacion ",
+          "from   BaseStock.StkMonedas ",
+          "where  StkMonedas.idStkMonedas = '",
+          codmoneda,
+          "'"
+        ].join("");
+
+        conexion.query(mcuadcob, function (err, result) {
+          if (err) {
+            console.log("error en mysql");
+            console.log(err);
+          } else {
+            datosenvio.push(result);
+          }
+        });
+
+        conexion.query(msogachicote, function (err, result) {
+          if (err) {
+            console.log("error en mysql");
+            console.log(err);
+          } else {
+            datosenvio.push(result);
+          }
+        });
+
+        if (tipoconf === 'cs') {
+          conexion.query(msogadobladillo, function (err, result) {
+            if (err) {
+              console.log("error en mysql");
+              console.log(err);
+            } else {
+              datosenvio.push(result);
+            }
+          });
+        }
+
+        conexion.query(cotizacion, function (err, result) {
+          if (err) {
+            console.log("error en mysql");
+            console.log(err);
+          } else {
+            datosenvio.push(result);
+          }
+        });
+
+        conexion.query(ojales, function (err, result) {
+          if (err) {
+            console.log("error en mysql");
+            console.log(err);
+          } else {
+            datosenvio.push(result);
+            j = 0;
+
+            while (j < 4) {
+              costooriginal =
+                datosenvio[j][0].CostoCobMC + datosenvio[j][0].CostoRefuerzo;
+              j++;
+              costooriginal = costooriginal + datosenvio[j][0].CostoMSChicote;
+              if (tipoconf === 'cs') {
+                j++;
+                costooriginal = costooriginal + datosenvio[j][0].CostoMSDobladillo;
+              }
+
+              j++;
+              costooriginal =
+                costooriginal +
+                datosenvio[j][0].StkMonedasCotizacion * valorflete +
+                +(datosenvio[j][0].StkMonedasCotizacion * valorMOT);
+              j++;
+              costooriginal = costooriginal + datosenvio[j][0].CostoOjalM2;
+              j++;
+
+
+
+
+              costooriginal = costooriginal * ganancia * coefimpuesto;
+
+              metroscuad = anchoreal * largoreal
+              costooriginal = costooriginal * metroscuad
+
+              ciclo = (metroscuad < 12) ? 3 : 0
+              ciclo = (metroscuad < 16 && metroscuad >= 12) ? 2 : 0
+              ciclo = (metroscuad < 22 && metroscuad >= 16) ? 1 : ciclo = 0
+              i = 0
+              while (i < ciclo) {
+                costooriginal = costooriginal * 1.0325
+                i++
+              }
+              // if (metroscuad < 22 && metroscuad >= 16) {
+              //   costooriginal = costooriginal * 1.0325
+              // }
+              // if (metroscuad < 16 && metroscuad >= 12) {
+              //   costooriginal = costooriginal * 1.0325
+              //   costooriginal = costooriginal * 1.0325
+              // }
+              // if (metroscuad < 12) {
+              //   costooriginal = costooriginal * 1.0325
+              //   costooriginal = costooriginal * 1.0325
+              //   costooriginal = costooriginal * 1.0325
+              // }
+              Math.fround(costooriginal)
+
+              // datosenvio[0][0]['ImpItem'] = costooriginal
+              if (ivasn == 'CIVA') {
+                costooriginal = Math.ceil(costooriginal.toFixed(2) / 10) * 10
+                // costooriginal = Number(Math.ceil(costooriginal)).toFixed(2)
+              }
+              else {
+                costooriginal = Math.ceil(costooriginal.toFixed(2) / 1.21 / 10) * 10
+                // costooriginal = (Number(Math.ceil(costooriginal / 1.21)).toFixed(2))
+              }
+              datosenvio[0][0]['ImpUnitario'] = costooriginal
+              datosenvio[0][0]['Detalle'] = detalle
+              datosenvio[0][0]['Largo'] = (largoreal * 1).toFixed(2)
+              datosenvio[0][0]['Ancho'] = (anchoreal * 1).toFixed(2)
+
+              //esto es para que imprima o no la descripción que se pide
+              datosenvio[0][0]['MDesc'] = 'S'
+              costooriginal = 0;
+            }
+            res.json(datosenvio);
+            datosenvio = [];
+          }
+          // }
+        });
+      });
+    })
+});
+
+conexion.end;
+export default router;

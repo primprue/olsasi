@@ -2,11 +2,12 @@
   "name": "backend",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
-     "start": "concurrently \"npm run start:server\" \"npm run start:react\" ",
-    "start:server": "node servidor.js",
-    "start:react": "gulp debug"
-  
+    "start": "concurrently \"npm run start:server\" \"npm run start:react\" ",
+    "start:server": "node servidor.mjs",
+    "start:react": "gulp debug",
+    "convert": "lebab --replace '**/*.js' --transform commonjs"
   },
   "dependencies": {
     "@material-ui/icons": "^4.11.3",
@@ -15,7 +16,6 @@
     "cors": "^2.8.4",
     "debug": "~2.6.9",
     "express": "^4.17.2",
-    "gulp-util": "^3.0.8",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "officegen": "^0.6.5",
@@ -34,6 +34,8 @@
     "concurrently": "^8.2.2",
     "gulp": "^4.0.2",
     "gulp-nodemon": "^2.4.2",
+    "gulp-util": "^3.0.8",
+    "lebab": "^3.2.4",
     "mysql": "^2.16.0"
   }
 }
