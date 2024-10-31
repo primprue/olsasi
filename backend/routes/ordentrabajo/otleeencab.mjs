@@ -1,8 +1,7 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
+
 import conexion from '../conexion.mjs';
-import dateFormat from 'dateformat';
 conexion.connect(function (err) {
     if (!err) {
         console.log("base de datos conectada en otleeencab");
@@ -15,7 +14,6 @@ conexion.connect(function (err) {
 
 
 router.get('/', function (req, res, next) {
-    // var q = ['Select * from StkMonedas ' ].join(' ')
     var q = ['Select idOTEncab  as id, OTEncabCliente, OTEncabClienteNoReg, OTEncabEstado, ',
         'date_format(OTEncabFecha, "%d-%m-%Y") as OTEncabFecha, ',
         ' date_format(OTEncabFechaPromesa, "%d-%m-%Y") as OTEncabFechaPromesa, OTEncabImpTotal, OTEncabSenia, OTEncabconIVA, OTEncabTransporte from BasesOrdenes.OTEncab order by idOTEncab desc '].join(' ')

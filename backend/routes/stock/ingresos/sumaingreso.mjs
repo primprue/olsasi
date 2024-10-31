@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -13,12 +13,9 @@ conexion.connect(function (err) {
 var datosenvio = [];
 
 router.post("/", function (req, res, next) {
-    // router.get("/", async function (req, res, next) {
     var infingreso = req.body.infingreso
     var d = new Date();
-    finalDate = d.toISOString().split("T")[0];
-    // console.log('vino a sumaingreso ', infingreso[0].tingreso)
-    // console.log('vino a sumaingreso  ', req.body.infingreso)
+    var finalDate = d.toISOString().split("T")[0];
 
     var q = [" UPDATE BaseStock.StkItems SET ",
         "StkItemsCantidad = StkItemsCantidad + ", infingreso[0].tingreso,

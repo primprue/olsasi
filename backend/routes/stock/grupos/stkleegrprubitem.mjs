@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -13,7 +13,6 @@ conexion.connect(function (err) {
 var GrupoDescripcion = "";
 var q;
 function leegrupo(codgrupo) {
-  //'Select StkGrupoDesc as GrupoDesc from StkGrupo  where idStkGrupo = ' + codgrupo,
   q = [
     "Select StkGrupoDesc as GrupoDesc",
     "from StkGrupo  where idStkGrupo = ",

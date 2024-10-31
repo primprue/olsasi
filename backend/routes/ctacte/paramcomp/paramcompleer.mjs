@@ -1,6 +1,6 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
+
 import conexion from '../../conexion.mjs';
 
 conexion.connect(function (err) {
@@ -14,7 +14,6 @@ conexion.connect(function (err) {
 
 
 router.get('/', function (req, res, next) {
-    // var q = ['Select * from StkMonedas ' ].join(' ')
     var q = ['SELECT idParamComp as id,  ParamCompLetra, ParamCompAbrev, ParamCompSuc, ParamCompNro, ParamCompSR, ParamCompDesc, ParamCompDisc, ParamCompIVAAsoc FROM CtaCte.ParamComp '].join(' ')
 
     console.log('q  ', q)

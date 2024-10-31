@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -14,13 +14,11 @@ conexion.connect(function (err) {
 
 
 router.get("/", function (req, res, next) {
-  // "Select StkRubroAbr as id, StkRubroCodGrp, StkRubroDesc,",
   var q = [
     "Select concat(idStkRubro, StkRubroCodGrp, StkRubroAbr) as id, idStkRubro, StkRubroCodGrp, StkRubroDesc,",
     " StkGrupo.StkGrupoDesc, StkRubroAbr, StkRubroProv, ",
     " Proveedores.ProveedoresDesc, StkRubroAncho, StkRubroPresDes,",
     " StkRubroPres, StkRubroUM, StkRubroCosto, StkRubroConf, StkRubroTM,",
-    // ' StkRubroFecha ',
     ' date_format(StkRubroFecha, "%d-%m-%Y") as StkRubroFecha  ',
     " from StkRubro JOIN StkGrupo, BasesGenerales.Proveedores ",
     " where StkRubroCodGrp = idStkGrupo and StkRubroProv = idProveedores "

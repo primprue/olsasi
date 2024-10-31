@@ -1,10 +1,7 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
 import conexion from "../conexion.mjs";
-//var mysql = require('mysql');
 
-//   
 conexion.connect(function (err) {
   if (!err) {
     console.log("base de datos conectada en otcondpagomodificar");
@@ -14,13 +11,9 @@ conexion.connect(function (err) {
 });
 
 
-
-
 router.post("/?:id", function (req, res) {
   var indice = req.params.id;
   var otcondpagodesc = req.body.OTCondPagoDesc;
-
-
   var q = [
     'update BasesOrdenes.OTCondPago set OTCondPagoDesc = "',
     otcondpagodesc,

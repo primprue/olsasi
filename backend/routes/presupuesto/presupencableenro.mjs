@@ -37,15 +37,7 @@ router.get("/", async function (req, res) {
 
 
       }
-      // else {
-      //   // var datocliente = { PresupEncabCliente: result[0].PresupEncabCliente }
-      //   console.log('result[0].PresupEncabCliente en presupencableeenro Clientes ', result[0].PresupEncabCliente)
-      //   let Clientesindatos = {
-      //     ClientesDesc: result[0].PresupEncabCliente
-      //   };
-      //   // datosenvio.unshift(result[0].PresupEncabCliente);
-      //   datosenvio.unshift(Clientesindatos);
-      // }
+
       res.json(datosenvio);
       datosenvio = [];
     }

@@ -1,9 +1,6 @@
 import express from "express";
 var router = express.Router();
 import conexion from "../conexion.mjs";
-//var mysql = require('mysql');
-
-//   
 conexion.connect(function (err) {
   if (!err) {
     console.log("base de datos conectada en proveedoresmodificar");
@@ -13,7 +10,6 @@ conexion.connect(function (err) {
 });
 
 router.post("/?:id", function (req, res) {
-  //var indice = req.params.id;
   var indice = req.params.id;
 
   var provdesc = req.body.ProveedoresDesc;
@@ -32,24 +28,7 @@ router.post("/?:id", function (req, res) {
   var provmail = req.body.ProveedoresMail;
   var provpagweb = req.body.ProveedoresWeb;
   var provcodmon = req.body.ProveedoresCodMon;
-  /*
-'update BasesGenerales.Proveedores set ProveedoresDesc = "' + provdesc + 
-                                        '" , ProveedoresTipo = ' + provtipo + 
-                                        ' ,  ProveedoresCUIT = "' + provcuit + 
-                                        '" , ProveedoresCalle = "' + provcalle + 
-                                        '" , ProveedoresNroCalle = ' + provnrocalle + 
-                                         ' , ProveedoresPiso = "' + provpiso +
-                                        '" , ProveedoresDto = "' + provdto +
-                                        '" , ProveedoresCodPos = "' + provcodpostal +
-                                        '" , ProveedoresLoc = "' + provlocalidad +
-                                        '" , ProveedoresPcia = "' + provprovincia +
-                                        '" , ProveedoresTel = "' + provtelefono +
-                                        '" , ProveedoresContacto = "' + provcontacto +
-                                        '" , ProveedoresMail = "' + provmail +
-                                        '" , ProveedoresWeb = "' + provpagweb +
-                                        '" , ProveedoresCodMon = "' + provcodmon + 
-                                         '" where idProveedores = ' + indice
-*/
+
   var q = [
     'update BasesGenerales.Proveedores set ProveedoresDesc = "',
     provdesc,

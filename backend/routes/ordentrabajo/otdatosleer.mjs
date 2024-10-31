@@ -11,9 +11,7 @@ conexion.connect(function (err) {
 });
 
 router.get('/', async function (req, res) {
-    // router.get('/', (req, res, next) => {
     var datosrec = (req.query.datosaleer)
-    // indice = req.query.id;
     var q = ['SELECT *  FROM BasesOrdenes.OTDatos where OTDatosTipoConf = "' + datosrec + '" order by OTDatosOrdenAparicion'].join(' ')
     conexion.query(q,
         function (err, result) {

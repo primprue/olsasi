@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 
@@ -15,14 +15,15 @@ conexion.connect(function (err) {
 
 
 router.get("/", function (req, res, next) {
-  //'Select * from StkGrupo '
-  PresupConfTipoDesc = req.query.descripcion;
+
+  var PresupConfTipoDesc = req.query.descripcion;
+  console.log('PresupConfTipoDesc presupconftipoleerdesc ', PresupConfTipoDesc)
   var q = ["Select * from BasePresup.PresupConfTipo where PresupConfTipoDesc = '" + PresupConfTipoDesc + "'"].join("");
   conexion.query(q, function (err, result) {
     if (err) {
       console.log(err);
     } else {
-
+      console.log('presupconftipoleerdesc result ', result)
       res.json(result);
     }
   });

@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -27,7 +27,7 @@ router.post("/", async function (req, res, next) {
   var StkRubroTM = req.body.StkRubroTM;
   var StkRubroConf = req.body.StkRubroConf;
   var d = new Date();
-  finalDate = d.toISOString().split("T")[0];
+  var finalDate = d.toISOString().split("T")[0];
 
   var q = [
     'UPDATE StkRubro SET StkRubroDesc = "',
@@ -67,7 +67,6 @@ router.post("/", async function (req, res, next) {
       }
       {
         err;
-        //console.log (err.errno);
       }
     } else {
       res.json(result);

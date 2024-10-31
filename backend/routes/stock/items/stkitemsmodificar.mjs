@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -11,15 +11,10 @@ conexion.connect(function (err) {
   }
 });
 
-/*
-idStkItems
-*/
-
-
 
 router.post("/", async function (req, res, next) {
   var d = new Date();
-  finalDate = d.toISOString().split("T")[0];
+  var finalDate = d.toISOString().split("T")[0];
   var idStkItems = req.query.idStkItems;
   var StkItemsGrupo = req.query.StkItemsGrupo;
   var StkItemsRubro = req.query.StkItemsRubro;

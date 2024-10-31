@@ -1,10 +1,9 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import moment from "moment";
 import conexion from '../conexion.mjs';
 
-// nroot = 0;
 moment.locale("es");
 var nroot = 0;
 conexion.connect(function (err) {
@@ -18,11 +17,10 @@ conexion.connect(function (err) {
 router.all("/", async function (req, res) {
 
     var d = new Date();
-    finalDate = d.toISOString().split("T")[0];
-    var cliente = 0; clientenoreg = ''; importtotal = 0.00; importsenia = 0.00
+    let finalDate = d.toISOString().split("T")[0];
+    var cliente = 0, clientenoreg = '', importtotal = 0.00, importsenia = 0.00, transporte, OTEncabOC, OTEncabDetalles
     var i = 0;
     var registro = {}
-    console.log('req.body.otdatos  ', req.body.otdatos)
     if (!req.body.otdatos.transporte || req.body.otdatos.transporte === undefined) {
         transporte = '';
     } else {

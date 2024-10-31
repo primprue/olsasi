@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -10,10 +10,6 @@ conexion.connect(function (err) {
     console.log("no se conecto en stkitemsmodstock");
   }
 });
-
-/*
-idStkItems
-*/
 
 
 
@@ -32,7 +28,7 @@ router.post("/", async function (req, res, next) {
     var total = Number(cantidad) * Number(StkRubroPres);
 
     var d = new Date();
-    finalDate = d.toISOString().split("T")[0];
+    var finalDate = d.toISOString().split("T")[0];
     var StkItemsFAct = finalDate;
 
     conexion.query(

@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 import http from "http";
 import fs from "fs";
@@ -15,15 +15,10 @@ conexion.connect(function (err) {
   }
 });
 
-/*
-idStkItems
-*/
-
 
 
 router.get("/", function (req, res, next) {
-  // StkEnvaseUbG = req.query.stkenvaseubg;
-  StkEnvaseUbG = req.query.id;
+  var StkEnvaseUbG = req.query.id;
   var datos, info;
   var q = [
     "SELECT idStkEnvase,",
@@ -59,7 +54,7 @@ router.get("/", function (req, res, next) {
     } else {
       res.json(result);
     }
-    a = 0;
+    var a = 0;
 
     while (a < result.length) {
 

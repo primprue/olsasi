@@ -1,6 +1,6 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
+
 import conexion from '../conexion.mjs';
 import mysql from 'mysql';
 
@@ -13,9 +13,8 @@ conexion.connect(function (err) {
     }
 });
 
-// router.delete('/?:id', function (req, res, next) {
 router.delete('/', async function (req, res) {
-    indice = req.query.id;
+    var indice = req.query.id;
     var q = ['delete from StkMonedas where idStkMonedas = "' + indice + '"'].join(' ')
     conexion.query(q,
         function (err, result) {

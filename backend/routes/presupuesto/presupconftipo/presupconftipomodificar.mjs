@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -14,16 +14,16 @@ conexion.connect(function (err) {
 
 
 router.post("/", async function (req, res, next) {
-  indice = req.query.id;
-  PresupConfTipoLargo = req.body.PresupConfTipoLargo,
-    PresupConfTipoAncho = req.body.PresupConfTipoAncho,
-    PresupConfTipoAnexo = req.body.PresupConfTipoAnexo.toUpperCase(),
-    PresupConfTipoCant = req.body.PresupConfTipoCant,
-    PresupConfTipoM2 = req.body.PresupConfTipoM2.toUpperCase(),
-    PresupConfTipoDesc = req.body.PresupConfTipoDesc.toUpperCase(),
-    PresupConfTipoRubro = req.body.PresupConfTipoRubro.toUpperCase(),
-    PresupConfTipoImprime = req.body.PresupConfTipoImprime.toUpperCase(),
-    PresupConfTipoMinMOT = req.body.PresupConfTipoMinMOT
+  var indice = req.query.id;
+  var PresupConfTipoLargo = req.body.PresupConfTipoLargo;
+  var PresupConfTipoAncho = req.body.PresupConfTipoAncho;
+  var PresupConfTipoAnexo = req.body.PresupConfTipoAnexo.toUpperCase();
+  var PresupConfTipoCant = req.body.PresupConfTipoCant;
+  var PresupConfTipoM2 = req.body.PresupConfTipoM2.toUpperCase();
+  var PresupConfTipoDesc = req.body.PresupConfTipoDesc.toUpperCase();
+  var PresupConfTipoRubro = req.body.PresupConfTipoRubro.toUpperCase();
+  var PresupConfTipoImprime = req.body.PresupConfTipoImprime.toUpperCase();
+  var PresupConfTipoMinMOT = req.body.PresupConfTipoMinMOT
 
   var q = [
     'UPDATE BasePresup.PresupConfTipo SET PresupConfTipoAnexo = "' +

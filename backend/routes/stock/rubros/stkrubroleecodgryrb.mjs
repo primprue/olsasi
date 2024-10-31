@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -14,8 +14,8 @@ conexion.connect(function (err) {
 
 
 router.get("/", async function (req, res, next) {
-  idStkRubro = req.query.idStkRubro;
-  StkRubroCodGrp = req.query.idStkGrupo;
+  var idStkRubro = req.query.idStkRubro;
+  var StkRubroCodGrp = req.query.idStkGrupo;
 
   var q = [
     "Select * from StkRubro where idStkRubro = ",

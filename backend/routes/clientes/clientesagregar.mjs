@@ -1,14 +1,9 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
 import moment from 'moment';
 import conexion from '../conexion.mjs';
 
-
-
 moment.locale('es');
-
-//router = express();
 conexion.connect(function (err) {
     if (!err) {
         console.log("base de datos conectada en clientesagregar");
@@ -20,12 +15,7 @@ conexion.connect(function (err) {
 
 router.post('/', function (req, res) {
     var d = new Date();
-    // console.log('d  ', d.getDay())
-    // console.log('d  ', d.getMonth())
-    // console.log('d  ', d.getFullYear())
     let finalDate = d.toISOString().split("T")[0];
-
-
     var mes = (finalDate.slice(5, 7))
     var anio = (finalDate.slice(0, 4))
     var dia = (finalDate.slice(8, 10))
@@ -65,8 +55,6 @@ router.post('/', function (req, res) {
         });
 
 });
-
-
 
 
 export default router;

@@ -8,21 +8,25 @@ import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
 import estilo from "../../../../Styles/TextFieldSelect.module.css";
 export default function FilaUnoIzq() {
+	console.log('esta, en FilaUnoIzq')
 	const { state, setState } = useContext(PresupPant);
 	var anexo = "N";
 	const handleChange = (event) => {
 		var descripcion = event.target.value;
 		setState({ ...state, PresupConfTipoDesc: event.target.value });
+		console.log('descripcion', descripcion)
 		leerdesc(descripcion);
 	};
 
 	async function leerdesc(descripcion) {
 		const result = await leePresupConfTipoLeerDesc(descripcion);
-
+		console.log('result', result)
 		setState({ ...state, DatosPresupEleg: result });
 	}
 
 	async function conftipoleer(anexo, prodelab) {
+		console.log('conftipoleer anexo', anexo)
+		console.log('conftipoleer prodelab', prodelab)
 		setState({ ...state, DescripPresup: "" });
 		const result = await leePresupConfTipoLeeAnexo(anexo, prodelab);
 		setState({ ...state, tipopresup: result });
@@ -34,6 +38,9 @@ export default function FilaUnoIzq() {
 			conftipoleer(anexo, state.PresupProducto);
 		}
 	}, [state.tipopresup]); // eslint-disable-line react-hooks/exhaustive-deps
+
+
+
 	useEffect(() => {
 		conftipoleer(anexo, state.PresupProducto);
 	}, [state.PresupProducto]); //  eslint-disable-line react-hooks/exhaustive-deps

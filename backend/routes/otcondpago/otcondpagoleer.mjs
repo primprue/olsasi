@@ -1,6 +1,5 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
 import conexion from '../conexion.mjs';
 
 conexion.connect(function (err) {
@@ -10,11 +9,6 @@ conexion.connect(function (err) {
         console.log("no se conecto en otcondpagoleer");
     }
 });
-
-
-
-
-
 
 router.get('/', function (req, res, next) {
     const q = ['Select idOTCondPago as id, OTCondPagoDesc from BasesOrdenes.OTCondPago '].join(' ');
@@ -29,6 +23,5 @@ router.get('/', function (req, res, next) {
 
 });
 conexion.end;
-
 
 export default router;

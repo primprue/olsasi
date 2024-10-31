@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -15,8 +15,8 @@ var datosenvio = [];
 
 
 router.get("/", (req, res, next) => {
-  var q,
-    i = 0;
+  var q, i = 0, minutosdren, datosrec, drenajesn, tipoojale, detallep, ivasn, valorMOT, mcuadcob, ojales
+  var largoreal, anchoreal, buscaancho, calpaños, cantpaños, detalle, coefMOT, tipoojal, cantidadojales
   q = ['select * from BasePresup.PresupParam'].join(' ')
   conexion.query(q,
     function (err, result) {
@@ -65,16 +65,6 @@ router.get("/", (req, res, next) => {
               cantpaños = Math.trunc(largo / rbuscaancho[0].AnchoTela) + 1
             }
             metroscuad = cantpaños * rbuscaancho[0].AnchoTela * ancho
-
-            // calpaños = (largo / 1.5) - Math.trunc(largo / 1.5)
-            // if (calpaños < .50) {
-            //   cantpaños = Math.trunc(largo / 1.5) + .5
-            // }
-            // else {
-            //   cantpaños = Math.trunc(largo / 1.5) + 1
-            // }
-            // metroscuad = cantpaños * 1.5 * ancho
-
 
             if (drenajesn == 'cd') {
               if (detallep == '') {

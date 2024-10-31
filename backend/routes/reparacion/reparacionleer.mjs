@@ -1,12 +1,6 @@
 import express from 'express';
-
 var router = express.Router();
-import path from 'path';
-
 import conexion from '../conexion.mjs';
-
-
-
 
 conexion.connect(function (err) {
     if (!err) {
@@ -22,9 +16,7 @@ conexion.connect(function (err) {
 
 
 router.get('/', function (req, res, next) {
-    //as StkTipoProveedDesc
-    // en el mysql tuve que cambiar la clave foránea porque no me permitía cambiar el tipodeproveedor en la tabla proveedores
-    // SubRubros.SubRubroDetalle,
+
     const q = [
         'SELECT *  FROM reparacion.parametrosrep ',
     ].join(' ');

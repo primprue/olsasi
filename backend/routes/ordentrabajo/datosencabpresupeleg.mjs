@@ -12,10 +12,7 @@ conexion.connect(function (err) {
 
 
 router.get('/', async function (req, res) {
-    // router.get('/', (req, res, next) => {
-    datosrec = (req.query.idpresup)
-    // indice = req.query.id;
-
+    let datosrec = (req.query.idpresup)
 
     var q = ['SELECT idPresupEncab, date_format(PresupEncabFecha, "%d/%m/%Y") as PresupEncabFecha , PresupEncabCliente, PresupEncabTotal, PresupEncabMayMin, PresupEncabExplic  FROM BasePresup.PresupEncab where idPresupEncab = ' + datosrec].join(' ')
     conexion.query(q,

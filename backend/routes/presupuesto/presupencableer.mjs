@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../conexion.mjs";
 import dateFormat from 'dateformat';
 conexion.connect(function (err) {
@@ -38,13 +38,3 @@ conexion.end;
 export default router;
 
 
-/* esta sentencia la logre con chatgpt 
-SELECT p.idPresupEncab, p.PresupEncabFecha, 
-       CASE 
-     
-          WHEN  (PresupEncabCliente > 0 and PresupEncabCliente < 99999)= 1 THEN c.ClientesDesc 
-           ELSE p.PresupEncabCliente 
-       END AS NombreCliente,
-       p.PresupEncabTotal, p.PresupEncabMayMin, p.PresupEncabExplic
-FROM BasePresup.PresupEncab p
-LEFT JOIN BasesGenerales.Clientes c ON p.PresupEncabCliente = c.ClientesDesc OR p.PresupEncabCliente = c.idClientes;*/

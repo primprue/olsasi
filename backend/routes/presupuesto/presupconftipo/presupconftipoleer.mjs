@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -13,7 +13,6 @@ conexion.connect(function (err) {
 
 
 router.get("/", function (req, res, next) {
-  //'Select * from StkGrupo '
   var q = ["Select *, idPresupConfTipo as id from BasePresup.PresupConfTipo order by PresupConfTipoDesc "].join(" ");
   conexion.query(q, function (err, result) {
     if (err) {

@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -14,7 +14,7 @@ conexion.connect(function (err) {
 
 
 router.get("/?:idStkGrupo", function (req, res, next) {
-  indice = req.params.idStkGrupo;
+  var indice = req.params.idStkGrupo;
   var q = [
     "Select idStkRubro, StkRubroDesc, StkRubroAbr, StkRubroProv, ",
     "Proveedores.ProveedoresDesc, StkRubroAncho, StkRubroPresDes, StkRubroPres, StkRubroUM, StkRubroCosto, ",
@@ -22,9 +22,6 @@ router.get("/?:idStkGrupo", function (req, res, next) {
     'date_format(StkRubroFecha, "%d-%m-%Y") as StkRubroFecha ',
     "from StkRubro JOIN BasesGenerales.Proveedores  ",
     "where StkRubroCodGrp = " + indice + " and StkRubroProv = idProveedores order by StkRubroDesc; "].join(" ");
-  console.log('q  ', q)
-
-  // conexion.query("Select * from StkRubro order by StkRubroDesc", function (err, result) {
 
   conexion.query(q, function (err, result) {
     if (err) {

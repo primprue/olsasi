@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -16,8 +16,11 @@ var datosenvio = [];
 
 router.get("/", (req, res, next) => {
 
-  var q,
-    i = 0;
+  var q, i = 0;
+
+  var datosrec, ojalescada, tipoojale, detallep, ivasn, j, ciclo, ganancia, coefimpuesto, valorflete, valorMOT, codmoneda, mcuadcob, msogachicote, msogadobladillo, ojales, cotizacion
+  var largoreal, anchoreal, tipoojal, sogachicote, sogadobladillo, valorojales, mgancho, detalle
+  var costoMinMOT, perimetro, totalojales, valorsogaabol, costoojales
   q = ['select * from BasePresup.PresupParam'].join(' ')
 
   conexion.query(q,

@@ -1,6 +1,6 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
+
 import conexion from '../conexion.mjs';
 import mysql from 'mysql';
 
@@ -12,18 +12,9 @@ conexion.connect(function (err) {
     }
 });
 
-// router.post("/?:id", function (req, res) {
-//     //var indice = req.params.id;
-//     var indice = req.params.id;
-// router.delete('/', async function (req, res) {
-//     console.log('req.q  ', req.query.id);
-//     indice = req.query.id;
 
 
 router.delete('/?:id', async function (req, res) {
-    console.log('req.q  ', req.query.id);
-    console.log('req.query  ', req.query);
-    console.log('req.params  ', req.params);
     var indice = req.params.id;
     var q = ['delete from BasesGenerales.Proveedores where idProveedores = ' + indice].join(' ')
     console.log('q en borrar ', q)

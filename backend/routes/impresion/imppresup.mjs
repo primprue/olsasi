@@ -1,7 +1,6 @@
 import express from "express";
 var router = express.Router();
 import path from "path";
-import moment from "moment";
 import variables from '../../public/variables.mjs';
 import conexion from '../conexion.mjs';
 import PdfPrinter from 'pdfmake';
@@ -98,7 +97,7 @@ router.post("/", function (req, res, next) {
     var encabcolum = [];
     var ac1 = 0, ac2 = 0, ac3 = 0, ac4 = 0, ac5 = 0, ac6 = 0, ac7 = 0
     var opciones = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
-    var i = 0;
+
     var a = 'N'
 
     if (TotalPresup === 0) {
@@ -165,8 +164,8 @@ router.post("/", function (req, res, next) {
                 var ImpItem = { text: formatter.format(reng.ImpItem).toString(), style: 'tableDatosD' }
                 rows.push([Cantidad, Descripcion, ImpUnit, ImpItem])
             })
-            var Descripcion = { text: 'Total', colSpan: 3, style: 'tableDatosTot' }
-            var ImpItem = { text: formatter.format(TotalPresup).toString(), style: 'textoDTot' }
+            Descripcion = { text: 'Total', colSpan: 3, style: 'tableDatosTot' }
+            ImpItem = { text: formatter.format(TotalPresup).toString(), style: 'textoDTot' }
             rows.push([Descripcion, '', '', ImpItem])
             ac1 = 25, ac2 = 200, ac3 = 70, ac4 = 70, ac5 = '*', ac6 = '*', ac7 = '*'
 
@@ -176,7 +175,7 @@ router.post("/", function (req, res, next) {
         condpag.push([{ text: 'Condiciones de presupuesto', style: 'resaltado' }])
         condpag.push(condicionpago1)
         if (maymin === 'mn') {
-            if (tipoleygral < -0) {
+            if (tipoleygral < 0) {
                 condpaggral.push([{ text: 'El precio acordado, se mantiene, hasta 5 días posteriores a la fecha de entrega establecida.', style: 'resaltado' }])
                 condpaggral.push([{ text: 'Pasados los 5 días SE ACTUALIZARÁ A LA FECHA DE RETIRO', style: 'resaltado' }])
                 condpaggral.push([{ text: 'Si la mercadería no se retira dentro de los 60 días posteriores a la fecha establecida para la entrega, se considerará abandonada y nuestra empresa dispondrá de ella, incluso para su destrucción, tomando la seña como indemnización del trabajo realizado', style: 'resaltado' }])

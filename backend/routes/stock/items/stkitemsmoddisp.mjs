@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -11,14 +11,8 @@ conexion.connect(function (err) {
   }
 });
 
-/*
-idStkItems
-*/
-
-
 
 router.post("/", async function (req, res, next) {
-  //?:id/?:id2
   var CantDisp = 0.0;
   var idStkItems = req.query.StkItems;
   var StkItemsGrupo = req.query.StkItemsGrupo;
@@ -31,7 +25,7 @@ router.post("/", async function (req, res, next) {
 
   var d = new Date();
 
-  finalDate = d.toISOString().split("T")[0];
+  var finalDate = d.toISOString().split("T")[0];
 
 
   // Desde Postman http://localhost:4000/stkitemsmodificar?id1=1&id2=1&id3=1

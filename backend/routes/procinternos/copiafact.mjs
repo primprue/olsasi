@@ -9,10 +9,10 @@ router.get("/", function (req, res, next) {
     const fechaComoCadena = Date()
     const numeroDia = new Date(fechaComoCadena).getDay();
     const diasemana = ['DOMINGO', 'LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO']
-    caminodesde = ' /home/sandra/ResgDiario/*.* '
-    caminohacia = '/media/sandra/KINGSTON/Backdiario/' + diasemana[numeroDia] + '/'
-    caminodesde1 = ' /home/sandra/BackUp/*.* '
-    caminohacia1 = '/home/sandra/pruebaback1/' + diasemana[numeroDia] + '/'
+    var caminodesde = ' /home/sandra/ResgDiario/*.* '
+    var caminohacia = '/media/sandra/KINGSTON/Backdiario/' + diasemana[numeroDia] + '/'
+    var caminodesde1 = ' /home/sandra/BackUp/*.* '
+    var caminohacia1 = '/home/sandra/pruebaback1/' + diasemana[numeroDia] + '/'
     // exec('cp -r -p ' + caminodesde + caminohacia, (error, stdout, stderr) => {
     //     if (error) {
     //         console.error(`error: ${error.message}`);

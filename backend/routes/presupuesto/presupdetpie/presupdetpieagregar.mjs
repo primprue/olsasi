@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import moment from "moment";
 import conexion from "../../conexion.mjs";
 
@@ -18,7 +18,6 @@ router.post("/", function (req, res, next) {
 
   var registro = {
     PresupDetPieLeyenda: req.body.PresupDetPieLeyenda,
-    // PresupDetPieSelec: req.body.PresupDetPieSelec
   };
 
   conexion.query("INSERT INTO BasePresup.PresupDetPie SET ?", registro, function (err, result) {

@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import moment from "moment";
 import conexion from "../../conexion.mjs";
 
@@ -20,7 +20,6 @@ router.post("/", function (req, res, next) {
     StkGrupoAbr: req.body.StkGrupoAbr.toUpperCase(),
     StkGrupoContRubro: 0
   };
-  //   'INSERT INTO StkGrupo SET ?', registro,
 
   conexion.query("INSERT INTO StkGrupo SET ?", registro, function (err, result) {
     if (err) {

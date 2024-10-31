@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -15,8 +15,14 @@ var datosenvio = [];
 
 
 router.get("/", (req, res) => {
-  var q,
-    q = ['select * from BasePresup.PresupParam'].join(' ')
+  var q, anchotela, cantpaños, soga, cantsoga, criquet, cantcriquet, detallep, ivasn, detalle, cancriquet, valorMOT, codmoneda, coefimpuesto, valorflete
+  var datosrec, totalreg, buscaancho, cantidad, segsoldarfaldon, mgancho, coefMOT, termbordeeleg, MOTarmado, minutosunion, valorMOTseg, valorsogacriq
+  var medida, alto, altocalculo, altoconpared, perimetro, diametro, diametroI, segcortarpf, segunirpf, segunirpp
+  var segcortarpp, segspisofondo, segunirpp2, segunirpp3, segunirpp4, segunirpp5, segunirpp6, segunirpp7, segunirpp8, segunirpp9
+  var segpisofondo, segcortefondo, seghacercortes, mcuadradosfaldon, calpaños, canttelapiso
+  var importesogaper, importecriquetper, valormcuad, costooriginal
+  var SegundosMOT
+  q = ['select * from BasePresup.PresupParam'].join(' ')
   conexion.query(q,
     function (err, result) {
       if (err) {
@@ -112,15 +118,7 @@ router.get("/", (req, res) => {
 
 
           detalle = detalle + ' con pared de ' + anchopared + ' mts. y un alto de ' + (alto * 1).toFixed(2) + ' mts. en : '
-          // if (termbordeeleg === 'SF') {
-          //   alto = alto + anchopared + 0.3
-          //   if (alto <= 1.50) {
-          //     alto = 1.50
-          //   }
-          // }
-          // else {
-          //   alto = alto + anchopared
-          // }
+
           altoconpared = alto + anchopared
           if (StkRubroAbrP === 'POL19') {
             if (altoconpared > 1.50 && altoconpared <= 2) {
@@ -208,7 +206,8 @@ router.get("/", (req, res) => {
 
             switch (termbordeeleg) {
               case "SF":
-                SegundosMOT = SegundosMOT
+                SegundosMOT
+                break
               case "CF":
               case "CFS":
               case "CFC":
@@ -225,8 +224,9 @@ router.get("/", (req, res) => {
                 segsoldarfaldon = (diametro * 3.1416 * 240)
                 SegundosMOT = SegundosMOT + seghacercortes + segsoldarfaldon
 
-              default:
-                console.log('vino al default')
+                // default:
+                //   console.log('vino al default')
+                break
 
             }
             if (termbordeeleg == "CFS") {

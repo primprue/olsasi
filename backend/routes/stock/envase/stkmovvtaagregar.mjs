@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import moment from "moment";
 import conexion from "../../conexion.mjs";
 
@@ -18,9 +18,7 @@ conexion.connect(function (err) {
 
 router.post("/", async function (req, res) {
   var d = new Date();
-  var q1;
-  finalDate = d.toISOString().split("T")[0];
-  //'Select max(idStkMovVta) as UltMovVta from StkMovVta where StkMovVtaFecha = "' + finalDate + '"' ,
+  var finalDate = d.toISOString().split("T")[0];
   var q = [
     'Select max(idStkMovVta) as UltMovVta from StkMovVta where StkMovVtaFecha = "' +
     finalDate +

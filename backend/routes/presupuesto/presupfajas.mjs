@@ -1,6 +1,6 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
+
 import conexion from '../conexion.mjs';
 
 conexion.connect(function (err) {
@@ -18,6 +18,7 @@ router.get('/', (req, res, next) => {
   var q, i = 0
   var coeficiente = 0, cantidad = 0, StkRubroAbrP = '', largo = 0.00, ancho = 0.00
   var enteroancho = 0, decimancho = 0.00
+  var datosrec, totalreg, detallep, ivasn, detalle, coefMOT, valorMOTmin, MOTarmado, minutosunion
   q = ['select * from BasePresup.PresupParam'].join(' ')
   conexion.query(q,
     function (err, result) {
@@ -98,11 +99,9 @@ router.get('/', (req, res, next) => {
 
               if (ivasn == 'CIVA') {
                 result[0].ImpUnitario = Math.ceil(result[0].ImpUnitario.toFixed(0) / 10) * 10
-                // result[0].ImpUnitario = result[0].ImpUnitario.toFixed(0)
               }
               else {
                 result[0].ImpUnitario = Math.ceil(result[0].ImpUnitario.toFixed(0) / 1.21 / 10) * 10
-                // result[0].ImpUnitario = result[0].ImpUnitario.toFixed(0) / 1.21
               }
               result[0].MDesc = 'S'
               datosenvio.push(result)

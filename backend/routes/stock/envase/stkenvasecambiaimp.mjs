@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 import http from "http";
 conexion.connect(function (err) {
@@ -11,18 +11,11 @@ conexion.connect(function (err) {
   }
 });
 
-/*
-idStkItems
-*/
-
 
 
 router.post("/", async function (req, res, next) {
-  //?:id/?:id2
-  StkEnvaseUbG = req.query.id;
+  var StkEnvaseUbG = req.query.id;
 
-  //  'UPDATE StkEnvase SET StkEnvaseImprimio = "S"  WHERE StkEnvaseImprimio = "N"' +
-  //  ' and StkEnvaseUbG = "' + StkEnvaseUbG + '"'
   var q = [
     "UPDATE StkEnvase",
     'SET StkEnvaseImprimio = "S"  WHERE StkEnvaseImprimio = "N"',

@@ -1,6 +1,6 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
+
 import conexion from '../conexion.mjs';
 
 conexion.connect(function (err) {
@@ -16,6 +16,7 @@ var datosenvio = []
 router.get('/', (req, res, next) => {
     var q, i = 0
     var coeficiente = 0, cantidad = 0.00, StkRubroAbrP = '', largo = 0, ancho = 0, valorMOTmup = 0.00, impunion = 0.00, impcorte = 0.00, coefMOT = 0.00, impsol = 0.00, cuadred = 'REC', cantpa = 0, anchopimp = 0
+    var detallep = '', ivasn = '', q2 = '', valorMOTcorte = 0.00, datosrec, totalreg, callargo, anchoreal, importeMOTtotal, detalle
     q = ['select * from BasePresup.PresupParam'].join(' ')
     conexion.query(q,
         function (err, result) {
@@ -66,9 +67,6 @@ router.get('/', (req, res, next) => {
                         //corte de la tela 120 segundos por paño independiente del largo
 
                         //unión de los paños 150 segundos por metro de soldadura
-                        // if (datos.minmay == 'my' || StkRubroAbrP == 'PLURI') {
-
-
                         var numero = (largo / anchotela);
                         var enteros = Math.floor((largo / anchotela));
                         var decimales = numero - enteros;
@@ -98,17 +96,6 @@ router.get('/', (req, res, next) => {
                             impunion = ((cantpa - 1) * largo) * valorMOTmup
                             impcorte = largo * valorMOTcorte
                         }
-
-                        // if ((ancho * 1 - Math.trunc(ancho)) > 0) {
-                        //     impunion = ((((Math.trunc(ancho))) * largo + (anchotela / 2))) * valorMOTmup
-                        //     impcorte = (ancho + 1) * valorMOTcorte
-
-                        // }
-                        // else {
-                        //     impunion = ((ancho - 1) * largo) * valorMOTmup
-                        //     impcorte = ancho * valorMOTcorte
-                        // }
-
                         if (cuadred === 'REC') {
                             impsol = (result[0].costoMOT * coefMOT / 60 * 5) * (largo * 2 + ancho * 2)
 

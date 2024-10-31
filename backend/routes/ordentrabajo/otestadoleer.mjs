@@ -12,9 +12,6 @@ conexion.connect(function (err) {
 });
 
 router.get('/', async function (req, res) {
-    // router.get('/', (req, res, next) => {
-    var datosrec = (req.query.datosaleer)
-    // indice = req.query.id;
     var q = ['SELECT idOTEstado as value, OTEstadoDesc as label  FROM BasesOrdenes.OTEstado'].join(' ')
     conexion.query(q,
         function (err, result) {

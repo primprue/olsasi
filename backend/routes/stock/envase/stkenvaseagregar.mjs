@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -11,11 +11,6 @@ conexion.connect(function (err) {
   }
 });
 
-/*
-idStkItems
-*/
-
-//   
 
 router.post("/", async function (req, res, next) {
   var q, q1;
@@ -23,11 +18,9 @@ router.post("/", async function (req, res, next) {
   var StkEnvaseGrupo = 0
   var StkEnvaseRubro = 0
   var StkEnvaseItem = req.query.idStkItems === '' ? 1 : req.query.idStkItems
-  // var StkEnvaseItem = req.query.idStkItems;
   StkEnvaseGrupo = parseInt(req.query.idStkGrupo)
   StkEnvaseRubro = parseInt(req.query.idStkRubro);
 
-  //'Select max(idStkEnvase) as UltEnvase from StkEnvase where StkEnvaseGrupo = ' + StkEnvaseGrupo + ' and StkEnvaseRubro = ' + StkEnvaseRubro + ' and StkEnvaseItem = ' + StkEnvaseItem,
   q = [
     "Select ",
     "max(idStkEnvase) as UltEnvase",
@@ -39,7 +32,7 @@ router.post("/", async function (req, res, next) {
     StkEnvaseItem
   ].join(" ");
 
-  console.log('q   ', q)
+  var nroenvase
   conexion.query(q, function (err, result) {
     if (err) {
       console.log('err.errno  ', err.errno)
@@ -50,7 +43,6 @@ router.post("/", async function (req, res, next) {
         console.log(err);
       }
     } else {
-      // res.json(result);
       nroenvase = result[0].UltEnvase + 1;
     }
 
@@ -59,8 +51,8 @@ router.post("/", async function (req, res, next) {
     var cantenvases = req.body.cantidad;
 
     var d = new Date();
-    finalDate = d.toISOString().split("T")[0];
-    for (i = 0; i < cantenvases; i++) {
+    var finalDate = d.toISOString().split("T")[0];
+    for (var i = 0; i < cantenvases; i++) {
       var registro = {
         idStkEnvase: nroenvase,
         StkEnvaseGrupo: StkEnvaseGrupo,
@@ -79,11 +71,7 @@ router.post("/", async function (req, res, next) {
           if (err) {
             console.log('err en back ', err)
             if (err.errno == 1265) {
-              //   return res.status(413).send({message : "Faltan datos en agregar envase"});
               return res.status(413).send({ message: "Faltan datos para leer información en tabl" });
-              //    return res.status(413)
-
-              //.json({message : "Faltan datos en agregar envase"});
             }
             else {
               console.log(err.errno);

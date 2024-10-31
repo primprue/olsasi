@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -10,9 +10,6 @@ conexion.connect(function (err) {
     console.log("no se conecto en stkunmedleercod");
   }
 });
-
-
-
 
 router.get("/?:id", function (req, res, next) {
   var indice = req.params.id;

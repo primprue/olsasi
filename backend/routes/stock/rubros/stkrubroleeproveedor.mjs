@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -12,8 +12,6 @@ conexion.connect(function (err) {
 });
 
 
-
-//router.all("/", async function(req, res, next) {
 router.get("/", function (req, res, next) {
   var q = [
     "SELECT idProveedores as value, ProveedoresDesc as label FROM BasesGenerales.Proveedores where ProveedoresTipo = 26 order by ProveedoresDesc"

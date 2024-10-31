@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -10,8 +10,6 @@ conexion.connect(function (err) {
     console.log("no se conecto en presupconftipocalc");
   }
 });
-
-
 
 var datosenvio = [];
 router.get("/", function (req, res, next) {
@@ -25,11 +23,7 @@ router.get("/", function (req, res, next) {
     ivasn = datos.ivasn
   })
 
-  //para sacar el costo de MOT
-  //SELECT (PresupConfMinMOT * costoMOT / 60) as CostoMotCon FROM BasePresup.PresupConfTipo, BasePresup.PresupParam where PresupConfTipoDesc ='MORRAL' and PresupConfMinMOT <> 0;
   let q2 = ['select * from BasePresup.PresupParam'].join(' ')
-
-
   conexion.query(q2,
     function (err, result2) {
       if (err) {
@@ -53,7 +47,6 @@ router.get("/", function (req, res, next) {
           console.log(err);
 
         } else {
-          //    res.json(result1);
           if (result1 == '') {
             vlrMOT = 0
           }
@@ -86,10 +79,8 @@ router.get("/", function (req, res, next) {
 
               if (vlrMOT === 0) {
                 ImpUnitario = parseInt(vlrMAT)
-                //vlrMAT.toFixed(0)
               }
               else {
-                //     ImpUnitario = ((vlrMOT + vlrMAT) * coefgcia).toFixed(0)
                 ImpUnitario = parseInt((vlrMOT + vlrMAT) * coefgcia)
               }
 
@@ -100,17 +91,10 @@ router.get("/", function (req, res, next) {
                 ImpUnitario = Math.ceil(((ImpUnitario / 1.21) / 10) * 10)
               }
 
-              // if (ivasn == 'CIVA') {
-              //   ImpUnitario
-              // }
-              // else {
-              //   ImpUnitario = ImpUnitario / 1.21
-              // }
               datosenvio.push(ImpUnitario)
               datosenvio.push(ImprimeSN)
               res.json(datosenvio)
               datosenvio = []
-              // res.json(ImpUnitario)
             }
           });
         });

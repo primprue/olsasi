@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -15,8 +15,11 @@ var datosenvio = [];
 
 
 router.get("/", (req, res, next) => {
-  var q,
-    i = 0;
+  var q, i = 0;
+
+  var datosrec, tipoconf, tipoojale, detallep, ivasn, j, ciclo, ganancia, coefimpuesto, valorflete, valorMOT, codmoneda, mcuadcob, msogachicote, msogadobladillo, ojales, cotizacion
+  var largoreal, anchoreal, tipoojal, sogachicote, sogadobladillo, gancho, mgancho, detalle
+  var costoMinMOT, cantidadganchos, importecostoganchos, importecostochicote, minutosunion
   q = ['select * from BasePresup.PresupParam'].join(' ')
   conexion.query(q,
     function (err, result) {
@@ -251,20 +254,6 @@ router.get("/", (req, res, next) => {
               costooriginal = costooriginal * 1.0325
               i++
             }
-
-
-            // if (metroscuad < 22 && metroscuad >= 16) {
-            //   costooriginal = costooriginal * 1.0325
-            // }
-            // if (metroscuad < 16 && metroscuad >= 12) {
-            //   costooriginal = costooriginal * 1.0325
-            //   costooriginal = costooriginal * 1.0325
-            // }
-            // if (metroscuad < 12) {
-            //   costooriginal = costooriginal * 1.0325
-            //   costooriginal = costooriginal * 1.0325
-            //   costooriginal = costooriginal * 1.0325
-            // }
 
             if (ivasn == 'CIVA') {
               costooriginal = Math.ceil(costooriginal.toFixed(0) / 10) * 10

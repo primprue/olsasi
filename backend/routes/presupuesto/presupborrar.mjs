@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import moment from "moment";
 import conexion from "../conexion.mjs";
 import variables from '../../public/variables.mjs';
@@ -19,7 +19,7 @@ conexion.connect(function (err) {
 router.delete("/", function (req, res, next) {
   var errores = []
   var respuesta = []
-  indice = req.query.id;
+  var indice = req.query.id;
   var nombrepresup = 'Presupuesto\\ nro\\ ' + indice + '*.pdf'
   var comando = 'rm ' + variables.dirpresupdocumento + nombrepresup
   exec(comando, (error, stdout, stderr) => {

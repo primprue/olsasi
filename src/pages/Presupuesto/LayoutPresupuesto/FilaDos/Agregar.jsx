@@ -1,4 +1,4 @@
-const useAgregar = async (
+const Agregar = async (
 	datosrenglon1,
 	indicetp1,
 	rubrosn,
@@ -141,4 +141,4 @@ const useAgregar = async (
 		}, 1000);
 	});
 };
-export default useAgregar;
+export default Agregar;

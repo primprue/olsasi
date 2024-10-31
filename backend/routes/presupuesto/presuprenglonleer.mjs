@@ -1,7 +1,7 @@
 import express from "express";
 
 var router = express.Router();
-import path from "path";
+
 import conexion from "../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -35,5 +35,4 @@ router.get("/", function (req, res, next) {
   });
 });
 
-// conexion.end;
 export default router;

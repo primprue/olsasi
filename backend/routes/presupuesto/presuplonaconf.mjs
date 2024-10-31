@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -227,28 +227,14 @@ router.get("/", (req, res, next) => {
                 costooriginal = costooriginal * 1.0325
                 i++
               }
-              // if (metroscuad < 22 && metroscuad >= 16) {
-              //   costooriginal = costooriginal * 1.0325
-              // }
-              // if (metroscuad < 16 && metroscuad >= 12) {
-              //   costooriginal = costooriginal * 1.0325
-              //   costooriginal = costooriginal * 1.0325
-              // }
-              // if (metroscuad < 12) {
-              //   costooriginal = costooriginal * 1.0325
-              //   costooriginal = costooriginal * 1.0325
-              //   costooriginal = costooriginal * 1.0325
-              // }
+
               Math.fround(costooriginal)
 
-              // datosenvio[0][0]['ImpItem'] = costooriginal
               if (ivasn == 'CIVA') {
                 costooriginal = Math.ceil(costooriginal.toFixed(2) / 10) * 10
-                // costooriginal = Number(Math.ceil(costooriginal)).toFixed(2)
               }
               else {
                 costooriginal = Math.ceil(costooriginal.toFixed(2) / 1.21 / 10) * 10
-                // costooriginal = (Number(Math.ceil(costooriginal / 1.21)).toFixed(2))
               }
               datosenvio[0][0]['ImpUnitario'] = costooriginal
               datosenvio[0][0]['Detalle'] = detalle

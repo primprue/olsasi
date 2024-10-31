@@ -31,7 +31,7 @@ const FilaModMed = lazy(() => import("../FilaModMed/FilaModMed"));
 const FilaAbanico = lazy(() => import("../FilaAbanico/FilaAbanico"));
 const FilaLateral = lazy(() => import("../FilaLateral/FilaLateral"));
 
-import useAgregar from "./useAgregar";
+import Agregar from "./Agregar";
 
 export default function FilaDos() {
 	// Esto es para poder consumir los datos del CONTEXTAPI
@@ -45,7 +45,8 @@ export default function FilaDos() {
 	let labellargo = "Largo";
 	let labelancho = "Ancho";
 	const { inicializaPresup } = useContext(PresupPant);
-
+	console.log('state', state)
+	console.log('state.DatosPresupEleg.length ', state.DatosPresupEleg.length)
 	if (state.DatosPresupEleg.length !== 0) {
 		var largo = state.DatosPresupEleg[0].PresupConfTipoLargo;
 		var ancho = state.DatosPresupEleg[0].PresupConfTipoAncho;
@@ -147,7 +148,7 @@ export default function FilaDos() {
 			presuptipo
 		);
 
-		var datospresup = await useAgregar(
+		var datospresup = await Agregar(
 			datosrenglon1,
 			indicetp1,
 			rubrosn,
@@ -200,6 +201,7 @@ export default function FilaDos() {
 			),
 		},
 	];
+	console.log('rubrosn ', rubrosn)
 	return (
 		<>
 			<Grid item>
@@ -349,7 +351,7 @@ export default function FilaDos() {
 							onChange={handleChange}
 							SelectProps={{ native: true }}
 							variant="outlined"
-							//className={classes.textField}
+						//className={classes.textField}
 						>
 							{data.mapeo}
 						</TextField>

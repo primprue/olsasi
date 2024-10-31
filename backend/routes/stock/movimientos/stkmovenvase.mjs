@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -16,15 +16,7 @@ conexion.connect(function (err) {
 
 
 router.post("/", async function (req, res, next) {
-  //?:id/?:id2
-  // var idStkItems = req.query.idStkItems;
-  // var StkItemsGrupo = req.query.StkItemsGrupo;
-  // var StkItemsRubro = req.query.StkItemsRubro;
-  // var envase = req.query.envase;
-  // var q;
-  // var cantidad = req.body.cantidad2;
-  // var cantidad1 = req.body.cantidad3;
-  // var cantmod = cantidad * cantidad1 * -1;
+
 
   var idStkItems = req.body.idStkItems;
   var StkItemsGrupo = req.body.StkItemsGrupo;
@@ -33,7 +25,7 @@ router.post("/", async function (req, res, next) {
   var q;
   var cantarestar = req.body.cantarestar;
   var d = new Date();
-  finalDate = d.toISOString().split("T")[0];
+  var finalDate = d.toISOString().split("T")[0];
   var StkItemsFAct = finalDate;
   // Desde Postman http://localhost:4000/stkmovsalfinal?id1=1&id2=1&id3=1
 

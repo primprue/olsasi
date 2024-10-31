@@ -1,6 +1,6 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
+
 import conexion from '../conexion.mjs';
 
 conexion.connect(function (err) {
@@ -12,10 +12,7 @@ conexion.connect(function (err) {
 });
 
 
-
-
 router.get('/', function (req, res, next) {
-    // var q = ['Select * from StkMonedas ' ].join(' ')
     var q = ['Select * from StkMonedas '].join('')
 
     conexion.query(q,
@@ -27,8 +24,6 @@ router.get('/', function (req, res, next) {
 
             }
         });
-
-
 });
 conexion.end;
 export default router;

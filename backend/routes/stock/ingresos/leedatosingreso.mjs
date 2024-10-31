@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -13,7 +13,6 @@ conexion.connect(function (err) {
 
 
 router.get("/", function (req, res, next) {
-    // router.get("/", async function (req, res, next) {
     var q = ["SET @numero=0 "].join(" ");
     conexion.query(q, function (err, result) {
         if (err) {
@@ -21,7 +20,7 @@ router.get("/", function (req, res, next) {
         }
     });
     var StkRubroAbr = req.query.abr;
-    var q = [
+    var q1 = [
         'Select  @numero:=@numero+1 as id, idStkRubro, StkRubroCodGrp, StkRubroDesc, StkItems.idStkItems,  StkGrupo.StkGrupoDesc as GrupoDesc, ',
         'StkItemsDesc, BasesGenerales.Proveedores.ProveedoresDesc, StkRubroPresDes, StkRubroAncho, StkRubroPres, ',
         'StkItemsMin, StkItemsMax, StkItemsCantidad, StkItemsCantDisp, StkRubroUM, ',
@@ -34,10 +33,9 @@ router.get("/", function (req, res, next) {
         "and StkItemsRubroAbr = '" + StkRubroAbr + "'",
         "and StkRubroAbr = '" + StkRubroAbr + "'",
         'order by StkRubroCodGrp, idStkRubro ',
-        // "Select * from StkItems where StkItemsRubroAbr = '" + StkRubroAbr + "'",
 
     ].join(" ");
-    conexion.query(q, function (err, result) {
+    conexion.query(q1, function (err, result) {
         if (err) {
             console.log(err);
         } else {

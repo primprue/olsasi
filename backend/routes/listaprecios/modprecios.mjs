@@ -1,6 +1,6 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
+
 import conexion from '../conexion.mjs';
 
 
@@ -18,7 +18,7 @@ router.post('/', async function (req, res, next) {
 
     var compbody, compmysql
     var d = new Date();
-    finalDate = d.toISOString().split("T")[0];
+    var finalDate = d.toISOString().split("T")[0];
 
     if (req.body.idProveedores != 0) {
         compbody = req.body.idProveedores
@@ -45,7 +45,7 @@ router.post('/', async function (req, res, next) {
         ].join('')
     }
     else {
-        var q = ['UPDATE StkRubro SET',
+        q = ['UPDATE StkRubro SET',
             ' StkRubroFecha = "',
             finalDate,
             '", StkRubroCosto = StkRubroCosto + ',

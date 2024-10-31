@@ -1,7 +1,7 @@
 import express from 'express';
 
 var router = express.Router();
-import path from 'path';
+
 import conexion from '../conexion.mjs';
 
 conexion.connect(function (err) {
@@ -32,7 +32,6 @@ router.get('/', (req, res, next) => {
       let totalreg = datosrec.length
 
       datosrec.map(datos => {
-        //  cantidad = datos.cantidad;
         tipomecanismo = datos.tipomecanismo;
         stkrubroabrtbr = datos.stkrubroabrtbr;
         StkRubroAbrP = datos.StkRubroAbr;

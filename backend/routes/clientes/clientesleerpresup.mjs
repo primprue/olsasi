@@ -19,13 +19,10 @@ conexion.connect(function (err) {
 
 
 router.get('/', function (req, res, next) {
-    //as StkTipoProveedDesc
-    // en el mysql tuve que cambiar la clave foránea porque no me permitía cambiar el tipodeproveedor en la tabla proveedores
     const q = [
         'SELECT',
         ' idClientes as PresupEncabCliente, ClientesDesc ',
         '  FROM BasesGenerales.Clientes ',
-        // ' where BasesGenerales.Clientes.ClientesTipo = BasesGenerales.SubRubros.idSubRubro ',
         ' order by ClientesDesc',
 
     ].join(' ');

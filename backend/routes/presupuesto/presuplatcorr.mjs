@@ -15,7 +15,9 @@ var datosenvio = []
 router.get('/', (req, res, next) => {
   var q, i = 0
   var coeficiente = 0, cantidad = 0, StkRubroAbrP = '', largo = 0.00, ancho = 0.00, paniotirasi5070 = 0.00
-
+  var datosrec, totalreg, cantHeb, detallep, ivasn, tipoheb, cantCarro, cantPlaca
+  var tipoplaca, tipocarro, colocacion, largocalc, coefMOT, valorMOTmin, MOTarmado, detalle
+  var valorheb, valorplaheb, valorind, valcarro, valorplaca, valortela
   q = ['select * from BasePresup.PresupParam'].join(' ')
   conexion.query(q,
     function (err, result) {

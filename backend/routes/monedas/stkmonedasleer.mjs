@@ -1,6 +1,6 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
+
 import conexion from '../conexion.mjs';
 
 conexion.connect(function (err) {
@@ -15,7 +15,6 @@ conexion.connect(function (err) {
 
 
 router.get('/', function (req, res, next) {
-    // var q = ['Select * from StkMonedas ' ].join(' ')
     var q = ['Select idStkMonedas  as id, StkMonedasDescripcion, StkMonedasCotizacion, StkMonedasSigno from StkMonedas '].join(' ')
     conexion.query(q,
         function (err, result) {

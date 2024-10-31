@@ -1,6 +1,6 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
+
 import conexion from '../conexion.mjs';
 
 conexion.connect(function (err) {
@@ -61,7 +61,6 @@ router.get('/', (req, res, next) => {
             //corte de la tela 120 segundos por paño independiente del largo
 
             //unión de los paños 150 segundos por metro de soldadura
-            // if (datos.minmay == 'my' || StkRubroAbrP == 'PLURI') {
             valorMOTmup = result[0].costoMOT * coefMOT / 60 / 60 * result[0].segsolpu
             valorMOTcorte = result[0].costoMOT * coefMOT / 60 / 60 * result[0].segpurecorte
 

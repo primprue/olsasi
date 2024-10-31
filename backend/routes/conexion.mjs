@@ -1,5 +1,4 @@
 import mysql from "mysql";
-import express from "express";
 
 var conexion = mysql.createConnection({
   // user: "root",
@@ -11,9 +10,6 @@ var conexion = mysql.createConnection({
   database: "BaseStock",
   port: 3306
 });
-//var ip = 'localhost';
-console.log('conexion ', conexion)
 
 export default conexion;
 
-// ignorado

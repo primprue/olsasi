@@ -1,8 +1,7 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
+
 import conexion from '../conexion.mjs';
-import mysql from 'mysql';
 
 conexion.connect(function (err) {
     if (!err) {

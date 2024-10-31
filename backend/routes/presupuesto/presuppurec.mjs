@@ -1,6 +1,6 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
+
 import conexion from '../conexion.mjs';
 
 conexion.connect(function (err) {
@@ -14,8 +14,8 @@ conexion.connect(function (err) {
 var datosenvio = []
 
 router.get('/', (req, res, next) => {
-  var q, i = 0
-  var coeficiente = 0, cantidad = 0.00, StkRubroAbrP = '', largo = 0, valorMOTmup = 0.00, impunion = 0.00, imprecorte = 0.00, impcorte = 0.00, importeMOTtotal = 0.00, coefMOT = 0.00
+  var q = '', i = 0, detallep = '', ivasn = '', q2 = '', valorMOTmup = 0.00, impunion = 0.00, imprecorte = 0.00, impcorte = 0.00, importeMOTtotal = 0.00, coefMOT = 0.00
+  var coeficiente = 0, cantidad = 0.00, StkRubroAbrP = '', largo = 0, valorMOTrecorte = 0.00, valorMOTcorte = 0.00, callargo = 0, anchoreal = 0, detalle = ''
   q = ['select * from BasePresup.PresupParam'].join(' ')
   conexion.query(q,
     function (err, result) {
@@ -24,8 +24,8 @@ router.get('/', (req, res, next) => {
       }
 
 
-      datosrec = JSON.parse(req.query.datoscalculo)
-      totalreg = datosrec.length
+      var datosrec = JSON.parse(req.query.datoscalculo)
+      var totalreg = datosrec.length
 
       datosrec.map(datos => {
         cantidad = datos.cantidad;
@@ -52,12 +52,10 @@ router.get('/', (req, res, next) => {
             }
             var anchotela = result2[0].anchotela
 
-            // if (datos.minmay == 'my' || StkRubroAbrP == 'PLURI') {
             valorMOTmup = result[0].costoMOT * coefMOT / 60 / 60 * result[0].segsolpu
             valorMOTrecorte = result[0].costoMOT * coefMOT / 60 / 60 * result[0].segpurecorte
             valorMOTcorte = result[0].costoMOT * coefMOT / 60 / 60 * result[0].segpurecorte
             if ((cantidad - Math.trunc(cantidad)) > 0) {
-              // impunion = ((((Math.trunc(cantidad))) * largo + 0.75)) * valorMOTmup
               impunion = ((((Math.trunc(cantidad))) * largo + (anchotela / 2))) * valorMOTmup
               impcorte = (cantidad + 1) * valorMOTcorte
             }
@@ -69,18 +67,11 @@ router.get('/', (req, res, next) => {
 
             imprecorte = largo * valorMOTrecorte
             importeMOTtotal = impunion + imprecorte + impcorte
-            // }
-            // if (datos.minmay == 'mn')
-            // else {
-
-            //   importeMOTtotal = 0
-            // }
             q = ['Select',
               'StkRubroDesc, StkRubroAbr, ',
               '(((StkRubroCosto * StkMonedasCotizacion * ', coeficiente, ')',
               ' * ', cantidad,
               ' * ', largo, ' ) + ' + importeMOTtotal + ') as ImpUnitario, ',
-              // ' * ', largo, ' ) + ' + importeMOTtotal + ') as ImpItem, ',
               'StkRubroAncho as Ancho, ',
               'StkRubroCosto,',
               'StkMonedasCotizacion ',
@@ -96,19 +87,13 @@ router.get('/', (req, res, next) => {
                   console.log(err)
                 }
                 else {
-                  // if (ivasn == 'CIVA') {
-                  //   result[0].ImpUnitario = result[0].ImpUnitario.toFixed(0)
-                  // }
-                  // else {
-                  //   result[0].ImpUnitario = result[0].ImpUnitario.toFixed(0) / 1.21
-                  // }
+
                   if (ivasn == 'CIVA') {
                     result[0].ImpUnitario = Math.ceil(result[0].ImpUnitario.toFixed(0) / 10) * 10
                   }
                   else {
                     result[0].ImpUnitario = Math.ceil(result[0].ImpUnitario.toFixed(0) / 1.21 / 10) * 10
                   }
-                  // result[0].ImpUnitario = result[0].ImpUnitario.toFixed(0)
                   callargo = cantidad * result[0].Ancho
                   anchoreal = (largo * 1).toFixed(2)
                   if (detallep == '') {
@@ -118,7 +103,6 @@ router.get('/', (req, res, next) => {
                     detalle = detallep + ' '
                   }
 
-                  // result[0].Detalle = "Paños Unidos de ( " + callargo.toFixed(2) + ' x ' + anchoreal + " )  Recortados en : "
                   result[0].Detalle = detalle
                   result[0].Largo = anchoreal
                   result[0].Ancho = 0

@@ -14,10 +14,7 @@ conexion.connect(function (err) {
 
 
 router.get('/', function (req, res) {
-    // router.get('/?:id', function (req, res, next) {
-    // var q = ['Select * from StkMonedas where idStkMonedas = "' + indice + '"'].join(' ')
     var q = ['Select StkMonedasCotizacion / 1.13 as DolDiv from StkMonedas where idStkMonedas = "DLS"'].join(' ')
-    console.log('q de stkmonedaslee   ', q)
     conexion.query(q,
         function (err, result) {
             if (err) {
@@ -26,8 +23,6 @@ router.get('/', function (req, res) {
                 res.json(result);
             }
         });
-
-
 });
 conexion.end;
 export default router;

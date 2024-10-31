@@ -1,6 +1,6 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
+
 import conexion from '../conexion.mjs';
 
 
@@ -11,10 +11,6 @@ conexion.connect(function (err) {
         console.log("no se conecto en stktipoproveedleer");
     }
 });
-
-
-
-
 
 
 router.get('/', function (req, res, next) {

@@ -1,6 +1,6 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
+
 import conexion from '../conexion.mjs';
 
 
@@ -19,8 +19,7 @@ conexion.connect(function (err) {
 
 
 router.get('/', async function (req, res) {
-    indice = req.query.id;
-    //  'SELECT idProveedores, ProveedoresDesc, ProveedoresTipo, ProveedoresCUIT, ProveedoresCalle, ProveedoresNroCalle, ProveedoresPiso, ProveedoresDto, ProveedoresCodPos, ProveedoresLoc, ProveedoresPcia, ProveedoresTel, ProveedoresContacto, ProveedoresMail, ProveedoresWeb, ProveedoresCodMon FROM BasesGenerales.Proveedores where idProveedores = ' + indice,
+    var indice = req.query.id;
     var q = ['SELECT * FROM BasesGenerales.Proveedores where idProveedores = ' + indice].join(' ')
     conexion.query(q,
         function (err, result) {

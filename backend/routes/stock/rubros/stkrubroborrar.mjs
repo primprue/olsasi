@@ -13,8 +13,8 @@ conexion.connect(function (err) {
 });
 
 router.all("/", async function (req, res, next) {
-  idStkRubro = req.query.idStkRubro;
-  StkRubroCodGrp = req.query.StkRubroCodGrp;
+  var idStkRubro = req.query.idStkRubro;
+  var StkRubroCodGrp = req.query.StkRubroCodGrp;
   var q = [
     "delete from StkRubro where idStkRubro = ",
     idStkRubro,

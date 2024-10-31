@@ -1,8 +1,7 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
+
 import conexion from '../conexion.mjs';
-//var param = require('../parametros')
 
 conexion.connect(function (err) {
   if (!err) {
@@ -23,10 +22,10 @@ router.get('/', (req, res, next) => {
       if (err) {
         console.log(err);
       }
-      datosrec = JSON.parse(req.query.datoscalculo)
+      var datosrec = JSON.parse(req.query.datoscalculo)
 
-      totalreg = datosrec.length
-      ivasn = datosrec[0].ivasn;
+      var totalreg = datosrec.length
+      var ivasn = datosrec[0].ivasn;
       datosrec.map((datos) => {
         cantidad = datos.cantidad;
         StkRubroAbrP = datos.StkRubroAbr;
@@ -67,16 +66,7 @@ router.get('/', (req, res, next) => {
                 result[0].ImpItem = result[0].ImpItem.toFixed(0) / 1.21
                 result[0].ImpUnitario = result[0].ImpUnitario.toFixed(0) / 1.21
               }
-              // if (ivasn == 'CIVA') {
-              //   result[0].ImpItem = result[0].ImpItem.toFixed(0)
-              //   result[0].ImpUnitario = result[0].ImpUnitario.toFixed(0)
-              // }
-              // else {
-              //   result[0].ImpItem = result[0].ImpItem.toFixed(0) / 1.21
-              //   result[0].ImpUnitario = result[0].ImpUnitario.toFixed(0) / 1.21
-              // }
-              // result[0].ImpItem = result[0].ImpItem.toFixed(0)
-              // result[0].ImpUnitario = result[0].ImpUnitario.toFixed(0)
+
               result[0].Detalle = ""
               result[0].Largo = 0
               result[0].Ancho = 0

@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -15,14 +15,15 @@ conexion.connect(function (err) {
 
 
 router.get("/?:cuallee", function (req, res, next) {
-  cuallee = req.params.cuallee;
+  var cuallee = req.params.cuallee;
   //en cuallee trae 'S' si el tipo de presupuesto solicitado es de confección, trae 'T' si es Unidad
   // trae 'D' de detalles para la orden de trabajo p.e. Soga Chicotes, etc.
+  var q = "";
   if (cuallee === 'T') {
-    var q = ["Select StkRubroDesc, StkRubroAbr from StkRubro order by StkRubroDesc"].join("");
+    q = ["Select StkRubroDesc, StkRubroAbr from StkRubro order by StkRubroDesc"].join("");
   }
   else {
-    var q = ["Select StkRubroDesc, StkRubroAbr from StkRubro where StkRubroConf = '" + cuallee + "' order by StkRubroDesc"].join("");
+    q = ["Select StkRubroDesc, StkRubroAbr from StkRubro where StkRubroConf = '" + cuallee + "' order by StkRubroDesc"].join("");
   }
   conexion.query(q, function (err, result) {
     if (err) {

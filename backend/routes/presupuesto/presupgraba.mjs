@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import moment from "moment";
 import conexion from '../conexion.mjs';
 import { Console } from "console";
@@ -20,7 +20,7 @@ conexion.connect(function (err) {
 
 router.all("/", async function (req, res) {
   var d = new Date();
-  finalDate = d.toISOString().split("T")[0];
+  var finalDate = d.toISOString().split("T")[0];
   var cliente = ''
   var i = 0;
 

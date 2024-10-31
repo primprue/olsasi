@@ -1,9 +1,8 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../conexion.mjs";
 
-//var mysql = require('mysql');
 import moment from 'moment';
 
 moment.locale('es');
@@ -18,9 +17,7 @@ conexion.connect(function (err) {
 });
 
 router.post("/?:id", function (req, res) {
-  //var indice = req.params.id;
   var d = new Date();
-  var finalDate = d.toISOString().split("T")[0];
   var indice = req.params.id;
   var cliendesc = req.body.ClientesDesc;
   var cliendomicilio = req.body.ClientesDomicilio;

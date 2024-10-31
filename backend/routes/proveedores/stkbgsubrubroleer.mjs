@@ -1,6 +1,6 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
+
 import conexion from '../conexion.mjs';
 
 
@@ -13,13 +13,8 @@ conexion.connect(function (err) {
 });
 
 
-
-
-
-
 router.get('/', function (req, res, next) {
     conexion.query('Select idSubRubro as value, SubRubroDetalle as label from BasesGenerales.SubRubros ',
-        // conexion.query('Select idSubRubro as value, SubRubroDetalle as text  from BasesGenerales.SubRubros ',
         function (err, result) {
             if (err) {
                 console.log(err);

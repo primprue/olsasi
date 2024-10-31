@@ -1,6 +1,6 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
+
 import conexion from '../conexion.mjs';
 //var param = require('../parametros')
 
@@ -16,7 +16,7 @@ var datosenvio = []
 
 router.get('/', (req, res, next) => {
   var q, i = 0
-  var coeficiente = 0, cantidad = 0, StkRubroAbrP = ''
+  var cantidad = 0, StkRubroAbrP = '', datosrec, totalreg, ivasn
   q = ['select * from BasePresup.PresupParam'].join(' ')
   conexion.query(q,
     function (err, result) {
@@ -42,8 +42,6 @@ router.get('/', (req, res, next) => {
               console.log(err)
             }
             else {
-              // result[0].ImpItem = datos.largo;
-              // result[0].ImpUnitario = datos.largo;
               result[0].ImpItem = datos.importe;
               result[0].ImpUnitario = datos.importe;
               if (StkRubroAbrP === 'PUNT') {
@@ -53,7 +51,6 @@ router.get('/', (req, res, next) => {
               }
               result[0].Largo = 0
               result[0].Ancho = 0
-              // result[0].MDesc = 'S'
               datosenvio.push(result)
               i++
               if (i === totalreg) {

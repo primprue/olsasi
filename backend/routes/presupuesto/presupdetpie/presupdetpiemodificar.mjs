@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -11,21 +11,15 @@ conexion.connect(function (err) {
   }
 });
 
-
-
 router.post("/", async function (req, res, next) {
-  indice = req.query.id;
-  PresupDetPieLeyenda = req.body.PresupDetPieLeyenda
-  // PresupDetPieSelec = req.body.PresupDetPieSelec.toUpperCase();
+  var indice = req.query.id;
+  var PresupDetPieLeyenda = req.body.PresupDetPieLeyenda
   var q = [
     'UPDATE BasePresup.PresupDetPie SET PresupDetPieLeyenda = "' +
     PresupDetPieLeyenda +
-    // '", PresupDetPieSelec = "' +
-    // PresupDetPieSelec +
     '" WHERE idPresupDetPie = ' +
     indice
   ];
-  // .join(" ");
   conexion.query(q[0], function (err, result) {
     if (err) {
       if (err.errno == 1062) {

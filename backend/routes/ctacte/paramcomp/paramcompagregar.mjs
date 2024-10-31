@@ -1,13 +1,12 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
+
 import moment from 'moment';
 import conexion from '../../conexion.mjs';
 
 
 moment.locale('es');
 
-//router = express();
 conexion.connect(function (err) {
     if (!err) {
         console.log("base de datos conectada en paramcompagregar");
@@ -20,7 +19,6 @@ conexion.connect(function (err) {
 
 router.post('/', function (req, res, next) {
     var registro = {
-        // idParamComp: req.body.idParamComp,
         ParamCompLetra: req.body.ParamCompLetra,
         ParamCompAbrev: req.body.ParamCompAbrev,
         ParamCompSuc: req.body.ParamCompSuc,
@@ -51,7 +49,7 @@ router.post('/', function (req, res, next) {
 
             else {
                 res.json(result.rows);
-            };
+            }
         });
 });
 

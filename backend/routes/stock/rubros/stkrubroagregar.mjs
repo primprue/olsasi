@@ -2,7 +2,6 @@ import express from "express";
 var router = express.Router();
 import moment from "moment";
 import conexion from "../../conexion.mjs";
-// import gencodrubro from "./stkgennrorubro.mjs";
 import { buscacodigo } from './stkgennrorubro.mjs';
 
 moment.locale("es");
@@ -16,9 +15,6 @@ conexion.connect(function (err) {
 });
 
 router.all("/", async function (req, res) {
-  //router.post("/", function (req, res) {
-  // codgrupo = req.query.id;
-  // ultnrorubro.codigorubronuevo(codgrupo)
   let codgrupo
   let codrubro = req.body.StkRubroCodGrp;
   var d = new Date();
@@ -57,9 +53,8 @@ router.all("/", async function (req, res) {
       }
     } else {
       res.json(result);
-      // return res.status(200).send({message : "Todo OK"});
+
     }
-    // if (req.body.ItemsSN === 'N') {
     var registro1 = {
       idStkItems: 1,
       StkItemsGrupo: req.body.StkRubroCodGrp,
@@ -71,8 +66,6 @@ router.all("/", async function (req, res) {
       StkItemsFAct: finalDate,
       StkItemsMin: 1,
       StkItemsMax: 2
-      // StkItemsMin: req.body.StkItemsMin,
-      // StkItemsMax: req.body.StkItemsMax
     };
     conexion.query("INSERT INTO StkItems SET ?", registro1, function (
       err,

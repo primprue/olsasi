@@ -1,10 +1,7 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
-import conexion from "../conexion.mjs";
-//var mysql = require('mysql');
 
-//   
+import conexion from "../conexion.mjs";
 conexion.connect(function (err) {
   if (!err) {
     console.log("base de datos conectada en transportemodificar");
@@ -12,7 +9,6 @@ conexion.connect(function (err) {
     console.log("no se conecto en transportemodificar");
   }
 });
-
 
 
 router.post("/?:id", function (req, res) {

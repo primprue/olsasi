@@ -13,8 +13,8 @@ conexion.connect(function (err) {
 
 router.all("/", async function (req, res, next) {
 
-  idStkUbFisica1 = req.query.idStkUbFisica;
-  StkUbFisicaGeo1 = req.query.StkUbFisicaGeo;
+  var idStkUbFisica1 = req.query.idStkUbFisica;
+  var StkUbFisicaGeo1 = req.query.StkUbFisicaGeo;
   conexion.query(
     'delete from StkUbFisica where idStkUbFisica = "' +
     idStkUbFisica1 +

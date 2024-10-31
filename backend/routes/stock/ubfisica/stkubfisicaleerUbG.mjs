@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -14,7 +14,7 @@ conexion.connect(function (err) {
 
 
 router.get("/?:StkUbFisicaGeo", function (req, res, next) {
-  indice = req.params.StkUbFisicaGeo;
+  var indice = req.params.StkUbFisicaGeo;
 
   conexion.query(
     'Select * from StkUbFisica  where StkUbFisicaGeo = "' + indice + '" order by idStkUbFisica ',

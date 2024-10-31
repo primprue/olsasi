@@ -1,17 +1,9 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
-
-/*
-idStkItems
-*/
-
-
 
 
 
 router.post('/', async function (req, res, next) {
-  //?:id/?:id2
 
   var cant = req.body.cant;
   var larg = req.body.larg;

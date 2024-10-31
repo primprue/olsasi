@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import path from "path";
+
 import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
@@ -11,13 +11,11 @@ conexion.connect(function (err) {
   }
 });
 
-
-
 router.post("/", async function (req, res, next) {
-  indice = req.query.id;
-  descr = req.body.StkGrupoDesc.toUpperCase();
-  abrev = req.body.StkGrupoAbr;
-  contRubro = req.body.StkGrupoContRubro;
+  var indice = req.query.id;
+  var descr = req.body.StkGrupoDesc.toUpperCase();
+  var abrev = req.body.StkGrupoAbr;
+  var contRubro = req.body.StkGrupoContRubro;
 
   var q = [
     'UPDATE StkGrupo SET StkGrupoDesc = "' +
@@ -30,7 +28,6 @@ router.post("/", async function (req, res, next) {
     indice +
     '"',
   ];
-  // .join(" ");
   conexion.query(q[0], function (err, result) {
     if (err) {
       if (err.errno == 1062) {

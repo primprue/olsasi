@@ -1,8 +1,7 @@
 import express from 'express';
 var router = express.Router();
-import path from 'path';
-import conexion from '../conexion.mjs';
 
+import conexion from '../conexion.mjs';
 
 conexion.connect(function (err) {
     if (!err) {
@@ -12,21 +11,12 @@ conexion.connect(function (err) {
     }
 });
 
-
-
-
-
-
-
 router.post('/?:id', function (req, res, next) {
     var indice = req.params.id;
-
     var descr = req.body.StkMonedasDescripcion.toUpperCase();
     var cotiz = req.body.StkMonedasCotizacion;
     var signo = req.body.StkMonedasSigno;
-    /*
-    'UPDATE StkMonedas SET StkMonedasDescripcion = "' + descr + '", StkMonedasCotizacion = ' + cotiz + ' WHERE idStkMonedas = "' + indice + '"'
-    */
+
     var q = ['UPDATE StkMonedas SET ',
         'StkMonedasDescripcion = "' + descr + '",',
         'StkMonedasCotizacion = ' + cotiz + ',',
