@@ -17,6 +17,6 @@ export const stkrubroleeconf = (cuallee) => {
 				.catch((err) =>
 					console.log("codigo de error stkrubroleeconf que no es error", err)
 				);
-		}, 500);
+		}, 300);
 	});
 };

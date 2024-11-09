@@ -36,6 +36,6 @@ export function ParamCompAgregar(props) {
 					MuestraMensaje(res);
 				})
 				.catch((err) => MuestraMensaje(err));
-		}, 500);
+		}, 300);
 	});
 }

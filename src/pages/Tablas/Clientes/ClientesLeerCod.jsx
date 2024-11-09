@@ -18,5 +18,5 @@ export function clientesleercod(props) {
 				})
 				.catch((err) => MuestraMensaje(err));
 		});
-	}, 500);
+	}, 300);
 }

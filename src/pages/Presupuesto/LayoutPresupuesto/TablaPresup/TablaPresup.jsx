@@ -30,7 +30,6 @@ export default function TablaPresup(props) {
 	const [ppreview, setPPreview] = useState({ ppreview: false });
 	const [filacuatro, setFilacuatro] = useState({ filacuatro: false });
 	const [columns, setColumns] = useState([]);
-
 	async function columnsFetch() {
 		var col = await llenarcolumns();
 		setColumns(() => col);

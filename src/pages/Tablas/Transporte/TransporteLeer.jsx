@@ -15,6 +15,6 @@ export function leerTransporte() {
 					resolve(transporte);
 				})
 				.catch((err) => MuestraMensaje(err));
-		}, 500);
+		}, 300);
 	});
 }

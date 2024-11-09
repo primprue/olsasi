@@ -5,8 +5,6 @@ export async function llenarcolumnschicotes() {
 function columnsFill() {
 	return new Promise(function (resolve) {
 		resolve([
-			// {headerName: 'id', field: 'id'},
-
 			{
 				field: 'cantchicote',
 				headerName: 'Cant',

@@ -12,6 +12,6 @@ export const formdata = {
   StkItemsMin: 0.00,
   StkItemsMax: 0.00,
   datoserroneos: true,
-  tablabase: 'Items',
+  tablabase: 'StkItems',
 
 }

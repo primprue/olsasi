@@ -39,6 +39,9 @@ import { ParamCompModificar } from "../pages/CtasCtes/Tablas/ParamComp/ParamComp
 import { OTCondPagoLeer } from "../pages/Tablas/OTCondPago/OTCondPagoLeer.jsx";
 import { OTCondPagoModificar } from "../pages/Tablas/OTCondPago/OTCondPagoModificar.jsx";
 
+import { PBRubrosLee } from "../pages/Tablas/PBRubros/PBRubrosLee.jsx";
+import { PBRubrosModificar } from "../pages/Tablas/PBRubros/PBRubrosModificar.jsx";
+
 // import { TablaMuestraRenglon } from "../pages/Presupuesto/LayoutPresupuesto/PresupMuestra/TablaMuestraRenglon/index.jsx";
 // import { presupDatos } from "../pages/Presupuesto/LayoutPresupuesto/PresupMuestra/presupDatos.jsx";
 import { useState } from "react";
@@ -129,15 +132,15 @@ export default function TablaMuestra(props) {
 			const data = await proveedoresleer();
 			setRows(data);
 		}
-		if (formdatos.tablabase === "Grupos") {
+		if (formdatos.tablabase === "StkGrupos") {
 			const data = await stkgrupolee();
 			setRows(data);
 		}
-		if (formdatos.tablabase === "Rubros") {
+		if (formdatos.tablabase === "StkRubros") {
 			const data = await stkrubroleermezcla();
 			setRows(data);
 		}
-		if (formdatos.tablabase === "Items") {
+		if (formdatos.tablabase === "StkItems") {
 			const data = await leeStkItemsDetalles();
 			setRows(data);
 		}
@@ -161,8 +164,8 @@ export default function TablaMuestra(props) {
 			setRows(data);
 		}
 
-		if (formdatos.tablabase === "OTCondPago") {
-			const data = await OTCondPagoLeer();
+		if (formdatos.tablabase === "PBRubros") {
+			const data = await PBRubrosLee();
 			setRows(data);
 		}
 	}
@@ -176,7 +179,7 @@ export default function TablaMuestra(props) {
 	const handleAlta = () => {
 		setNombreBoton("Enviar");
 		setTituloDial(
-			`Alta de ${formdatos.tablabase} (moverse por los campos con enter o tab)`
+			`Alta de ${formdatos.tablabase} (moverse por los campos con tab)`
 		);
 		setOpen(true);
 	};
@@ -190,13 +193,13 @@ export default function TablaMuestra(props) {
 				PresupConfTipoModificar(params);
 			if (formdatos.tablabase === "PresupDetPie") PresupDetPieModificar(params);
 			if (formdatos.tablabase === "Proveedores") ProveedoresModificar(params);
-			if (formdatos.tablabase === "Grupos") StkGrupoModificar(params);
-			if (formdatos.tablabase === "Rubros") StkRubroModificar(params);
-			if (formdatos.tablabase === "Items") StkItemsModificar(params);
+			if (formdatos.tablabase === "StkGrupos") StkGrupoModificar(params);
+			if (formdatos.tablabase === "StkRubros") StkRubroModificar(params);
+			if (formdatos.tablabase === "StkItems") StkItemsModificar(params);
 			if (formdatos.tablabase === "UniMedidas") StkUnMedModificar(params);
 			if (formdatos.tablabase === "ParamComp") ParamCompModificar(params);
 			if (formdatos.tablabase === "OTCondPago") OTCondPagoModificar(params);
-
+			if (formdatos.tablabase === "PBRubros") PBRubrosModificar(params);
 			relee();
 		}, 100);
 	};
@@ -272,12 +275,12 @@ export default function TablaMuestra(props) {
 						/>
 					</React.Fragment>
 				)) || (
-					<PreviewTwoToneIcon
-						onClick={() => handleModifica(rowsel.id)}
-						className={estilotabla.iconomodificar}
-						titleAccess="Ve datos Presupuesto"
-					/>
-				)}
+						<PreviewTwoToneIcon
+							onClick={() => handleModifica(rowsel.id)}
+							className={estilotabla.iconomodificar}
+							titleAccess="Ve datos Presupuesto"
+						/>
+					)}
 				<LocalPrintshopRoundedIcon
 					onClick={() => setImprimirTF(true)}
 					className={estilotabla.iconoimpresora}

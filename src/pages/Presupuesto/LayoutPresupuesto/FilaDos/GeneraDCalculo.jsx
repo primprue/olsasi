@@ -106,5 +106,12 @@ export const GeneraDCalculo = (props, presuptipo, cotidivisa) => {
 		objetoModificado.stkrubroabrtbr = props.StkRubroAbrTBR;
 		objetoModificado.altovolado = props.AltoVolado;
 	}
+
+	if (presuptipo === "PAÑO UNIDO") {
+		objetoModificado.veces = props.PresupVeces;
+	}
+	if (presuptipo === "PAÑO UNI. RECORTADO") {
+		objetoModificado.veces = 1;
+	}
 	return objetoModificado;
 };

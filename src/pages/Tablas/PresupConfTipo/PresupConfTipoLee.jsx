@@ -16,6 +16,6 @@ export function PresupConfTipoLee() {
 					//.catch() //Todo: agregar el catch error.
 				})
 				.catch((err) => MuestraMensaje(err));
-		}, 500);
+		}, 300);
 	});
 }

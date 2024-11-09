@@ -2,18 +2,16 @@ import request from "superagent";
 import IpServidor from "../../VariablesDeEntorno";
 import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 
-export function StkGruposAgregar(props) {
+export function PBRubrosAgregar(props) {
 	return new Promise(function () {
 		setTimeout(() => {
-			const { StkGrupoAbr, StkGrupoDesc } = props;
+			const { PBRubrosDetalle } = props;
 
-			const url = IpServidor + "/stkgrupoagregar";
+			const url = IpServidor + "/pbrubrosagregar";
 			request
 				.post(url)
 				.set("Content-Type", "application/json")
-				.send({ StkGrupoDesc: StkGrupoDesc })
-				.send({ StkGrupoAbr: StkGrupoAbr })
-				.send({ StkGrupoContRubro: 0 }) // Esto va a ser Cero inicialmente.
+				.send({ PBRubrosDetalle: PBRubrosDetalle })
 				.set("X-API-Key", "foobar")
 				.then((res) => {
 					MuestraMensaje(res);

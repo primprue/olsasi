@@ -27,6 +27,6 @@ export function StkMonedasAgregar(props) {
 					MuestraMensaje(res);
 				})
 				.catch((err) => MuestraMensaje(err));
-		}, 500);
+		}, 300);
 	});
 }

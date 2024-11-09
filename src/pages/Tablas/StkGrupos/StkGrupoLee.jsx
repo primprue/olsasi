@@ -15,6 +15,6 @@ export const stkgrupolee = (_) => {
 					resolve(stkgrupo);
 				})
 				.catch((err) => MuestraMensaje(err));
-		}, 500);
+		}, 300);
 	});
 };

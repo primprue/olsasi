@@ -17,5 +17,5 @@ export function ClientesLeerOT() {
 				})
 				.catch((err) => MuestraMensaje(err));
 		});
-	}, 500);
+	}, 300);
 }

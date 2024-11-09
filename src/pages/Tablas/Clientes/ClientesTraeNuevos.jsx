@@ -16,5 +16,5 @@ export function clientestraeNuevos() {
 				})
 				.catch((err) => MuestraMensaje(err));
 		});
-	}, 500);
+	}, 300);
 }

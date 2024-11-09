@@ -34,7 +34,8 @@ export default function Reparacion() {
 	const [valora, setValorA] = useState(0)
 	const [rowSelectionModel, setRowSelectionModel] = useState([]);
 	//tabla que recepciona los parches elegidos
-	const [labeldecarga, setLabeldecarga] = useState('Largo')
+	const [segundolabel, setSegundoLabel] = useState('Largo')
+	const [primerlabel, setPrimerLabel] = useState('Largo')
 	const [titulodialogo, setTituloDialogo] = useState('')
 	const [eligechicotes, setEligeChicotes] = useState(false);
 	const [eligevarios, setEligeVarios] = useState(false);
@@ -396,14 +397,16 @@ export default function Reparacion() {
 		CalculaChicotes()
 		setEligeChicotes(true);
 		setPideSegundoValor(true)
-		setLabeldecarga('Largo')
+		setPrimerLabel('Cantidad')
+		setSegundoLabel('Largo')
 		setTituloDialogo('Ingreso de Chicotes')
 		setOpen(true);
 	}
 	const cargavarios = () => {
 		setEligeVarios(true);
 		setPideSegundoValor(true)
-		setLabeldecarga('Importe')
+		setPrimerLabel('Cantidad')
+		setSegundoLabel('Importe')
 		setTituloDialogo('Ingreso de Varios')
 		setOpen(true);
 	}
@@ -411,7 +414,8 @@ export default function Reparacion() {
 		BuscaValorHora()
 		setEligeMot1(true);
 		setPideSegundoValor(true)
-		setLabeldecarga('Importe')
+		setPrimerLabel('HH:MM Desde')
+		setSegundoLabel('HH:MM Hasta')
 		setTituloDialogo('Ingreso MOT 1Pers')
 		setOpen(true);
 	}
@@ -419,7 +423,8 @@ export default function Reparacion() {
 		BuscaValorHora()
 		setEligeMot2(true);
 		setPideSegundoValor(true)
-		setLabeldecarga('Importe')
+		setPrimerLabel('HH:MM Desde')
+		setSegundoLabel('HH:MM Hasta')
 		setTituloDialogo('Ingreso MOT 2Pers')
 		setOpen(true);
 	}
@@ -618,7 +623,8 @@ export default function Reparacion() {
 				inputValue2={inputValue2}
 				setInputValue2={setInputValue2}
 				pidesegundovalor={pidesegundovalor}
-				labeldecarga={labeldecarga}
+				primerlabel={primerlabel}
+				segundolabel={segundolabel}
 				botonRef={botonRef}
 				handleKeyDown={handleKeyDown}
 				handleConfirm={handleConfirm} />

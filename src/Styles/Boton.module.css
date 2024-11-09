@@ -184,8 +184,8 @@
 .botonfincargadatos {
 	font-size: 15px;
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
-	color: rgba(246, 250, 243, 0.945);
-	background-color: rgba(52, 133, 28, 0.76);
+	color: rgba(141, 247, 141, 0.945);
+	background-color: rgba(53, 133, 28, 0.651);
 	border-color: rgb(158, 248, 79);
 	display: flex;
 	margin: 14px;
@@ -194,11 +194,16 @@
 	padding: 2;
 
 }
-
+.botonfincargadatos:focus {
+	background-color: rgba(32, 85, 2, 0.986);
+	color: rgba(247, 248, 247, 0.952);
+	font-size: 16px;
+	padding: 2;
+}
 .botonfincargadatos:hover {
-	background-color: rgba(112, 224, 47, 0.438);
-	color: rgba(29, 75, 3, 0.945);
-	font-size: 15px;
+	background-color: rgba(32, 85, 2, 0.986);
+	color: rgba(255, 255, 255, 0.952);
+	font-size: 16px;
 	padding: 2;
 }
 
@@ -206,9 +211,9 @@
 .botoncierracargadatos {
 	font-size: 15px;
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
-	color: rgba(250, 240, 240, 0.945);
-	background-color: rgba(212, 5, 5, 0.363);
-	border-color: rgba(235, 23, 23, 0.5);
+	color: rgba(250, 243, 243, 0.952);
+	background-color: rgba(204, 5, 5, 0.527);
+	border-color: rgba(245, 5, 5, 0.274);
 	display: flex;
 	margin: 14px;
 	border: 14px;
@@ -216,10 +221,16 @@
 	padding: 2;
 
 }
+.botoncierracargadatos:focus {
+	background-color: rgb(245, 3, 3);
+	color: rgba(250, 243, 243, 0.952);
+	font-size: 16px;
+	padding: 2;
+}
 
 .botoncierracargadatos:hover {
-	background-color: rgba(212, 5, 5, 0.363);
-	color: rgba(248, 28, 12, 0.945);
-	font-size: 15px;
+	background-color: rgb(245, 3, 3);
+	color: rgba(252, 246, 246, 0.486);
+	font-size: 16px;
 	padding: 2;
 }

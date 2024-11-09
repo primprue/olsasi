@@ -15,5 +15,5 @@ export function leetipoprov() {
 				})
 				.catch((err) => MuestraMensaje(err));
 		});
-	}, 500);
+	}, 300);
 }

@@ -16,6 +16,6 @@ export function leeStkRubro() {
 				.catch((err) => {
 					MuestraMensaje(err);
 				});
-		}, 500);
+		}, 300);
 	});
 }

@@ -9,6 +9,8 @@ import { PresupDetPieAgregar } from "../pages/Tablas/PresupDetPie/PresupDetPieAg
 import { ClientesAgregar } from "../pages/Tablas/Clientes/ClientesAgregar";
 import { ParamCompAgregar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompAgregar";
 import { OTCondPagoAgregar } from "../pages/Tablas/OTCondPago/OTCondPagoAgregar";
+import { PBRubrosAgregar } from "../pages/Tablas/PBRubros/PBRubrosAgregar";
+import { stkItemsBuscaCod } from "../pages/Tablas/StkItems/StkItemsBuscaCod";
 export function onRowAdd(newData) {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -25,18 +27,19 @@ export function onRowAdd(newData) {
 
         TransporteAgregar(newData);
       }
-      if (newData.tablabase === 'Grupos') {
+      if (newData.tablabase === 'StkGrupos') {
         StkGruposAgregar(newData);
       }
-      if (newData.tablabase === 'Rubros') {
+      if (newData.tablabase === 'StkRubros') {
         StkRubroAgregar(newData);
       }
       if (newData.tablabase === 'UniMedidas') {
         StkUnMedAgregar(newData);
 
       }
-      if (newData.tablabase === 'Items') {
-        StkItemsAgregar(newData);
+      if (newData.tablabase === 'StkItems') {
+        // StkItemsAgregar(newData);
+        stkItemsBuscaCod(newData)
       }
       if (newData.tablabase === 'PresupDetPie') {
         PresupDetPieAgregar(newData);
@@ -45,10 +48,12 @@ export function onRowAdd(newData) {
         ParamCompAgregar(newData);
       }
       if (newData.tablabase === 'OTCondPago') {
-
         OTCondPagoAgregar(newData);
       }
+      if (newData.tablabase === 'PBRubros') {
+        PBRubrosAgregar(newData);
+      }
       resolve(50);
-    }, 500);
+    }, 100);
   });
 }

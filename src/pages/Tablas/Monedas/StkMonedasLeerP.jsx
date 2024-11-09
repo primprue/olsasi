@@ -15,6 +15,6 @@ export const leerStkMonedas = () => {
 					resolve(monedas);
 				})
 				.catch((err) => MuestraMensaje(err));
-		}, 500);
+		}, 300);
 	});
 };

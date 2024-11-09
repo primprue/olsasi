@@ -14,6 +14,6 @@ export function OTLeer() {
 					resolve(monedas);
 				})
 				.catch((err) => MuestraMensaje(err));
-		}, 500);
+		}, 300);
 	});
 }

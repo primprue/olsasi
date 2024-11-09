@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import React from 'react'
-const DialogoCarga = ({ open, handleClose, titulodialogo, inputRef, inputValue, setInputValue, inputRef2, inputValue2, setInputValue2, pidesegundovalor, labeldecarga, botonRef, handleKeyDown, handleConfirm }) => {
+const DialogoCarga = ({ open, handleClose, titulodialogo, inputRef, inputValue, setInputValue, inputRef2, inputValue2, setInputValue2, pidesegundovalor, primerlabel, segundolabel, botonRef, handleKeyDown, handleConfirm }) => {
 
     return (
         <Dialog open={open} onClose={handleClose} style={{ height: 350, width: '20%' }}>
@@ -10,7 +10,7 @@ const DialogoCarga = ({ open, handleClose, titulodialogo, inputRef, inputValue, 
                     inputRef={inputRef} // Asignar la referencia al campo de texto
                     autoFocus
                     margin="dense"
-                    label="Cantidad"
+                    label={primerlabel}
                     type="number"
                     fullWidth
                     value={inputValue}
@@ -22,7 +22,7 @@ const DialogoCarga = ({ open, handleClose, titulodialogo, inputRef, inputValue, 
                         inputRef={inputRef2} // Asignar la referencia al campo de texto
                         autoFocus
                         margin="dense"
-                        label={labeldecarga}
+                        label={segundolabel}
                         type="number"
                         fullWidth
                         value={inputValue2}

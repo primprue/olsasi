@@ -15,5 +15,5 @@ export function proveedoresleer(_) {
 				})
 				.catch((err) => MuestraMensaje(err));
 		});
-	}, 500);
+	}, 300);
 }

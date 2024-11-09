@@ -13,6 +13,6 @@ export const presuprenglonleer = (Presup) => {
 					const renglones = JSON.parse(res.text);
 					resolve(renglones);
 				});
-		}, 500);
+		}, 300);
 	});
 };

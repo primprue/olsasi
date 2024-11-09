@@ -18,5 +18,5 @@ export function ClientesLeerDesCod(props) {
 				})
 				.catch((err) => MuestraMensaje(err));
 		});
-	}, 500);
+	}, 300);
 }

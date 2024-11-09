@@ -47,6 +47,6 @@ export function stkProveedoresAgregar(props) {
 				.catch((err) => {
 					MuestraMensaje(err);
 				});
-		}, 500);
+		}, 300);
 	});
 }

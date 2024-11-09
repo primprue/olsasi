@@ -15,6 +15,6 @@ export const stkmonedasleerorig = () => {
 					resolve(monedas);
 				})
 				.catch((err) => MuestraMensaje(err));
-		}, 500);
+		}, 300);
 	});
 };

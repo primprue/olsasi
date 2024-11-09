@@ -14,6 +14,6 @@ export function ParamCompLeer() {
 					resolve(paramcomp);
 				})
 				.catch((err) => MuestraMensaje(err));
-		}, 500);
+		}, 300);
 	});
 }

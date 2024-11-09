@@ -18,5 +18,5 @@ export function clientesCobol() {
 				})
 				.catch((err) => MuestraMensaje(err));
 		});
-	}, 500);
+	}, 300);
 }

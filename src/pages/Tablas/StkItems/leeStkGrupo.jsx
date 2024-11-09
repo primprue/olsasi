@@ -16,6 +16,6 @@ export function leeStkGrupo(_) {
 				.catch((err) => {
 					MuestraMensaje(err);
 				});
-		}, 500);
+		}, 300);
 	});
 }

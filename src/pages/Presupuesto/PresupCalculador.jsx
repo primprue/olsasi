@@ -22,7 +22,6 @@ export const presupcalculador = (DatosPresupEleg, datoscalculo, tipo) => {
 		backend = DatosPresupEleg.PresupConfTipoBack;
 		url = IpServidor + backend + "/?datoscalculo=" + datoscalculo;
 	}
-
 	return new Promise((resolve, reject) => {
 		request
 			.get(url)

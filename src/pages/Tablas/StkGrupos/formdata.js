@@ -5,6 +5,6 @@ export const formdata = {
   StkGrupoDesc: '',
   StkGrupoContRubro: 0,
   datoserroneos: true,
-  tablabase: 'Grupos',
+  tablabase: 'StkGrupos',
 
 }

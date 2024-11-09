@@ -15,5 +15,5 @@ export function leeStkItemsDetalles() {
 				})
 				.catch((err) => MuestraMensaje(err));
 		});
-	}, 500);
+	}, 300);
 }

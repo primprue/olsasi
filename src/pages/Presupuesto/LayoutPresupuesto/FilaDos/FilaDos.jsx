@@ -45,8 +45,6 @@ export default function FilaDos() {
 	let labellargo = "Largo";
 	let labelancho = "Ancho";
 	const { inicializaPresup } = useContext(PresupPant);
-	console.log('state', state)
-	console.log('state.DatosPresupEleg.length ', state.DatosPresupEleg.length)
 	if (state.DatosPresupEleg.length !== 0) {
 		var largo = state.DatosPresupEleg[0].PresupConfTipoLargo;
 		var ancho = state.DatosPresupEleg[0].PresupConfTipoAncho;
@@ -166,7 +164,6 @@ export default function FilaDos() {
 			setDatosRenglon([...datosrenglon, datospresup[0]]);
 		}
 	}
-	const classes = styles;
 	const textdata = [
 		{
 			id: "StkRubroAbr",
@@ -201,7 +198,6 @@ export default function FilaDos() {
 			),
 		},
 	];
-	console.log('rubrosn ', rubrosn)
 	return (
 		<>
 			<Grid item>

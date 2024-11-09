@@ -14,6 +14,6 @@ export function OTEstadoLeer() {
 					resolve(otestado);
 				})
 				.catch((err) => MuestraMensaje(err));
-		}, 500);
+		}, 300);
 	});
 }

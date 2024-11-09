@@ -8,6 +8,7 @@ import { StkUnMedBorrar } from "../pages/Tablas/UnidadMedidas/StkUnMedBorrar";
 import { PresupDetPieBorrar } from "../pages/Tablas/PresupDetPie/PresupDetPieBorrar";
 import { ParamCompBorrar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompBorrar";
 import { OTCondPagoBorrar } from "../pages/Tablas/OTCondPago/OTCondPagoBorrar";
+import { PBRubrosBorrar } from "../pages/Tablas/PBRubros/PBRubrosBorrar";
 // import { PresupBorrar } from "../pages/Presupuesto/LayoutPresupuesto/PrespuConMod/PresupBorrar";
 export function onRowDelete(paramsid, newData) {
   return new Promise((resolve) => {
@@ -21,13 +22,13 @@ export function onRowDelete(paramsid, newData) {
       if (newData.tablabase === 'Transportes') {
         TransporteBorrar(paramsid);
       }
-      if (newData.tablabase === 'Grupos') {
+      if (newData.tablabase === 'StkGrupos') {
         StkGrupoBorrar(paramsid)
       }
-      if (newData.tablabase === 'Rubros') {
+      if (newData.tablabase === 'StkRubros') {
         StkRubroBorrar(paramsid)
       }
-      if (newData.tablabase === 'Items') {
+      if (newData.tablabase === 'StkItems') {
         StkItemsBorrar(paramsid)
       }
       if (newData.tablabase === 'UniMedidas') {
@@ -42,10 +43,10 @@ export function onRowDelete(paramsid, newData) {
       if (newData.tablabase === 'OTCondPago') {
         OTCondPagoBorrar(paramsid)
       }
-      // if (newData.tablabase === 'MuestraPresupuesto') {
-      //   PresupBorrar(paramsid)
-      // }
+      if (newData.tablabase === 'PBRubros') {
+        PBRubrosBorrar(paramsid)
+      }
       resolve(50);
-    }, 500);
+    }, 100);
   });
 }

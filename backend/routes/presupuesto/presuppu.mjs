@@ -21,16 +21,18 @@ router.get('/', (req, res, next) => {
   var detallep = '', ivasn = '', coefMOT = 0.00
   var detalle = ''
 
-
   q = ['select * from BasePresup.PresupParam'].join(' ')
   conexion.query(q,
     function (err, result) {
       if (err) {
         console.log(err);
       }
-
+      console.log('esta dentro de presuppu')
 
       let datosrec = JSON.parse(req.query.datoscalculo)
+
+
+
       let totalreg = datosrec.length
 
       datosrec.map(datos => {

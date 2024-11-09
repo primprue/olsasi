@@ -37,9 +37,11 @@ export function DialogoDatos(props) {
 				let valorresuelto = onRowDelete(paramsbor.id, formdatos);
 				setDatoborrado(valorresuelto);
 			}
-		}, 500);
+		}, 300);
 	};
-
+	const manejarCambio = (e) => {
+		formdatos[e.target.id] = e.target.value;
+	};
 	return (
 		<Dialog open={open} onClose={handleClose}>
 			<DialogTitle>{titulodial}</DialogTitle>
@@ -70,6 +72,7 @@ export function DialogoDatos(props) {
 											campo={columns[index].field}
 											pattern={columns[index].pattern}
 											alignitems={columns[index].alignItems}
+											onChange={manejarCambio}
 											onKeyDown={
 												!index === columns.slice(length) && { handleSubmit }
 											}
@@ -100,10 +103,7 @@ export function DialogoDatos(props) {
 						{/* <Grid container spacing={2} alignItems="center"> */}
 						<Button
 							type="submit"
-							// variant="outlined"
-							// ref={submitButtonRef}
 							className={estilos.botonfincargadatos}
-						//  sx={{ mt: 2 }}
 						>
 							{nombrebtn}
 						</Button>

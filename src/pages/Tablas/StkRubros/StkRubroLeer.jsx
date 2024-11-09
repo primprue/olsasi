@@ -14,6 +14,6 @@ export const stkrubroleer = () => {
 					resolve(rubros);
 				})
 				.catch((err) => MuestraMensaje(err));
-		}, 500);
+		}, 300);
 	});
 };

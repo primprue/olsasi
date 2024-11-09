@@ -45,6 +45,6 @@ export function ClientesAgregar(props) {
 					MuestraMensaje(res);
 				})
 				.catch((err) => MuestraMensaje(err));
-		}, 500);
+		}, 300);
 	});
 }

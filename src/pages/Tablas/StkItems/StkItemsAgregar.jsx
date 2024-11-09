@@ -2,8 +2,7 @@ import request from "superagent";
 import IpServidor from "../../VariablesDeEntorno";
 import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 
-export function StkItemsAgregar(props) {
-	// (newData, codigonuevo)
+export function StkItemsAgregar(newData, codigonuevo) {
 	return new Promise(function () {
 		setTimeout(() => {
 			const {
@@ -14,9 +13,7 @@ export function StkItemsAgregar(props) {
 				StkItemsFAct,
 				StkItemsMin,
 				StkItemsMax,
-				// stkrubro,
-				// stkgrupo,
-			} = props;
+			} = newData;
 
 			const StkItemsGrupo = codigonuevo[1][0].StkItemsGrupo;
 			const StkItemsRubro = codigonuevo[1][0].StkItemsRubro;
@@ -42,6 +39,6 @@ export function StkItemsAgregar(props) {
 				.catch((err) => {
 					MuestraMensaje(err);
 				});
-		}, 500);
+		}, 300);
 	});
 }

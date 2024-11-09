@@ -16,5 +16,5 @@ export const ClientesLeerPresup = () => {
 				})
 				.catch((err) => MuestraMensaje(err));
 		});
-	}, 500);
+	}, 300);
 };

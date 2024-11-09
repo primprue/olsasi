@@ -17,5 +17,5 @@ export function ClientesLeerEncabOT() {
 				})
 				.catch((err) => MuestraMensaje(err));
 		});
-	}, 500);
+	}, 300);
 }

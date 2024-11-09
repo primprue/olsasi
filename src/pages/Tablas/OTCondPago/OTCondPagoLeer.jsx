@@ -15,6 +15,6 @@ export function OTCondPagoLeer() {
 					resolve(otcondpago);
 				})
 				.catch((err) => MuestraMensaje(err));
-		}, 500);
+		}, 300);
 	});
 }

@@ -16,5 +16,5 @@ export function leeTipoClien() {
 				})
 				.catch((err) => MuestraMensaje(err));
 		});
-	}, 500);
+	}, 300);
 }

@@ -3,22 +3,14 @@ import React, { useEffect, useState } from "react";
 import {
 	DataGrid,
 	esES,
-	GridToolbarContainer,
-	GridToolbarColumnsButton,
-	GridToolbarFilterButton,
-	GridToolbarExport,
-	GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 
-import { presupdetpieColumns } from "../../PresupDetPie/presupdetpieColumns";
-import { presupdetpieData } from "../../PresupDetPie/presupdetpieData";
 import { llenarcolumns } from "../../../Tablas/PresupDetPie/columns.jsx";
 import { PresupDetPieLee } from "../../../Tablas/PresupDetPie/PresupDetPieLee";
 // Context
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
 
-var arregloeleg1 = [];
 export default function PresupDetPieSelect() {
 	const { state, setState } = useContext(PresupPant);
 
@@ -57,23 +49,13 @@ export default function PresupDetPieSelect() {
 	return (
 		<div>
 			<DataGrid
-				//onSelectionChange={handleOnSelectionChange}
 				rows={data}
 				columns={columns}
 				checkboxSelection
 				onRowSelectionModelChange={handleSelectionModelChange}
 				selectionModel={selectionModel}
 				localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-				// pageSizeOptions={[10, 10]}
-				// icons={tableIcons}
-				// options={{
-				// 	sorting: true,
-				// 	selection: true,
-				// 	addRowPosition: "first",
-				// 	showTextRowsSelected: true,
-				// 	actionsColumnIndex: -1,
-				// 	// tableLayout: "fixed",
-				// }}
+
 			/>
 		</div>
 	);

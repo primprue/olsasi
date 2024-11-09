@@ -226,6 +226,11 @@ import reparacionleer from "./routes/reparacion/reparacionleer.mjs";
 import repleecob from "./routes/reparacion/repleecob.mjs";
 import repleevalorhs from "./routes/reparacion/repleevalorhs.mjs";
 
+//prebalance
+import pbrubrosagregar from "./routes/prebalance/pbrubros/pbrubrosagregar.mjs";
+import pbrubrosleer from "./routes/prebalance/pbrubros/pbrubrosleer.mjs";
+import pbrubrosmodificar from "./routes/prebalance/pbrubros/pbrubrosmodificar.mjs";
+import pbrubrosborrar from "./routes/prebalance/pbrubros/pbrubrosborrar.mjs";
 
 // const { RouterSharp } = require("@material-ui/icons");
 
@@ -498,7 +503,11 @@ app.use("/reparacionleer", reparacionleer);
 app.use("/repleecob", repleecob);
 app.use("/repleevalorhs", repleevalorhs);
 
-
+//prebalance
+app.use("/pbrubrosagregar", pbrubrosagregar);
+app.use("/pbrubrosleer", pbrubrosleer);
+app.use("/pbrubrosmodificar", pbrubrosmodificar);
+app.use("/pbrubrosborrar", pbrubrosborrar);
 
 app.use("/", proveedoresleer);
 

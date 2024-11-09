@@ -16,5 +16,5 @@ export function clientesleerdescmayigual() {
 				})
 				.catch((err) => MuestraMensaje(err));
 		});
-	}, 500);
+	}, 300);
 }

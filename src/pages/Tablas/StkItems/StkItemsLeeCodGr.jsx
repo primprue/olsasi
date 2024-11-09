@@ -16,6 +16,6 @@ export const stkitemsleecodgr = (idStkGrupo) => {
 				.catch((err) => {
 					MuestraMensaje(err);
 				});
-		}, 500);
+		}, 300);
 	});
 };

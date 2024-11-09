@@ -17,6 +17,6 @@ export function OTCondPagoLeer(props) {
 					resolve(otcondpago);
 				})
 				.catch((err) => MuestraMensaje(err));
-		}, 500);
+		}, 300);
 	});
 }

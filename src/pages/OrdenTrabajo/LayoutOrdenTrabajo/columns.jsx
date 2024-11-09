@@ -98,6 +98,6 @@ function columnsFill() {
 			// 	editable: true,
 			// },
 		]);
-		// }, 500);
+		//   }, 300);
 	});
 }
