@@ -145,7 +145,6 @@ export default function FilaDos() {
 			datoscalculos,
 			presuptipo
 		);
-
 		var datospresup = await Agregar(
 			datosrenglon1,
 			indicetp1,
@@ -156,13 +155,13 @@ export default function FilaDos() {
 			state.renglonanexo,
 			dcalculo
 		);
-
 		if (state.renglonanexo.length !== 0) {
 			setDatosRenglon([...datosrenglon, state.renglonanexo]);
 			setDatosRenglon([...datosrenglon, datospresup[0]]);
 		} else {
 			setDatosRenglon([...datosrenglon, datospresup[0]]);
 		}
+
 	}
 	const textdata = [
 		{
@@ -378,187 +377,3 @@ export default function FilaDos() {
 		</>
 	);
 }
-
-// }
-// async function agregar() {
-// 	var indicetp1 = state.indicetp + 1;
-// 	setState({ ...state, indicetp: indicetp1 });
-// 	var dcalculo = [
-// 		{
-// 			StkRubroAbr: state.StkRubroAbr,
-// 			minmay: state.PresupMnMy,
-// 			ivasn: state.PresupIVA,
-// 			cantidad: state.PresupCantidad,
-// 			veces: state.PresupVeces,
-// 			largo: state.PresupLargo,
-// 			ancho: state.PresupAncho,
-// 			largon: state.PresupLargoN,
-// 			anchon: state.PresupAnchoN,
-// 			tipoconf: state.PresupCsSs,
-// 			tipoojale: state.PresupOB,
-// 			drenajesn: state.PresupDrenaje,
-// 			detallep: state.DetallePresup,
-// 			detaller: state.DetalleRenglon,
-// 			tamfaja: state.TamFaja,
-// 			tamcristal: state.TamCristal,
-// 			altovolado: state.AltoVolado,
-// 			presupojalesc: state.PresupOjalesC,
-// 			sobrantemarco: state.SobranteMarco,
-// 			tipomedeleg: state.TipoMedidaEleg,
-// 			termbordeeleg: state.TermBordeEleg,
-// 			anchopared: state.AnchoPared,
-// 			medida: state.Medida,
-// 			//para el alto del tanque
-// 			alto: state.Alto,
-// 			stkrubroabrtbr: state.StkRubroAbrTBR,
-// 			tipomecanismo: state.TipoMecanismo,
-// 			anchocomedero: state.AnchoComederoEleg,
-// 			lonanuestraafuera: state.PreuspLNLF,
-// 			cantbrazos: state.CantBrazos,
-// 			largobrazo: state.LargoBrazo,
-// 			voladosd: state.VolDS,
-// 			fajabrazo: state.FajaBrazoEleg,
-// 			cantHeb: state.CantHeb,
-// 			cantCarro: state.CantCarro,
-// 			tipocarro: state.tipocarro,
-// 			tipoheb: state.tipoheb,
-// 			colocacion: state.colocacion,
-// 			tipoplaca: state.tipoplaca,
-// 			tipopresup: presuptipo,
-// 			cotdivisa: cotidivisa,
-// 			signomonet: state.signomoneda,
-// 		},
-// 	];
-
-// 	var StkRubroDesc = "";
-// 	var PresupLargo = 0;
-// 	var PresupAncho = 0;
-// 	var ImpUnitario = 0.0;
-// 	var importeanexo = 0.0;
-// 	var ImpItem = 0.0;
-// 	var PresupCantidadM = state.PresupCantidad;
-// 	var detalle = presuptipo;
-// 	var veces = state.PresupVeces;
-// 	var datoimpunitario = 0.0;
-// 	var datoimpitem = 0.0;
-// 	var datoscalculos = JSON.stringify(dcalculo);
-// 	const datosrenglon1 = await presupcalculador(
-// 		state.DatosPresupEleg[0],
-// 		datoscalculos,
-// 		presuptipo
-// 	);
-
-// 	//esto es porque va a ser un cálculo especial, tiene un backend para eso
-// 	if (rubrosn === "S") {
-// 		var unidmed = "";
-// 		if (datosrenglon1[0][0].StkRubroUM) {
-// 			unidmed = datosrenglon1[0][0].StkRubroUM + " ";
-// 		}
-// 		StkRubroDesc =
-// 			unidmed +
-// 			datosrenglon1[0][0].Detalle +
-// 			datosrenglon1[0][0].StkRubroDesc;
-
-// 		if (datosrenglon1[0][0].MDesc === "S") {
-// 			StkRubroDesc =
-// 				StkRubroDesc + " " + state.DescripPresup + " " + state.DetalleRenglon;
-// 		}
-// 		datoimpunitario = datosrenglon1[0][0].ImpUnitario;
-
-// 		if (otramoneda) {
-// 			ImpUnitario = Number(Math.ceil(datoimpunitario / cotidivisa)).toFixed(
-// 				2
-// 			);
-// 			ImpItem = Number(
-// 				Math.ceil(datoimpunitario / cotidivisa) * PresupCantidadM
-// 			).toFixed(2);
-// 		} else {
-// 			ImpUnitario = Number(Math.ceil(datoimpunitario)).toFixed(2);
-// 			ImpItem = Number(Math.ceil(datoimpunitario * PresupCantidadM)).toFixed(
-// 				2
-// 			);
-// 		}
-
-// 		PresupLargo = datosrenglon1[0][0].Largo;
-// 		PresupAncho = datosrenglon1[0][0].Ancho;
-
-// 		importeanexo = 0;
-
-// 		if (state.renglonanexo.length !== 0) {
-// 			if (otramoneda) {
-// 				importeanexo = state.renglonanexo.ImpItemAnexo / cotidivisa;
-// 			} else {
-// 				importeanexo = state.renglonanexo.ImpItemAnexo;
-// 			}
-// 			ImpUnitario = Number(Math.ceil(ImpUnitario * 1 + importeanexo)).toFixed(
-// 				2
-// 			);
-// 			ImpItem = Number(
-// 				Math.ceil(ImpItem * 1 + importeanexo * state.PresupCantidad)
-// 			).toFixed(2);
-// 			StkRubroDesc = StkRubroDesc + state.renglonanexo.StkRubroDesc;
-// 		}
-// 		//acá veo si es paño unido o no porque sino tiene ancho o largo en 0, no es confección
-
-// 		if (PresupLargo === 0 || PresupAncho === 0) {
-// 			if (otramoneda) ImpItem = (ImpUnitario / cotidivisa) * 1 * veces;
-// 			else ImpItem = ImpUnitario * 1 * veces;
-// 		}
-
-// 		if (PresupLargo === 0 && PresupAncho === 0) {
-// 			if (otramoneda)
-// 				ImpItem =
-// 					(datosrenglon1[0][0].ImpUnitario / cotidivisa) * PresupCantidadM;
-// 			else ImpItem = datosrenglon1[0][0].ImpUnitario * PresupCantidadM;
-// 		}
-// 	}
-// 	//si no es algo que se necesita rubro
-// 	else {
-// 		StkRubroDesc = detalle;
-// 		if (otramoneda) {
-// 			ImpUnitario = datosrenglon1[0] / cotidivisa;
-// 			ImpItem = (datosrenglon1[0] / cotidivisa) * PresupCantidadM;
-// 		} else {
-// 			ImpUnitario = datosrenglon1[0];
-// 			ImpItem = datosrenglon1[0] * PresupCantidadM;
-// 		}
-// 	}
-// 	if (presuptipo === "MODIFICA MEDIDAS") {
-// 		PresupLargo = "-";
-// 		PresupAncho = "-";
-// 	}
-
-// 	const ImpUnitarion = ImpUnitario * 1;
-// 	const ImpUnitariofa = ImpUnitarion.toLocaleString("es-AR", {
-// 		style: "currency",
-// 		currency: "ARS",
-// 	});
-// 	let ImpUnitariof = ImpUnitariofa.replace(/ARS/g, state.signomoneda)
-// 		.replace(/€|USD|\$/g, "")
-// 		.trim();
-// 	ImpUnitariof = state.signomoneda + " " + ImpUnitariof;
-
-// 	const ImpItemn = ImpItem * 1;
-// 	const ImpItemfa = ImpItemn.toLocaleString("es-AR", {
-// 		style: "currency",
-// 		currency: "ARS",
-// 	});
-// 	let ImpItemf = ImpItemfa.replace(/ARS/g, state.signomoneda)
-// 		.replace(/€|USD|\$/g, "")
-// 		.trim();
-// 	ImpItemf = state.signomoneda + " " + ImpItemf;
-
-// 	var datospresup = [
-// 		{
-// 			id: state.indicetp, //agregado porque en tablapresup me exige un indice id
-// 			PresupCantidad: state.PresupCantidad,
-// 			StkRubroDesc,
-// 			PresupLargo,
-// 			PresupAncho,
-// 			ImpUnitario,
-// 			ImpUnitariof,
-// 			ImpItem,
-// 			ImpItemf,
-// 			dcalculo,
-// 		},
-// 	];

@@ -44,6 +44,7 @@ import { CtaCteContext } from "./context/CtasCtesContext.jsx";
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import PBSubRubros from './pages/Tablas/PBSubRubros/index.jsx';
 
 
 // Configuración personalizada de breakpoints
@@ -58,6 +59,7 @@ const theme = createTheme({
     },
   },
 });
+
 
 
 const App = () => {
@@ -116,6 +118,7 @@ const App = () => {
             </IconButton>
             <Typography variant="h6">
               Mi Aplicación
+
             </Typography>
           </Toolbar>
         </AppBar>
@@ -157,7 +160,7 @@ const App = () => {
                 </List>
               </Collapse>
               {/* comienza stock */}
-              <ListItem className={`${styles.menuItem} ${selectedIndex === 1 ? styles.selected : ''}`}
+              <ListItem className={`${styles.menuItem} ${selectedIndex === 6 ? styles.selected : ''}`}
                 onClick={handleSubMenuClickStock}>
                 <ListItemText primary="Stock" />
                 {openSubMenuStock ? <ExpandLess /> : <ExpandMore />}
@@ -165,12 +168,12 @@ const App = () => {
               <Collapse in={openSubMenuStock} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                   <ListItem sx={{ pl: 4 }}
-                    className={`${styles.menuItem} ${selectedIndex === 2 ? styles.selected : ''}`}
+                    className={`${styles.menuItem} ${selectedIndex === 7 ? styles.selected : ''}`}
                     onClick={() => handleNavigation('/MovStockPant')}>
                     <ListItemText primary="Movimiento Stock" />
                   </ListItem>
                   <ListItem sx={{ pl: 4 }}
-                    className={`${styles.menuItem} ${selectedIndex === 3 ? styles.selected : ''}`}
+                    className={`${styles.menuItem} ${selectedIndex === 8 ? styles.selected : ''}`}
                     onClick={() => handleNavigation('/Inventario')}>
                     <ListItemText primary="Inventario" />
                   </ListItem>
@@ -179,7 +182,7 @@ const App = () => {
 
 
               {/* comienza tablas */}
-              <ListItem className={`${styles.menuItem} ${selectedIndex === 1 ? styles.selected : ''}`}
+              <ListItem className={`${styles.menuItem} ${selectedIndex === 9 ? styles.selected : ''}`}
                 onClick={handleSubMenuClickTablas}>
                 <ListItemText primary="Tablas" />
                 {openSubMenuTablas ? <ExpandLess /> : <ExpandMore />}
@@ -190,7 +193,7 @@ const App = () => {
                 <ListItem
                   sx={{ pl: 4 }}
                   onClick={handleSubMenuTGenerales} // Controla el segundo submenú
-                  className={`${styles.menuItem} ${selectedIndex === 2 ? styles.selected : ''}`} // Aplica estilos
+                  className={`${styles.menuItem} ${selectedIndex === 10 ? styles.selected : ''}`} // Aplica estilos
                 >
                   <ListItemText primary="Generales" />
                   {openSubMenuTGenerales ? <ExpandLess /> : <ExpandMore />}
@@ -199,22 +202,22 @@ const App = () => {
                 <Collapse in={openSubMenuTGenerales} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
                     <ListItem sx={{ pl: 8 }}
-                      className={`${styles.menuItem} ${selectedIndex === 4 ? styles.selected : ''}`}
+                      className={`${styles.menuItem} ${selectedIndex === 11 ? styles.selected : ''}`}
                       onClick={() => handleNavigation('/Proveedores')}>
                       <ListItemText primary="Proveedores" />
                     </ListItem>
                     <ListItem sx={{ pl: 8 }}
-                      className={`${styles.menuItem} ${selectedIndex === 5 ? styles.selected : ''}`}
+                      className={`${styles.menuItem} ${selectedIndex === 12 ? styles.selected : ''}`}
                       onClick={() => handleNavigation('/Clientes')}>
                       <ListItemText primary="Clientes" />
                     </ListItem>
                     <ListItem sx={{ pl: 8 }}
-                      className={`${styles.menuItem} ${selectedIndex === 6 ? styles.selected : ''}`}
+                      className={`${styles.menuItem} ${selectedIndex === 13 ? styles.selected : ''}`}
                       onClick={() => handleNavigation('/StkMonedas')}>
                       <ListItemText primary="Monedas" />
                     </ListItem>
                     <ListItem sx={{ pl: 8 }}
-                      className={`${styles.menuItem} ${selectedIndex === 7 ? styles.selected : ''}`}
+                      className={`${styles.menuItem} ${selectedIndex === 14 ? styles.selected : ''}`}
                       onClick={() => handleNavigation('/Transporte')}>
                       <ListItemText primary="Transporte" />
                     </ListItem>
@@ -228,7 +231,7 @@ const App = () => {
                 <ListItem
                   sx={{ pl: 4 }}
                   onClick={handleSubMenuTPresupuesto} // Controla el segundo submenú
-                  className={`${styles.menuItem} ${selectedIndex === 3 ? styles.selected : ''}`} // Aplica estilos
+                  className={`${styles.menuItem} ${selectedIndex === 15 ? styles.selected : ''}`} // Aplica estilos
                 >
                   <ListItemText primary="Presupuesto" />
                   {openSubMenuTPresupuesto ? <ExpandLess /> : <ExpandMore />}
@@ -239,37 +242,37 @@ const App = () => {
                 <Collapse in={openSubMenuTPresupuesto} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
                     <ListItem sx={{ pl: 8 }}
-                      className={`${styles.menuItem} ${selectedIndex === 8 ? styles.selected : ''}`}
+                      className={`${styles.menuItem} ${selectedIndex === 16 ? styles.selected : ''}`}
                       onClick={() => handleNavigation('/StkGrupos')}>
                       <ListItemText primary="Grupos" />
                     </ListItem>
                     <ListItem sx={{ pl: 8 }}
-                      className={`${styles.menuItem} ${selectedIndex === 9 ? styles.selected : ''}`}
+                      className={`${styles.menuItem} ${selectedIndex === 17 ? styles.selected : ''}`}
                       onClick={() => handleNavigation('/StkRubros')}>
                       <ListItemText primary="Rubros" />
                     </ListItem>
                     <ListItem sx={{ pl: 8 }}
-                      className={`${styles.menuItem} ${selectedIndex === 10 ? styles.selected : ''}`}
+                      className={`${styles.menuItem} ${selectedIndex === 18 ? styles.selected : ''}`}
                       onClick={() => handleNavigation('/StkItems')}>
                       <ListItemText primary="Items" />
                     </ListItem>
                     <ListItem sx={{ pl: 8 }}
-                      className={`${styles.menuItem} ${selectedIndex === 11 ? styles.selected : ''}`}
+                      className={`${styles.menuItem} ${selectedIndex === 19 ? styles.selected : ''}`}
                       onClick={() => handleNavigation('/StkUnMed')}>
                       <ListItemText primary="Unidad de Medidas" />
                     </ListItem>
                     <ListItem sx={{ pl: 8 }}
-                      className={`${styles.menuItem} ${selectedIndex === 12 ? styles.selected : ''}`}
+                      className={`${styles.menuItem} ${selectedIndex === 20 ? styles.selected : ''}`}
                       onClick={() => handleNavigation('/UbFisica')}>
                       <ListItemText primary="Ubicación Física" />
                     </ListItem>
                     <ListItem sx={{ pl: 8 }}
-                      className={`${styles.menuItem} ${selectedIndex === 13 ? styles.selected : ''}`}
+                      className={`${styles.menuItem} ${selectedIndex === 21 ? styles.selected : ''}`}
                       onClick={() => handleNavigation('/PresupDetPie')}>
                       <ListItemText primary="Pie Presupuesto" />
                     </ListItem>
                     <ListItem sx={{ pl: 8 }}
-                      className={`${styles.menuItem} ${selectedIndex === 14 ? styles.selected : ''}`}
+                      className={`${styles.menuItem} ${selectedIndex === 22 ? styles.selected : ''}`}
                       onClick={() => handleNavigation('/PresupConfTipo')}>
                       <ListItemText primary="Tipo Confección" />
                     </ListItem>
@@ -283,7 +286,7 @@ const App = () => {
                 <ListItem
                   sx={{ pl: 4 }}
                   onClick={handleSubMenuTOT} // Controla el segundo submenú
-                  className={`${styles.menuItem} ${selectedIndex === 4 ? styles.selected : ''}`} // Aplica estilos
+                  className={`${styles.menuItem} ${selectedIndex === 23 ? styles.selected : ''}`} // Aplica estilos
                 >
                   <ListItemText primary="Orden de Trabajo" />
                   {openSubMenuTOT ? <ExpandLess /> : <ExpandMore />}
@@ -294,7 +297,7 @@ const App = () => {
                 <Collapse in={openSubMenuTOT} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
                     <ListItem sx={{ pl: 8 }}
-                      className={`${styles.menuItem} ${selectedIndex === 15 ? styles.selected : ''}`}
+                      className={`${styles.menuItem} ${selectedIndex === 24 ? styles.selected : ''}`}
                       onClick={() => handleNavigation('/OTCondPago')}>
                       <ListItemText primary="Condiciones de Pago" />
                     </ListItem>
@@ -307,7 +310,7 @@ const App = () => {
                 <ListItem
                   sx={{ pl: 4 }}
                   onClick={handleSubMenuTPB} // Controla el segundo submenú
-                  className={`${styles.menuItem} ${selectedIndex === 4 ? styles.selected : ''}`} // Aplica estilos
+                  className={`${styles.menuItem} ${selectedIndex === 25 ? styles.selected : ''}`} // Aplica estilos
                 >
                   <ListItemText primary="Prebalance" />
                   {openSubMenuTPB ? <ExpandLess /> : <ExpandMore />}
@@ -319,11 +322,15 @@ const App = () => {
                 <Collapse in={openSubMenuTPB} timeout="auto" unmountOnExit>
                   <List component="div" disablePadding>
                     <ListItem sx={{ pl: 8 }}
-                      className={`${styles.menuItem} ${selectedIndex === 15 ? styles.selected : ''}`}
+                      className={`${styles.menuItem} ${selectedIndex === 26 ? styles.selected : ''}`}
                       onClick={() => handleNavigation('/PBRubros')}>
                       <ListItemText primary="Rubros Prebalance" />
                     </ListItem>
-
+                    <ListItem sx={{ pl: 8 }}
+                      className={`${styles.menuItem} ${selectedIndex === 26 ? styles.selected : ''}`}
+                      onClick={() => handleNavigation('/PBSubRubros')}>
+                      <ListItemText primary="SubRubros Prebalance" />
+                    </ListItem>
                   </List>
                 </Collapse>
                 {/* termina tablas Prebalance */}
@@ -331,23 +338,8 @@ const App = () => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
               </Collapse>
-              <ListItem className={`${styles.menuItem} ${selectedIndex === 0 ? styles.selected : ''}`}
+              <ListItem className={`${styles.menuItem} ${selectedIndex === 27 ? styles.selected : ''}`}
                 onClick={() => handleNavigation('/Reparacion')}>
                 <ListItemText primary="Reparación" />
               </ListItem>
@@ -357,6 +349,7 @@ const App = () => {
 
         {/* Suspense para cargar los componentes lazy */}
         <StaticContexto>
+
           <PresupPant>
             <DatosTablas>
               <OrdenTrabajo>
@@ -384,6 +377,7 @@ const App = () => {
                       <Route path="/PresupConfTipo" element={<PresupConfTipo />} />
 
                       <Route path="/PBRubros" element={<PBRubros />} />
+                      <Route path="/PBSubRubros" element={<PBSubRubros />} />
 
                       <Route path="/OTCondPago" element={<OTCondPago />} />
 

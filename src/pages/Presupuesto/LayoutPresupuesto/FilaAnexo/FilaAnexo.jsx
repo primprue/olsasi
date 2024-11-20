@@ -30,12 +30,9 @@ export default function FilaAnexo(props) {
 	const [datosanexo, setDatosAnexo] = useState([]);
 	const [sumaanexo, setSumaAnexo] = React.useState(0.0);
 	const [infoanexo, setInfoAnexo] = React.useState();
-	const [anexomed, setAnexomed] = React.useState(0.0);
-	// const [detalle, setDetalle] = useState('')
 	const [rows, setRows] = useState([]);
 	async function columnsFetch() {
 		const col = await filaanexosColumns();
-		// col.push(actionsColumn);
 		setColumns(() => col);
 	}
 
@@ -56,7 +53,6 @@ export default function FilaAnexo(props) {
 			ivasn: state.PresupIVA,
 		},
 	];
-
 	function sumar() {
 		var nombre = "";
 		var importetotal = 0.0;
@@ -90,13 +86,13 @@ export default function FilaAnexo(props) {
 	}
 	function cierraanexos1() {
 		setState({ ...state, renglonanexo: [] });
+		setRows([]); //esto limpia el datagrid cuando se hace click sobre la cruz
 		props.setOpen({ anexos: false });
 	}
 
 	async function initialFetch() {
 		columnsFetch();
 		cargaAnexos();
-		// createRandomRow();
 	}
 
 	const BorraFila = () => {
@@ -165,7 +161,6 @@ export default function FilaAnexo(props) {
 		var anexoelegido = event.target.value;
 		var datoscalculos = JSON.stringify(dcalculo);
 		const datosrenglon1 = await presupcalculador(
-			// "", "",
 			"",
 			datoscalculos,
 			anexoelegido

@@ -42,6 +42,8 @@ import { OTCondPagoModificar } from "../pages/Tablas/OTCondPago/OTCondPagoModifi
 import { PBRubrosLee } from "../pages/Tablas/PBRubros/PBRubrosLee.jsx";
 import { PBRubrosModificar } from "../pages/Tablas/PBRubros/PBRubrosModificar.jsx";
 
+import { PBSubRubrosLeer } from "../pages/Tablas/PBSubRubros/PBSubRubrosLeer.jsx";
+
 // import { TablaMuestraRenglon } from "../pages/Presupuesto/LayoutPresupuesto/PresupMuestra/TablaMuestraRenglon/index.jsx";
 // import { presupDatos } from "../pages/Presupuesto/LayoutPresupuesto/PresupMuestra/presupDatos.jsx";
 import { useState } from "react";
@@ -168,6 +170,11 @@ export default function TablaMuestra(props) {
 			const data = await PBRubrosLee();
 			setRows(data);
 		}
+		if (formdatos.tablabase === "PBSubRubros") {
+			const data = await PBSubRubrosLeer();
+			setRows(data);
+		}
+
 	}
 	const handleClose = () => {
 		relee();

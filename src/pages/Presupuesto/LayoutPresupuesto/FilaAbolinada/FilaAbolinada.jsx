@@ -30,8 +30,8 @@ export default function FilaAbolinada(props) {
 
 	return (
 		<>
-			<Grid container spacing={2} xs={8}>
-				<Grid item>
+			<Grid container spacing={2}>
+				<Grid item xs={2}>
 					<TextField
 						inputProps={{ maxLength: 3 }}
 						size="small"

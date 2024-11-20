@@ -231,6 +231,9 @@ import pbrubrosagregar from "./routes/prebalance/pbrubros/pbrubrosagregar.mjs";
 import pbrubrosleer from "./routes/prebalance/pbrubros/pbrubrosleer.mjs";
 import pbrubrosmodificar from "./routes/prebalance/pbrubros/pbrubrosmodificar.mjs";
 import pbrubrosborrar from "./routes/prebalance/pbrubros/pbrubrosborrar.mjs";
+import pbsubrubrosleer from "./routes/prebalance/subrubros/pbsubrubrosleer.mjs";
+import pbrubrosvalueleer from "./routes/prebalance/pbrubros/pbrubrosvalueleer.mjs";
+
 
 // const { RouterSharp } = require("@material-ui/icons");
 
@@ -508,6 +511,9 @@ app.use("/pbrubrosagregar", pbrubrosagregar);
 app.use("/pbrubrosleer", pbrubrosleer);
 app.use("/pbrubrosmodificar", pbrubrosmodificar);
 app.use("/pbrubrosborrar", pbrubrosborrar);
+app.use("/pbsubrubrosleer", pbsubrubrosleer);
+app.use("/pbrubrosvalueleer", pbrubrosvalueleer);
+
 
 app.use("/", proveedoresleer);
 

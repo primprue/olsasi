@@ -8,6 +8,7 @@ export function StaticContexto({ children }) {
 		<>
 			<StaticContext.Provider value={{ valor, setValor }}>
 				{children}
+				{console.log('valor StaticContexto ', valor)}
 			</StaticContext.Provider>
 		</>
 	);

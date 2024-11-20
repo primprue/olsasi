@@ -1,18 +1,18 @@
-import request from "superagent";
-import IpServidor from "../../VariablesDeEntorno";
 import MuestraMensaje from "../../../components/lib/MuestraMensaje";
+import IpServidor from "../../VariablesDeEntorno";
 
-export const stkrubroleer = () => {
+import request from "superagent";
+
+export const PBRubrosValueLeer = (_) => {
 	return new Promise((resolve) => {
 		setTimeout(() => {
-			const url = IpServidor + "/stkrubroleer";
-
+			const url = IpServidor + "/pbrubrosvalueleer";
 			request
 				.get(url)
 				.set("Content-Type", "application/json")
 				.then((res) => {
-					const rubros = JSON.parse(res.text);
-					resolve(rubros);
+					const pbrubros = JSON.parse(res.text);
+					resolve(pbrubros);
 				})
 				.catch((err) => MuestraMensaje(err));
 		}, 300);

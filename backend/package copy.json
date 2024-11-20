@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "start": "concurrently \"npm run start:server\" \"npm run start:react\" ",
-    "start:server": "node servidor.mjs",
-    "start:react": "gulp debug"
+    "start:server": "node --watch servidor.mjs",
+    "start:react": "gulp debug",
+    "convert": "lebab --replace '**/*.js' --transform commonjs"
   },
   "dependencies": {
     "@material-ui/icons": "^4.11.3",

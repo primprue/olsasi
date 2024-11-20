@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import variables from './public/variables.mjs';
 
-// Configura el servidor WebSocket
+
 const wss = new WebSocketServer({ port: 3000 })
 
 wss.on('connection', (ws) => {

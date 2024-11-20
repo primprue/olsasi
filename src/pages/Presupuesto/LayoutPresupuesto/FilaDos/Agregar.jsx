@@ -35,7 +35,6 @@ const Agregar = async (
 						StkRubroDesc + " " + sDescripPresup + " " + dcalculo[0].detaller;
 				}
 				datoimpunitario = datosrenglon1[0][0].ImpUnitario;
-
 				if (otramoneda) {
 					ImpUnitario = Number(
 						Math.ceil(datoimpunitario / dcalculo[0].cotdivisa)
@@ -54,8 +53,9 @@ const Agregar = async (
 				PresupAncho = datosrenglon1[0][0].Ancho;
 
 				importeanexo = 0;
-
+				// cuando pregunta srenglonanexo.length !== 0, y tiene anexos viene indefinido, por lo tanto ingresa por ser undefined que es distinto de 0
 				if (srenglonanexo.length !== 0) {
+
 					if (otramoneda) {
 						importeanexo = srenglonanexo.ImpItemAnexo / dcalculo[0].cotdivisa;
 					} else {
@@ -69,8 +69,10 @@ const Agregar = async (
 					).toFixed(2);
 					StkRubroDesc = StkRubroDesc + srenglonanexo.StkRubroDesc;
 				}
-				//acá veo si es paño unido o no porque sino tiene ancho o largo en 0, no es confección
 
+				//PresupConfTipoBack
+
+				//acá veo si es paño unido o no porque sino tiene ancho o largo en 0, no es confección
 				if (PresupLargo === 0 || PresupAncho === 0) {
 					if (otramoneda)
 						ImpItem =
@@ -84,6 +86,13 @@ const Agregar = async (
 							(datosrenglon1[0][0].ImpUnitario / dcalculo[0].cotdivisa) *
 							PresupCantidadM;
 					else ImpItem = datosrenglon1[0][0].ImpUnitario * PresupCantidadM;
+				}
+				if (dcalculo[0].tipopresup === "BOLSON PARA TANQUE") {
+					if (otramoneda)
+						ImpItem =
+							(datosrenglon1[0][0].ImpUnitario / dcalculo[0].cotdivisa) *
+							PresupCantidadM;
+					else ImpItem = ImpUnitario * PresupCantidadM;
 				}
 			}
 			//si no es algo que se necesita rubro
@@ -108,6 +117,7 @@ const Agregar = async (
 				style: "currency",
 				currency: "ARS",
 			});
+
 			let ImpUnitariof = ImpUnitariofa.replace(/ARS/g, dcalculo[0].signomonet)
 				.replace(/€|USD|\$/g, "")
 				.trim();
@@ -122,6 +132,7 @@ const Agregar = async (
 				.replace(/€|USD|\$/g, "")
 				.trim();
 			ImpItemf = dcalculo[0].signomonet + " " + ImpItemf;
+
 			var datospresup = [
 				{
 					id: indicetp1, //agregado porque en tablapresup me exige un indice id
@@ -138,7 +149,7 @@ const Agregar = async (
 			];
 
 			resolve(datospresup);
-		}, 1000);
+		}, 500);
 	});
 };
 export default Agregar;

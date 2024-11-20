@@ -5,18 +5,16 @@ import conexion from "../../conexion.mjs";
 
 conexion.connect(function (err) {
   if (!err) {
-    console.log("base de datos conectada en stkgrupoleerredrubros");
+    console.log("base de datos conectada en pbrubrosvalueleer");
   } else {
-    console.log("no se conecto en stkgrupoleerredrubros");
+    console.log("no se conecto en pbrubrosvalueleer");
   }
 });
 
 
 
 router.get("/", function (req, res, next) {
-  var q = [
-    "Select idStkGrupo as value, StkGrupoDesc as label from StkGrupo order by StkGrupoDesc"
-  ].join(" ");
+  var q = ["Select idPBRubros as value,  PBRubrosDetalle as label from BasePreBalance.PBRubros"].join(" ");
   conexion.query(q, function (err, result) {
     if (err) {
       console.log(err);

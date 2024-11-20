@@ -77,15 +77,6 @@ router.get('/', (req, res, next) => {
 
             importeMOTtotal = impunion + impcorte
 
-
-            // }
-
-            // if (datos.minmay == 'mn') 
-            // else {
-            //   importeMOTtotal = 0
-            // }
-
-
             q = ['Select',
               'StkRubroDesc, StkRubroAbr, ',
               '(((StkRubroCosto * StkMonedasCotizacion * ', coeficiente, ')',

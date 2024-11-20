@@ -6,6 +6,7 @@ import { stkMonedasleerRed } from "./StkMonedasLeerRed";
 import estilotabla from "../../../Styles/Tabla.module.css";
 export async function llenarcolumns() {
 	const stkgrupo = await stkGrupoLeerRedRubro();
+	console.log('stkgrupo ', stkgrupo)
 	const stkrubro = await stkrubroleeproveedor();
 	const stkUnMed = await stkUnMedLeerRed();
 	const stkMonedas = await stkMonedasleerRed();

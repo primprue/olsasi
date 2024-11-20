@@ -16,3 +16,4 @@ export const formdata = {
   datoserroneos: true,
   tablabase: 'StkRubros',
 }
+

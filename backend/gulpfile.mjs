@@ -22,7 +22,7 @@ gulp.task('nodemon', function (cb) {
   return nodemon({
     verbose: true,
     script: 'bin/boot-backend.mjs',
-    ext: 'js',
+    ext: 'js,mjs',
     ignore: ['node_modules'],
     watch: ['routes', 'views', './'],
     env: { 'DEBUG': 'backend:*' }

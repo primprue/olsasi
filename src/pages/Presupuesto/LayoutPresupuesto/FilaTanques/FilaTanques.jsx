@@ -56,8 +56,6 @@ export default function FilaTanques() {
 		},
 	];
 
-	const classes = styles;
-
 	return (
 		<>
 			<Grid container spacing={2}>
