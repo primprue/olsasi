@@ -31,17 +31,24 @@ const formatter = new Intl.NumberFormat('es-AR', {
 // })
 
 // /SistOLSA/OlsaSG/backend/node_modules/pdfmake/examples
-
+// var fonts = {
+//     Roboto: {
+//         normal: '/home/sandra/SistOLSA/olsasi/backend/node_modules/pdfmake/examples/fonts/Roboto-Regular.ttf',
+//         bold: '/home/sandra/SistOLSA/olsasi/backend/node_modules/pdfmake/examples/fonts/Roboto-Medium.ttf',
+//         italics: '/home/sandra/SistOLSA/olsasi/backend/node_modules/pdfmake/examples/fonts/Roboto-Italic.ttf',
+//         bolditalics: '/home/sandra/SistOLSA/olsasi/backend/node_modules/pdfmake/examples/fonts/Roboto-MediumItalic.ttf'
+//     }
+// };
 var fonts = {
     Roboto: {
-        normal: '/home/sandra/SistOLSA/olsasi/backend/node_modules/pdfmake/examples/fonts/Roboto-Regular.ttf',
-        bold: '/home/sandra/SistOLSA/olsasi//backend/node_modules/pdfmake/examples/fonts/Roboto-Medium.ttf',
-        italics: '/home/sandra/SistOLSA/olsasi/backend/node_modules/pdfmake/examples/fonts/Roboto-Italic.ttf',
-        bolditalics: '/home/sandra/SistOLSA/olsasi/backend/node_modules/pdfmake/examples/fonts/Roboto-MediumItalic.ttf'
+        normal: '/usr/share/fonts/truetype/ubuntu/Ubuntu-B.ttf',
+        bold: '/usr/share/fonts/truetype/ubuntu/UbuntuMono-RI.ttf',
+        italics: '/usr/share/fonts/truetype/ubuntu/Ubuntu-LI.ttf ',
+        bolditalics: '/usr/share/fonts/truetype/ubuntu/Ubuntu-RI.ttf',
     }
 };
-
 router.post("/", function (req, res, next) {
+
     var datospresup = req.body.datospresup
     var descrip = req.body.descrip
     var Presupuestonro = req.body.nroPresupuesto
@@ -191,7 +198,6 @@ router.post("/", function (req, res, next) {
 
 
     var printer = new PdfPrinter(fonts);
-
     var docDefinition = {
         pageMargins: [40, 130, 40, 40],
         header: {
@@ -404,11 +410,13 @@ router.post("/", function (req, res, next) {
         }
 
     };
+
     var pdfDoc = printer.createPdfKitDocument(docDefinition);
     // pdfDoc.pipe(fs.createWriteStream('/home/sandra/SistOLSA/olsasi/public/basics.pdf'));
     // pdfDoc.pipe(fs.createWriteStream('/home/sandra/SistOLSA/OlsaSG/src/components/Main/pages/Presupuesto/static/media/basics.pdf'));
     // pdfDoc.pipe(fs.createWriteStream(('/home/sandra/Documentos/OLSAFrecuentes/PresupSistema/' + nombrepresup)));
     pdfDoc.pipe(fs.createWriteStream((variables.caminoynombrearch + 'basics.pdf')));
+    // pdfDoc.pipe(fs.createWriteStream(('/home/sandra/SistOLSA/olsasi/dist/basics.pdf')));
     pdfDoc.pipe(fs.createWriteStream((variables.dirpresupdocumento + nombrepresup)));
 
     pdfDoc.end();

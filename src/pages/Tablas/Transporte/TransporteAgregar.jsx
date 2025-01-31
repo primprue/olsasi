@@ -36,6 +36,6 @@ export function TransporteAgregar(props) {
 				.catch((err) => {
 					MuestraMensaje(err);
 				});
-		}, 1000);
+		}, 300);
 	});
 }

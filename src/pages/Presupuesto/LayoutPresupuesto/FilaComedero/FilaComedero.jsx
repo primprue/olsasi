@@ -5,7 +5,6 @@ import {
 	RadioGroup,
 	FormControlLabel,
 	TextField,
-	FormLabel,
 	FormHelperText,
 } from "@mui/material";
 import estilo from "../../../../Styles/TextFieldSelect.module.css";
@@ -16,7 +15,6 @@ import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
 
 export default function FilaComedero(props) {
-	// const [selectedValue, setSelectedValue] = React.useState(20);
 	const { state, setState } = useContext(PresupPant);
 	const [ojalbronce, setOjalBronce] = React.useState("hz");
 	const handleChange = (event) => {
@@ -47,7 +45,6 @@ export default function FilaComedero(props) {
 		},
 	];
 
-	// const classes = styles;
 
 	return (
 		<>
@@ -73,7 +70,7 @@ export default function FilaComedero(props) {
 								className: estilo.menuItem,
 							}}
 							variant="outlined"
-							// helperText="Ancho del comedero"
+						// helperText="Ancho del comedero"
 						>
 							{data.mapeo}
 						</TextField>

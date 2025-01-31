@@ -26,15 +26,29 @@ export function ValidatedTextField(props) {
 		const pattern = formato;
 		const isValidValue = new RegExp(pattern).test(value);
 		setIsValid(isValidValue);
-		setIsValid(value.length > 0 && value.length <= props.maxLength);
-		if (isValidValue) {
+		var error = 0
+		if (value.length > props.maxLength) error++
+		if (props.required && value.length === 0) error++
+
+		if (error > 0) setIsValid(false); else setIsValid(true)
+		if (error === 0) {
 			setFormdatos({
 				...formdatos,
 				[id]: value,
 				datoserroneos: !isValidValue,
 			});
+		} else {
+			setFormdatos({
+				...formdatos,
+				[id]: value,
+				datoserroneos: isValidValue,
+			})
+			event.preventDefault();
+
 		}
+
 	};
+
 	const handleMouseDown = (event) => {
 		event.preventDefault(); // Evita que el campo reciba foco
 	};
@@ -56,7 +70,10 @@ export function ValidatedTextField(props) {
 			label={label}
 			helperText="<Tab> pasa al siguiente campo"
 			inputProps={{ "data-testid": `validated-textfield-${label}` }}
+			required={props.required}
+			autoFocus={props.autoFocus}
 			InputProps={{
+				readOnly: props.readOnly,
 				startAdornment: isValid ? (
 					<CheckCircleIcon color="success" />
 				) : (
@@ -65,8 +82,8 @@ export function ValidatedTextField(props) {
 				// startAdornment: isValid ? <CheckCircleIcon /> : <ErrorIcon />,
 			}}
 			onKeyDown={handleKeyPress}
-			onMouseDown={handleMouseDown}
-			// onChange={handleChange}
+		// onMouseDown={handleMouseDown}
+		// onChange={handleChange}
 		/>
 	);
 }

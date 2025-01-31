@@ -70,6 +70,7 @@ router.get("/", function (req, res, next) {
             'where  PresupConfTipoRubro = BaseStock.StkRubro.StkRubroAbr and ' +
             'BaseStock.StkRubro.StkRubroTM = BaseStock.StkMonedas.idStkMonedas and ' +
             'PresupConfTipoDesc = "' + tipo + '"'].join("");
+
           conexion.query(q, function (err, result) {
             if (err) {
               console.log(err);
@@ -90,7 +91,6 @@ router.get("/", function (req, res, next) {
               else {
                 ImpUnitario = Math.ceil(((ImpUnitario / 1.21) / 10) * 10)
               }
-
               datosenvio.push(ImpUnitario)
               datosenvio.push(ImprimeSN)
               res.json(datosenvio)

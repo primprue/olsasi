@@ -146,9 +146,12 @@ router.get("/", (req, res) => {
           metroscuadper = (altocalculo * perimetro).toFixed(0)
 
           metroscuadtotal = metroscuaddiam * 1 + metroscuadper * 1
-
+          //agregado porque cuando la pared es de más de 10 cm se debe hacer la forma 
           if (StkRubroAbrP == 'POL19') {
             SegundosMOT = perimetro * 600
+            if (anchopared > 0.10) {
+              SegundosMOT = SegundosMOT + perimetro * 600
+            }
 
           }
 

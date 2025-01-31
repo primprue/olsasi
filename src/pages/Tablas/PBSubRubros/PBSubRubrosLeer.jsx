@@ -1,5 +1,5 @@
 import request from "superagent";
-
+import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 import IpServidor from "../../VariablesDeEntorno";
 
 // Lee Rubro por codigo de gupo
@@ -12,10 +12,11 @@ export const PBSubRubrosLeer = () => {
         request
             .get(url)
             .set("Content-Type", "application/json")
-            .set("Cache-Control", "no-cache")
-            .then(res => {
-                const subrubros = JSON.parse(res.text);
-                resolve(subrubros);
-            });
-    });
+            .then((res) => {
+                const monedas = JSON.parse(res.text);
+                resolve(monedas);
+            })
+            .catch((err) => MuestraMensaje(err));
+    }, 300);
+
 };

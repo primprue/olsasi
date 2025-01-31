@@ -9,9 +9,11 @@ conexion.connect(function (err) {
   }
 });
 
-router.post("/?:id", function (req, res) {
-  var indice = req.params.id;
-
+router.use(express.json()); // Asegúrate de que esto está habilitado para que `req.body` no sea vacío
+router.post("/", async function (req, res, next) {
+  var indice = req.query.id;
+  // router.post("/?:id", function (req, res) {
+  // var indice = req.params.id;
   var provdesc = req.body.ProveedoresDesc;
   var provtipo = req.body.ProveedoresTipo;
   var provcuit = req.body.ProveedoresCUIT;
@@ -63,15 +65,21 @@ router.post("/?:id", function (req, res) {
     '" where idProveedores = ',
     indice
   ].join("");
-  console.log('q en proveeodpres   ', q)
   conexion.query(q, function (err, result) {
     if (err) {
       if (err.errno == 1062) {
         return res.status(409).send({ message: "error clave duplicada" });
-      } else {
-        console.log(err.errno);
       }
-    } else {
+      else {
+        if (err.errno == 1406) {
+          return res.status(412).send({ message: "el dato numerico más dígitos de los que corresponde" });
+        }
+        else {
+          console.log(err.errno);
+        }
+      }
+    }
+    else {
       res.json(result.rows);
     }
   });

@@ -14,7 +14,7 @@ conexion.connect(function (err) {
     }
 });
 
-router.post('/', function (req, res) {
+router.post('/', function (req, res, next) {
 
     var registro = {
         TransporteDesc: req.body.transdesc,
@@ -34,12 +34,15 @@ router.post('/', function (req, res) {
                 if (err.errno == 1062) {
                     return res.status(409).send({ message: "error clave duplicada" });
                 }
-                else {
-                    console.log(err.errno);
-                }
+                else
+                    if (err.errno == 1406) {
+                        return res.status(410).send({ message: "excede los digitos permitidos" });
+                    }
+                    else {
+                        console.log('error en proveedores ', err.errno);
+                    }
             } else {
                 res.json(result.rows);
-
             }
         });
 });

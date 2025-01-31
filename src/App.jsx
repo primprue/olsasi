@@ -19,7 +19,9 @@ const UbFisica = lazy(() => import("./pages/Tablas/UbicacionFisica/index.jsx"));
 const PBRubros = lazy(() => import("./pages/Tablas/PBRubros/index.jsx"));
 const PresupDetPie = lazy(() => import("./pages/Tablas/PresupDetPie/index.jsx"));
 const PresupConfTipo = lazy(() => import("./pages/Tablas/PresupConfTipo/index.jsx"));
+const OTrabajo = lazy(() => import("./pages/OrdenTrabajo/OTrabajo.jsx"));
 const OTCondPago = lazy(() => import("./pages/Tablas/OTCondPago/index.jsx"));
+const OTDatos = lazy(() => import("./pages/Tablas/OTDatos/index.jsx"));
 const Presupuesto = lazy(() => import("./pages/Presupuesto/index.jsx"));
 const PresupMuestra = lazy(() =>
   import("./pages/Presupuesto/LayoutPresupuesto/PresupMuestra/index.jsx")
@@ -35,7 +37,6 @@ const ParamComp = lazy(() =>
 );
 
 const Inicio = () => <div><h1>Inicio</h1></div>;
-
 import { StaticContexto } from "./context/StaticContext.jsx";
 import { DatosTablas } from "./context/TablasContext.jsx";
 import { OrdenTrabajo } from "./context/OrdTrabajo.jsx";
@@ -63,6 +64,7 @@ const theme = createTheme({
 
 
 const App = () => {
+  console.log('StaticContexto ', StaticContexto.valor)
   const [open, setOpen] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState(false);
   const [openSubMenuStock, setOpenSubMenuStock] = useState(false);
@@ -111,6 +113,8 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div>
+
+
         <AppBar position="static" >
           <Toolbar>
             <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
@@ -118,6 +122,10 @@ const App = () => {
             </IconButton>
             <Typography variant="h6">
               Mi Aplicación
+
+            </Typography>
+            <Typography variant="h6">
+              {StaticContexto.valor}
 
             </Typography>
           </Toolbar>
@@ -167,6 +175,7 @@ const App = () => {
               </ListItem>
               <Collapse in={openSubMenuStock} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
+
                   <ListItem sx={{ pl: 4 }}
                     className={`${styles.menuItem} ${selectedIndex === 7 ? styles.selected : ''}`}
                     onClick={() => handleNavigation('/MovStockPant')}>
@@ -301,6 +310,11 @@ const App = () => {
                       onClick={() => handleNavigation('/OTCondPago')}>
                       <ListItemText primary="Condiciones de Pago" />
                     </ListItem>
+                    <ListItem sx={{ pl: 8 }}
+                      className={`${styles.menuItem} ${selectedIndex === 24 ? styles.selected : ''}`}
+                      onClick={() => handleNavigation('/OTDatos')}>
+                      <ListItemText primary="Datos a Pedir" />
+                    </ListItem>
 
                   </List>
                 </Collapse>
@@ -327,7 +341,7 @@ const App = () => {
                       <ListItemText primary="Rubros Prebalance" />
                     </ListItem>
                     <ListItem sx={{ pl: 8 }}
-                      className={`${styles.menuItem} ${selectedIndex === 26 ? styles.selected : ''}`}
+                      className={`${styles.menuItem} ${selectedIndex === 27 ? styles.selected : ''}`}
                       onClick={() => handleNavigation('/PBSubRubros')}>
                       <ListItemText primary="SubRubros Prebalance" />
                     </ListItem>
@@ -339,7 +353,7 @@ const App = () => {
 
 
               </Collapse>
-              <ListItem className={`${styles.menuItem} ${selectedIndex === 27 ? styles.selected : ''}`}
+              <ListItem className={`${styles.menuItem} ${selectedIndex === 28 ? styles.selected : ''}`}
                 onClick={() => handleNavigation('/Reparacion')}>
                 <ListItemText primary="Reparación" />
               </ListItem>
@@ -349,7 +363,6 @@ const App = () => {
 
         {/* Suspense para cargar los componentes lazy */}
         <StaticContexto>
-
           <PresupPant>
             <DatosTablas>
               <OrdenTrabajo>
@@ -380,7 +393,8 @@ const App = () => {
                       <Route path="/PBSubRubros" element={<PBSubRubros />} />
 
                       <Route path="/OTCondPago" element={<OTCondPago />} />
-
+                      <Route path="/OTDatos" element={<OTDatos />} />
+                      <Route path="/OTrabajo" element={<OTrabajo />} />
                       <Route path="/Reparacion" element={<Reparacion />} />
                     </Routes>
                   </Suspense>

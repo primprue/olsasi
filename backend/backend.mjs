@@ -16,6 +16,9 @@ import proveedoresleercod from "./routes/proveedores/proveedoresleercod.mjs";
 import proveedoresagregar from "./routes/proveedores/proveedoresagregar.mjs";
 import proveedoresborrar from "./routes/proveedores/proveedoresborrar.mjs";
 import proveedoresmodificar from "./routes/proveedores/proveedoresmodificar.mjs";
+import proveedoresleertipo26 from "./routes/proveedores/proveedoresleertipo26.mjs";
+
+
 import stkbgsubrubroleer from "./routes/proveedores/stkbgsubrubroleer.mjs";
 import clientesleer from "./routes/clientes/clientesleer.mjs";
 import clientesleercod from "./routes/clientes/clientesleercod.mjs";
@@ -182,6 +185,9 @@ import presupconftipomodificar from "./routes/presupuesto/presupconftipo/presupc
 import presupconftipoborrar from "./routes/presupuesto/presupconftipo/presupconftipoborrar.mjs";
 import presupconftipoagregar from "./routes/presupuesto/presupconftipo/presupconftipoagregar.mjs";
 import presupconftipocalc from "./routes/presupuesto/presupconftipo/presupconftipocalc.mjs";
+import presupconftipoleerunif from "./routes/presupuesto/presupconftipo/presupconftipoleerunif.mjs";
+
+
 import presupdetpieleer from "./routes/presupuesto/presupdetpie/presupdetpieleer.mjs";
 import presupdetpiemodificar from "./routes/presupuesto/presupdetpie/presupdetpiemodificar.mjs";
 import presupdetpieborrar from "./routes/presupuesto/presupdetpie/presupdetpieborrar.mjs";
@@ -214,6 +220,7 @@ import otcondpagoagregar from "./routes/otcondpago/otcondpagoagregar.mjs";
 import otcondpagomodificar from "./routes/otcondpago/otcondpagomodificar.mjs";
 import otcondpagoborrar from "./routes/otcondpago/otcondpagoborrar.mjs";
 
+import otdatoslee from "./routes/ordentrabajo/otdatos/otdatoslee.mjs";
 //para ctacte
 // var conectaafip = require("./routes/afip/conectaafip")
 
@@ -233,32 +240,55 @@ import pbrubrosmodificar from "./routes/prebalance/pbrubros/pbrubrosmodificar.mj
 import pbrubrosborrar from "./routes/prebalance/pbrubros/pbrubrosborrar.mjs";
 import pbsubrubrosleer from "./routes/prebalance/subrubros/pbsubrubrosleer.mjs";
 import pbrubrosvalueleer from "./routes/prebalance/pbrubros/pbrubrosvalueleer.mjs";
+import pbsubrubrosmodificar from "./routes/prebalance/subrubros/pbsubrubrosmodificar.mjs";
+import pbsubrubrosagregar from "./routes/prebalance/subrubros/pbsubrubrosagregar.mjs";
 
 
-// const { RouterSharp } = require("@material-ui/icons");
-
-// function agregada por el error CORS
 function perimitirCrossDomain(req, res, next) {
-  //en vez de * se puede definir SÓLO los orígenes que permitimos
+  // const allowedOrigins = ['*'];
+  const allowedOrigins = ['http://localhost:3000',
+    'http://192.168.2.108:4000/',
+    'http://192.168.2.11',
+    'http://localhost:4000',
+    'http://localhost:5173'];
 
-  res.header("Access-Control-Allow-Origin", "*");
-  //metodos http permitidos para CORS
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-  res.header("Access-Control-Allow-Headers", "Content-Type");
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS"); // Métodos permitidos
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Content-Type,Authorization,X-API-Key" // Incluye el encabezado X-API-Key
+  );
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+
   next();
 }
+
+
+
+// //traido del viejo backend
+
+// // const { RouterSharp } = require("@material-ui/icons");
+
+// // function agregada por el error CORS
+// function perimitirCrossDomain(req, res, next) {
+//   //en vez de * se puede definir SÓLO los orígenes que permitimos
+//   res.header("Access-Control-Allow-Origin", "*");
+//   //metodos http permitidos para CORS
+//   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+//   res.header("Access-Control-Allow-Headers", "Content-Type");
+//   next();
+// }
 
 var app = express();
 app.use(cors()); //esto estaba antes de que se colgara
 
-// app.use(cors({
-//   origin: 'http://localhost:5173', // O puedes usar '*' para permitir cualquier origen
-//   methods: 'GET,POST,PUT,DELETE',
-//   allowedHeaders: 'Content-Type, Authorization'
-// }));
-// app.listen(4000, () => {
-//   console.log('Servidor escuchando en el puerto 4000');
-// });
+
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -276,10 +306,13 @@ app.use(perimitirCrossDomain);
 
 
 
+
 app.use("/proveedoresleer", proveedoresleer);
 app.use("/proveedoresleercod", proveedoresleercod);
 app.use("/proveedoresagregar", proveedoresagregar);
 app.use("/proveedoresmodificar", proveedoresmodificar);
+app.use("/proveedoresleertipo26", proveedoresleertipo26);
+
 app.use("/proveedoresborrar", proveedoresborrar);
 
 
@@ -458,6 +491,7 @@ app.use("/presupconftipomodificar", presupconftipomodificar);
 app.use("/presupconftipoborrar", presupconftipoborrar);
 app.use("/presupconftipoagregar", presupconftipoagregar);
 app.use("/presupconftipocalc", presupconftipocalc);
+app.use("/presupconftipoleerunif", presupconftipoleerunif);
 
 
 app.use("/presupdetpieleer", presupdetpieleer);
@@ -494,6 +528,7 @@ app.use("/otcondpagoagregar", otcondpagoagregar);
 app.use("/otcondpagomodificar", otcondpagomodificar);
 app.use("/otcondpagoborrar", otcondpagoborrar);
 
+app.use("/otdatoslee", otdatoslee);
 
 //temas ctacte
 // app.use("/conectaafip", conectaafip);
@@ -513,6 +548,8 @@ app.use("/pbrubrosmodificar", pbrubrosmodificar);
 app.use("/pbrubrosborrar", pbrubrosborrar);
 app.use("/pbsubrubrosleer", pbsubrubrosleer);
 app.use("/pbrubrosvalueleer", pbrubrosvalueleer);
+app.use("/pbsubrubrosmodificar", pbsubrubrosmodificar);
+app.use("/pbsubrubrosagregar", pbsubrubrosagregar);
 
 
 app.use("/", proveedoresleer);
@@ -536,5 +573,118 @@ app.use(function (err, req, res, next) {
   //estaba puesta la linea de abajo la cambié por la de arriba por el error que daba aunque andaba
   //res.render("error ");
 });
-
+// const PORT = 3000;
+// app.listen(PORT, () => {
+//   console.log(`Servidor corriendo en el puerto ${PORT}`);
+// });
 export default app;
+
+
+// const app = express();
+// app.use(express.json());
+// app.disable('x-powered-by');
+
+// app.use(cors({
+//   origin: (origin, callback) => {
+//     const ACCEPTED_ORIGINS = [
+//       'http://localhost:3000',
+//       'http://localhost:7000',
+//       'http://192.168.2.108:4000/',
+//       'http://192.168.2.11',
+//       'http://localhost:4000',
+//       'http://localhost:5173'
+//     ]
+
+//     if (ACCEPTED_ORIGINS.includes(origin)) {
+//       return callback(null, true)
+//     }
+
+//     if (!origin) {
+//       return callback(null, true)
+//     }
+
+//     return callback(new Error('Not allowed by CORS'))
+//   }
+// }))
+// app.disable('x-powered-by') // deshabilitar el header X-Powered-By: Express
+// const perimitirCrossDomain = (req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "http://localhost:5173"); // Permitir solo este origen
+//   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // Métodos permitidos
+//   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-API-KEY"); // Agrega aquí tus encabezados personalizados
+//   res.header("Access-Control-Allow-Credentials", "true"); // Si necesitas enviar cookies o credenciales
+
+//   // Responde automáticamente a las solicitudes OPTIONS (preflight)
+//   if (req.method === "OPTIONS") {
+//     return res.sendStatus(204);
+//   }
+
+//   next();
+// };
+
+
+
+// Middleware personalizado para CORS
+// app.use(perimitirCrossDomain);
+
+// // Manejo de preflight para CORS
+// app.options("*", (req, res) => {
+//   res.header("Access-Control-Allow-Origin", "http://localhost:5137");
+//   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+//   res.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
+//   res.sendStatus(200);
+// });
+
+// Otros middlewares
+// app.use(logger("dev"));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(cookieParser());
+
+// // Servir archivos estáticos desde el directorio "public"
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+// app.use(express.static(path.join(__dirname, "public")));
+
+// // Ejemplo de una ruta
+// app.get("/api", (req, res) => {
+//   res.json({ message: "CORS configurado correctamente" });
+// });
+
+// Iniciar servidor
+// app.listen(3000, () => {
+//   console.log("Servidor corriendo en http://localhost:3000");
+// });
+
+
+/*
+// const { RouterSharp } = require("@material-ui/icons");
+
+// function agregada por el error CORS
+function perimitirCrossDomain(req, res, next) {
+  //en vez de * se puede definir SÓLO los orígenes que permitimos
+
+  res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+  //metodos http permitidos para CORS
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  next();
+}
+
+var app = express();
+// app.use(cors()); //esto estaba antes de que se colgara
+
+
+app.use(perimitirCrossDomain);
+app.use(logger("dev"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+// app.use(express.static(path.join(__dirname, "public")));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Servir archivos estáticos desde el directorio "public"
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(perimitirCrossDomain);
+*/

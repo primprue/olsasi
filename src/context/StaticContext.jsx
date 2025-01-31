@@ -1,3 +1,4 @@
+import { AppBar, Typography } from "@mui/material";
 import React, { useState } from "react";
 const StaticContext = React.createContext();
 
@@ -8,8 +9,11 @@ export function StaticContexto({ children }) {
 		<>
 			<StaticContext.Provider value={{ valor, setValor }}>
 				{children}
-				{console.log('valor StaticContexto ', valor)}
 			</StaticContext.Provider>
+			<Typography variant="h6">
+				{valor}
+
+			</Typography>
 		</>
 	);
 }

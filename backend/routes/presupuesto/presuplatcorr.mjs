@@ -57,7 +57,8 @@ router.get('/', (req, res, next) => {
         valorMOTmin = result[0].costoMOT * coefMOT / 60
         let minutosarmado = 0
         //se calculan 50 minutos por metro de largo para hacer la lona, y 60 minutos para colocacion
-        minutosarmado = colocacion ? (largo * 60) + 60 : (largo * 60)
+        minutosarmado = colocacion ? (ancho * 90) + 60 : (ancho * 90)
+
         MOTarmado = minutosarmado * valorMOTmin
 
         if (detallep == '') {
@@ -183,19 +184,20 @@ router.get('/', (req, res, next) => {
                 datosenvio.push(result);
               }
             });
+
+          conexion.query(
+            valorplaheb,
+            function (err, result) {
+              if (err) {
+                console.log('error en mysql valorplaheb')
+                console.log(err)
+              }
+              else {
+                costooriginal = costooriginal + result[0].valorplacaheb
+                datosenvio.push(result);
+              }
+            })
         }
-        conexion.query(
-          valorplaheb,
-          function (err, result) {
-            if (err) {
-              console.log('error en mysql valorplaheb')
-              console.log(err)
-            }
-            else {
-              costooriginal = costooriginal + result[0].valorplacaheb
-              datosenvio.push(result);
-            }
-          });
         if (cantCarro != 0) {
           conexion.query(
             valcarro,

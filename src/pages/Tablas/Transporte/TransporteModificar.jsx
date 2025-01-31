@@ -17,7 +17,7 @@ export function TransporteModificar(props) {
 		TransporteObser,
 	} = props;
 
-	const url = IpServidor + "/transportemodificar/" + id;
+	const url = IpServidor + "/transportemodificar/?id=" + id;
 	request
 		.post(url)
 		.set("Content-Type", "application/json")

@@ -165,7 +165,18 @@
 
 	/* height: 40; */
 }
+.encabcolumnsstock {
+	background-color: rgba(5, 25, 92, 0.096);
+	text-align: center;
+	font-size: 16px;
+	font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	font-weight: bold;
+	border-radius: 1;
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+	color: rgba(17, 10, 116, 0.986);
 
+	/* height: 40; */
+}
 .encabcolumnsmt {
 	background-color: rgba(6, 45, 77, 0.288);
 	text-align: center;

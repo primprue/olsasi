@@ -97,7 +97,7 @@ export const initial_state = {
     }
   ],
 
-  AnchoComederoEleg: '0.68',
+  AnchoComederoEleg: '0.00',
   AnchoComedero: [
     {
       value: '0.42',

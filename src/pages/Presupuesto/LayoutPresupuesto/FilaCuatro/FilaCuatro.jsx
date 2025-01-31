@@ -13,6 +13,7 @@ import useStyles from "../styles.module.css";
 import DetCliente from "./DetCliente";
 
 export default function FilaCuatro(props) {
+
 	const { state, setState } = useContext(PresupPant);
 	const [ppreview, setPPreview] = useState({ ppreview: false });
 	const handleChange = (event) => {
@@ -30,6 +31,7 @@ export default function FilaCuatro(props) {
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	async function grabarpresupuesto() {
+
 		var ClienteMayMin = state.PresupMnMy;
 		var idClienteElegE, nomClienteElegE;
 		var descrip = state.DescripPresup;

@@ -17,7 +17,7 @@ var datosenvio = [];
 router.get("/", (req, res, next) => {
   var q, i = 0;
   var coeficiente = 0, StkRubroAbrP = '', largo = 0, ancho = 0.00, perimetro = 0, cantidadcob = 0.00, ojalescada = 0.00, detallep = '', ivasn = '', coefimpuesto = 0.00
-  var datosrec, totalreg, detalle, coefMOT, valorMOT, codmoneda, mlinealcob, msogadobladillo, ojales, cotizacion
+  var datosrec, costoMOTHs, detalle, coefMOT, valorMOT, codmoneda, mlinealcob, msogadobladillo, ojales, cotizacion
   var cantidad, tipoojale, largoreal, anchoreal, cantidadojales, ganancia, tipoojal, sogadobladillo, ValorMOTtotal, j, valorflete
 
   q = ['select * from BasePresup.PresupParam'].join(' ')
@@ -91,11 +91,11 @@ router.get("/", (req, res, next) => {
 
         if (tipoojale == 'hz') {
           tipoojal = 'OHCOL'
-          detalle = detalle + ' c/ojales de hierro cada ' + ojalescada + ' cm. en : '
+          detalle = detalle + ' c/ojales de hierro cada ' + ojalescada + ' mts. en : '
         }
         else {
           tipoojal = 'OBCOL'
-          detalle = detalle + ' c/ojales de bronce cada ' + ojalescada + ' cm. en : '
+          detalle = detalle + ' c/ojales de bronce cada ' + ojalescada + ' mts. en : '
         }
         if (detallep != '') {
           detalle = ''
@@ -111,8 +111,7 @@ router.get("/", (req, res, next) => {
 
 
         ValorMOTtotal = ((result[0].costoMOT / 60) * 3.5 * largo) * coefMOT
-
-
+        costoMOTHs = result[0].costoMOT
         mlinealcob = [
           "Select ",
           "StkRubroDesc, StkRubroAbr, ",
@@ -197,10 +196,14 @@ router.get("/", (req, res, next) => {
 
 
               costooriginal = costooriginal + (datosenvio[j][0].ValorMSDobladillo * metsogadob);
-
               j++;
               j++;
               costooriginal = costooriginal + (datosenvio[j][0].ValorGrsOjal / 100 * cantidadojales)
+
+
+              costooriginal = costooriginal + (((costoMOTHs * coeficiente) / 60 / 60 * 30) * cantidadojales)
+
+
 
               costooriginal = costooriginal * coefimpuesto + ValorMOTtotal
               // costooriginal = costooriginal * ganancia * coefimpuesto;

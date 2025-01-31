@@ -11,12 +11,13 @@ conexion.connect(function (err) {
     }
 });
 
-router.post('/?:id', function (req, res, next) {
-    var indice = req.params.id;
+router.use(express.json()); // Asegúrate de que esto está habilitado para que `req.body` no sea vacío
+// router.post('/?:id', function (req, res, next) {
+router.post("/", async function (req, res, next) {
+    var indice = req.query.id;
     var descr = req.body.StkMonedasDescripcion.toUpperCase();
     var cotiz = req.body.StkMonedasCotizacion;
     var signo = req.body.StkMonedasSigno;
-
     var q = ['UPDATE StkMonedas SET ',
         'StkMonedasDescripcion = "' + descr + '",',
         'StkMonedasCotizacion = ' + cotiz + ',',

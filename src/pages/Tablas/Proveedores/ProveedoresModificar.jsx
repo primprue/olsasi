@@ -23,7 +23,7 @@ export function ProveedoresModificar(props) {
 			ProveedoresWeb,
 			ProveedoresCodMon,
 		} = props;
-		const url = IpServidor + "/proveedoresmodificar/" + id;
+		const url = IpServidor + "/proveedoresmodificar/?id=" + id;
 
 		request
 			.post(url)

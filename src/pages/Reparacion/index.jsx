@@ -28,6 +28,7 @@ import CustomToolbarMot2 from "./CustomToolbarMot2.jsx";
 import CustomToolbarParchEleg from "./CustomToolbarParchEleg.jsx";
 import DialogoCarga from "./DialogoCarga.jsx";
 import RadioButtonLNLA from "./RadioButtonLNLA.jsx";
+import ImpReparacion from "./ImpReparacion.jsx";
 
 export default function Reparacion() {
 	const { setValor } = useContext(StaticContexto);
@@ -84,6 +85,10 @@ export default function Reparacion() {
 	const [lonaAN, setLonaAN] = useState("LN");
 	const [ImpTotalRep, setImpTotalRep] = useState(0);
 
+	const [imprime, setImprime] = useState(false);
+
+	const abreImprime = () => setImprime(true);
+	const cierraImprime = () => setImprime(false);
 	async function datosParches() {
 		const data = await LeeParamRep();
 		setValorA(data[0].ValorMCC)
@@ -183,6 +188,8 @@ export default function Reparacion() {
 		setInputValue('');
 		setSelectionModel([]);
 		setPideSegundoValor(false)
+		setPrimerLabel('Cantidad')
+		setTituloDialogo(`Cantidad de ${params.field} x ${params.id}`)
 		params.field !== 'id' && setOpen(true);
 
 	};
@@ -484,6 +491,23 @@ export default function Reparacion() {
 			}
 
 		}
+		else {
+			if (gridId === 'parcheleg') {
+				setSumaParcheleg(0)
+			}
+			if (gridId === 'chicotes') {
+				setSumaChicotes(0)
+			}
+			if (gridId === 'varios') {
+				setSumaVarios(0)
+			}
+			if (gridId === 'mot1') {
+				setSumaMot1(0)
+			}
+			if (gridId === 'mot2') {
+				setSumaMot2(0)
+			}
+		}
 	}
 
 
@@ -555,6 +579,25 @@ export default function Reparacion() {
 					</Paper>
 					<br />
 					<Button className={estilo.botoncalculo} onClick={() => ImpLimp()}>Limpia</Button>
+					<Button className={estilo.botoncalculo} onClick={() => abreImprime()}>Imprime</Button>
+
+					{imprime && (
+						<ImpReparacion
+							open={imprime}
+							handleClose={cierraImprime}
+							rowsvarios={rowsvarios}
+							rowschicotes={rowschicotes}
+							rowsMot1={rowsMot1}
+							rowsMot2={rowsMot2}
+							rowsparcheleg={rowsparcheleg}
+							sumaVarios={sumaVarios}
+							sumaParcheleg={sumaParcheleg}
+							sumaChicotes={sumaChicotes}
+							sumaMot1={sumaMot1}
+							sumaMot2={sumaMot2}
+						// renglondef={renglondef}
+						></ImpReparacion>
+					)}
 				</div>
 			</Grid>
 			<div style={{ height: 150, width: '100%', paddingTop: 15 }}>

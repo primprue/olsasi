@@ -6,8 +6,8 @@ import { stkMonedasleerRed } from "./StkMonedasLeerRed";
 import estilotabla from "../../../Styles/Tabla.module.css";
 export async function llenarcolumns() {
 	const stkgrupo = await stkGrupoLeerRedRubro();
-	console.log('stkgrupo ', stkgrupo)
 	const stkrubro = await stkrubroleeproveedor();
+	console.log('stkrubro  ', stkrubro)
 	const stkUnMed = await stkUnMedLeerRed();
 	const stkMonedas = await stkMonedasleerRed();
 	const confsn = [
@@ -41,7 +41,7 @@ function columnsFill(stkgrupo, stkrubro, stkUnMed, stkMonedas, confsn) {
 				width: 250,
 				editable: true,
 				required: true,
-				maxLength: 145,
+				maxLength: 45,
 				pattern: /^/,
 				xs: 8,
 				placeholder: "_________________",
@@ -133,6 +133,7 @@ function columnsFill(stkgrupo, stkrubro, stkUnMed, stkMonedas, confsn) {
 				type: "singleSelect",
 				required: true,
 				width: 100,
+				maxLength: 5,
 				valueOptions: stkUnMed,
 				editable: "true",
 				xs: 4,

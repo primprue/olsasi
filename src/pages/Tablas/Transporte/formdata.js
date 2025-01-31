@@ -11,6 +11,6 @@ export const formdata = {
   TransporteLoc: '',
   TransporteDestino: '',
   TransporteObser: '',
-  datoserroneos: true,
+  datoserroneos: false,
   tablabase: 'Transportes'
 }

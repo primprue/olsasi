@@ -45,8 +45,6 @@ export default function TipoIVA() {
 						labelPlacement="top"
 						margin="dense"
 					/>
-					{/* </Grid>
-					<Grid item xs={4}> */}
 					<FormControlLabel
 						value="SIVA"
 						control={
@@ -61,7 +59,8 @@ export default function TipoIVA() {
 					/>
 				</RadioGroup>
 			)}
-			<FormHelperText>Cálculo con IVA o sin IVA</FormHelperText>
+			{state.PresupMnMy === "mn" && (
+				<FormHelperText>Cálculo con IVA o sin IVA</FormHelperText>)}
 		</Grid>
 		// </Grid>
 	);

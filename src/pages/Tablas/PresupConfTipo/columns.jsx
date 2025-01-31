@@ -21,7 +21,7 @@ function columnsFill(stkRubros) {
 				width: 200,
 				editable: true,
 				required: true,
-				maxLength: 100,
+				maxLength: 45,
 				pattern: /^/,
 				xs: 8,
 				placeholder:
@@ -34,6 +34,7 @@ function columnsFill(stkRubros) {
 				type: "singleSelect",
 				valueOptions: stkRubros,
 				order: true,
+				maxLength: 5,
 				width: 200,
 				editable: true,
 				headerClassName: estilotabla.encabcolumns,

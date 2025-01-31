@@ -19,7 +19,6 @@ conexion.connect(function (err) {
 
 
 router.post('/', function (req, res) {
-    console.log('req.body.provnrocalle  ', req.body.provnrocalle)
     var registro = {
         ProveedoresDesc: req.body.provdesc,
         ProveedoresTipo: parseInt(req.body.provtipo),
@@ -38,7 +37,6 @@ router.post('/', function (req, res) {
         ProveedoresCodMon: req.body.provcodmon
     }
 
-    console.log('registro  ', registro)
     conexion.query('INSERT INTO BasesGenerales.Proveedores SET ?', registro,
         function (err, result) {
             if (err) {

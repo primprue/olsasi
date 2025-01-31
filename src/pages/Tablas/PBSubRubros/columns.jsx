@@ -3,22 +3,30 @@ import estilotabla from "../../../Styles/Tabla.module.css";
 import { PBRubrosValueLeer } from "../PBRubros/PBRubrosValueLeer";
 export async function llenarcolumns() {
 	const pbrubro = await PBRubrosValueLeer();
-	console.log('pbrubro ', pbrubro)
-
 	return columnsFill(pbrubro);
 }
 
 function columnsFill(pbrubro) {
 	return new Promise(function (resolve) {
 		resolve([
+			// {
+			// 	headerName: "SubRubros(ID)",
+			// 	field: "id",
+			// 	editable: "never",
+			// 	required: false,
+			// 	order: true,
+			// 	headerClassName: "encabcolumns",
+			// },
 			{
 				headerName: "SubRubros(ID)",
-				field: "id",
-				editable: "never",
+				field: "PBidSubRubro",
+				editable: false,
+				required: false,
 				order: true,
-				headerClassName: "encabcolumns",
-			},
+				autoFocus: false,
 
+				headerClassName: estilotabla.encabcolumns,
+			},
 			{
 				headerName: "Rubro",
 				field: "PBSubRubroIdRubro",
@@ -26,7 +34,9 @@ function columnsFill(pbrubro) {
 				required: true,
 				width: 250,
 				valueOptions: pbrubro,
-				editable: "true",
+				editable: true,
+				readOnly: false,
+				autoFocus: true,
 				xs: 4,
 				headerClassName: estilotabla.encabcolumns,
 			},
@@ -37,11 +47,13 @@ function columnsFill(pbrubro) {
 				order: true,
 				width: 250,
 				editable: true,
+				readOnly: false,
 				required: true,
-				maxLength: 5,
+				autoFocus: true,
+				maxLength: 250,
 				pattern: /^/,
 				xs: 8,
-				placeholder: "_____",
+				placeholder: "______________________________",
 				// alignItems: "left",
 				headerClassName: estilotabla.encabcolumns,
 			},

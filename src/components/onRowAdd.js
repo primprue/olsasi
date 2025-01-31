@@ -4,14 +4,16 @@ import { TransporteAgregar } from "../pages/Tablas/Transporte/TransporteAgregar"
 import { StkGruposAgregar } from "../pages/Tablas/StkGrupos/StkGruposAgregar";
 import { StkRubroAgregar } from "../pages/Tablas/StkRubros/StkRubroAgregar";
 import { StkItemsAgregar } from "../pages/Tablas/StkItems/StkItemsAgregar";
+import { stkItemsBuscaCod } from "../pages/Tablas/StkItems/StkItemsBuscaCod";
 import { StkUnMedAgregar } from "../pages/Tablas/UnidadMedidas/StkUnMedAgregar";
 import { PresupDetPieAgregar } from "../pages/Tablas/PresupDetPie/PresupDetPieAgregar";
 import { ClientesAgregar } from "../pages/Tablas/Clientes/ClientesAgregar";
 import { ParamCompAgregar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompAgregar";
 import { OTCondPagoAgregar } from "../pages/Tablas/OTCondPago/OTCondPagoAgregar";
 import { PBRubrosAgregar } from "../pages/Tablas/PBRubros/PBRubrosAgregar";
-import { stkItemsBuscaCod } from "../pages/Tablas/StkItems/StkItemsBuscaCod";
+import { PBSubRubrosAgregar } from "../pages/Tablas/PBSubRubros/PBSubRubrosAgregar";
 export function onRowAdd(newData) {
+  console.log('newData onRowAdd', newData)
   return new Promise((resolve) => {
     setTimeout(() => {
       if (newData.tablabase === 'Clientes') {
@@ -52,6 +54,9 @@ export function onRowAdd(newData) {
       }
       if (newData.tablabase === 'PBRubros') {
         PBRubrosAgregar(newData);
+      }
+      if (newData.tablabase === 'PBSubRubros') {
+        PBSubRubrosAgregar(newData);
       }
       resolve(50);
     }, 100);

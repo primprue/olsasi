@@ -20,7 +20,7 @@ function columnsFill() {
 				width: 200,
 				editable: true,
 				required: true,
-				maxLength: 5,
+				maxLength: 45,
 				pattern: /^/,
 				xs: 8,
 				placeholder: "______",

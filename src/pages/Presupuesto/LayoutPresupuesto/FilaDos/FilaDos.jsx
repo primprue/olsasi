@@ -2,6 +2,10 @@ import React, { useEffect, lazy, Suspense, useState } from "react";
 import { TextField, Grid, IconButton, FormHelperText } from "@mui/material";
 
 import styles from "../styles.module.css";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import Slide from '@mui/material/Slide';
+
 import estilo from "../../../../Styles/TextFieldSelect.module.css";
 import estilot from "../../../../Styles/TextField.module.css";
 import { stkrubroleeconf } from "../../../Tablas/StkRubros/StkRubroLeeConf";
@@ -35,7 +39,8 @@ import Agregar from "./Agregar";
 
 export default function FilaDos() {
 	// Esto es para poder consumir los datos del CONTEXTAPI
-
+	const [snackbar, setSnackbar] = React.useState(null);
+	const handleCloseSnackbar = () => setSnackbar(null);
 	const { state, setState } = useContext(PresupPant);
 	const { datosrenglon, setDatosRenglon } = useContext(PresupPant);
 
@@ -99,6 +104,7 @@ export default function FilaDos() {
 		if (objetosFiltrados.length > 0) {
 			setCotidivisa(objetosFiltrados[0].StkMonedasCotizacion);
 			setState({ ...state, signomoneda: objetosFiltrados[0].StkMonedasSigno });
+			console.log('signomoneda', state.signomoneda)
 			setOtraMoneda(true);
 			setEligeMoneda(false);
 		}
@@ -128,38 +134,50 @@ export default function FilaDos() {
 		leermonedas();
 		sacadatosmonedas();
 	}, [state.monedasleidas.length <= 0]); // eslint-disable-line react-hooks/exhaustive-deps
+
+
 	async function agregar() {
 		var indicetp1 = state.indicetp + 1;
 		setState({ ...state, indicetp: indicetp1 });
+
 
 		var PresupCantidadM = state.PresupCantidad;
 
 		var dcalculo = [];
 
 		var statepasante = state;
+
 		var dcalculo1 = await GeneraDCalculo(statepasante, presuptipo, cotidivisa);
-		dcalculo.push(dcalculo1);
-		var datoscalculos = JSON.stringify(dcalculo);
-		const datosrenglon1 = await presupcalculador(
-			state.DatosPresupEleg[0],
-			datoscalculos,
-			presuptipo
-		);
-		var datospresup = await Agregar(
-			datosrenglon1,
-			indicetp1,
-			rubrosn,
-			PresupCantidadM,
-			otramoneda,
-			state.DescripPresup,
-			state.renglonanexo,
-			dcalculo
-		);
-		if (state.renglonanexo.length !== 0) {
-			setDatosRenglon([...datosrenglon, state.renglonanexo]);
-			setDatosRenglon([...datosrenglon, datospresup[0]]);
+
+		if (dcalculo1.faltadato === true) {
+			setSnackbar({
+				children: "Faltan datos para el presupuesto",
+				severity: "warning",
+			});
 		} else {
-			setDatosRenglon([...datosrenglon, datospresup[0]]);
+			dcalculo.push(dcalculo1);
+			var datoscalculos = JSON.stringify(dcalculo);
+			const datosrenglon1 = await presupcalculador(
+				state.DatosPresupEleg[0],
+				datoscalculos,
+				presuptipo
+			);
+			var datospresup = await Agregar(
+				datosrenglon1,
+				indicetp1,
+				rubrosn,
+				PresupCantidadM,
+				otramoneda,
+				state.DescripPresup,
+				state.renglonanexo,
+				dcalculo
+			);
+			if (state.renglonanexo.length !== 0) {
+				setDatosRenglon([...datosrenglon, state.renglonanexo]);
+				setDatosRenglon([...datosrenglon, datospresup[0]]);
+			} else {
+				setDatosRenglon([...datosrenglon, datospresup[0]]);
+			}
 		}
 
 	}
@@ -197,6 +215,10 @@ export default function FilaDos() {
 			),
 		},
 	];
+
+	function TransitionRight(props) {
+		return <Slide {...props} direction="right" />;
+	}
 	return (
 		<>
 			<Grid item>
@@ -264,6 +286,7 @@ export default function FilaDos() {
 			)}
 			{largo !== "N" && (
 				<Grid item xs={1}>
+
 					<TextField
 						disabled={largo === "N"}
 						inputProps={{ maxLength: 3 }}
@@ -374,6 +397,18 @@ export default function FilaDos() {
 				<TablaPresup data={datosrenglon} />
 			</Suspense>
 			{/* </Grid> */}
+			{!!snackbar && (
+				<Snackbar
+					open
+					anchorOrigin={{ vertical: "top", horizontal: "center" }}
+					onClose={handleCloseSnackbar}
+					autoHideDuration={1200}
+					sx={{ width: '100%' }}
+					TransitionComponent={TransitionRight}
+				>
+					<Alert {...snackbar} variant="filled" onClose={handleCloseSnackbar} />
+				</Snackbar>
+			)}
 		</>
 	);
 }

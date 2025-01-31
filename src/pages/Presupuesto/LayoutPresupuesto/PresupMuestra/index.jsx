@@ -39,7 +39,7 @@ export default function PresupMuestra() {
 	const [fechasel, setFechasel] = useState(fecha);
 	const [rowsel, setRowSel] = useState();
 	const [open, setOpen] = useState(false);
-	// const [snackbar, setSnackbar] = React.useState(null);
+	const [snackbar, setSnackbar] = React.useState(null);
 	// const handleCloseSnackbar = () => setSnackbar(null);
 	const handleProcessRowUpdateError = React.useCallback((error) => {
 		setSnackbar({ children: error.message, severity: "error" });
@@ -95,6 +95,7 @@ export default function PresupMuestra() {
 	};
 
 	async function armanombre(rowsel) {
+		console.log('rowsel  ', rowsel)
 		let resultrescatenombre = await PresupNombre(rowsel);
 		if (resultrescatenombre.text === '[{"error":1}]')
 			alert(`El presupuesto nro ${rowsel.id} no se encuentra`);
@@ -157,7 +158,7 @@ export default function PresupMuestra() {
 						autoHeight
 						rows={rows}
 						columns={columns}
-						localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+						// localeText={esES.components.MuiDataGrid.defaultProps.localeText}
 						onRowClick={handleRowSelect}
 						onProcessRowUpdateError={handleProcessRowUpdateError}
 						showCellVerticalBorder={true}

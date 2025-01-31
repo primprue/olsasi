@@ -6,8 +6,9 @@ import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 export function StkMonedasModificar(props) {
 	const { id, StkMonedasDescripcion, StkMonedasCotizacion, StkMonedasSigno } =
 		props;
+
 	const idStkMonedas = id;
-	const url = IpServidor + "/stkmonedasmodificar/" + idStkMonedas;
+	const url = IpServidor + "/stkmonedasmodificar/?id=" + idStkMonedas;
 	request
 		.post(url)
 		.set("Content-Type", "application/json")

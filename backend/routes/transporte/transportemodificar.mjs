@@ -1,6 +1,5 @@
 import express from "express";
 var router = express.Router();
-
 import conexion from "../conexion.mjs";
 conexion.connect(function (err) {
   if (!err) {
@@ -10,9 +9,12 @@ conexion.connect(function (err) {
   }
 });
 
-
-router.post("/?:id", function (req, res) {
-  var indice = req.params.id;
+router.use(express.json()); // Asegúrate de que esto está habilitado para que `req.body` no sea vacío
+router.post("/", async function (req, res, next) {
+  var indice = req.query.id;
+  console.log('indice en transportemodificar ', indice)
+  // router.post("/?:id", function (req, res) {
+  //   var indice = req.params.id;
   var transdesc = req.body.TransporteDesc;
   var transtel1 = req.body.TransporteTel1;
   var transtel2 = req.body.TransporteTel2;
@@ -48,10 +50,17 @@ router.post("/?:id", function (req, res) {
     if (err) {
       if (err.errno == 1062) {
         return res.status(409).send({ message: "error clave duplicada" });
-      } else {
-        console.log(err.errno);
       }
-    } else {
+      else {
+        if (err.errno == 1406) {
+          return res.status(412).send({ message: "el dato numerico más dígitos de los que corresponde" });
+        }
+        else {
+          console.log(err.errno);
+        }
+      }
+    }
+    else {
       res.json(result.rows);
     }
   });

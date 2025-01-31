@@ -47,5 +47,5 @@ export function ClientesModificar(props) {
 				})
 				.catch((err) => MuestraMensaje(err));
 		});
-	}, 300);
+	}, 100);
 }

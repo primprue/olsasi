@@ -470,10 +470,8 @@ const menuItems = [
   },
   {
     name: 'Servicios',
-	path :"/",
+    path: "/",
     subItems: [
-      { name: 'Presupuestos', component:{Link},
-	  to:"/PresupPant", subItems: [] },
       { name: 'Desarrollo', subItems: [] },
       { name: 'Diseño', subItems: [] },
     ],
@@ -572,8 +570,8 @@ const Header = () => {
           keepMounted: true,
         }}
         sx={{
-          '& .MuiDrawer-paper': { 
-            boxSizing: 'border-box', 
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
             width: 280,
             backgroundColor: '#34495e',
             color: 'white',

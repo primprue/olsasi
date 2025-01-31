@@ -6,6 +6,11 @@ import { exec } from "child_process";
 
 // var path = require("path");
 import variables from '../../public/variables.mjs';
+// const path = require('path');
+import path from "path";
+const dirpresupdocumento = path.resolve(variables.dirpresupdocumento);
+const caminoynombrearch = path.resolve(variables.caminoynombrearch);
+
 
 // const { response } = require("express");
 // const fs = require('fs');
@@ -38,10 +43,14 @@ router.get("/", function (req, res) {
     // }).connect(sshConfig);
 
     var nombrepresupeleg = req.query.id;
-    var comando = "cp -a " + variables.dirpresupdocumento
-        + nombrepresupeleg + " " +
-        variables.caminoynombrearch + 'basics.pdf'
-
+    // var comando = "cp -a " + variables.dirpresupdocumento
+    //     + nombrepresupeleg + " " +
+    //     variables.caminoynombrearch + 'basics.pdf'
+    console.log('dirpresupdocumento ', dirpresupdocumento);
+    console.log('nombrepresupeleg ', nombrepresupeleg);
+    console.log('caminoynombrearch ', caminoynombrearch);
+    const comando = `cp -a ${dirpresupdocumento}/${nombrepresupeleg} ${caminoynombrearch}/basics.pdf`;
+    console.log('comando ', comando);
     exec(comando, (error, stdout, stderr) => {
         if (error) {
             console.log(`error: ${error.message}`);

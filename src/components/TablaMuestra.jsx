@@ -73,6 +73,7 @@ import { useContext } from "react";
 import TablasContexto from "../context/TablasContext.jsx";
 import SelecCampos from "../pages/Impresion/SelecCampos.jsx";
 import { Box, IconButton, Tooltip } from "@mui/material";
+import { PBSubRubrosModificar } from "../pages/Tablas/PBSubRubros/PBSubRubrosModificar.jsx";
 export default function TablaMuestra(props) {
 	const { rows1, columns1, formdatos } = props;
 	const { datoborrado, setDatoborrado } = useContext(TablasContexto);
@@ -190,6 +191,13 @@ export default function TablaMuestra(props) {
 		);
 		setOpen(true);
 	};
+	const handleAlta1 = () => {
+		setNombreBoton("Enviar");
+		setTituloDial(
+			`Alta de ${formdatos.tablabase} (moverse por los campos con tab)`
+		);
+		setOpen(true);
+	};
 
 	const handleModifica = (params) => {
 		setTimeout(() => {
@@ -207,6 +215,8 @@ export default function TablaMuestra(props) {
 			if (formdatos.tablabase === "ParamComp") ParamCompModificar(params);
 			if (formdatos.tablabase === "OTCondPago") OTCondPagoModificar(params);
 			if (formdatos.tablabase === "PBRubros") PBRubrosModificar(params);
+			if (formdatos.tablabase === "PBSubRubros") PBSubRubrosModificar(params);
+
 			relee();
 		}, 100);
 	};
@@ -266,7 +276,7 @@ export default function TablaMuestra(props) {
 				<GridToolbarFilterButton className={estilotabla.coloropcioncol} />
 				<GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
 				<GridToolbarExport className={estilotabla.coloropcioncol} />
-				{(formdatos.tablabase !== "MuestraPresupuesto" && (
+				{(formdatos.tablabase !== "MuestraPresupuesto" && formdatos.tablabase !== "OTDatos" && (
 					<React.Fragment>
 						<AddToPhotosTwoToneIcon
 							className={estilotabla.iconoagregar}
@@ -281,13 +291,26 @@ export default function TablaMuestra(props) {
 							onClick={() => handleModifica(rown)}
 						/>
 					</React.Fragment>
-				)) || (
-						<PreviewTwoToneIcon
-							onClick={() => handleModifica(rowsel.id)}
-							className={estilotabla.iconomodificar}
-							titleAccess="Ve datos Presupuesto"
-						/>
-					)}
+				)) ||
+					(formdatos.tablabase === "MuestraPresupuesto" &&
+						(
+							<PreviewTwoToneIcon
+								onClick={() => handleModifica(rowsel.id)}
+								className={estilotabla.iconomodificar}
+								titleAccess="Ve datos Presupuesto"
+							/>
+						))
+					||
+					(formdatos.tablabase === "OTDatos" &&
+						(
+							<AddToPhotosTwoToneIcon
+								className={estilotabla.iconoagregar}
+								size="large"
+								titleAccess="Agregar"
+								onClick={() => handleAlta1()}
+							/>
+						))
+				}
 				<LocalPrintshopRoundedIcon
 					onClick={() => setImprimirTF(true)}
 					className={estilotabla.iconoimpresora}

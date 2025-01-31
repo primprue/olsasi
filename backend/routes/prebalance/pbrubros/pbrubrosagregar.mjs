@@ -18,7 +18,6 @@ router.post("/", function (req, res, next) {
   var registro = {
     PBRubrosDetalle: req.body.PBRubrosDetalle.toUpperCase(),
   };
-  console.log('registro', registro)
   conexion.query("INSERT INTO BasePreBalance.PBRubros SET ?", registro, function (err, result) {
     if (err) {
       if (err.errno == 1062) {

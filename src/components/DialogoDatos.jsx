@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { ValidatedTextField } from "../hooks/useValidTextField";
 import { Grid } from "@mui/material";
-
+import MuestraMensaje from "./lib/MuestraMensaje";
 import { useContext } from "react";
 import { onRowAdd } from "./onRowAdd";
 import { onRowDelete } from "./onRowDelete";
@@ -14,7 +14,6 @@ export function DialogoDatos(props) {
 	const { datoborrado, setDatoborrado } = useContext(TablasContexto);
 	const [selectedOption, setSelectedOption] = useState("");
 	const { open, handleClose, columns, nombrebtn, paramsbor, titulodial } = props;
-
 	const [error, setError] = useState({
 		error: false,
 		message: "",
@@ -29,17 +28,23 @@ export function DialogoDatos(props) {
 
 	const handleSubmit = (event) => {
 		event.preventDefault(); // Evita la recarga de la página al enviar el formulario
-
 		setTimeout(() => {
 			if (nombrebtn === "Enviar") {
-				onRowAdd(formdatos);
+				if (formdatos.datoserroneos === false) {
+					onRowAdd(formdatos);
+				} else {
+					MuestraMensaje(415);
+
+				}
 			} else {
 				let valorresuelto = onRowDelete(paramsbor.id, formdatos);
 				setDatoborrado(valorresuelto);
 			}
 		}, 300);
 	};
+
 	const manejarCambio = (e) => {
+		e.stopPropagation()
 		formdatos[e.target.id] = e.target.value;
 	};
 	return (
@@ -50,17 +55,20 @@ export function DialogoDatos(props) {
 				<form onSubmit={handleSubmit}>
 					<Grid container spacing={2} alignItems="center">
 						{columns &&
+
 							// , -1
 							columns.slice(length).map(
 								(campo, index) => (
-									columns[index].editable && <label></label>,
+									// (!columns[index].editable && <label></label>) || (
 									(columns[index].type !== "singleSelect" && (
 										<ValidatedTextField
 											key={index}
 											id={columns[index].field}
 											label={columns[index].headerName}
 											color={columns[index].color}
-											autoFocus
+											autoFocus={columns[index].autoFocus}
+											readOnly={columns[index].readOnly}
+											editable={columns[index].editable}
 											value={paramsbor[columns[index].field]}
 											required={columns[index].required}
 											type={columns[index].type}
@@ -73,6 +81,7 @@ export function DialogoDatos(props) {
 											pattern={columns[index].pattern}
 											alignitems={columns[index].alignItems}
 											onChange={manejarCambio}
+											className={formdatos.datoserroneos ? 'error' : ''}
 											onKeyDown={
 												!index === columns.slice(length) && { handleSubmit }
 											}
@@ -96,11 +105,10 @@ export function DialogoDatos(props) {
 												</option>
 											))}
 										</select>
-									)
-								)
+									))
+								// )
 							)}
-						{/* </Grid> */}
-						{/* <Grid container spacing={2} alignItems="center"> */}
+
 						<Button
 							type="submit"
 							className={estilos.botonfincargadatos}
@@ -111,7 +119,6 @@ export function DialogoDatos(props) {
 							onClick={handleClose}
 							variant="outlined"
 							className={estilos.botoncierracargadatos}
-						// sx={{ mt: 2 }}
 						>
 							Cerrar
 						</Button>

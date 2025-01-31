@@ -12,9 +12,8 @@ conexion.connect(function (err) {
 });
 
 
-
-router.get("/?:idStkGrupo", function (req, res, next) {
-  var indice = req.params.idStkGrupo;
+router.get("/", function (req, res, next) {
+  var indice = req.query.idStkGrupo;
   var q = [
     "Select idStkRubro, StkRubroDesc, StkRubroAbr, StkRubroProv, ",
     "Proveedores.ProveedoresDesc, StkRubroAncho, StkRubroPresDes, StkRubroPres, StkRubroUM, StkRubroCosto, ",

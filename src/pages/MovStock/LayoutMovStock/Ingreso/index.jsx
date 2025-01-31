@@ -1,11 +1,11 @@
 import React from "react";
 
-import PantallaIngreso from "./PantallaIngreso";
+import PantallaMovimiento from "./PantallaMovimiento";
 export default function FilaUno() {
 
   return (
     <>
-      <PantallaIngreso />
+      <PantallaMovimiento />
     </>
   );
 }

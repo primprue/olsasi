@@ -79,7 +79,6 @@ router.all("/", async function (req, res) {
             res.json(result);
             nroot = result.insertId
         }
-
         req.body.otdatos.renglonespresup.map(renglon => {
             var registro1 = {
                 OTRenglonNro: i + 1,
@@ -89,6 +88,7 @@ router.all("/", async function (req, res) {
                 OTRenglonLargo: renglon[0].PresupRenglonLargo,
                 OTRenglonAncho: renglon[0].PresupRenglonAncho,
                 OTRenglonImpItem: renglon[0].PresupRenglonImpItem,
+                OTRenglonParamInt: renglon[0].PresupRenglonParamInt,
                 OTRenglonDetalles: JSON.stringify(req.body.otdatos.datosconfec)
             }
             conexion.query("INSERT INTO BasesOrdenes.OTRenglon SET ?", registro1,
@@ -108,6 +108,20 @@ router.all("/", async function (req, res) {
                         //   res.json('');
                     }
                 });
+            console.log('registro1', registro1)
+            console.log('registro1.OTRenglonNro', registro1.OTRenglonNro)
+            console.log('registro1.OTRenglonCant', registro1.OTRenglonCant)
+            console.log('registro1.OTRenglonDesc', registro1.OTRenglonDesc)
+            console.log('registro1.OTRenglonLargo', registro1.OTRenglonLargo)
+            console.log('registro1.OTRenglonAncho', registro1.OTRenglonAncho)
+            console.log('registro1.OTRenglonDetalles', registro1.OTRenglonDetalles)
+            console.log('registro1.PresupRenglonParamInt  ', registro1.PresupRenglonParamInt)
+            console.log('JSON.stringify(req.body.otdatos.datosconfec.Material', JSON.stringify(req.body.otdatos.datosconfec.Material))
+            console.log('JSON.stringify(req.body.otdatos.datosconfec.ColorMaterial', JSON.stringify(req.body.otdatos.datosconfec.ColorMaterial))
+            console.log('JSON.stringify(req.body.otdatos.datosconfec.Ojales', JSON.stringify(req.body.otdatos.datosconfec.Ojales))
+            console.log('JSON.stringify(req.body.otdatos.datosconfec.Refuerzos', JSON.stringify(req.body.otdatos.datosconfec.Refuerzos))
+            console.log('JSON.stringify(req.body.otdatos.datosconfec.Chicotes', JSON.stringify(req.body.otdatos.datosconfec.Chicotes))
+            console.log('req.body.otdatos.renglonespre  ', req.body.otdatos.renglonespresup[0][0].PresupRenglonParamInt)
             i++
         })
 

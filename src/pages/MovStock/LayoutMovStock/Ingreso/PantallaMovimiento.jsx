@@ -12,9 +12,11 @@ import { sumaingreso } from "./SumaIngreso";
 import { useContext } from "react";
 import { MovStockPantContext } from "../../MovStockPant";
 import { DataGrid, esES } from "@mui/x-data-grid";
+import { Proveedoresleertipo26 } from "./Proveedoresleertipo26";
 
-export default function PantallaIngreso(props) {
+export default function PantallaMovimiento(props) {
 	const { state, setState } = useContext(MovStockPantContext);
+	const [trigger, setTrigger] = useState(false);
 	const [columns, setColumns] = useState([]);
 	const [data, setData] = useState([]);
 	const [selectedRow, setSelectedRow] = useState(null);
@@ -27,6 +29,10 @@ export default function PantallaIngreso(props) {
 	let abrrrubro;
 	let agregaingreso = "";
 
+	async function dataFetch() {
+		const result = await Proveedoresleertipo26();
+		setState({ ...state, proveed26: result });
+	}
 	async function leegrupos() {
 		const result = await stkgrupoleer();
 		setState({ ...state, stkgrupos: result });
@@ -67,11 +73,13 @@ export default function PantallaIngreso(props) {
 		}
 	}, [state.idStkGrupo]); // eslint-disable-line react-hooks/exhaustive-deps
 
-	const miraitem = (indicetabla) => {
+	const miraitem = (indicetabla, roweleg) => {
+		setSelectedRow(roweleg);
 		setIndicetabla(indicetabla);
 		setCantpres(0);
 		setCanting(0);
 	};
+
 
 	async function botonok() {
 		setState({ ...state, totaling: cantpres * canting });
@@ -80,19 +88,27 @@ export default function PantallaIngreso(props) {
 			{
 				tingreso: cantpres * canting,
 				abrevrubro: state.StkRubroAbr,
-				indiceitem: data[indicetabla].idStkItems,
+				indiceitem: selectedRow.idStkItems,
 			},
 		];
 		agregaingreso = await sumaingreso(infingreso);
-		data[indicetabla].StkItemsCantDisp =
+		var it = selectedRow.id;
+		data[it - 1].StkItemsCantDisp =
 			agregaingreso.body[1][0].StkItemsCantDisp;
-		data[indicetabla].StkItemsCantidad =
+		data[it - 1].StkItemsCantidad =
 			agregaingreso.body[1][0].StkItemsCantidad;
-		var it = indicetabla;
+		setData(data);
+		setTrigger((prev) => !prev);
 		it < data.length - 1 ? it++ : it--;
-		setSelectedRow(it);
 		miraitem(it);
 	}
+
+	const handleProcessRowUpdate = (newRow, oldRow) => {
+		setData((prevRows) =>
+			prevRows.map((row) => (row.id === newRow.id ? newRow : row))
+		);
+		return newRow;
+	};
 
 	const textdata = [
 		{
@@ -126,7 +142,23 @@ export default function PantallaIngreso(props) {
 			),
 		},
 	];
-
+	const proveed = [
+		{
+			id: "idProveedores",
+			label: "Proveedor",
+			value: state.idProveedores,
+			mapeo: (
+				<>
+					<option />
+					{state.proveed26.map((option) => (
+						<option key={option.idProveedores} value={option.idProveedores}>
+							{option.ProveedoresDesc}
+						</option>
+					))}
+				</>
+			),
+		},
+	];
 	return (
 		<div className={Estilos.contenedor}>
 			<div className={Estilos.contenedor1}>
@@ -150,59 +182,35 @@ export default function PantallaIngreso(props) {
 				))}
 
 				<DataGrid
+					key={trigger} // El cambio en trigger fuerza el re-renderizado
 					rows={data}
 					columns={columns}
 					localeText={esES.components.MuiDataGrid.defaultProps.localeText}
 					onRowClick={(evt, selectedRow) => {
-						
-					setSelectedRow(evt.id);
-						miraitem(evt.id);
-						setTimeout(() => {
-							textInput.current.focus();
-						}, 100);
-					
-						// setSelectedRow(selectedRow.tableData.id);
-						// miraitem(selectedRow.tableData.id);
-						// setTimeout(() => {
-						// 	textInput.current.focus();
-						// }, 100);
+						setSelectedRow(evt.row);
+						miraitem(evt.id, evt.row);
+
 					}}
+					processRowUpdate={handleProcessRowUpdate}
 				/>
-				{/* <MaterialTable
-					id="tablaDatos"
-					title="Items de Rubro"
-					columns={columns}
-					data={data}
-					icons={tableIcons}
-					localization={localization}
-					className={Estilos.contenedor1}
-					onRowClick={(evt, selectedRow) => {
-						setSelectedRow(selectedRow.tableData.id);
-						miraitem(selectedRow.tableData.id);
-						setTimeout(() => {
-							textInput.current.focus();
-						}, 100);
-					}}
-				/> */}
+
 			</div>
 			<div className={Estilos.contenedor2}>
-				{/* <div> */}
-				{indicetabla !== -1 ? (
+				{selectedRow ? (
 					<Card>
 						<CardContent className={Estilos.card1}>
 							<Grid container>
 								La presentación de la mercadería es :<br></br>
-								{data[0].StkRubroPresDes} de {data[0].StkRubroPres}{" "}
-								{data[0].StkRubroUM}
-								{data[0].StkRubroAncho !== 0 &&
+								{selectedRow.StkRubroPresDes} de {selectedRow.StkRubroPres}{" "}
+								{selectedRow.StkRubroUM}
+								{selectedRow.StkRubroAncho !== 0 &&
 									" por " +
-										data[0].StkRubroAncho +
-										" " +
-										data[indicetabla].StkItemsDesc}
+									selectedRow.StkRubroAncho +
+									" " +
+									selectedRow.StkItemsDesc}
 							</Grid>
 							<br></br>
 
-							{/* <Grid item xs={12} md={2} lg={12} > */}
 							<label> Ingresaron </label>
 							<TextField
 								inputProps={{ maxLength: 4 }}
@@ -214,7 +222,7 @@ export default function PantallaIngreso(props) {
 								onChange={cambioingreso}
 								value={cantpres}
 								autoFocus
-								onKeyPress={(e1) => {
+								onKeyDown={(e1) => {
 									if (e1.key === "Enter") {
 										setTimeout(() => {
 											textInput1.current.focus();
@@ -233,7 +241,7 @@ export default function PantallaIngreso(props) {
 								id="canting"
 								onChange={cambioingreso}
 								value={canting}
-								onKeyPress={(e2) => {
+								onKeyDown={(e2) => {
 									if (e2.key === "Enter") {
 										setTimeout(() => {
 											textInput2.current.focus();
@@ -242,34 +250,21 @@ export default function PantallaIngreso(props) {
 								}}
 							/>
 
-							{/* </Grid>
-                                <Grid container spacing={3}> */}
-							{/* <Grid item xs> */}
-							{/* className={Estilos.botonmerc} */}
 							<Button
 								onClick={botonok}
 								ref={textInput2}
-								// onKeyPress={(e3) => {
-								//     if (e3.key === 'Enter') {
-								//         setTimeout(() => {
-								//             textInput.current.focus();
-								//         }, 100);
-								//     }
-								// }}
+
 							>
 								{" "}
 								TOTAL INGRESADO: {cantpres * canting}
 							</Button>
-							{/* </Grid>
-                                    <Grid item xs> */}
-							{/* <label >TOTAL INGRESADO : {cantpres * canting}</label> */}
-							{/* </Grid>
-                                </Grid> */}
+
 						</CardContent>
 					</Card>
 				) : (
 					""
 				)}
+
 			</div>
 		</div>
 	);

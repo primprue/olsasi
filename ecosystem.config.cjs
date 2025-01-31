@@ -1,4 +1,9 @@
 module.exports = {
+    //esta es la configuración del servicio de despliegue para pm2 se ejecuta como pm2 start ecosystem.config.cjs 
+    //para ejecutar el servicio al arrancar la pc pm2 startup
+    //da un mensaje que debo ejecutar por ejemplo sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u <tu_usuario>
+    // luego pm2 save
+    //y listo queda en el inicio de la pc automáticamente
     apps: [
         {
             name: "backend-server", // Nombre del proceso principal

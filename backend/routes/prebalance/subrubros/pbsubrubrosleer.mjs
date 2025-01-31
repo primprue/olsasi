@@ -13,7 +13,7 @@ conexion.connect(function (err) {
 
 
 router.get("/", function (req, res, next) {
-    var q = ["Select concat(PBidSubRubro, PBSubRubroIdRubro) as id, PBSubRubroIdRubro, PBSubRubroDetalle from BasePreBalance.PBSubRubros"].join(" ");
+    var q = ["Select concat(PBidSubRubro, PBSubRubroIdRubro) as id,PBidSubRubro, PBSubRubroIdRubro, PBSubRubroDetalle from BasePreBalance.PBSubRubros"].join(" ");
 
 
     conexion.query(q, function (err, result) {

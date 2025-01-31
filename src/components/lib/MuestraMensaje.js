@@ -25,6 +25,9 @@ function MuestraMensaje(err, ruta) {
     case 414:
       Mensaje("error", "Faltan datos para leer información en tabla");
       break;
+    case 415:
+      Mensaje("error", "Hay datos erróneos ");
+      break;
     case 515:
       Mensaje("warning", "Faltan datos");
       break;

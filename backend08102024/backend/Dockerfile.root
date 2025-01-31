@@ -1,0 +1,18 @@
+# Runing as ROOT user
+
+# Lean Distro
+FROM node:8.9.3-alpine
+
+# Full Distro
+# FROM node:8.9.3
+
+WORKDIR /code/backend
+
+COPY package*.json /code/backend/
+
+RUN yarn global add  gulp-cli
+
+# Wrokaround: gulp-nodemon fails to install using this distro. We need to post install it to force it.
+RUN yarn install && yarn add gulp-nodemon 
+
+EXPOSE 4000

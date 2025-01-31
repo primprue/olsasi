@@ -8,7 +8,7 @@ export const PresupNombre = (datos) => {
 		var Cliente = datos.NombreCliente.trimRight();
 		Cliente = Cliente.replace(/ /g, "\\ ");
 		nombrepresupue = `Presupuesto\\ nro\\ ${datos.id}*.pdf`;
-
+		//nombrepresupue = 'Presupuesto nro ' + datos.id + '*.pdf';
 		// `\\ ${Cliente}\\ ${datos.PresupEncabFecha}\\.pdf`;
 
 		// nombrepresupue =
@@ -21,11 +21,13 @@ export const PresupNombre = (datos) => {
 		// 	" .pdf";
 	}
 	// Presupuesto\ nro\ 6372\ la\ luna\ verde\ 19-02-2024\ .pdf
-
-	nombrepresupue = encodeURIComponent(nombrepresupue);
+	console.log('nombrepresupue antes de codificar', nombrepresupue)
+	// nombrepresupue = encodeURIComponent(nombrepresupue);
+	console.log('nombrepresupue', nombrepresupue)
 	return new Promise((resolve) => {
 		setTimeout(() => {
 			const url = IpServidor + "/presupnombre/?id=" + nombrepresupue;
+			console.log('url en PresupNombre', url)
 			request
 				.get(url)
 				.set("Content-Type", "application/json")

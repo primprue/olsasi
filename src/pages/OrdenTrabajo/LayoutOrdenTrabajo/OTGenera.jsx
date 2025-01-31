@@ -299,7 +299,7 @@ export default function OTGenera(props) {
 			return Object.keys(elemento).some((prop) =>
 				prop.startsWith("PresupRenglon" || prop.startsWith("idrenglon"))
 			);
-			return !elemento.skip; // Puedes ajustar esta condición según tu necesidad
+			// return!elemento.skip; // Puedes ajustar esta condición según tu necesidad
 		});
 		//
 		doc.autoTable({

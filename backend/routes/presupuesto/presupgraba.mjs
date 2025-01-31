@@ -3,11 +3,8 @@ var router = express.Router();
 
 import moment from "moment";
 import conexion from '../conexion.mjs';
-import { Console } from "console";
 
-var nrovta = 1;
 nropresup = 0;
-var datosenvio = [];
 moment.locale("es");
 var nropresup = 0;
 conexion.connect(function (err) {
@@ -17,6 +14,8 @@ conexion.connect(function (err) {
     console.log("no se conecto en presupgraba");
   }
 });
+
+router.use(express.json()); // Asegúrate de que esto está habilitado para que `req.body` no sea vacío
 
 router.all("/", async function (req, res) {
   var d = new Date();
@@ -50,7 +49,6 @@ router.all("/", async function (req, res) {
       res.json(result);
       nropresup = result.insertId
     }
-
     req.body.DatosPresup.datos.map(renglon => {
       var registro1 = {
         idPresupRenglon: i + 1,

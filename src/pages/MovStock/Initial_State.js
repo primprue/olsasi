@@ -4,6 +4,7 @@ export const initial_state = {
     idStkGrupo: "",
     idStkRubro: "",
     datositems: [],
+    proveed26: [],
     // cantpres: 0,
     // canting: 0,
     totaling: 0,

@@ -37,7 +37,7 @@ function columnsFill(stkGrupos, stkRubros) {
 				valueOptions: stkRubros,
 				order: true,
 				width: 300,
-				maxLength: 45,
+				maxLength: 5,
 				editable: true,
 				headerClassName: estilotabla.encabcolumns,
 			},

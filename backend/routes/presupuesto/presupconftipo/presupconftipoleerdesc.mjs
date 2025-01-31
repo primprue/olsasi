@@ -17,13 +17,11 @@ conexion.connect(function (err) {
 router.get("/", function (req, res, next) {
 
   var PresupConfTipoDesc = req.query.descripcion;
-  console.log('PresupConfTipoDesc presupconftipoleerdesc ', PresupConfTipoDesc)
   var q = ["Select * from BasePresup.PresupConfTipo where PresupConfTipoDesc = '" + PresupConfTipoDesc + "'"].join("");
   conexion.query(q, function (err, result) {
     if (err) {
       console.log(err);
     } else {
-      console.log('presupconftipoleerdesc result ', result)
       res.json(result);
     }
   });
