@@ -86,6 +86,7 @@ export default function Reparacion() {
 	const [ImpTotalRep, setImpTotalRep] = useState(0);
 
 	const [imprime, setImprime] = useState(false);
+	const [nomCliente, setNomCliente] = useState('')
 
 	const abreImprime = () => setImprime(true);
 	const cierraImprime = () => setImprime(false);
@@ -554,7 +555,7 @@ export default function Reparacion() {
 						/>
 					</div>}
 				<div style={{ height: 435, width: '20%', paddingBottom: 5, paddingLeft: 15 }}>
-					<Button className={estilo.botoncalculo} onClick={() => CalculaReparacion()}>Calcular</Button>
+
 					<RadioButtonLNLA lonaAN={lonaAN} handleChange={handleChange} />
 					<Paper elevation={2} sx={{ padding: 1, textAlign: 'center', width: 150 }}>
 						<Typography variant="subtitle2" color="textSecondary">
@@ -578,8 +579,20 @@ export default function Reparacion() {
 						</Box>
 					</Paper>
 					<br />
-					<Button className={estilo.botoncalculo} onClick={() => ImpLimp()}>Limpia</Button>
+					<TextField id="nomCliente"
+						label="Nombre del cliente"
+						variant="standard"
+						value={nomCliente}
+						onChange={(e) => setNomCliente(e.target.value)}
+						sx={{ width: 200 }} />
+					<br />
+					<br />
+					<Button className={estilo.botoncalculo} onClick={() => CalculaReparacion()}>Calcular</Button>
+
 					<Button className={estilo.botoncalculo} onClick={() => abreImprime()}>Imprime</Button>
+					<br />
+					<br />
+					<Button className={estilo.botoncalculo} onClick={() => ImpLimp()}>Limpia</Button>
 
 					{imprime && (
 						<ImpReparacion
@@ -595,6 +608,8 @@ export default function Reparacion() {
 							sumaChicotes={sumaChicotes}
 							sumaMot1={sumaMot1}
 							sumaMot2={sumaMot2}
+							ImpTotalRep={ImpTotalRep}
+							nomCliente={nomCliente}
 						// renglondef={renglondef}
 						></ImpReparacion>
 					)}

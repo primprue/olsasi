@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -9,7 +9,20 @@ import { Button, Dialog, DialogContent } from "@mui/material";
 
 export default function ImpReparacion(props) {
 
-	const { open, handleClose, rowsvarios, rowschicotes, rowsMot1, rowsMot2, rowsparcheleg, sumaVarios, sumaParcheleg, sumaChicotes, sumaMot1, sumaMot2 } = props;
+	const { open,
+		handleClose,
+		rowsvarios,
+		rowschicotes,
+		rowsMot1,
+		rowsMot2,
+		rowsparcheleg,
+		sumaVarios,
+		sumaParcheleg,
+		sumaChicotes,
+		sumaMot1,
+		sumaMot2,
+		ImpTotalRep,
+		nomCliente } = props;
 	const [pdfData, setPdfData] = useState(null);
 	const formatCurrency = (value) => {
 		return new Intl.NumberFormat("es-AR", {
@@ -43,13 +56,31 @@ export default function ImpReparacion(props) {
 		var rows1 = [];
 		var doc = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
 
+		//     // Dibuja una línea: (x1, y1, x2, y2)
+		// doc.line(10, 10, 100, 10); // Línea horizontal
+		// doc.line(10, 10, 10, 100); // Línea vertical
+		// line(x1, y1, x2, y2):
+		// x1, y1: Coordenadas iniciales de la línea.
+		// 	x2, y2: Coordenadas finales de la línea.
 
-		doc.setFontSize(14);
-		doc.text(`Reparación Nro `, 10, 10);
+
+		doc.setFontSize(12)
+		doc.setFont("arial", "normal");
+		doc.text(`Rep. de: `.padEnd(10, " "), 10, 10);
+		doc.setFont("times", "italic");
+		doc.text(nomCliente, 27, 10);
+		doc.setFontSize(11);
+		doc.line(8, 12, 58, 12);
+		// doc.rect(62, 6, 60, 6, "S");
+		doc.text(`Importe c/IVA :`.padEnd(20, " ") + ` ${formatCurrency(ImpTotalRep)}`, 80, 10);
+
+		doc.line(79, 12, 129, 12);
+		doc.text(`Importe s/IVA :`.padEnd(20, " ") + ` ${formatCurrency(ImpTotalRep / 1.21)}`, 143, 10);
+		doc.line(142, 12, 192, 12);
 		// Establecer el color del borde (RGB)
 		doc.setDrawColor(0, 0, 0); // Negro
 
-		// doc.rect(182, 5, 25, 8, "FD");
+		doc.setFont("arial", "bold");
 		//	x mueve horizontal es como la x de un gráfico
 		doc.setFontSize(8);
 		let y = 17;
@@ -205,7 +236,7 @@ export default function ImpReparacion(props) {
 				margin: { left: x },
 			});
 		}
-		y = numeromayor * 10 + 10
+		y = numeromayor * 10 + y + 3
 		if (sumaMot1 !== 0) {
 			ancho = 52
 			x = 9;
@@ -310,6 +341,9 @@ export default function ImpReparacion(props) {
 		sendPDFViaWebSocket(pdfData, nombrearch);
 	}
 
+	useEffect(() => {
+		creaPDF()
+	}, [])// eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<>
@@ -322,7 +356,7 @@ export default function ImpReparacion(props) {
 
 			>
 				<DialogContent>
-					<Button onClick={creaPDF}>Genera</Button>
+					{/* <Button onClick={creaPDF}>Imprime</Button> */}
 					<Button onClick={handleClose}>Cierra</Button>
 					{pdfData && (
 						<iframe
