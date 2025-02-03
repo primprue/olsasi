@@ -117,9 +117,8 @@ export default function OTFilasConf(props) {
 
 				{textdataI.map((data, index) => (
 					<TextField
-						className={`${styles.textField} ${
-							backgroundColor && styles[backgroundColor]
-						}`}
+						className={`${styles.textField} ${backgroundColor && styles[backgroundColor]
+							}`}
 						// style={{ background: "#7a7af318" }}
 						key={data.id}
 						id={data.id}
@@ -210,9 +209,9 @@ export default function OTFilasConf(props) {
 }
 {
 	/*  style: {
-          minWidth: calculateMinWidth(elemento[nombrePropiedad]),
-          maxWidth: calculateMaxWidth(elemento[nombrePropiedad]),
-        }, */
+		  minWidth: calculateMinWidth(elemento[nombrePropiedad]),
+		  maxWidth: calculateMaxWidth(elemento[nombrePropiedad]),
+		}, */
 	/* 
 	{/* <Grid item xs={4}>
 						<FormControl component="fieldset">

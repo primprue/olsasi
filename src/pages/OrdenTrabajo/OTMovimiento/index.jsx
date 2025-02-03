@@ -95,6 +95,7 @@ export default function OTMovimiento() {
 		let nrootceros = agregarCeros(params.row.id, 6);
 		var nombcli = await ClientesLeerDesCod(params.row.OTEncabCliente);
 		var fileName = `OT Nro ${nrootceros} ${nombcli[0].ClientesDesc.trim()}.pdf`;
+		console.log('fileName', fileName)
 		var pdfData = "";
 		sendPDFViaWebSocket(fileName);
 		setOpen1(!open1);
@@ -206,6 +207,7 @@ export default function OTMovimiento() {
 			>
 				<DialogContent>
 					<Button onClick={handleClose1}>Cierra</Button>
+					{console.log('pdfUrl', pdfUrl)}
 					{pdfUrl && (
 						<iframe
 							src={pdfUrl}

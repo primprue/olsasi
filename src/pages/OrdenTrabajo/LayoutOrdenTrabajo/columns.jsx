@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import { styled } from "@mui/system";
-const MultilineCell = styled("span")`
-	white-space: normal;
-	line-height: 1.2;
-	max-height: 3.6em; /* Puedes ajustar esta altura según tu necesidad */
-	overflow: hidden;
-`;
+import MultilineCell from "./MultilineCell";
 export async function llenarcolumns(flattenedData) {
 	return columnsFill();
 }

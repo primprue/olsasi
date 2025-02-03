@@ -83,7 +83,7 @@ export default function TablaPresup(props) {
 					onClick={() => setAnexos({ anexos: true })}
 					style={{ color: purple[500] }}
 					fontSize="medium"
-					titleAccess="Sumar"
+					titleAccess="Anexos"
 				/>
 				<SaveAsTwoToneIcon
 					onClick={() => setFilacuatro({ filacuatro: true })}

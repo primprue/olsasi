@@ -104,7 +104,6 @@ export default function FilaDos() {
 		if (objetosFiltrados.length > 0) {
 			setCotidivisa(objetosFiltrados[0].StkMonedasCotizacion);
 			setState({ ...state, signomoneda: objetosFiltrados[0].StkMonedasSigno });
-			console.log('signomoneda', state.signomoneda)
 			setOtraMoneda(true);
 			setEligeMoneda(false);
 		}
@@ -172,6 +171,7 @@ export default function FilaDos() {
 				state.renglonanexo,
 				dcalculo
 			);
+			console.log('datospresup', datospresup)
 			if (state.renglonanexo.length !== 0) {
 				setDatosRenglon([...datosrenglon, state.renglonanexo]);
 				setDatosRenglon([...datosrenglon, datospresup[0]]);

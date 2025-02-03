@@ -11,7 +11,9 @@ conexion.connect(function (err) {
 
 router.get('/', async function (req, res) {
     let indice = req.query.id;
-    var q = ['SELECT *, idOTDatos as id FROM BasesOrdenes.OTDatos where OTDatosTipoConf = "' + indice + '" order by OTDatosOrdenAparicion'].join(' ')
+
+    //var q = ['SELECT *, JSON_KEYS(OTDatosOpciones) AS claves,  JSON_UNQUOTE(JSON_EXTRACT(OTDatosOpciones,' + "'$'" + ')) AS valores, idOTDatos as id FROM BasesOrdenes.OTDatos where OTDatosTipoConf = "' + indice + '" order by OTDatosOrdenAparicion'].join(' ')
+    var q = ['  SELECT idOTDatos, OTDatosDesc, JSON_KEYS(OTDatosOpciones) AS claves, OTDatosOpciones FROM BasesOrdenes.OTDatos where OTDatosTipoConf = "' + indice + '" order by OTDatosOrdenAparicion'].join(' ')
     conexion.query(q,
         function (err, result) {
             if (err) {
@@ -26,7 +28,14 @@ router.get('/', async function (req, res) {
             }
             else {
                 console.log('result', result)
-                res.json(result);
+                // res.json(result);
+                result.forEach(row => {
+                    const opciones = JSON.parse(row.OTDatosOpciones);  // Convertir JSON de MySQL a objeto JS
+                    console.log(`ID: ${row.idOTDatos}, Descripción: ${row.OTDatosDesc}`);
+                    Object.entries(opciones).forEach(([key, value]) => {
+                        console.log(`  ${key}: ${value}`);
+                    });
+                });
 
             }
         });

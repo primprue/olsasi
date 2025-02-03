@@ -16,6 +16,7 @@ import FitbitIcon from "@mui/icons-material/Fitbit";
 import { common, deepOrange, green, blueGrey } from "@mui/material/colors";
 import { CurrencyTextField } from "../../../hooks/useCurrencyTextField.jsx";
 import estilotabla from "../../../Styles/Tabla.module.css";
+import estilos from "../../../Styles/Boton.module.css";
 import EstTF from "../../../Styles/TextField.module.css";
 import OTGenera from "./OTGenera.jsx";
 
@@ -72,7 +73,7 @@ export default function OTDataGrid() {
 
 	useEffect(() => {
 		initialFetch();
-	}, []);
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	async function fcionotrosdatos(event) {
 		//tomo la fila en la que se hizo click, tiene un id que es el nro de fila
@@ -135,7 +136,7 @@ export default function OTDataGrid() {
 		//setFechaProm(event.target.value);
 		setOTdatos({ ...otdatos, FechaPromesa: event.target.value });
 	};
-	const handleChange1 = (event) => {};
+	const handleChange1 = (event) => { };
 	const sumaimporte = () => {
 		let TotalPresupuesto = 0;
 		let TotalPresupuestoSIVA = 0;
@@ -239,8 +240,8 @@ export default function OTDataGrid() {
 					(oldRow.PresupRenglonImpUnit /
 						oldRow.PresupRenglonLargo /
 						oldRow.PresupRenglonAncho) *
-						newRow.PresupRenglonLargo *
-						newRow.PresupRenglonAncho,
+					newRow.PresupRenglonLargo *
+					newRow.PresupRenglonAncho,
 					2
 				);
 			newRow.PresupRenglonImpItem = Math.round(
@@ -270,18 +271,12 @@ export default function OTDataGrid() {
 
 			return response;
 		},
-		[mutateRow]
+		// [mutateRow]
+		[mutateRow, otdatos, setOTdatos, setRenglondef, setRowv, setRown]
 	);
 	function CustomToolbar() {
 		return (
 			<GridToolbarContainer className={estilotabla.tablapresupuestoslot}>
-				{/* <CurrencyTextField
-					id="Total"
-					size="small"
-					label="Importe Total"
-					value={totalpresup}
-					className={EstTF.tfcurrencyI}
-				></CurrencyTextField> */}
 
 				<b></b>
 				<b></b>
@@ -294,10 +289,11 @@ export default function OTDataGrid() {
 					fontSize="medium"
 					titleAccess="Sumar"
 				/>
-				<Button onClick={generaorden} variant="contained" color="primary">
+				<Button onClick={generaorden} className={estilos.botonfincargadatos}>
+					{/* variant="contained" color="primary"> */}
 					Genera Orden
 				</Button>
-			</GridToolbarContainer>
+			</GridToolbarContainer >
 		);
 	}
 
@@ -374,9 +370,9 @@ export default function OTDataGrid() {
 				slots={{
 					toolbar: CustomToolbar,
 				}}
-				// slotProps={{
-				// 	toolbar: { onLoadData: loadData },
-				// }}
+			// slotProps={{
+			// 	toolbar: { onLoadData: loadData },
+			// }}
 			/>
 		</Grid>
 	);

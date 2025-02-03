@@ -82,14 +82,14 @@
 	background-color: rgba(190, 200, 248, 0.178);
 	display: flex;
 	justify-content: flex-end;
-	/* padding-top: 10px;
-	padding-right: 10px;
-	padding-bottom: 10px;
-	padding-left: 20px; */
-
-
 }
 
+
+.tablapresupuestoslot1 {
+	background-color: rgba(250, 6, 6, 0.178);
+	display: flex;
+	justify-content: flex-end;
+}
 
 
 .tablaanexo {

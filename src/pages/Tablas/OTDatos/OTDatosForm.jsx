@@ -24,9 +24,10 @@ export default function OTDatosForm() {
         setColumns(() => col);
     }
     async function leeotdatos(descripcion) {
+        console.log('descripcion', descripcion)
         const result = await OTDatosLee(descripcion);
-        console.log('result', result);
-        setRows(result);
+        console.log('result', result)
+        setDatosaCargar(result);
     }
     async function initialFetch() {
         columnsFetch();
@@ -38,25 +39,72 @@ export default function OTDatosForm() {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
-        console.log('esta en useEffect', state.PresupConfTipoDesc)
+        console.log('state.PresupConfTipoDesc en useEffect', state.PresupConfTipoDesc)
         if (state.PresupConfTipoDesc !== '') {
             leeotdatos(state.PresupConfTipoDesc);
-            initialFetch();
+            // initialFetch();
             setFormdatos(formdata);
         }
 
     }, [state.PresupConfTipoDesc]); // eslint-disable-line react-hooks/exhaustive-deps
-
-
+    const handleChange = (id, key, value) => {
+        setDatosaCargar((prevData) =>
+            prevData.map((item) =>
+                item.idOTDatos === id
+                    ? {
+                        ...item,
+                        OTDatosOpciones: {
+                            ...item.OTDatosOpciones,
+                            [key]: value,
+                        },
+                    }
+                    : item
+            )
+        );
+    };
+    // idOTDatos
+    //     OTDatosTipoConf
+    //         OTDatosConfCod
+    //             OTDatosDesc: 'Ojales',
+    //                 OTDatosOpciones:
+    // '{"": 0, "Cada 0.50": 0, "Cada 0.70": 0, "Cada 1 mts.": 0}',
+    //     OTDatosTipoPed: 'select',
+    //         OTDatosRequerido: 'S',
+    //             OTDatosOrdenAparicion: 1,
+    //                 OTDatosAncho: null,
+    //                     id: 4
     return (
         <div>
             <FilaUnoIzq />
-            {rows.length !== 0 &&
-                <TablaMuestra
-                    rows1={rows}
-                    columns1={columns}
-                    formdatos={formdatos}
-                ></TablaMuestra>}
+
+            <h2>Editar Datos</h2>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {datosacargar.map(({ idOTDatos, OTDatosDesc, OTDatosOpciones }) => (
+                        <tr key={idOTDatos}>
+                            <td>{OTDatosDesc}</td>
+                            <td>
+                                {Object.entries(OTDatosOpciones).map(([key, value]) => (
+                                    <div key={key}>
+                                        <label>{key || "General"}: </label>
+                                        <input
+                                            type="text"
+                                            value={value}
+                                            onChange={(e) => handleChange(idOTDatos, key, e.target.value)}
+                                        />
+                                    </div>
+                                ))}
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
             {/* <TablaMuestra
                 rows1={rows}
                 columns1={columns}
