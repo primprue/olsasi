@@ -17,7 +17,7 @@ function columnsFill() {
 				headerName: "Detalle",
 				field: "PresupDetPieLeyenda",
 				order: true,
-				width: 500,
+				width: 700,
 				editable: true,
 				required: true,
 				maxLength: 120,

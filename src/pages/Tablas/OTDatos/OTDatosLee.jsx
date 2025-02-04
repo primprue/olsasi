@@ -4,7 +4,7 @@ import IpServidor from "../../VariablesDeEntorno";
 import request from "superagent";
 
 export function OTDatosLee(props) {
-
+	console.log('props OTDatosLee ', props)
 	return new Promise((resolve) => {
 		const url = IpServidor + "/otdatoslee/?id=" + props;
 		request

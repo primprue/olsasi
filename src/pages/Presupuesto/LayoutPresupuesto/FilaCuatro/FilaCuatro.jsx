@@ -20,7 +20,7 @@ export default function FilaCuatro(props) {
 		const id = event.target.id;
 		setState({ ...state, [id]: event.target.value });
 	};
-	const CHARACTER_LIMIT = 200;
+	const CHARACTER_LIMIT = 300;
 	async function clientesleerdescrip() {
 		const result = await clientesleerdescmayigual(state.ClientesDesc);
 		setState({ ...state, clientes: result });
