@@ -1,12 +1,12 @@
 export const GeneraDCalculo = (props, presuptipo, cotidivisa) => {
-
 	var faltadato = false
-	if (props.PresupMnMy === '') faltadato = true
-	if (props.PresupIVA === '') faltadato = true
-	if (props.PresupCantidad === 0) faltadato = true
-	if (props.StkRubroAbr === '') faltadato = true
-	// if (props.PresupProducto === 'PE') { if (props.StkRubroAbr === '') faltadato = false }
-	// if (props.PresupMnMy === 'my') { if (props.PresupIVA === '') faltadato = false }
+	if (props.PresupProducto === 'PAE') {
+		if (props.PresupMnMy === '') faltadato = true
+		if (props.PresupIVA === '') faltadato = true
+		if (props.PresupCantidad === 0) faltadato = true
+		if (props.StkRubroAbr === '') faltadato = true
+	}
+
 	let datosobligatorios = {
 		StkRubroAbr: props.StkRubroAbr,
 		minmay: props.PresupMnMy,
@@ -150,10 +150,9 @@ export const GeneraDCalculo = (props, presuptipo, cotidivisa) => {
 	}
 
 	if (presuptipo === "BOLSON PARA TANQUE") {
-		if (props.anchopared === 0) faltadato = true
-		if (props.medida === 0) faltadato = true
-		if (props.alto === 0) faltadato = true
-
+		if (props.Medida === 0) faltadato = true
+		if (props.Alto === 0) faltadato = true
+		//if (!props.AnchoPared || !props.Medida || !props.Alto) faltadato = true
 		objetoModificado.tipomedeleg = props.TipoMedidaEleg;
 		objetoModificado.termbordeeleg = props.TermBordeEleg;
 		objetoModificado.anchopared = props.AnchoPared;

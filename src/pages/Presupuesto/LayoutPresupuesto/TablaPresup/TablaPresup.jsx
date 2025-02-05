@@ -12,7 +12,8 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
 import SaveAsTwoToneIcon from "@mui/icons-material/SaveAsTwoTone";
-import { deepOrange, red, blue, green, purple } from "@mui/material/colors";
+import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
+import { deepOrange, red, blue, green, purple, yellow } from "@mui/material/colors";
 import { CurrencyTextField } from "../../../../hooks/useCurrencyTextField";
 import EstTF from "../../../../Styles/TextField.module.css";
 import FilaCuatro from "../FilaCuatro/FilaCuatro";
@@ -54,6 +55,12 @@ export default function TablaPresup(props) {
 			<GridToolbarContainer className={estilotabla.tablapresupuestoslot}>
 
 				{state.renglonanexo.length !== 0 && <h3>Tiene Anexos</h3>}
+				<RemoveShoppingCartIcon
+					onClick={sumaacero}
+					style={{ color: yellow[900] }}
+					fontSize="medium"
+					titleAccess="Suma a Cero"
+				/>
 				<CurrencyTextField
 					id="Total"
 					size="small"
@@ -72,12 +79,14 @@ export default function TablaPresup(props) {
 					fontSize="medium"
 					titleAccess="Borrar"
 				/>
+
 				<AddShoppingCartIcon
 					onClick={sumar}
 					style={{ color: green[500] }}
 					fontSize="medium"
 					titleAccess="Sumar"
 				/>
+
 				{/* onAnimationStartnClick={() => setAnexos({ anexos: true })} */}
 				<AttachFileIcon
 					onClick={() => setAnexos({ anexos: true })}
@@ -109,6 +118,10 @@ export default function TablaPresup(props) {
 			i++;
 		}
 		setSuma(totalpresup);
+	};
+	const sumaacero = () => {
+
+		setSuma(0);
 	};
 	const handleClose = () => {
 		setFilacuatro(false);
