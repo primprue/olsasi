@@ -64,7 +64,6 @@ const theme = createTheme({
 
 
 const App = () => {
-  console.log('StaticContexto ', StaticContexto.valor)
   const [open, setOpen] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState(false);
   const [openSubMenuStock, setOpenSubMenuStock] = useState(false);

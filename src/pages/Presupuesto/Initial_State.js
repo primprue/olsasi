@@ -200,7 +200,7 @@ export const initial_state = {
   tipocarro: '',
   tipoplaca: '',
   tipoheb: '',
-  colocacion: '',
+  colocacion: false,
   stkrubrolat: [],
   StkRubroAbrLAT: '',
 

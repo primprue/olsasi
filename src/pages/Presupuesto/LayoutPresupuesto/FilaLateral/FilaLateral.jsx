@@ -57,8 +57,10 @@ export default function FilaLateral() {
 
 	return (
 		<>
-			<Grid container spacing={2} xs={12}>
+			{/* <Grid container spacing={2} xs={12}>*/}
+			<Grid container spacing={2}>
 				<Grid item xs={1}>
+					{/* <Grid item xs={1}> */}
 					<TextField
 						inputProps={{ maxLength: 1 }}
 						size="small"
@@ -199,7 +201,8 @@ export default function FilaLateral() {
 						</TextField>
 					)}
 				</Grid>
-				<Grid item spacing={2} xs={4}>
+				{/* <Grid item spacing={2} xs={4}>*/}
+				<Grid container padding={4}>
 					<FormControlLabel
 						className={estiloIII.formControlLabelCheck}
 						control={

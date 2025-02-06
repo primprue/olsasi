@@ -17,7 +17,7 @@ export default function Presupuesto() {
 
 	return (
 		<div>
-			<Grid container spacing={2} alignItems="center" padding={1}>
+			<Grid container spacing={2} alignItems="center" padding={4}>
 				<FilaUno />
 				<FilaDos />
 			</Grid>

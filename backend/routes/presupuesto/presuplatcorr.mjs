@@ -1,6 +1,7 @@
 import express from 'express';
 var router = express.Router();
 import conexion from '../conexion.mjs';
+import e from 'express';
 
 conexion.connect(function (err) {
   if (!err) {
@@ -63,18 +64,22 @@ router.get('/', (req, res, next) => {
 
         if (detallep == '') {
           detalle = "Confección de lona para lateral corredizo de " + largo + " x " + ancho
-          if (cantHeb != 0) {
-            detalle = detalle + " con  " + cantHeb + " hebillas "
-          }
-          if (cantCarro != 0) {
-            if (cantHeb != 0) {
-              detalle = detalle + " y " + cantCarro + " carros "
-            } else {
-              detalle = detalle + " con " + cantCarro + " carros "
-            }
-          }
+          detalle = `${detalle} con ${cantHeb} hebillas y ${cantCarro} carros`
+          // if (cantHeb != 0) {
+          //   detalle = detalle + " con  " + cantHeb + " hebillas "
+          // }
+          // if (cantCarro != 0) {
+          //   if (cantHeb != 0) {
+          //     detalle = detalle + " y " + cantCarro + " carros "
+          //   } else {
+          //     detalle = detalle + " con " + cantCarro + " carros "
+          //   }
+          // }
           if (colocacion) {
             detalle = detalle + " (incluye colocación)"
+          }
+          else {
+            detalle = detalle + " (sin colocación)"
           }
           detalle = detalle + ' en : '
         }

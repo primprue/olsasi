@@ -1,4 +1,5 @@
 export const GeneraDCalculo = (props, presuptipo, cotidivisa) => {
+	console.log('props', props)
 	var faltadato = false
 	if (props.PresupProducto === 'PAE') {
 		if (props.PresupMnMy === '') faltadato = true
@@ -106,12 +107,16 @@ export const GeneraDCalculo = (props, presuptipo, cotidivisa) => {
 	}
 
 	if (presuptipo === "LATERAL CORREDIZO") {
-		if (props.CantHeb === 0) faltadato = true
-		if (props.tipoheb === '') faltadato = true
-		if (props.CantCarro === 0) faltadato = true
-		if (props.tipocarro === '') faltadato = true
-		if (props.CantPlaca === 0) faltadato = true
-		if (props.tipoplaca === '') faltadato = true
+		// if (props.CantHeb === 0) faltadato = true
+		// if (props.tipoheb === '') faltadato = true
+		// if (props.CantCarro === 0) faltadato = true
+		// if (props.tipocarro === '') faltadato = true
+		// if (props.CantPlaca === 0) faltadato = true
+		// if (props.tipoplaca === '') faltadato = true
+
+		if (props.CantHeb !== 0 && props.tipoheb === '') faltadato = true
+		if (props.CantCarro !== 0 && props.tipocarro === '') faltadato = true
+		if (props.CantPlaca !== 0 && props.tipoplaca === '') faltadato = true
 		if (props.colocacion === '') faltadato = true
 		if (props.PresupAncho === 0) faltadato = true
 		if (props.PresupLargo === 0) faltadato = true
