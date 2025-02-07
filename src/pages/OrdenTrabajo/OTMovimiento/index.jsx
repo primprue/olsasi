@@ -207,7 +207,6 @@ export default function OTMovimiento() {
 			>
 				<DialogContent>
 					<Button onClick={handleClose1}>Cierra</Button>
-					{console.log('pdfUrl', pdfUrl)}
 					{pdfUrl && (
 						<iframe
 							src={pdfUrl}

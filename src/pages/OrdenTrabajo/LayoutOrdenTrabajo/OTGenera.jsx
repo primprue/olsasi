@@ -125,6 +125,8 @@ export default function OTGenera(props) {
 	}
 
 	const sendPDFViaWebSocket = (pdfData, nombrearch) => {
+		console.log('nombrearch', nombrearch)
+		console.log('pdfData', pdfData)
 		const socket = new WebSocket("ws://localhost:3000");
 		const payload = {
 			action: "save",
@@ -134,7 +136,7 @@ export default function OTGenera(props) {
 		socket.onopen = () => {
 			socket.send(JSON.stringify(payload));
 		};
-
+		console.log('payload', payload)
 		socket.onmessage = (event) => {
 			socket.close();
 		};
@@ -168,7 +170,6 @@ export default function OTGenera(props) {
 		let ancho = 40; // Ancho del recuadro
 		let alto = 4;
 		let dencliente = arregloencab[0].idClientes;
-		// dencliente = dencliente.slice(0, 30);
 		var columns = ["    Cliente  ", "Telefono", "Localidad", "CUIT"];
 		var data = [
 			[
