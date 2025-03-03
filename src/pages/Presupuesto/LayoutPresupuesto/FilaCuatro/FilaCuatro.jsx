@@ -82,7 +82,7 @@ export default function FilaCuatro(props) {
 			<Dialog fullWidth={true} maxWidth="md" open={props.open}>
 				<PresupDetPieSelec></PresupDetPieSelec>
 				<TextField
-					inputProps={{ maxLength: CHARACTER_LIMIT }}
+					input={{ maxLength: CHARACTER_LIMIT }}
 					size="small"
 					variant="outlined"
 					id="otraCondicion"

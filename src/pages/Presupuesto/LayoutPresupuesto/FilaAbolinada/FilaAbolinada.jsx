@@ -1,98 +1,49 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import {
-	Grid,
-	Radio,
-	RadioGroup,
-	FormControlLabel,
-	TextField,
+	FormHelperText,
 } from "@mui/material";
-import estiloI from "../../../../Styles/RadioGroup.module.css";
-import estiloII from "../../../../Styles/TextField.module.css";
+import Grid from "@mui/material/Grid2";
 // Context
-import { useContext } from "react";
+import { use } from "react";
 import PresupPant from "../../../../context/PresupPant";
-
+import CustomSwitch from "../../../../components/comppropios/CustomSwitch";
+import TextFieldComun from "../../../../components/comppropios/TextFieldComun";
 export default function FilaAbolinada(props) {
-	// const [selectedValue, setSelectedValue] = React.useState(20);
-	const { state, setState } = useContext(PresupPant);
-	const [ojalbronce, setOjalBronce] = React.useState("hz");
+	const { state, setState } = use(PresupPant);
+	// Memorizar la opción seleccionada basada en state.PresupProducto
+	const selectedOption = useMemo(() => state.PresupOB || "hz", [state.PresupOB]);
 
-	const handleChange = (event) => {
-		const id = event.target.id;
-		setState({ ...state, [id]: event.target.value });
+	// Función para actualizar la opción seleccionada
+	const handleOptionChange = (newOption) => {
+		setState({ ...state, PresupOB: newOption });
 	};
 
-	const handleChange2 = (event) => {
-		setOjalBronce(event.target.value);
-		setState({ ...state, PresupOB: event.target.value });
+
+	const handleChange = (value, id) => {
+		setState({ ...state, [id]: value });
 	};
 
 	return (
 		<>
 			<Grid container spacing={2}>
-				<Grid item xs={2}>
-					<TextField
-						inputProps={{ maxLength: 3 }}
-						size="small"
-						variant="outlined"
+				<Grid span={{ xs: 2 }}>
+					<TextFieldComun
 						id="PresupOjalesC"
 						type="number"
 						label="Ojales cada, en cm :  "
-						fullWidth
-						margin="dense"
 						value={state.PresupOjalesC}
 						onChange={handleChange}
-						className={estiloII.textfcantidad}
+						width="100px"
 					/>
+
 				</Grid>
-				<Grid item xs={2}>
-					<RadioGroup
-						className={estiloI.radioGroup1}
-						row
-						size="small"
-						name="tipoOjal"
-						value={ojalbronce}
-						onChange={handleChange2}
-						margin="dense"
-					>
-						<FormControlLabel
-							size="small"
-							value="hz"
-							control={
-								<Radio
-									classes={{
-										root: estiloI.radio1,
-										checked: estiloI.radioChecked1,
-									}}
-								/>
-							}
-							className={estiloI.formControlLabel1}
-							label="HZ"
-							labelPlacement="top"
-							disabled={props.disable}
-							margin="dense"
-						/>
-						<FormControlLabel
-							size="small"
-							value="br"
-							control={
-								<Radio
-									classes={{
-										root: estiloI.radio1,
-										checked: estiloI.radioChecked1,
-									}}
-								/>
-							}
-							className={estiloI.formControlLabel1}
-							label="BR"
-							labelPlacement="top"
-							disabled={props.disable}
-							margin="dense"
-						/>
-					</RadioGroup>
-				</Grid>
-			</Grid>
+				<Grid span={{ xs: 2 }}>
+					<CustomSwitch value={selectedOption} onChange={handleOptionChange} opcion1={'hz'} opcion2={'bz'}
+						titulo1={'HZ'} titulo2={'BR'}
+						tithelpertext={'Ojal :'} />
+				</Grid >
+			</Grid >
 		</>
 	);
 }

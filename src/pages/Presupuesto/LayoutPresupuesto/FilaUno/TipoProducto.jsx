@@ -1,65 +1,62 @@
-import React from "react";
-import {
-	Grid,
-	Radio,
-	RadioGroup,
-	FormControlLabel,
-	FormHelperText,
-} from "@mui/material";
+
+import React, { use, useMemo } from "react";
+import { FormHelperText } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import estilo from "../../../../Styles/RadioGroup.module.css";
-// Context
-import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
+import CustomSwitch from "../../../../components/comppropios/CustomSwitch";
 
 export default function TipoProducto() {
-	const [selectedValue, setSelectedValue] = React.useState("PAE");
-	const { state, setState } = useContext(PresupPant);
+	const { state, setState } = use(PresupPant);
 
-	const handleChange = (event) => {
-		setSelectedValue(event.target.value);
-		setState({ ...state, PresupProducto: event.target.value });
+	// Memorizar la opción seleccionada basada en state.PresupProducto
+	const selectedOption = useMemo(() => state.PresupProducto || "PAE", [state.PresupProducto]);
+
+	// Función para actualizar la opción seleccionada
+	const handleOptionChange = (newOption) => {
+		setState({ ...state, PresupProducto: newOption });
 	};
 
 	return (
-		<Grid item className={estilo.grilla}>
-			<RadioGroup
-				row
-				size="small"
-				className={estilo.radioGroup}
-				name="tipoProducto"
-				value={selectedValue}
-				onChange={handleChange}
-				margin="dense"
-				color="primary"
-			>
-				<FormControlLabel
-					value="PE"
-					control={
-						<Radio
-							classes={{ root: estilo.radio, checked: estilo.radioChecked }}
-						/>
-					}
-					className={estilo.formControlLabel}
-					label="Elab"
-					labelPlacement="top"
-					margin="dense"
-				/>
-				{/* </Grid>
-				<Grid item xs={4}> */}
-				<FormControlLabel
-					value="PAE"
-					control={
-						<Radio
-							classes={{ root: estilo.radio, checked: estilo.radioChecked }}
-						/>
-					}
-					className={estilo.formControlLabel}
-					label="a-El."
-					labelPlacement="top"
-					margin="dense"
-				/>
-			</RadioGroup>
-			<FormHelperText>Prod.Elaborado o a Elaborar</FormHelperText>
+		<Grid className={estilo.grilla}>
+			<div>
+				<CustomSwitch value={selectedOption} onChange={handleOptionChange} opcion1={'PE'} opcion2={'PAE'}
+					titulo1={'Elab.'} titulo2={'a-El.'}
+					tithelpertext={'Prod. : '} />
+
+			</div>
 		</Grid>
 	);
 }
+
+// import React from "react";
+// import {
+// 	FormHelperText,
+// } from "@mui/material";
+// import Grid from "@mui/material/Grid2";
+// import estilo from "../../../../Styles/RadioGroup.module.css";
+// // Context
+// import { useContext } from "react";
+// import PresupPant from "../../../../context/PresupPant";
+// import CustomSwitch from "../../../../components/comppropios/CustomSwitch";
+
+
+// export default function TipoProducto() {
+// 	const { state, setState } = useContext(PresupPant);
+// 	const [selectedOption, setSelectedOption] = React.useState("PAE"); // Estado en el padre
+// 	// Función para actualizar la opción seleccionada
+// 	const handleOptionChange = (newOption) => {
+// 		setState({ ...state, PresupProducto: newOption });
+// 		setSelectedOption(newOption);
+// 	};
+
+// 	return (
+// 		<Grid className={estilo.grilla}>
+// 			<div>
+// 				<CustomSwitch value={selectedOption} onChange={handleOptionChange} opcion1={'PE'} opcion2={'PAE'}
+// 					titulo1={'Elab.'} titulo2={'a-El.'} />
+// 				<FormHelperText sx={{ color: "blue", fontWeight: "bold", fontSize: "15px" }}>Prod. : {selectedOption}</FormHelperText>
+// 			</div>
+// 		</Grid>
+// 	);
+// };

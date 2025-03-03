@@ -5,5 +5,6 @@ export const formdata = {
   StkUbFisicaGeo: '',
   datoserroneos: true,
   tablabase: 'UbiFisica',
+  titulotabla: 'Ubicación Física',
 
 }

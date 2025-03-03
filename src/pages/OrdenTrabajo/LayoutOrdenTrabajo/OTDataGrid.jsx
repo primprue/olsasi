@@ -9,7 +9,8 @@ import Alert from "@mui/material/Alert";
 import { llenarcolumns } from "./columns.jsx";
 import OrdTrabajo from "../../../context/OrdTrabajo.jsx";
 import OTFilaGral from "../OTFilas/OTFilaGral/OTFilaGral.jsx";
-import { Button, Grid, TextField } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import OTFilasConf from "../OTFilasConf/OTFilasConf.jsx";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FitbitIcon from "@mui/icons-material/Fitbit";
@@ -277,22 +278,45 @@ export default function OTDataGrid() {
 	function CustomToolbar() {
 		return (
 			<GridToolbarContainer className={estilotabla.tablapresupuestoslot}>
-
-				<b></b>
-				<b></b>
-				<b></b>
-				<b></b>
-				<GridToolbarExport></GridToolbarExport>
-				<AddShoppingCartIcon
-					onClick={sumaimporte}
-					style={{ color: green[500] }}
-					fontSize="medium"
-					titleAccess="Sumar"
-				/>
-				<Button onClick={generaorden} className={estilos.botonfincargadatos}>
-					{/* variant="contained" color="primary"> */}
-					Genera Orden
-				</Button>
+				<Box
+					sx={{
+						width: "100%",
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'left',
+						padding: '8px 0px 8px 0px'
+					}}
+				>
+					<Typography
+						className={estilotabla.titulo}
+					>
+						Orden de Trabajo
+					</Typography>
+					<Box
+						sx={{
+							width: "80%",
+							display: 'flex',
+							justifyContent: 'right',
+							alignItems: 'right',
+							gap: 3,
+						}}
+					>
+						<b></b>
+						<b></b>
+						<b></b>
+						<b></b>
+						<GridToolbarExport></GridToolbarExport>
+						<AddShoppingCartIcon
+							onClick={sumaimporte}
+							style={{ color: green[500] }}
+							fontSize="medium"
+							titleAccess="Sumar"
+						/>
+						<Button onClick={generaorden} className={estilos.botonfincargadatos}>
+							{/* variant="contained" color="primary"> */}
+							Genera Orden
+						</Button>
+					</Box></Box>
 			</GridToolbarContainer >
 		);
 	}

@@ -2,16 +2,23 @@ import request from "superagent";
 import IpServidor from "../../VariablesDeEntorno";
 import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 
-export function OTCondPagoAgregar(props) {
+export function OTDatosAgregar(props) {
 	return new Promise(function () {
 		setTimeout(() => {
-			const { OTCondPagoDesc, OTCondPagolinea } = props;
+			const { OTDatosTipoConf, OTDatosConfCod, OTDatosDesc, OTDatosOpciones, OTDatosTipoPed, OTDatosRequerido, OTDatosOrdenAparicion, OTDatosAncho } = props;
 			const url = IpServidor + "/otcondpagoagregar";
 			request
 				.post(url)
 				.set("Content-Type", "application/json")
-				.send({ otcondpagodesc: OTCondPagoDesc })
-				.send({ otcondpagolinea: OTCondPagolinea })
+				.send({ OTDatosTipoConf: OTDatosTipoConf })
+				.send({ OTDatosConfCod: OTDatosConfCod })
+				.send({ OTDatosConfCod: OTDatosConfCod })
+				.send({ OTDatosDesc: OTDatosDesc })
+				.send({ OTDatosOpciones: OTDatosOpciones })
+				.send({ OTDatosTipoPed: OTDatosTipoPed })
+				.send({ OTDatosRequerido: OTDatosRequerido })
+				.send({ OTDatosOrdenAparicion: OTDatosOrdenAparicion })
+				.send({ OTDatosAncho: OTDatosAncho })
 
 				.set("X-API-Key", "foobar")
 				.then((res) => {

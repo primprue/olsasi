@@ -15,5 +15,6 @@ export const formdata = {
   OTEncabDetalles: '',
   datoserroneos: true,
   tablabase: 'MuestraOT',
+  titulotabla: 'Muestra Orden de Trabajo',
 
 }

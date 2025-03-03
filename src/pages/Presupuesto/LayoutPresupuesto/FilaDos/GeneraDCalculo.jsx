@@ -1,5 +1,4 @@
 export const GeneraDCalculo = (props, presuptipo, cotidivisa) => {
-	console.log('props', props)
 	var faltadato = false
 	if (props.PresupProducto === 'PAE') {
 		if (props.PresupMnMy === '') faltadato = true

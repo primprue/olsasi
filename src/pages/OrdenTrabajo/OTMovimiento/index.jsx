@@ -6,7 +6,6 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 import { useContext } from "react";
-import StaticContexto from "../../../context/StaticContext.jsx";
 import TablasContexto from "../../../context/TablasContext.jsx";
 import CtasCtesContext from "../../../context/CtasCtesContext.jsx";
 import FitbitIcon from "@mui/icons-material/Fitbit";
@@ -33,7 +32,6 @@ export default function OTMovimiento() {
 	// console.log("OTMovimiento  ");
 	const { formdatos, setFormdatos } = useContext(TablasContexto);
 	const { fcdatos, setFCdatos } = useContext(CtasCtesContext);
-	const { valor, setValor } = useContext(StaticContexto);
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
 	const [rows, setRows] = useState([]);
 	const [pdfUrl, setPdfUrl] = useState(null);
@@ -63,7 +61,6 @@ export default function OTMovimiento() {
 	}
 	useEffect(() => {
 		initialFetch();
-		setValor("Ordenes de Trabajo");
 		setFormdatos(formdata);
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 	const handleClose = () => {
@@ -101,6 +98,7 @@ export default function OTMovimiento() {
 		setOpen1(!open1);
 	}
 	const sendPDFViaWebSocket = (fileName) => {
+		console.log('fielName', fileName)
 		const socket = new WebSocket("ws://localhost:3000");
 		socket.onopen = () => {
 			console.log("Conexión WebSocket abierta");
@@ -110,12 +108,20 @@ export default function OTMovimiento() {
 				action: "read",
 				nombrearch: fileName, // Nombre del archivo a leer
 			};
+			console.log('payload', payload)
 			socket.send(JSON.stringify(payload));
+			console.log('JSON.stringify(payload)', JSON.stringify(payload))
 		};
 
 		socket.onmessage = (event) => {
-			const { pdfData } = JSON.parse(event.data);
-			setPdfUrl(pdfData); // Establecer la URL del PDF para mostrarlo
+			// Establecer la URL del PDF para mostrarlo
+			if (event.data !== 'Error al leer el archivo') {
+				const { pdfData } = JSON.parse(event.data);
+				console.log('pdfData', pdfData)
+				setPdfUrl(pdfData);
+			}
+			else { console.log('error  ') }
+
 		};
 
 		socket.onclose = () => {

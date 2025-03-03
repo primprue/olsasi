@@ -1,0 +1,131 @@
+	:root {
+	--thick: 3px;
+	--pad: 0.7em;
+	--extra: calc(var(--pad) * 1.2);
+	--color: #f26522;
+	}
+
+	.portfolio-experiment {
+	background: #074ce046;
+	width: 350px;
+	height: 250px;
+	}
+
+	.button {
+	color: rgb(247, 6, 6);
+	padding: var(--pad) var(--extra);
+	display: inline-block;
+	border: var(--thick) solid transparent;
+	position: relative;
+	font-size: 1.3em;
+	cursor: pointer;
+	letter-spacing: 0.07em;
+	text-decoration: none;
+	}
+
+	.text {
+	font-family: monospace;
+	transform: translate3d(0, var(--pad), 0);
+	display: block;
+	transition: transform 0.4s cubic-bezier(.2,0,0,1) 0.4s;
+	}
+
+	.button::after {
+	position: absolute;
+	content: '';
+	bottom: calc(-1 * var(--thick));
+	left: var(--extra);
+	right: var(--extra);
+	height: var(--thick);
+	background: var(--color);
+	transition: 
+		transform 0.8s cubic-bezier(1,0,.37,1) 0.2s,
+		right 0.2s cubic-bezier(.04,.48,0,1) 0.6s,
+		left 0.4s cubic-bezier(.04,.48,0,1) 0.6s;
+	transform-origin: left;
+	}
+
+	.line {
+	position: absolute;
+	background: var(--color);
+	}
+
+	.line.-right,
+	.line.-left {
+	width: var(--thick);
+	bottom: calc(-1 * var(--thick));
+	top: calc(-1 * var(--thick));
+	transform: scale3d(1,0,1);
+	}
+
+	.line.-top,
+	.line.-bottom {
+	height: var(--thick);
+	left: calc(-1 * var(--thick));
+	right: calc(-1 * var(--thick));
+	transform: scale3d(0,1,1);
+	}
+
+	.line.-right {
+	right: calc(-1 * var(--thick));
+	transition: transform 0.1s cubic-bezier(1,0,.65,1.01) 0.23s;
+	transform-origin: top;
+	}
+
+	.line.-top {
+	top: calc(-1 * var(--thick));
+	transition: transform 0.08s linear 0.43s;
+	transform-origin: left;
+	}
+
+	.line.-left {
+	left: calc(-1 * var(--thick));
+	transition: transform 0.08s linear 0.51s;
+	transform-origin: bottom;
+	}
+
+	.line.-bottom {
+	bottom: calc(-1 * var(--thick));
+	transition: transform 0.3s cubic-bezier(1,0,.65,1.01);
+	transform-origin: right;
+	}
+
+	.button:hover .text {
+	transform: translate3d(0,0,0);
+	transition: transform 0.6s cubic-bezier(.2,0,0,1) 0.4s;
+	}
+
+	.button:hover::after {
+	transform: scale3d(0,1,1);
+	right: calc(-1 * var(--thick));
+	left: calc(-1 * var(--thick));
+	transform-origin: right;
+	transition: 
+		transform 0.2s cubic-bezier(1,0,.65,1.01) 0.17s,
+		right 0.2s cubic-bezier(1,0,.65,1.01),
+		left 0s 0.3s;
+	}
+
+	.button:hover .line {
+	transform: scale3d(1,1,1);
+	}
+
+	.button:hover .line.-right {
+	transition: transform 0.1s cubic-bezier(1,0,.65,1.01) 0.2s;
+	transform-origin: bottom;
+	}
+
+	.button:hover .line.-top {
+	transition: transform 0.08s linear 0.4s;
+	transform-origin: right;
+	}
+
+	.button:hover .line.-left {
+	transition: transform 0.08s linear 0.48s;
+	transform-origin: top;
+	}
+
+	.button:hover .line.-bottom {
+	transition: transform 0.5s cubic-bezier(0,.53,.29,1) 0.56s;
+	transform-origin: left;
+	}

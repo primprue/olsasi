@@ -17,7 +17,7 @@ var datosenvio = [];
 router.get("/", (req, res) => {
   var q, anchotela, cantpaños, soga, cantsoga, criquet, cantcriquet, detallep, ivasn, detalle, cancriquet, valorMOT, codmoneda, coefimpuesto, valorflete
   var datosrec, totalreg, buscaancho, cantidad, segsoldarfaldon, mgancho, coefMOT, termbordeeleg, MOTarmado, minutosunion, valorMOTseg, valorsogacriq
-  var medida, alto, altocalculo, altoconpared, perimetro, diametro, diametroI, segcortarpf, segunirpf, segunirpp
+  var medida, alto, altodesc, altocalculo, altoconpared, perimetro, diametro, diametroI, segcortarpf, segunirpf, segunirpp
   var segcortarpp, segspisofondo, segunirpp2, segunirpp3, segunirpp4, segunirpp5, segunirpp6, segunirpp7, segunirpp8, segunirpp9
   var segpisofondo, segcortefondo, seghacercortes, mcuadradosfaldon, calpaños, canttelapiso
   var importesogaper, importecriquetper, valormcuad, costooriginal
@@ -79,6 +79,7 @@ router.get("/", (req, res) => {
       termbordeeleg = datosrec[0].termbordeeleg;
       medida = datosrec[0].medida * 1;
       alto = datosrec[0].alto * 1;
+      altodesc = alto
       alto = alto + 0.4
       anchopared = datosrec[0].anchopared * 1 / 100;
 
@@ -116,10 +117,21 @@ router.get("/", (req, res) => {
               detalle = detalle + medida + ' de perímetro externo ';
           }
 
-
-          detalle = detalle + ' con pared de ' + anchopared + ' mts. y un alto de ' + (alto * 1).toFixed(2) + ' mts. en : '
-
           altoconpared = alto + anchopared
+          detalle = detalle + ' con pared de ' + anchopared + ' mts. y un alto de ' + (altodesc * 1).toFixed(2) + ' mts. (incluye sobrante para doblar), '
+          // console.log('termbordeeleg  ', termbordeeleg)
+          // console.log('alto  ', alto)
+          // if (termbordeeleg === 'SF') {
+          //   alto = alto + anchopared + 0.3
+          //   if (alto <= 1.50) {
+          //     alto = 1.50
+          //   }
+          // }
+          // else {
+          //   alto = alto + anchopared
+          // }
+          // console.log('alto  ', alto)
+
           if (StkRubroAbrP === 'POL19') {
             if (altoconpared > 1.50 && altoconpared <= 2) {
               altocalculo = 2.00
@@ -146,7 +158,7 @@ router.get("/", (req, res) => {
           metroscuadper = (altocalculo * perimetro).toFixed(0)
 
           metroscuadtotal = metroscuaddiam * 1 + metroscuadper * 1
-          //agregado porque cuando la pared es de más de 10 cm se debe hacer la forma 
+
           if (StkRubroAbrP == 'POL19') {
             SegundosMOT = perimetro * 600
             if (anchopared > 0.10) {
@@ -226,11 +238,7 @@ router.get("/", (req, res) => {
                 metroscuadtotal = metroscuadtotal + mcuadradosfaldon
                 segsoldarfaldon = (diametro * 3.1416 * 240)
                 SegundosMOT = SegundosMOT + seghacercortes + segsoldarfaldon
-
-                // default:
-                //   console.log('vino al default')
                 break
-
             }
             if (termbordeeleg == "CFS") {
               cantcriquet = 0
@@ -249,16 +257,16 @@ router.get("/", (req, res) => {
             }
           }
           if (termbordeeleg === "CF") {
-            detalle = detalle + ' borde superior sin terminación '
+            detalle = detalle + ' borde superior sin terminación en : '
           }
           if (termbordeeleg === "CFS") {
-            detalle = detalle + ' borde superior c/soga de ajuste '
+            detalle = detalle + ' borde superior c/soga de ajuste en : '
           }
           if (termbordeeleg === "CFC") {
-            detalle = detalle + ' borde superior c/criquet de ajuste '
+            detalle = detalle + ' borde superior c/criquet de ajuste en : '
           }
           if (termbordeeleg === "SF") {
-            detalle = detalle + ' borde superior recto '
+            detalle = detalle + ' borde superior recto  en :'
           }
 
           if (datosrec[0].minmay == 'my') {

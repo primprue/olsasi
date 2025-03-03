@@ -28,7 +28,7 @@ export const PresupPreview = (props) => {
 				</DialogTitle>
 
 				<iframe
-					src="dist/basics.pdf"
+					src="basics.pdf"
 					// src="basics.pdf"
 					title="Visualizador de PDF"
 					width="100%"

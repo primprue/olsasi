@@ -6,5 +6,6 @@ export const formdata = {
   StkMonedasCotizacion: 0.00,
   StkMonedasSigno: '',
   datoserroneos: true,
-  tablabase: 'Monedas'
+  tablabase: 'Monedas',
+  titulotabla: 'Monedas',
 }

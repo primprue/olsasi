@@ -14,5 +14,5 @@ export const formdata = {
   PresupConfTipoPElab: '',
   datoserroneos: true,
   tablabase: 'PresupConfTipo',
-
+  titulotabla: 'Confección Tipo de Presupuesto',
 }

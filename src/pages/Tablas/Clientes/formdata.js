@@ -18,5 +18,5 @@ export const formdata = {
   ClientesFecha: 0,
   datoserroneos: true,
   tablabase: 'Clientes',
-
+  titulotabla: 'Clientes',
 }

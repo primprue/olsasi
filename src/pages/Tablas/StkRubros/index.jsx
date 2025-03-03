@@ -5,14 +5,12 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 import { useContext } from "react";
-import StaticContexto from "../../../context/StaticContext.jsx";
 import TablasContexto from "../../../context/TablasContext.jsx";
 import { formdata } from "./formdata.js";
 
 import TablaMuestra from "../../../components/TablaMuestra.jsx";
 export default function Rubros() {
 	const { formdatos, setFormdatos } = useContext(TablasContexto);
-	const { valor, setValor } = useContext(StaticContexto);
 	const [rows, setRows] = React.useState([]);
 	const [columns, setColumns] = useState([]);
 	//empiezan las cosas del sistema
@@ -30,7 +28,6 @@ export default function Rubros() {
 	}
 	useEffect(() => {
 		initialFetch();
-		setValor("Rubros");
 		setFormdatos(formdata);
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 

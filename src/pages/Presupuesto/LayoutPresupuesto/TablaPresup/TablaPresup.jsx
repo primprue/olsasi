@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {
 	DataGrid,
-	esES,
 	GridToolbarContainer,
 	GridToolbarExport,
 } from "@mui/x-data-grid";
+import { esES } from '@mui/material/locale';
 import estilotabla from "../../../../Styles/Tabla.module.css";
 import { llenarcolumns } from "./columns.jsx";
 import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded";
@@ -22,6 +22,7 @@ import FilaAnexo from "../FilaAnexo/FilaAnexo";
 // Context
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant.jsx";
+import { Box, Typography } from "@mui/material";
 
 
 export default function TablaPresup(props) {
@@ -35,7 +36,8 @@ export default function TablaPresup(props) {
 		var col = await llenarcolumns();
 		setColumns(() => col);
 	}
-	const [suma, setSuma] = useState(0);
+	// const [suma, setSuma] = useState(0);
+	const { suma, setSuma } = useContext(PresupPant);
 
 	const BorraFila = () => {
 		// var datosrenglon1 = [];
@@ -53,59 +55,83 @@ export default function TablaPresup(props) {
 	function CustomToolbar() {
 		return (
 			<GridToolbarContainer className={estilotabla.tablapresupuestoslot}>
+				<Box
+					sx={{
+						width: "100%",
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'left',
+						padding: '8px 0px 8px 0px'
+					}}
+				>
+					<Typography
+						className={estilotabla.titulo}
+					>
+						Presupuesto
+					</Typography>
 
-				{state.renglonanexo.length !== 0 && <h3>Tiene Anexos</h3>}
-				<RemoveShoppingCartIcon
-					onClick={sumaacero}
-					style={{ color: yellow[900] }}
-					fontSize="medium"
-					titleAccess="Suma a Cero"
-				/>
-				<CurrencyTextField
-					id="Total"
-					size="small"
-					label="Total"
-					value={suma}
-					className={EstTF.tfcurrency}
-				></CurrencyTextField>
-				<b></b>
-				<b></b>
-				<b></b>
-				<b></b>
-				<GridToolbarExport></GridToolbarExport>
-				<DeleteForeverRoundedIcon
-					onClick={BorraFila}
-					style={{ color: red[500] }}
-					fontSize="medium"
-					titleAccess="Borrar"
-				/>
+					<Box
+						sx={{
+							width: "80%",
+							display: 'flex',
+							justifyContent: 'right',
+							alignItems: 'right',
+							gap: 2,
+						}}
+					>
+						{state.renglonanexo.length !== 0 && <h3>Tiene Anexos</h3>}
+						<RemoveShoppingCartIcon
+							onClick={sumaacero}
+							style={{ color: yellow[900] }}
+							fontSize="medium"
+							titleAccess="Suma a Cero"
+						/>
+						<CurrencyTextField
+							id="Total"
+							size="small"
+							label="Total"
+							value={suma}
+							className={EstTF.tfcurrency}
+						></CurrencyTextField>
+						<b></b>
+						<b></b>
+						<b></b>
+						<b></b>
+						<GridToolbarExport></GridToolbarExport>
+						<DeleteForeverRoundedIcon
+							onClick={BorraFila}
+							style={{ color: red[500] }}
+							fontSize="medium"
+							titleAccess="Borrar"
+						/>
 
-				<AddShoppingCartIcon
-					onClick={sumar}
-					style={{ color: green[500] }}
-					fontSize="medium"
-					titleAccess="Sumar"
-				/>
+						<AddShoppingCartIcon
+							onClick={sumar}
+							style={{ color: green[500] }}
+							fontSize="medium"
+							titleAccess="Sumar"
+						/>
 
-				{/* onAnimationStartnClick={() => setAnexos({ anexos: true })} */}
-				<AttachFileIcon
-					onClick={() => setAnexos({ anexos: true })}
-					style={{ color: purple[500] }}
-					fontSize="medium"
-					titleAccess="Anexos"
-				/>
-				<SaveAsTwoToneIcon
-					onClick={() => setFilacuatro({ filacuatro: true })}
-					style={{ color: deepOrange[500] }}
-					fontSize="medium"
-					titleAccess="Grabar"
-				/>
-				<LocalPrintshopRoundedIcon
-					onClick={() => setPPreview({ ppreview: true })}
-					style={{ color: blue[500] }}
-					fontSize="medium"
-					titleAccess="Imprimir"
-				/>
+						{/* onAnimationStartnClick={() => setAnexos({ anexos: true })} */}
+						<AttachFileIcon
+							onClick={() => setAnexos({ anexos: true })}
+							style={{ color: purple[500] }}
+							fontSize="medium"
+							titleAccess="Anexos"
+						/>
+						<SaveAsTwoToneIcon
+							onClick={() => setFilacuatro({ filacuatro: true })}
+							style={{ color: deepOrange[500] }}
+							fontSize="medium"
+							titleAccess="Grabar"
+						/>
+						<LocalPrintshopRoundedIcon
+							onClick={() => setPPreview({ ppreview: true })}
+							style={{ color: blue[500] }}
+							fontSize="medium"
+							titleAccess="Imprimir"
+						/>
+					</Box></Box>
 				{/* <Button onClick={handleClose}>Cierra</Button> */}
 			</GridToolbarContainer>
 		);
@@ -142,7 +168,7 @@ export default function TablaPresup(props) {
 							setRowSelectionModel(newRowSelectionModel);
 						}}
 						autoHeight={true}
-						localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+						localeText={esES}
 						shape="rounded"
 						slots={{
 							toolbar: CustomToolbar,

@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import PantallaIngreso from "./LayoutMovStock/Ingreso/PantallaMovimiento.jsx";
 // import SalidaDisponible from "./LayoutMovStock/SalidaDisp/SalidaDisponible";
 
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid2";
+
 import { Button } from "@mui/material";
 import AssignmentReturnedIcon from "@mui/icons-material/AssignmentReturned";
 import { green } from "@mui/material/colors";
@@ -25,7 +26,7 @@ export default function PantallaInicial() {
 	return (
 		<>
 			<Grid>
-				{/* <Grid container item xs={2}> */}
+				{/* <Grid container item span={{ xs: 2 }}> */}
 				<Button onClick={LlamaPI} color="primary">
 					<AssignmentReturnedIcon
 						style={{ color: green[500] }}

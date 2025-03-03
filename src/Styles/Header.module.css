@@ -3,7 +3,7 @@
 	background-color: #ffffff;
 	color: #280c7a;
 	/*color letra del boton*/
-	text-align-last: center;
+	text-align: center;
 	border-radius: 10px;
 	margin: 4px;
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -33,7 +33,7 @@
 	background-color: #ffffff;
 	color: #280c7a;
 	/*color letra del boton*/
-	text-align-last: center;
+	text-align: center;
 	border-radius: 10px;
 	margin: 4px;
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -55,18 +55,19 @@
 }
 
 .barraherr {
-	background: rgba(249, 250, 252, 0.308);
-	text-align-last: right;
-
-
-
+	background: rgba(89, 136, 231, 0.308);
+	text-align: right;
+	height: 50px;
 }
 
 .barraherr1 {
 	background: rgba(252, 250, 250, 0.918);
-	text-align-last: right;
-
-
+	text-align: right;
+}
+.toolbar {
+	background: rgba(4, 122, 233, 0.192);
+	text-align: right;
+	height: 50px;
 }
 
 .title {

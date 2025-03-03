@@ -3,8 +3,8 @@ import styles from "../styles.module.css";
 import estilot from "../../../../Styles/TextField.module.css";
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
-
-import { TextField, Grid } from "@mui/material";
+import Grid from "@mui/material/Grid2";
+import { TextField } from "@mui/material";
 export default function FilaCargaDesc() {
 	const { state, setState } = useContext(PresupPant);
 
@@ -17,10 +17,10 @@ export default function FilaCargaDesc() {
 	const classes = styles;
 	return (
 		<>
-			<Grid container item xs={8}>
+			<Grid container item span={{ xs: 8 }}>
 				<TextField
 					multiline={true}
-					// inputProps={{ maxLength: 500 }}
+					// input={{ maxLength: 500 }}
 					size="small"
 					variant="outlined"
 					id="DetalleRenglon"

@@ -10,5 +10,6 @@ export const formdata = {
   OTDatosOrdenAparicion: 0,
   OTDatosAncho: 0,
   datoserroneos: true,
-  tablabase: 'OTDatos'
+  tablabase: 'OTDatos',
+  titulotabla: 'Otros Datos de Orden de Trabajo',
 }

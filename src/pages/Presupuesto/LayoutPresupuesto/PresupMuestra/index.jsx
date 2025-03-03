@@ -6,12 +6,10 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 import { useContext } from "react";
-import StaticContexto from "../../../../context/StaticContext.jsx";
 import OrdTrabajo from "../../../../context/OrdTrabajo.jsx";
 import estilotabla from "../../../../Styles/Tabla.module.css";
 import {
 	DataGrid,
-	esES,
 	GridToolbarContainer,
 	GridToolbarColumnsButton,
 	GridToolbarFilterButton,
@@ -28,9 +26,8 @@ import { TablaMuestraRenglon } from "./TablaMuestraRenglon/index.jsx";
 import { PresupPreview } from "../PresupPreview";
 import { PresupNombre } from "./PresupNombre.jsx";
 import { Route, useNavigate } from "react-router-dom";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 export default function PresupMuestra() {
-	const { valor, setValor } = useContext(StaticContexto);
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
 	const [rows, setRows] = React.useState([]);
 	const [columns, setColumns] = useState([]);
@@ -104,38 +101,61 @@ export default function PresupMuestra() {
 
 	useEffect(() => {
 		initialFetch();
-		setValor("Muestra Presupuesto");
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	function CustomToolbar() {
 		return (
 			<>
 				<GridToolbarContainer className={estilotabla.tablasgenerales}>
-					<GridToolbarColumnsButton className={estilotabla.coloropcioncol} />
-					<GridToolbarFilterButton className={estilotabla.coloropcioncol} />
-					<GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
-					<GridToolbarExport className={estilotabla.coloropcioncol} />
-					<PlaylistAddCheckRoundedIcon
-						onClick={() => handleMuestraRenglon(rowsel.id)}
-						className={estilotabla.iconoordentrabao}
-						titleAccess="Ve datos Presupuesto"
-					/>
-					<PreviewTwoToneIcon
-						onClick={() => armanombre(rowsel)}
-						className={estilotabla.iconomodificar}
-						titleAccess="Preview Presupuesto"
-					/>
-					{/* <LocalPrintshopRoundedIcon
+					<Box
+						sx={{
+							width: "100%",
+							display: 'flex',
+							justifyContent: 'center',
+							alignItems: 'left',
+							padding: '8px 0px 8px 0px'
+						}}
+					>
+						<Typography
+							className={estilotabla.titulo}
+						>
+							Muestra Presupuesto
+						</Typography>
+						<Box
+							sx={{
+								width: "80%",
+								display: 'flex',
+								justifyContent: 'right',
+								alignItems: 'right',
+								gap: 3,
+							}}
+						>
+							<GridToolbarColumnsButton className={estilotabla.coloropcioncol} />
+							<GridToolbarFilterButton className={estilotabla.coloropcioncol} />
+							<GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
+							<GridToolbarExport className={estilotabla.coloropcioncol} />
+							<PlaylistAddCheckRoundedIcon
+								onClick={() => handleMuestraRenglon(rowsel.id)}
+								className={estilotabla.iconoordentrabao}
+								titleAccess="Ve datos Presupuesto"
+							/>
+							<PreviewTwoToneIcon
+								onClick={() => armanombre(rowsel)}
+								className={estilotabla.iconomodificar}
+								titleAccess="Preview Presupuesto"
+							/>
+							{/* <LocalPrintshopRoundedIcon
 						onClick={() => setImprimirTF(true)}
 						className={estilotabla.iconoimpresora}
 						titleAccess="Imprimir"
 					/> */}
-					<DeleteSharpIcon
-						variant="contained"
-						titleAccess="Borrar"
-						className={estilotabla.iconoborrar}
-						onClick={() => handleDelete(rowsel)}
-					/>
+							<DeleteSharpIcon
+								variant="contained"
+								titleAccess="Borrar"
+								className={estilotabla.iconoborrar}
+								onClick={() => handleDelete(rowsel)}
+							/>
+						</Box></Box>
 				</GridToolbarContainer>
 			</>
 		);
@@ -158,7 +178,7 @@ export default function PresupMuestra() {
 						autoHeight
 						rows={rows}
 						columns={columns}
-						// localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+
 						onRowClick={handleRowSelect}
 						onProcessRowUpdateError={handleProcessRowUpdateError}
 						showCellVerticalBorder={true}

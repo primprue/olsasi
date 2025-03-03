@@ -17,7 +17,8 @@ export const formdata = {
   ProveedoresWeb: '',
   ProveedoresCodMon: '',
   datoserroneos: true,
-  tablabase: 'Proveedores'
+  tablabase: 'Proveedores',
+  titulotabla: 'Proveedores',
 
 
   // idStkMonedas: '',

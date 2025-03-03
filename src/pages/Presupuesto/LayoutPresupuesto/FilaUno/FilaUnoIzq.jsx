@@ -1,88 +1,76 @@
-import React, { useEffect } from "react";
-import { FormHelperText, Grid, TextField } from "@mui/material";
-
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import Grid from "@mui/material/Grid2";
 import leePresupConfTipoLeerDesc from "../../leePresupConfTipoLeerDesc";
 import leePresupConfTipoLeeAnexo from "../../leePresupConfTipoLeeAnexo";
 // Context
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
-import estilo from "../../../../Styles/TextFieldSelect.module.css";
+import TextFieldSelect from "../../../../components/comppropios/TextFieldSelect";
+
 export default function FilaUnoIzq() {
 	const { state, setState } = useContext(PresupPant);
-	var anexo = "N";
-	const handleChange = (event) => {
-		var descripcion = event.target.value;
-		setState({ ...state, PresupConfTipoDesc: event.target.value });
-		leerdesc(descripcion);
-	};
+	const anexo = "N";
 
-	async function leerdesc(descripcion) {
+	const [selectedValues, setSelectedValues] = useState({});
+	const [tipopresupleidos, setTipopresupleidos] = useState([]);
+
+	// Función para manejar cambios en la selección
+	const handleSelectChange = useCallback((value, id, label) => {
+		setSelectedValues((prev) => ({ ...prev, [id]: value }));
+		setState((prev) => ({ ...prev, PresupConfTipoDesc: label }));
+		leerdesc(label);
+	}, []);
+
+	// Función para leer la descripción
+	const leerdesc = useCallback(async (descripcion) => {
 		const result = await leePresupConfTipoLeerDesc(descripcion);
-		setState({ ...state, DatosPresupEleg: result });
-	}
+		setState((prev) => ({ ...prev, DatosPresupEleg: result }));
+	}, []);
 
-	async function conftipoleer(anexo, prodelab) {
-		setState({ ...state, DescripPresup: "" });
-		const result = await leePresupConfTipoLeeAnexo(anexo, prodelab);
-		setState({ ...state, tipopresup: result });
-	}
+	// Función para leer la configuración
+	const conftipoleer = useCallback(async () => {
+		const result = await leePresupConfTipoLeeAnexo(anexo, state.PresupProducto);
+		setTipopresupleidos(result);
+		setState((prev) => ({ ...prev, DescripPresup: "" }));
+	}, [state.PresupProducto]);
 
+	// Cargar datos al iniciar o cuando cambia PresupProducto
 	useEffect(() => {
-		setState({ ...state, DescripPresup: "" });
-		if (state.tipopresup.length === 0) {
-			conftipoleer(anexo, state.PresupProducto);
-		}
-	}, [state.tipopresup]); // eslint-disable-line react-hooks/exhaustive-deps
+		conftipoleer();
+	}, [state.PresupProducto]);
 
+	// Generar opciones dinámicamente cuando `tipopresupleidos` cambie
+	const textdata = useMemo(() => {
+		if (tipopresupleidos.length === 0) return [];
 
-
-	useEffect(() => {
-		conftipoleer(anexo, state.PresupProducto);
-	}, [state.PresupProducto]); //  eslint-disable-line react-hooks/exhaustive-deps
-
-	const textdata = [
-		{
+		return [{
 			id: "TipoConfeccion",
 			label: "Confección",
 			value: state.NroConfTipo,
-			mapeo: (
-				<>
-					<option></option>
-					{state.tipopresup.map((option) => (
-						<option key={option.NroConfTipo} value={option.PresupConfTipoDesc}>
-							{option.PresupConfTipoDesc}
-						</option>
-					))}
-				</>
-			),
-		},
-	];
+			options: tipopresupleidos.map((option) => ({
+				value: option.NroConfTipo,
+				label: option.PresupConfTipoDesc
+			}))
+		}];
+	}, [state.NroConfTipo, tipopresupleidos]);
+
 	return (
-		<Grid item>
-			{textdata.map((data) => (
-				<TextField
-					className={estilo.selectField}
-					id={data.id}
-					key={data.id}
-					size="small"
-					select
-					label={data.label}
-					margin="dense"
-					value={data.value}
-					onChange={handleChange}
-					// SelectProps={{ native: true }}
-					variant="outlined"
-					InputLabelProps={{
-						className: estilo.selectLabel,
-					}}
-					SelectProps={{
-						native: true,
-						className: estilo.menuItem,
-					}}
-				>
-					{data.mapeo}
-				</TextField>
-			))}
+		<Grid>
+			{textdata.length > 0 ? (
+				textdata.map(({ id, label, value, options }) => (
+					<TextFieldSelect
+						key={id}
+						id={id}
+						label={label}
+						value={selectedValues[id] ?? value ?? ""}
+						onChange={handleSelectChange}
+						options={options}
+						width="300px"
+					/>
+				))
+			) : (
+				<p>Cargando datos...</p>
+			)}
 		</Grid>
 	);
 }

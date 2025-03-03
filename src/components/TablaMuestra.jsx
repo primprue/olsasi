@@ -58,21 +58,20 @@ import { green } from "@mui/material/colors";
 //https://www.youtube.com/watch?v=1zYf4Yw1jqs usa custom hooks y en el ejemplo maneja promesas y errores
 import {
 	DataGrid,
-	esES,
 	GridToolbarContainer,
 	GridToolbarColumnsButton,
 	GridToolbarFilterButton,
 	GridToolbarExport,
 	GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
-
+import { esES } from '@mui/material/locale';
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { DialogoDatos } from "./DialogoDatos.jsx";
 import { useContext } from "react";
 import TablasContexto from "../context/TablasContext.jsx";
 import SelecCampos from "../pages/Impresion/SelecCampos.jsx";
-import { Box, IconButton, Tooltip } from "@mui/material";
+import { Box, Button, IconButton, Tooltip } from "@mui/material";
 import { PBSubRubrosModificar } from "../pages/Tablas/PBSubRubros/PBSubRubrosModificar.jsx";
 export default function TablaMuestra(props) {
 	const { rows1, columns1, formdatos } = props;
@@ -272,56 +271,84 @@ export default function TablaMuestra(props) {
 	function CustomToolbar() {
 		return (
 			<GridToolbarContainer className={estilotabla.tablasgenerales}>
-				<GridToolbarColumnsButton className={estilotabla.coloropcioncol} />
-				<GridToolbarFilterButton className={estilotabla.coloropcioncol} />
-				<GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
-				<GridToolbarExport className={estilotabla.coloropcioncol} />
-				{(formdatos.tablabase !== "MuestraPresupuesto" && formdatos.tablabase !== "OTDatos" && (
-					<React.Fragment>
-						<AddToPhotosTwoToneIcon
-							className={estilotabla.iconoagregar}
-							size="large"
-							titleAccess="Agregar"
-							onClick={() => handleAlta()}
+				<Box
+					sx={{
+						width: "100%",
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'left',
+						padding: '8px 0px 8px 0px'
+					}}
+				>
+					<Typography
+						className={estilotabla.titulo}
+					>
+						{formdatos.titulotabla}
+					</Typography>
+
+					<Box
+						sx={{
+							width: "80%",
+							display: 'flex',
+							justifyContent: 'right',
+							alignItems: 'right',
+							padding: '8px'
+						}}
+					>
+
+						<GridToolbarColumnsButton className={estilotabla.coloropcioncol} />
+						<GridToolbarFilterButton className={estilotabla.coloropcioncol} />
+						<GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
+						<GridToolbarExport className={estilotabla.coloropcioncol} />
+						{(formdatos.tablabase !== "MuestraPresupuesto" && formdatos.tablabase !== "OTDatos" && (
+							<React.Fragment>
+								<AddToPhotosTwoToneIcon
+									className={estilotabla.iconoagregar}
+									size="large"
+									titleAccess="Agregar"
+									onClick={() => handleAlta()}
+								/>
+								<CheckCircleTwoToneIcon
+									variant="contained"
+									titleAccess="Confirma Modificación"
+									className={estilotabla.iconomodificar}
+									onClick={() => handleModifica(rown)}
+								/>
+							</React.Fragment>
+
+						)) ||
+							(formdatos.tablabase === "MuestraPresupuesto" &&
+								(
+									<PreviewTwoToneIcon
+										onClick={() => handleModifica(rowsel.id)}
+										className={estilotabla.iconomodificar}
+										titleAccess="Ve datos Presupuesto"
+									/>
+								))
+							||
+							(formdatos.tablabase === "OTDatos" &&
+								(
+									<AddToPhotosTwoToneIcon
+										className={estilotabla.iconoagregar}
+										size="large"
+										titleAccess="Agregar"
+										onClick={() => handleAlta1()}
+									/>
+								))
+						}
+						<LocalPrintshopRoundedIcon
+							onClick={() => setImprimirTF(true)}
+							className={estilotabla.iconoimpresora}
+							titleAccess="Imprimir"
 						/>
-						<CheckCircleTwoToneIcon
+						<DeleteSharpIcon
 							variant="contained"
-							titleAccess="Confirma Modificación"
-							className={estilotabla.iconomodificar}
-							onClick={() => handleModifica(rown)}
+							titleAccess="Borrar"
+							className={estilotabla.iconoborrar}
+							onClick={() => handleDelete(rowsel)}
 						/>
-					</React.Fragment>
-				)) ||
-					(formdatos.tablabase === "MuestraPresupuesto" &&
-						(
-							<PreviewTwoToneIcon
-								onClick={() => handleModifica(rowsel.id)}
-								className={estilotabla.iconomodificar}
-								titleAccess="Ve datos Presupuesto"
-							/>
-						))
-					||
-					(formdatos.tablabase === "OTDatos" &&
-						(
-							<AddToPhotosTwoToneIcon
-								className={estilotabla.iconoagregar}
-								size="large"
-								titleAccess="Agregar"
-								onClick={() => handleAlta1()}
-							/>
-						))
-				}
-				<LocalPrintshopRoundedIcon
-					onClick={() => setImprimirTF(true)}
-					className={estilotabla.iconoimpresora}
-					titleAccess="Imprimir"
-				/>
-				<DeleteSharpIcon
-					variant="contained"
-					titleAccess="Borrar"
-					className={estilotabla.iconoborrar}
-					onClick={() => handleDelete(rowsel)}
-				/>
+					</Box>
+				</Box>
 			</GridToolbarContainer>
 		);
 	}
@@ -336,12 +363,14 @@ export default function TablaMuestra(props) {
 				padding: 5,
 			}}
 		>
-			<DataGrid
+			< DataGrid
 				//
 				rows={rows}
 				columns={columns}
-				localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+				// localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+				localeText={esES}
 				processRowUpdate={processRowUpdate}
+
 				onRowClick={handleRowSelect}
 				onProcessRowUpdateError={handleProcessRowUpdateError}
 				showCellVerticalBorder={true}
@@ -359,7 +388,7 @@ export default function TablaMuestra(props) {
 					},
 				}}
 			/>
-			{/* )} */}
+
 			<DialogoDatos
 				open={open}
 				columns={columns}
@@ -376,16 +405,18 @@ export default function TablaMuestra(props) {
 				setOpen={setImprimirTF}
 				handleClose={handleCloseImprimir}
 			/>
-			{!!snackbar && (
-				<Snackbar
-					open
-					anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-					onClose={handleCloseSnackbar}
-					autoHideDuration={900}
-				>
-					<Alert {...snackbar} variant="filled" onClose={handleCloseSnackbar} />
-				</Snackbar>
-			)}
+			{
+				!!snackbar && (
+					<Snackbar
+						open
+						anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+						onClose={handleCloseSnackbar}
+						autoHideDuration={900}
+					>
+						<Alert {...snackbar} variant="filled" onClose={handleCloseSnackbar} />
+					</Snackbar>
+				)
+			}
 		</Box>
 	);
 }

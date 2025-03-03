@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import {
-	esES,
+
 	DataGrid,
 	GridToolbarContainer,
 	GridToolbarExport,
 } from "@mui/x-data-grid";
+
+import { esES } from '@mui/material/locale';
 import estilotabla from "../../Styles/Tabla.module.css";
 
 import FitbitIcon from "@mui/icons-material/Fitbit";
@@ -16,12 +18,12 @@ import TablaMuestraStock from "./TablaMuestraStock.jsx";
 import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
 import { deepOrange, red, blue, green, purple } from "@mui/material/colors";
 
-import { useContext } from "react";
-import StaticContexto from "../../context/StaticContext.jsx";
+// import { useContext } from "react";
+// import StaticContexto from "../../context/StaticContext.jsx";
 import SelecCampos from "../Impresion/SelecCampos.jsx";
 
 export default function ListaPrecios() {
-	const { setValor } = useContext(StaticContexto);
+	// const { setValor } = useContext(StaticContexto);
 	const [paramitems, setParamItems] = useState({
 		idGrupo: 0,
 		idRubro: 0,
@@ -48,7 +50,7 @@ export default function ListaPrecios() {
 
 	useEffect(() => {
 		initialFetch();
-		setValor("Lista de Precios");
+		// setValor("Lista de Precios");
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const openApp = (params) => {
@@ -91,18 +93,38 @@ export default function ListaPrecios() {
 	function CustomToolbar() {
 		return (
 			<GridToolbarContainer className={estilotabla.tablalistaprecios}>
-				<b></b>
-				<b></b>
-				<b></b>
-				<b></b>
-				<LocalPrintshopRoundedIcon
-					onClick={() => setImprimirTF(true)}
-					style={{ color: blue[800] }}
-					fontSize="medium"
-					titleAccess="Imprimir"
-				/>
-				<GridToolbarExport style={{ color: green[800] }} />
-			</GridToolbarContainer>
+				<Box
+					sx={{
+						width: "100%",
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'left',
+						padding: '8px 0px 8px 0px'
+					}}
+				>
+					<Typography
+						className={estilotabla.titulo}
+					>
+						Lista de Precios
+					</Typography>
+					<Box
+						sx={{
+							width: "80%",
+							display: 'flex',
+							justifyContent: 'right',
+							alignItems: 'right',
+							gap: 3,
+						}}
+					>
+						<LocalPrintshopRoundedIcon
+							onClick={() => setImprimirTF(true)}
+							style={{ color: blue[800] }}
+							fontSize="medium"
+							titleAccess="Imprimir"
+						/>
+						<GridToolbarExport style={{ color: green[800] }} />
+					</Box></Box>
+			</GridToolbarContainer >
 		);
 	}
 
@@ -117,11 +139,10 @@ export default function ListaPrecios() {
 			}}
 		>
 			<DataGrid
-				autoHeight
 				rows={rows}
 				columns={columns}
 				title="Lista de Precios"
-				localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+				localeText={esES}
 				slots={{
 					toolbar: CustomToolbar,
 				}}

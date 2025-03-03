@@ -1,24 +1,21 @@
 import React from "react";
-
-import { useEffect } from "react";
-
-import { useContext } from "react";
-import StaticContexto from "../../context/StaticContext.jsx";
 import FilaUno from "./LayoutPresupuesto/FilaUno/index.jsx";
 import FilaDos from "./LayoutPresupuesto/FilaDos/FilaDos.jsx";
-import { Container, Grid } from "@mui/material";
+import Grid from "@mui/material/Grid2";
+import TipoCliente from "./LayoutPresupuesto/FilaUno/TipoCliente.jsx";
+import TipoIVA from "./LayoutPresupuesto/FilaUno/TipoIVA.jsx";
+import TipoProducto from "./LayoutPresupuesto/FilaUno/TipoProducto.jsx";
+import FilaUnoIzq from "./LayoutPresupuesto/FilaUno/FilaUnoIzq.jsx";
 
 export default function Presupuesto() {
-	const { valor, setValor } = useContext(StaticContexto);
-
-	useEffect(() => {
-		setValor("Presupuestos");
-	}, []); // eslint-disable-line react-hooks/exhaustive-deps
-
 	return (
 		<div>
 			<Grid container spacing={2} alignItems="center" padding={4}>
-				<FilaUno />
+				{/* <FilaUno /> */}
+				<TipoCliente />
+				<TipoIVA />
+				<TipoProducto />
+				<FilaUnoIzq />
 				<FilaDos />
 			</Grid>
 		</div>

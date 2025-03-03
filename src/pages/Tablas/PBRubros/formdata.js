@@ -5,4 +5,5 @@ export const formdata = {
   PBRubrosDetalle: '',
   datoserroneos: true,
   tablabase: 'PBRubros',
+  titulotabla: 'Rubros de PreBalance',
 }

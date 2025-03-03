@@ -313,3 +313,15 @@
 	width: 40%;
 	/* Porcentaje del ancho total */
 }
+
+
+
+
+.titulo {
+	/* font-size: 24px; */
+    font-weight: bold;
+	font-style: italic;
+	font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	color: rgb(248, 21, 5);
+	
+}

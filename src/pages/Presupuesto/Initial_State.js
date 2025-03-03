@@ -1,6 +1,6 @@
 export const initial_state = {
   //Funcions agregaStock BEGIN ***//
-
+  // suma: 0,
   //FilaUno
   PresupMnMy: "mn",
   PresupIVA: "CIVA",
@@ -151,6 +151,7 @@ export const initial_state = {
   tipoanexo: [],
   renglonfinal: [],
   tipopresup: [],
+
   indexborrado: 1000,
   DetallePresup: '',
   DetalleRenglon: '',

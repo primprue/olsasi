@@ -3,8 +3,8 @@ import styles from "../styles.module.css";
 import estilos from "../../../../Styles/TextField.module.css";
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
-
-import { Grid, TextField } from "@mui/material";
+import Grid from "@mui/material/Grid2";
+import { TextField } from "@mui/material";
 export default function FilaDetDesc(props) {
 	const { state, setState } = useContext(PresupPant);
 	const [DescripPresup, setDescripPresup] = React.useState("");
@@ -39,7 +39,7 @@ export default function FilaDetDesc(props) {
 				{presuptipo !== "CARGA DESCRIPCION" && (
 					<div>
 						<TextField
-							inputProps={{ maxLength: 15 }}
+							input={{ maxLength: 15 }}
 							size="small"
 							variant="filled"
 							id="DescripPresup"
@@ -53,7 +53,7 @@ export default function FilaDetDesc(props) {
 						/>
 
 						<TextField
-							inputProps={{ maxLength: 100 }}
+							input={{ maxLength: 100 }}
 							size="small"
 							variant="filled"
 							id="DetallePresup"
@@ -66,7 +66,7 @@ export default function FilaDetDesc(props) {
 							className={estilos.textftexto}
 						/>
 						<TextField
-							inputProps={{ maxLength: 100 }}
+							input={{ maxLength: 100 }}
 							size="small"
 							variant="filled"
 							id="DetalleRenglon"
@@ -81,7 +81,7 @@ export default function FilaDetDesc(props) {
 					</div>
 				)}
 				<TextField
-					inputProps={{ maxLength: 100 }}
+					input={{ maxLength: 100 }}
 					size="small"
 					variant="filled"
 					id="ExplicaPresup"

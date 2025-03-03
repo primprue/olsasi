@@ -5,44 +5,35 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 import { useContext } from "react";
-import StaticContexto from "../../../context/StaticContext.jsx";
 import PresupPant from "../../../context/PresupPant.jsx";
 import FilaUnoIzq from "../../Presupuesto/LayoutPresupuesto/FilaUno/FilaUnoIzq.jsx";
-import { TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { formdata } from "./formdata.js";
 import TablaMuestra from '../../../components/TablaMuestra.jsx';
 import { DataGrid } from '@mui/x-data-grid';
 import { set } from 'date-fns';
+import OTDatosAgregarForm from './OTDatosAgregarForm.jsx';
+import FitbitIcon from "@mui/icons-material/Fitbit";
+import { deepOrange, red, blue, green, purple } from "@mui/material/colors";
+import OTDatosAgrOpc from './OTDatosAgrOpc.jsx';
+import { DialogoDatos } from '../../../components/DialogoDatos.jsx';
 export default function OTDatosForm() {
-    const { valor, setValor } = useContext(StaticContexto);
     const { state, setState } = useContext(PresupPant);
-
+    const [abreagregar, setAbreagregar] = useState(false);
+    const [abreagregaritem, setAbreagregarItem] = useState(false);
     const [formdatos, setFormdatos] = useState(formdata);
     const [datosacargar, setDatosaCargar] = useState('');
+    const [params, setParams] = useState();
     const [rows, setRows] = useState([]);
-    // const [columns, setColumns] = useState([]);
-    // async function columnsFetch() {
-    //     var col = await llenarcolumns();
-    //     setColumns(() => col);
-    // }
+
     async function leeotdatos(descripcion) {
         const result = await OTDatosLee(descripcion);
-        // setDatosaCargar(result);
         setRows(procesarDatos(result));
     }
-    // async function initialFetch() {
-    //     // columnsFetch();
-    //     leeotdatos();
-    // }
-    useEffect(() => {
-        setValor("OTDatos");
-
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (state.PresupConfTipoDesc !== '') {
             leeotdatos(state.PresupConfTipoDesc);
-            // initialFetch();
             setFormdatos(formdata);
         }
 
@@ -51,18 +42,16 @@ export default function OTDatosForm() {
 
     const procesarDatos = (data) => {
         if (data !== '') {
-
-            console.log('data', data)
-            // return data.map((item) =>
             return data.flatMap((item) =>
                 Object.entries(JSON.parse(item.OTDatosOpciones)).map(([clave, valor]) => ({
-                    // id: `${item.idOTDatos}`, // ID único
-
                     id: `${item.idOTDatos}-${clave}`, // ID único
                     descripcion: item.OTDatosDesc,
+                    codconf: item.OTDatosConfCod,
                     opcion: clave,
                     valor: valor,
-                    aparicion: item.OTDatosOrdenAparicion
+                    aparicion: item.OTDatosOrdenAparicion,
+                    tipo: item.OTDatosTipoPed,
+                    requerido: item.OTDatosRequerido
                 }))
 
             );
@@ -88,9 +77,45 @@ export default function OTDatosForm() {
         },
         { field: "opcion", headerName: "opcion", width: 150, editable: true },
         { field: "valor", headerName: "valor", width: 100, editable: true },
+        // {
+        //     field: "tipo", headerName: "tipo", width: 100,
+        //     renderCell: (paramtipo) => {
+        //         const rowIndex = paramtipo.api.getAllRowIds().indexOf(paramtipo.id);
+        //         // Si no es la primera vez que aparece la categoría, la celda queda vacía
+        //         if (rowIndex > 0 && rows[rowIndex - 1].tipo === paramtipo.value) {
+        //             return null; // Celda vacía para las filas repetidas
+        //         }
+        //         return <strong>{paramtipo.value}</strong>;
+        //     },
+        // },
+        { field: "tipo", headerName: "tipo", width: 100, editable: true },
+        { field: "requerido", headerName: "requerido", width: 100, editable: true },
+        {
+            field: "actions",
+            headerName: "+ Opciones",
+            width: 100,
+            headerClassName: "encabcolumns",
+            renderCell: (params) => (
+                <Button
+                    variant="text"
+                    style={{ color: deepOrange[800] }}
+                    placeholder="Ver Stock"
+                    fontSize="large"
+                    onClick={() => openApp(params)}
+                    // (<OTDatosAgrOpc open={setAbreagregarItem(true)} params={params} handleClose={() => setAbreagregarItem(false)) /> }
+                    // openApp(params)
+
+                    startIcon={<FitbitIcon />}
+                />
+            ),
+        }
+
     ];
 
-
+    const openApp = (params) => {
+        setParams(params.row)
+        setAbreagregarItem(true)
+    };
     const handleProcessRowUpdate = (updatedRow) => {
         setRows(rows.map((row) => (row.id === updatedRow.id ? updatedRow : row)));
         return updatedRow;
@@ -110,17 +135,10 @@ export default function OTDatosForm() {
             )
         );
     };
-    // idOTDatos
-    //     OTDatosTipoConf
-    //         OTDatosConfCod
-    //             OTDatosDesc: 'Ojales',
-    //                 OTDatosOpciones:
-    // '{"": 0, "Cada 0.50": 0, "Cada 0.70": 0, "Cada 1 mts.": 0}',
-    //     OTDatosTipoPed: 'select',
-    //         OTDatosRequerido: 'S',
-    //             OTDatosOrdenAparicion: 1,
-    //                 OTDatosAncho: null,
-    //                     id: 4
+    const handleClickOpen = () => {
+        setAbreagregar(true);
+    };
+
     return (
         <div style={{ marginTop: "20px", marginLeft: "20px" }}>
             <FilaUnoIzq />
@@ -132,10 +150,18 @@ export default function OTDatosForm() {
                     pageSize={5}
                 />
             }
-            <h2>Editar Datos</h2>
+            {/* <DialogoDatos
+                open={open}
+                columns={columns}
+                handleClose={handleClose}
+                nombrebtn={nombreboton}
+                paramsbor={paramsbor}
+                titulodial={titulodial}
+            /> */}
 
-
-
+            {/* <Button variant="contained" color="primary" onClick={handleClickOpen}></Button> */}
+            {abreagregar && <OTDatosAgregarForm open={abreagregar} handleClose={handleClickOpen} />}
+            {abreagregaritem && <OTDatosAgrOpc open={abreagregaritem} params={params} handleClose={() => setAbreagregarItem(false)} />}
         </div>
     )
 }

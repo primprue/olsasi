@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 
 import {
 	DataGrid,
-	esES,
-} from "@mui/x-data-grid";
 
+} from "@mui/x-data-grid";
+import { esES } from '@mui/material/locale';
 import { llenarcolumns } from "../../../Tablas/PresupDetPie/columns.jsx";
 import { PresupDetPieLee } from "../../../Tablas/PresupDetPie/PresupDetPieLee";
 // Context
@@ -54,7 +54,7 @@ export default function PresupDetPieSelect() {
 				checkboxSelection
 				onRowSelectionModelChange={handleSelectionModelChange}
 				selectionModel={selectionModel}
-				localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+				localeText={esES}
 
 			/>
 		</div>

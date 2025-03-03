@@ -15,5 +15,6 @@ export const formdata = {
   StkRubroFecha: '',
   datoserroneos: true,
   tablabase: 'StkRubros',
+  titulotabla: 'Rubros de Stock',
 }
 

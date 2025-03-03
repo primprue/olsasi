@@ -110,7 +110,7 @@ export default function SelecCampos(props) {
 											checked={checked.indexOf(value) !== -1}
 											tabIndex={-1}
 											disableRipple
-											inputProps={{ "aria-labelledby": labelId }}
+											input={{ "aria-labelledby": labelId }}
 										/>
 									</ListItemIcon>
 									<ListItemText id={labelId} primary={`${value.headerName}`} />
@@ -189,7 +189,7 @@ export default function SelecCampos(props) {
 						// 						checked={checked.indexOf(value) !== -1}
 						// 						tabIndex={-1}
 						// 						disableRipple
-						// 						inputProps={{ "aria-labelledby": labelId }}
+						// 						input={{ "aria-labelledby": labelId }}
 						// 					/>
 						// 				</ListItemIcon>
 						// 				<ListItemText id={labelId} primary={`${value.title}`} />

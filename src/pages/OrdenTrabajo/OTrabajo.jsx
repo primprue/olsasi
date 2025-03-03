@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { Button, Grid } from "@mui/material";
+
+import Grid from "@mui/material/Grid2";
 import { useContext } from "react";
 import StaticContexto from "../../context/StaticContext.jsx";
 import OTRecRenglon from "./LayoutOrdenTrabajo/OTRecRenglon.jsx";

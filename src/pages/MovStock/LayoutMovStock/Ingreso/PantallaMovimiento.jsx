@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Estilos from "./Ingreso.module.css";
-import { Card, CardContent, Button, Grid, TextField } from "@mui/material";
-
+import { Card, CardContent, Button, TextField } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { columnasdi } from "./columnasdi";
 import { stkrubrolee } from "./LeeRubro";
 import { stkgrupoleer } from "./LeeGrupos";
@@ -11,9 +11,9 @@ import { sumaingreso } from "./SumaIngreso";
 // Context
 import { useContext } from "react";
 import { MovStockPantContext } from "../../MovStockPant";
-import { DataGrid, esES } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import { Proveedoresleertipo26 } from "./Proveedoresleertipo26";
-
+import { esES } from '@mui/material/locale';
 export default function PantallaMovimiento(props) {
 	const { state, setState } = useContext(MovStockPantContext);
 	const [trigger, setTrigger] = useState(false);
@@ -168,7 +168,7 @@ export default function PantallaMovimiento(props) {
 						key={datos.id}
 						id={datos.id}
 						size="small"
-						inputProps={{ maxLength: 3 }}
+						input={{ maxLength: 3 }}
 						select
 						label={datos.label}
 						value={datos.value}
@@ -185,7 +185,7 @@ export default function PantallaMovimiento(props) {
 					key={trigger} // El cambio en trigger fuerza el re-renderizado
 					rows={data}
 					columns={columns}
-					localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+					localeText={esES}
 					onRowClick={(evt, selectedRow) => {
 						setSelectedRow(evt.row);
 						miraitem(evt.id, evt.row);
@@ -213,7 +213,7 @@ export default function PantallaMovimiento(props) {
 
 							<label> Ingresaron </label>
 							<TextField
-								inputProps={{ maxLength: 4 }}
+								input={{ maxLength: 4 }}
 								className={Estilos.input}
 								inputRef={textInput}
 								size="small"
@@ -233,7 +233,7 @@ export default function PantallaMovimiento(props) {
 							<label> de </label>
 
 							<TextField
-								inputProps={{ maxLength: 4 }}
+								input={{ maxLength: 4 }}
 								className={Estilos.input}
 								inputRef={textInput1}
 								size="small"

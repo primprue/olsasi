@@ -1,6 +1,6 @@
 /* Menu.module.css */
 .menuItem {
- 
+ background-color: #c9d9f450;
     padding: 8px 16px;
     cursor: pointer;
     transition: background-color 0.3s ease, font-weight 0.3s ease; /* Añadido para transiciones suaves */

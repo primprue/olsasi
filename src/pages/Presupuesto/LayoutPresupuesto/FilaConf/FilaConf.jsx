@@ -1,5 +1,6 @@
 import React from "react";
-import { Grid, Radio, RadioGroup, FormControlLabel } from "@mui/material";
+import { Radio, RadioGroup, FormControlLabel } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import estilo from "../../../../Styles/RadioGroup.module.css";
 // Context
 import { useContext } from "react";
@@ -22,7 +23,7 @@ export default function FilaConf(props) {
 
 	return (
 		<>
-			<Grid item>
+			<Grid >
 				<RadioGroup
 					className={estilo.radioGroup1}
 					row
@@ -62,7 +63,7 @@ export default function FilaConf(props) {
 					/>
 				</RadioGroup>
 			</Grid>
-			<Grid item>
+			<Grid >
 				<RadioGroup
 					className={estilo.radioGroup1}
 					row

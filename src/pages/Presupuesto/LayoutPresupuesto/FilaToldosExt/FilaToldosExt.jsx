@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import {
-	Grid,
 	Radio,
 	RadioGroup,
 	FormControlLabel,
 	TextField,
 } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import styles from "../styles.module.css";
 import estilo from "../../../../Styles/TextFieldSelect.module.css";
 import estiloI from "../../../../Styles/RadioGroup.module.css";
@@ -65,7 +65,7 @@ export default function FilaToldosExt(props) {
 	return (
 		<>
 			<Grid container spacing={2}>
-				<Grid item xs={3}>
+				<Grid span={{ xs: 3 }}>
 					<RadioGroup
 						className={estiloI.radioGroup1}
 						row
@@ -129,7 +129,7 @@ export default function FilaToldosExt(props) {
 						/>
 					</RadioGroup>
 				</Grid>
-				<Grid item xs={3}>
+				<Grid span={{ xs: 3 }}>
 					{tamtoldo.map((data) => (
 						<TextField
 							id={data.id}
@@ -155,9 +155,9 @@ export default function FilaToldosExt(props) {
 						</TextField>
 					))}
 				</Grid>
-				<Grid item xs={1}>
+				<Grid span={{ xs: 1 }}>
 					<TextField
-						inputProps={{ maxLength: 3 }}
+						input={{ maxLength: 3 }}
 						size="small"
 						variant="outlined"
 						id="AltoVolado"

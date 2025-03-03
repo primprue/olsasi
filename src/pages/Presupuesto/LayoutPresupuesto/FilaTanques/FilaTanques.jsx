@@ -1,6 +1,7 @@
 import React from "react";
-import { Grid, TextField } from "@mui/material";
-import styles from "../styles.module.css";
+import { TextField } from "@mui/material";
+import Grid from "@mui/material/Grid2";
+
 import estilo from "../../../../Styles/TextFieldSelect.module.css";
 import estiloII from "../../../../Styles/TextField.module.css";
 // Context
@@ -59,7 +60,7 @@ export default function FilaTanques() {
 	return (
 		<>
 			<Grid container spacing={2}>
-				<Grid item>
+				<Grid >
 					{tipomedidatanque.map((data) => (
 						<TextField
 							id={data.id}
@@ -85,7 +86,7 @@ export default function FilaTanques() {
 						</TextField>
 					))}
 				</Grid>
-				<Grid item xs={2}>
+				<Grid span={{ xs: 2 }}>
 					{terminacionborde.map((data) => (
 						<TextField
 							id={data.id}
@@ -111,9 +112,9 @@ export default function FilaTanques() {
 						</TextField>
 					))}
 				</Grid>
-				<Grid item xs={2}>
+				<Grid span={{ xs: 2 }}>
 					<TextField
-						inputProps={{ maxLength: 3 }}
+						input={{ maxLength: 3 }}
 						size="small"
 						variant="outlined"
 						id="AnchoPared"
@@ -127,9 +128,9 @@ export default function FilaTanques() {
 					/>
 				</Grid>
 
-				<Grid item xs={2}>
+				<Grid span={{ xs: 2 }}>
 					<TextField
-						inputProps={{ maxLength: 5 }}
+						input={{ maxLength: 5 }}
 						size="small"
 						variant="outlined"
 						id="Medida"
@@ -141,9 +142,9 @@ export default function FilaTanques() {
 						helperText="Medida o Cantidad de chapas"
 					/>
 				</Grid>
-				<Grid item xs={2}>
+				<Grid span={{ xs: 2 }}>
 					<TextField
-						inputProps={{ maxLength: 4 }}
+						input={{ maxLength: 4 }}
 						size="small"
 						variant="outlined"
 						id="Alto"

@@ -5,6 +5,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import { useNavigate, Route, Routes } from 'react-router-dom';
 import styles from './Styles/App.module.css'
+import estilos from './Styles/Header.module.css'
 
 // Lazy-loaded components
 const Proveedores = lazy(() => import("./pages/Tablas/Proveedores/index.jsx"));
@@ -46,6 +47,8 @@ import { CtaCteContext } from "./context/CtasCtesContext.jsx";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import PBSubRubros from './pages/Tablas/PBSubRubros/index.jsx';
+import { green } from '@mui/material/colors';
+import BoxSx from './components/comppropios/BoxSx.jsx';
 
 
 // Configuración personalizada de breakpoints
@@ -114,8 +117,8 @@ const App = () => {
       <div>
 
 
-        <AppBar position="static" >
-          <Toolbar>
+        <AppBar position="static" className={estilos.barraherr}>
+          <Toolbar className={estilos.toolbar}>
             <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
               <MenuIcon />
             </IconButton>
@@ -123,15 +126,12 @@ const App = () => {
               Mi Aplicación
 
             </Typography>
-            <Typography variant="h6">
-              {StaticContexto.valor}
 
-            </Typography>
           </Toolbar>
         </AppBar>
 
         <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
-          <Box sx={{ width: 250 }} role="presentation">
+          <Box sx={{ width: 250 }} role="presentation" >
             <List>
               <ListItem className={`${styles.menuItem} ${selectedIndex === 0 ? styles.selected : ''}`}
                 onClick={() => handleNavigation('/')}>

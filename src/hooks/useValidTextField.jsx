@@ -69,18 +69,29 @@ export function ValidatedTextField(props) {
 			{...props}
 			label={label}
 			helperText="<Tab> pasa al siguiente campo"
-			inputProps={{ "data-testid": `validated-textfield-${label}` }}
+			// inputProps={{ "data-testid": `validated-textfield-${label}` }}
 			required={props.required}
 			autoFocus={props.autoFocus}
-			InputProps={{
-				readOnly: props.readOnly,
-				startAdornment: isValid ? (
-					<CheckCircleIcon color="success" />
-				) : (
-					<ThumbDownAltTwoToneIcon color="error" />
-				),
-				// startAdornment: isValid ? <CheckCircleIcon /> : <ErrorIcon />,
+			slotProps={{
+				input: {
+					"data-testid": `validated-textfield-${label}`,
+					readOnly: props.readOnly,
+					startAdornment: isValid ? (
+						<CheckCircleIcon color="success" />
+					) : (
+						<ThumbDownAltTwoToneIcon color="error" />
+					),
+				}
 			}}
+			//   InputProps={{
+			// 		readOnly: props.readOnly,
+			// 		startAdornment: isValid ? (
+			// 			<CheckCircleIcon color="success" />
+			// 		) : (
+			// 			<ThumbDownAltTwoToneIcon color="error" />
+			// 		),
+			// 		// startAdornment: isValid ? <CheckCircleIcon /> : <ErrorIcon />,
+			// 	}}
 			onKeyDown={handleKeyPress}
 		// onMouseDown={handleMouseDown}
 		// onChange={handleChange}

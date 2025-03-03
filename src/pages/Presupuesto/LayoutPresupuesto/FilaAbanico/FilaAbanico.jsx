@@ -1,12 +1,11 @@
 import React from "react";
 import {
-	Grid,
 	Radio,
 	RadioGroup,
 	FormControlLabel,
 	TextField,
 } from "@mui/material";
-
+import Grid from "@mui/material/Grid2";
 import swal from "sweetalert";
 import estilo from "../../../../Styles/TextFieldSelect.module.css";
 import estiloI from "../../../../Styles/RadioGroup.module.css";
@@ -66,9 +65,9 @@ export default function FilaAbanico(props) {
 	return (
 		<>
 			<Grid container spacing={2}>
-				<Grid item xs={1}>
+				<Grid span={{ xs: 1 }}>
 					<TextField
-						inputProps={{ maxLength: 3 }}
+						input={{ maxLength: 3 }}
 						size="small"
 						variant="outlined"
 						id="CantBrazos"
@@ -81,9 +80,9 @@ export default function FilaAbanico(props) {
 						className={estiloII.textfcantidad}
 					/>
 				</Grid>
-				<Grid item xs={1}>
+				<Grid span={{ xs: 1 }}>
 					<TextField
-						inputProps={{ maxLength: 3 }}
+						input={{ maxLength: 3 }}
 						//no más de 1.25
 						size="small"
 						variant="outlined"
@@ -98,7 +97,7 @@ export default function FilaAbanico(props) {
 						helperText="No mayor a 1.25"
 					/>
 				</Grid>
-				<Grid item xs={1}>
+				<Grid span={{ xs: 1 }}>
 					{fajadebrazo.map((data) => (
 						<TextField
 							id={data.id}
@@ -119,16 +118,16 @@ export default function FilaAbanico(props) {
 								className: estilo.menuItem,
 							}}
 							variant="outlined"
-							// helperText="Brazos de?"
-							// className={classes.textField}
+						// helperText="Brazos de?"
+						// className={classes.textField}
 						>
 							{data.mapeo}
 						</TextField>
 					))}
 				</Grid>
-				<Grid item xs={1}>
+				<Grid span={{ xs: 1 }}>
 					<TextField
-						inputProps={{ maxLength: 3 }}
+						input={{ maxLength: 3 }}
 						size="small"
 						variant="outlined"
 						id="AltoVolado"
@@ -141,7 +140,7 @@ export default function FilaAbanico(props) {
 						className={estiloII.textfcantidad}
 					/>
 				</Grid>
-				<Grid item ms={2}>
+				<Grid ms={2}>
 					<RadioGroup
 						className={estiloI.radioGroup1}
 						row

@@ -5,11 +5,13 @@ import {
 	FormControl,
 	FormControlLabel,
 	FormGroup,
-	Grid,
+
 	Radio,
 	RadioGroup,
 	TextField,
 } from "@mui/material";
+import Grid from "@mui/material/Grid2";
+
 import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import OrdTrabajo from "../../../context/OrdTrabajo";
@@ -102,6 +104,8 @@ export default function OTFilasConf(props) {
 		}
 
 		let canttela = (datospot.ancho * 1 + 0.08) * paños;
+		console.log('items[indice].StkItemsCantDisp', items[indice].StkItemsCantDisp);
+		console.log('items  ', !items[indice].StkItemsCantDisp)
 		if (canttela > items[indice].StkItemsCantDisp) {
 			setBackgroundColor("lightcoral"); // Cambia el color de fondo si el resultado es mayor de 50
 		} else {
@@ -123,7 +127,7 @@ export default function OTFilasConf(props) {
 						key={data.id}
 						id={data.id}
 						size="small"
-						inputProps={{ maxLength: 3 }}
+						input={{ maxLength: 3 }}
 						select
 						label={data.label}
 						value={data.value}
@@ -213,7 +217,7 @@ export default function OTFilasConf(props) {
 		  maxWidth: calculateMaxWidth(elemento[nombrePropiedad]),
 		}, */
 	/* 
-	{/* <Grid item xs={4}>
+	{/* <Grid item span={{ xs: 4 }}>
 						<FormControl component="fieldset">
 							<FormGroup>
 								<FormControlLabel
@@ -240,11 +244,11 @@ export default function OTFilasConf(props) {
 			<p>signomonet: {signomonet}</p>
 			<p>drenajesn: {drenajesn}</p>
 			<p>tipoojale: {tipoojale}</p>
-<Grid item xs={1}>
+<Grid item span={{ xs: 1 }}>
 				{drenajesn === "cd" && (
 					<TextField
 						disabled={largo === "N"}
-						inputProps={{ maxLength: 3 }}
+						input={{ maxLength: 3 }}
 						size="small"
 						variant="outlined"
 						id="CantDrenajes"
@@ -258,7 +262,7 @@ export default function OTFilasConf(props) {
 					/>
 				)}
 			</Grid> */
-	/*<Grid item xs={1}>
+	/*<Grid item span={{ xs: 1 }}>
 						{dato.tipocomponete === "select" &&
 							((<label>{dato.nombre}</label>),
 							(

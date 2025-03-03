@@ -3,7 +3,8 @@ import { useContext } from "react";
 import OrdTrabajo from "../../../../context/OrdTrabajo.jsx";
 import { llenarcolumns } from "../../../Tablas/Clientes/columns.jsx";
 import { formdata } from "../../../Tablas/Clientes/formdata.js";
-import { Box, Button, Grid, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { ClientesLeer } from "../../../Tablas/Clientes/ClientesLeer.jsx";
 import { clientesleercod } from "../../../Tablas/Clientes/ClientesLeerCod.jsx";
 import { leerTransporte } from "../../../Tablas/Transporte/TransporteLeer.jsx";
@@ -190,7 +191,7 @@ export default function OTFilaGral(props) {
 				container
 				style={{ backgroundColor: "colorfondo" }}
 				spacing={2}
-				// alignItems="center"
+			// alignItems="center"
 			>
 				{/* si se quiere cambiar el cliente */}
 				<Grid>
@@ -210,7 +211,7 @@ export default function OTFilaGral(props) {
 								key={data.id}
 								id={data.id}
 								size="small"
-								inputProps={{ maxLength: 3 }}
+								input={{ maxLength: 3 }}
 								select
 								label={data.label}
 								value={data.value}
@@ -248,7 +249,7 @@ export default function OTFilaGral(props) {
 								key={data.id}
 								id={data.id}
 								size="small"
-								inputProps={{ maxLength: 3 }}
+								input={{ maxLength: 3 }}
 								select
 								label={data.label}
 								value={data.value}
@@ -263,7 +264,7 @@ export default function OTFilaGral(props) {
 				</Grid>
 				<Grid>
 					<TextField
-						inputProps={{ maxLength: 45 }}
+						input={{ maxLength: 45 }}
 						size="small"
 						variant="outlined"
 						id="OTEncabOC"
@@ -274,12 +275,12 @@ export default function OTFilaGral(props) {
 						margin="dense"
 						value={OTEncabOC}
 						onChange={handleChange}
-						// className={styles.textField}
+					// className={styles.textField}
 					/>
 				</Grid>
 				<Grid>
 					<TextField
-						inputProps={{ maxLength: 45 }}
+						input={{ maxLength: 45 }}
 						size="small"
 						variant="outlined"
 						id="OTEncabDetalles"
@@ -290,7 +291,7 @@ export default function OTFilaGral(props) {
 						margin="dense"
 						value={OTEncabDetalles}
 						onChange={handleChange}
-						// className={styles.textField}
+					// className={styles.textField}
 					/>
 				</Grid>
 				<Grid>
@@ -300,7 +301,7 @@ export default function OTFilaGral(props) {
 								key={data.id}
 								id={data.id}
 								size="small"
-								inputProps={{ maxLength: 3 }}
+								input={{ maxLength: 3 }}
 								select
 								label={data.label}
 								value={data.value}

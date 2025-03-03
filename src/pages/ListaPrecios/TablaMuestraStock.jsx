@@ -4,15 +4,8 @@ import { DialogContent, Dialog, DialogTitle } from "@mui/material";
 // Dialogfrom, , Slide
 import {
 	DataGrid,
-	esES,
-	GridToolbarContainer,
-	GridToolbarColumnsButton,
-	GridToolbarFilterButton,
-	GridToolbarExport,
-	GridToolbarDensitySelector,
-	GridFooter,
-} from "@mui/x-data-grid";
 
+} from "@mui/x-data-grid";
 import { stkitemsred } from "./StkItemsRed";
 import BotonEstilo from "../../Styles/Boton.module.css";
 // const Transition = React.forwardRef(function Transition(props, ref) {

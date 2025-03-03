@@ -1,12 +1,12 @@
 import React from "react";
 import {
 	TextField,
-	Grid,
+
 	Radio,
 	RadioGroup,
 	FormControlLabel,
 } from "@mui/material";
-
+import Grid from "@mui/material/Grid2";
 import estiloI from "../../../../Styles/RadioGroup.module.css";
 import estiloII from "../../../../Styles/TextField.module.css";
 
@@ -36,8 +36,8 @@ export default function FilaEnrollables(props) {
 
 	return (
 		<>
-			<Grid container spacing={2} xs={8}>
-				<Grid item xs={4}>
+			<Grid container spacing={2} span={{ xs: 8 }}>
+				<Grid span={{ xs: 4 }}>
 					<RadioGroup
 						className={estiloI.radioGroup1}
 						row
@@ -101,7 +101,7 @@ export default function FilaEnrollables(props) {
 						/>
 					</RadioGroup>
 				</Grid>
-				<Grid item xs={2}>
+				<Grid span={{ xs: 2 }}>
 					<RadioGroup
 						className={estiloI.radioGroup1}
 						row
@@ -148,9 +148,9 @@ export default function FilaEnrollables(props) {
 					</RadioGroup>
 				</Grid>
 
-				<Grid item xs={1}>
+				<Grid span={{ xs: 1 }}>
 					<TextField
-						inputProps={{ maxLength: 3 }}
+						input={{ maxLength: 3 }}
 						size="small"
 						variant="outlined"
 						id="AltoVolado"
@@ -163,9 +163,9 @@ export default function FilaEnrollables(props) {
 						className={estiloII.textfcantidad}
 					/>
 				</Grid>
-				<Grid item xs={1}>
+				<Grid span={{ xs: 1 }}>
 					<TextField
-						inputProps={{ maxLength: 3 }}
+						input={{ maxLength: 3 }}
 						size="small"
 						variant="outlined"
 						id="SobranteMarco"

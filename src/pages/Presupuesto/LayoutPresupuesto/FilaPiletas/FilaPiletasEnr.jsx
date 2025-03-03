@@ -1,11 +1,12 @@
 import React from "react";
 import {
-	Grid,
+
 	Radio,
 	RadioGroup,
 	FormControlLabel,
 	FormHelperText,
 } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 // Context
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
@@ -27,7 +28,7 @@ export default function FilaPiletasEnr(props) {
 
 	return (
 		<>
-			<Grid item xs={2}>
+			<Grid span={{ xs: 2 }}>
 				<RadioGroup
 					className={estiloI.radioGroup1}
 					row
@@ -74,7 +75,7 @@ export default function FilaPiletasEnr(props) {
 				</RadioGroup>
 				<FormHelperText margin="dense">Drenaje</FormHelperText>
 			</Grid>
-			<Grid item xs={2}>
+			<Grid span={{ xs: 2 }}>
 				<RadioGroup
 					className={estiloI.radioGroup1}
 					row

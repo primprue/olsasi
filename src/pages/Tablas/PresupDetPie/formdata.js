@@ -5,5 +5,6 @@ export const formdata = {
   PresupDetPieSelec: '',
   datoserroneos: true,
   tablabase: 'PresupDetPie',
+  titulotabla: 'Leyenda Pie de Presupuesto',
 
 }

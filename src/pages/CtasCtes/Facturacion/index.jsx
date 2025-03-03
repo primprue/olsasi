@@ -8,7 +8,6 @@ import {
 	Dialog,
 	DialogActions,
 	DialogContent,
-	Grid,
 	Paper,
 	Table,
 	TableBody,
@@ -19,6 +18,7 @@ import {
 	TextField,
 	Typography,
 } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { useContext } from "react";
 import CtasCtesContext from "../../../context/CtasCtesContext.jsx";
 import { DataGrid } from "@mui/x-data-grid";
@@ -69,58 +69,58 @@ export default function Facturacion() {
 							{datosclientes[0].ClientesDesc.trim()}
 						</Typography>
 						<Grid container spacing={2}>
-							<Grid item xs={12} sm={6}>
+							<Grid item span={{ xs: 12 }} sm={6}>
 								<Typography variant="body1">
 									<strong>Domicilio:</strong>{" "}
 									{datosclientes[0].ClientesDomicilio.trim()}
 								</Typography>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+							<Grid item span={{ xs: 12 }} sm={6}>
 								<Typography variant="body1">
 									<strong>Localidad:</strong>{" "}
 									{datosclientes[0].ClientesLoc.trim()}
 								</Typography>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+							<Grid item span={{ xs: 12 }} sm={6}>
 								<Typography variant="body1">
 									<strong>Provincia:</strong>{" "}
 									{datosclientes[0].ClientesPcia.trim()}
 								</Typography>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+							<Grid item span={{ xs: 12 }} sm={6}>
 								<Typography variant="body1">
 									<strong>Cod. Postal:</strong>{" "}
 									{datosclientes[0].ClientesCodPos}
 								</Typography>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+							<Grid item span={{ xs: 12 }} sm={6}>
 								<Typography variant="body1">
 									<strong>Teléfono:</strong>{" "}
 									{datosclientes[0].ClientesTel.trim() || "N/A"}
 								</Typography>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+							<Grid item span={{ xs: 12 }} sm={6}>
 								<Typography variant="body1">
 									<strong>Email:</strong>{" "}
 									{datosclientes[0].ClientesMail.trim() || "N/A"}
 								</Typography>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+							<Grid item span={{ xs: 12 }} sm={6}>
 								<Typography variant="body1">
 									<strong>CUIT:</strong> {datosclientes[0].ClientesCUIT.trim()}
 								</Typography>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+							<Grid item span={{ xs: 12 }} sm={6}>
 								<Typography variant="body1">
 									<strong>IVA:</strong> {datosclientes[0].ClientesIVA}
 								</Typography>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+							<Grid item span={{ xs: 12 }} sm={6}>
 								<Typography variant="body1">
 									<strong>Tipo:</strong> {datosclientes[0].ClientesTipo}
 								</Typography>
 							</Grid>
-							<Grid item xs={12} sm={6}>
+							<Grid item span={{ xs: 12 }} sm={6}>
 								<Typography variant="body1">
 									<strong>Fecha:</strong>{" "}
 									{new Date(

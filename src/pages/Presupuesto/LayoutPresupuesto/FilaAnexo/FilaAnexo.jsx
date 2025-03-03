@@ -16,7 +16,8 @@ import PresupPant from "../../../../context/PresupPant";
 import Estilos from "../../../../Styles/Tabla.module.css";
 import EstDial from "../../../../Styles/Dialog.module.css";
 import EstTF from "../../../../Styles/TextField.module.css";
-import { DataGrid, esES, GridToolbarContainer } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarContainer } from "@mui/x-data-grid";
+import { esES } from '@mui/material/locale';
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { blue, green, purple, teal, red } from "@mui/material/colors";
 
@@ -113,7 +114,7 @@ export default function FilaAnexo(props) {
 						key={data.id}
 						id={data.id}
 						size="small"
-						inputProps={{ maxLength: 3 }}
+						input={{ maxLength: 3 }}
 						select
 						label={data.label}
 						value={data.value}
@@ -247,7 +248,7 @@ export default function FilaAnexo(props) {
 							rows={rows}
 							columns={columns}
 							autoHeight={true}
-							localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+							localeText={esES}
 							onProcessRowUpdateError={handleProcessRowUpdateError}
 							processRowUpdate={(params) => handleCellEditCommit(params)}
 							onRowClick={handleRowSelection}

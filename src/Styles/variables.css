@@ -1,0 +1,16 @@
+:thick {
+  --border: #222;
+}
+
+:pad {
+  --padding: #222;
+}
+
+:extra {
+  --padding1: #222;
+}
+
+:color {
+  --color: #222;
+}
+

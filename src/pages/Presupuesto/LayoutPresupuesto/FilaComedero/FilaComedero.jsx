@@ -1,12 +1,13 @@
 import React from "react";
 import {
-	Grid,
+
 	Radio,
 	RadioGroup,
 	FormControlLabel,
 	TextField,
 	FormHelperText,
 } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import estilo from "../../../../Styles/TextFieldSelect.module.css";
 import estiloI from "../../../../Styles/RadioGroup.module.css";
 import estiloII from "../../../../Styles/TextField.module.css";
@@ -49,7 +50,7 @@ export default function FilaComedero(props) {
 	return (
 		<>
 			<Grid container spacing={2}>
-				<Grid item>
+				<Grid >
 					{/* <FormLabel component="legend">Ancho del comedero </FormLabel> */}
 					{anchocom.map((data) => (
 						<TextField
@@ -76,9 +77,9 @@ export default function FilaComedero(props) {
 						</TextField>
 					))}
 				</Grid>
-				<Grid item xs={1}>
+				<Grid span={{ xs: 1 }}>
 					<TextField
-						inputProps={{ maxLength: 3 }}
+						input={{ maxLength: 3 }}
 						size="small"
 						variant="outlined"
 						id="PresupOjalesC"
@@ -92,7 +93,7 @@ export default function FilaComedero(props) {
 						className={estiloII.textfcantidad}
 					/>
 				</Grid>
-				<Grid item ms={1}>
+				<Grid ms={1}>
 					<RadioGroup
 						className={estiloI.radioGroup1}
 						row

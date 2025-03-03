@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import {
-	Grid,
+
 	Radio,
 	RadioGroup,
 	FormControlLabel,
 	TextField,
 	Checkbox,
 } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import styles from "../styles.module.css";
 import { stkrubroleelat } from "../../../Tablas/StkRubros/StkRubroLeeLAT";
 // Context
@@ -57,12 +58,12 @@ export default function FilaLateral() {
 
 	return (
 		<>
-			{/* <Grid container spacing={2} xs={12}>*/}
+			{/* <Grid container spacing={2} span={{ xs: 12 }}>*/}
 			<Grid container spacing={2}>
-				<Grid item xs={1}>
-					{/* <Grid item xs={1}> */}
+				<Grid span={{ xs: 1 }}>
+					{/* <Grid  span={{ xs: 1 }}> */}
 					<TextField
-						inputProps={{ maxLength: 1 }}
+						input={{ maxLength: 1 }}
 						size="small"
 						variant="outlined"
 						id="CantHeb"
@@ -74,7 +75,7 @@ export default function FilaLateral() {
 						className={estiloII.textfcantpadchico}
 					/>
 				</Grid>
-				<Grid item xs={3}>
+				<Grid span={{ xs: 3 }}>
 					{state.CantHeb !== 0 && (
 						<TextField
 							id="tipoheb"
@@ -107,9 +108,9 @@ export default function FilaLateral() {
 						</TextField>
 					)}
 				</Grid>
-				<Grid item xs={1}>
+				<Grid span={{ xs: 1 }}>
 					<TextField
-						inputProps={{ maxLength: 1 }}
+						input={{ maxLength: 1 }}
 						size="small"
 						variant="outlined"
 						id="CantCarro"
@@ -121,7 +122,7 @@ export default function FilaLateral() {
 						className={estiloII.textfcantpadchico}
 					/>
 				</Grid>
-				<Grid item xs={3}>
+				<Grid span={{ xs: 3 }}>
 					{state.CantCarro !== 0 && (
 						<TextField
 							id="tipocarro"
@@ -154,9 +155,9 @@ export default function FilaLateral() {
 						</TextField>
 					)}
 				</Grid>
-				<Grid item xs={1}>
+				<Grid span={{ xs: 1 }}>
 					<TextField
-						inputProps={{ maxLength: 1 }}
+						input={{ maxLength: 1 }}
 						size="small"
 						variant="outlined"
 						id="CantPlaca"
@@ -168,7 +169,7 @@ export default function FilaLateral() {
 						className={estiloII.textfcantpadchico}
 					/>
 				</Grid>
-				<Grid item xs={3}>
+				<Grid span={{ xs: 3 }}>
 					{state.CantCarro !== 0 && (
 						<TextField
 							id="tipoplaca"
@@ -201,7 +202,7 @@ export default function FilaLateral() {
 						</TextField>
 					)}
 				</Grid>
-				{/* <Grid item spacing={2} xs={4}>*/}
+				{/* <Grid  spacing={2} span={{ xs: 4 }}>*/}
 				<Grid container padding={4}>
 					<FormControlLabel
 						className={estiloIII.formControlLabelCheck}

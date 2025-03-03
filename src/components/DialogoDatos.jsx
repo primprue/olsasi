@@ -1,7 +1,8 @@
 import { useState, useRef } from "react";
 import { Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { ValidatedTextField } from "../hooks/useValidTextField";
-import { Grid } from "@mui/material";
+// import { Grid } from "@mui/material";
+import Grid from '@mui/material/Grid2';
 import MuestraMensaje from "./lib/MuestraMensaje";
 import { useContext } from "react";
 import { onRowAdd } from "./onRowAdd";

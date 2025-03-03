@@ -1,11 +1,12 @@
 import React from "react";
 import {
-	Grid,
+
 	Radio,
 	RadioGroup,
 	FormControlLabel,
 	TextField,
 } from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import styles from "../styles.module.css";
 // Context
 import estiloI from "../../../../Styles/RadioGroup.module.css";
@@ -41,10 +42,10 @@ export default function FilaModMed(props) {
 	const classes = styles;
 	return (
 		<>
-			<Grid container spacing={2} xs={12}>
-				<Grid item xs={1}>
+			<Grid container spacing={2} span={{ xs: 12 }}>
+				<Grid span={{ xs: 1 }}>
 					<TextField
-						inputProps={{ maxLength: 3 }}
+						input={{ maxLength: 3 }}
 						size="small"
 						variant="outlined"
 						id="PresupLargoN"
@@ -58,9 +59,9 @@ export default function FilaModMed(props) {
 					/>
 				</Grid>
 
-				<Grid item xs={1}>
+				<Grid span={{ xs: 1 }}>
 					<TextField
-						inputProps={{ maxLength: 3 }}
+						input={{ maxLength: 3 }}
 						size="small"
 						variant="outlined"
 						id="PresupAnchoN"
@@ -74,7 +75,7 @@ export default function FilaModMed(props) {
 					/>
 				</Grid>
 
-				<Grid item xs={2}>
+				<Grid span={{ xs: 2 }}>
 					<RadioGroup
 						className={estiloI.radioGroup1}
 						row
@@ -104,7 +105,7 @@ export default function FilaModMed(props) {
 						/>
 					</RadioGroup>
 				</Grid>
-				<Grid item xs={2}>
+				<Grid span={{ xs: 2 }}>
 					<RadioGroup
 						className={estiloI.radioGroup1}
 						row
@@ -136,7 +137,7 @@ export default function FilaModMed(props) {
 						/>
 					</RadioGroup>
 				</Grid>
-				<Grid item xs={2}>
+				<Grid span={{ xs: 2 }}>
 					<RadioGroup
 						className={estiloI.radioGroup1}
 						row

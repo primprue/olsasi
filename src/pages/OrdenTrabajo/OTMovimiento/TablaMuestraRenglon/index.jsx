@@ -6,13 +6,12 @@ import {
 	Dialog,
 	DialogActions,
 	DialogContent,
-	DialogTitle,
 	Slide,
 } from "@mui/material";
-import { DataGrid, GridToolbarContainer } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import { OTRenglonLeer } from "./OTRenglonLeer.jsx";
 import { llenarcolumns } from "./columns.jsx";
-import { useContext } from "react";
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
 	return <Slide direction="up" ref={ref} {...props} />;

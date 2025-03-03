@@ -48,7 +48,7 @@
 }
 
 .textfcantpadchico {
-	padding: 2px;
+	padding: 1px;
 	background-color: rgba(190, 200, 248, 0.178);
 	border-right: 2px solid rgb(0, 4, 255);
 	/* Borde solo a la derecha */

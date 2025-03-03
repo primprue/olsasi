@@ -1,66 +1,36 @@
-import React from "react";
 import {
-	Grid,
-	Radio,
-	RadioGroup,
-	FormControlLabel,
 	FormHelperText,
 } from "@mui/material";
 // Context
-import { useContext } from "react";
+
+import { use, useMemo } from "react";
 import PresupPant from "../../../../context/PresupPant";
-import estilo from "../../../../Styles/RadioGroup.module.css";
+import CustomSwitch from "../../../../components/comppropios/CustomSwitch";
+import React from "react";
 
 export default function TipoCliente() {
-	const [selectedValue, setSelectedValue] = React.useState("mn");
-	const { state, setState } = useContext(PresupPant);
 
-	const handleChange = (event) => {
-		setSelectedValue(event.target.value);
-		setState({ ...state, PresupMnMy: event.target.value });
+	const { state, setState } = use(PresupPant);
+
+	// Memorizar la opción seleccionada basada en state.PresupProducto
+	const selectedOption = useMemo(() => state.PresupMnMy || "mn", [state.PresupMnMy]);
+
+	// Función para actualizar la opción seleccionada
+	const handleOptionChange = (newOption) => {
+		setState({ ...state, PresupMnMy: newOption });
 	};
+
 	return (
-		<Grid item>
-			<RadioGroup
-				className={estilo.radioGroup}
-				row
-				size="small"
-				name="tipoCliente"
-				value={selectedValue}
-				onChange={handleChange}
-				margin="dense"
-			>
-				{/* <Grid item xs={1}> */}
-				<FormControlLabel
-					value="mn"
-					// control={<Radio />}
-					label="Min."
-					labelPlacement="top"
-					margin="dense"
-					control={
-						<Radio
-							classes={{ root: estilo.radio, checked: estilo.radioChecked }}
-						/>
-					}
-					className={estilo.formControlLabel}
-				/>
-				{/* </Grid>
-				<Grid item xs={3}> */}
-				<FormControlLabel
-					value="my"
-					control={
-						<Radio
-							classes={{ root: estilo.radio, checked: estilo.radioChecked }}
-						/>
-					}
-					label="May."
-					labelPlacement="top"
-					margin="dense"
-					className={estilo.formControlLabel}
-				/>
-				{/* </Grid> */}
-			</RadioGroup>
-			<FormHelperText>Cliente Mayorista-Minorista</FormHelperText>
-		</Grid>
+		<div>
+			<CustomSwitch
+				value={selectedOption}
+				onChange={handleOptionChange}
+				opcion1={'mn'}
+				opcion2={'my'}
+				titulo1={'Min.'}
+				titulo2={'May.'}
+				tithelpertext={'Cliente : '} />
+		</div>
 	);
-}
+};
+

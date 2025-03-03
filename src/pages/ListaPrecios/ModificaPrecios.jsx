@@ -3,7 +3,8 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import EstiloBoton from "../../Styles/Boton.module.css";
-import Grid from "@mui/material/Grid";
+
+import Grid from "@mui/material/Grid2";
 import DialogTitle from "@mui/material/DialogTitle";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -70,12 +71,12 @@ export default function ModificaPrecios() {
 		<div>
 			<form>
 				{/* <Grid container>
-					<Grid item xs={4} sm={4} lg={4}></Grid>
+					<Grid item span={{ xs: 4 }} sm={4} lg={4}></Grid>
 					<DialogTitle id="form-dialog-title">Modificar Precio</DialogTitle>
-					<Grid item xs={4} sm={4} lg={4}></Grid>
+					<Grid item span={{ xs: 4 }} sm={4} lg={4}></Grid>
 				</Grid> */}
 				<Grid container>
-					<Grid item xs={3} sm={3} lg={3}>
+					<Grid item span={{ xs: 3 }} sm={3} lg={3}>
 						<FormControl component="fieldset">
 							<RadioGroup
 								aria-label="gender"
@@ -104,7 +105,7 @@ export default function ModificaPrecios() {
 							</RadioGroup>
 						</FormControl>
 					</Grid>
-					<Grid item xs={3} sm={3} lg={3}>
+					<Grid item span={{ xs: 3 }} sm={3} lg={3}>
 						{state.toggle.proveedor && (
 							<TextField
 								id="idProveedores"
@@ -154,7 +155,7 @@ export default function ModificaPrecios() {
 							</TextField>
 						)}
 					</Grid>
-					<Grid item xs={3} sm={3} lg={3}>
+					<Grid item span={{ xs: 3 }} sm={3} lg={3}>
 						<FormControl component="fieldset">
 							<RadioGroup
 								aria-label="ip"
@@ -177,7 +178,7 @@ export default function ModificaPrecios() {
 							</RadioGroup>
 						</FormControl>
 					</Grid>
-					<Grid item xs={1} sm={1} lg={1}>
+					<Grid item span={{ xs: 1 }} sm={1} lg={1}>
 						{state.toggle.importe && (
 							<TextField
 								margin="dense"
@@ -203,7 +204,7 @@ export default function ModificaPrecios() {
 							/>
 						)}
 					</Grid>
-					<Grid item xs={1} sm={1} lg={1}></Grid>
+					<Grid item span={{ xs: 1 }} sm={1} lg={1}></Grid>
 
 					<Button
 						className={EstiloBoton.botonabreot}

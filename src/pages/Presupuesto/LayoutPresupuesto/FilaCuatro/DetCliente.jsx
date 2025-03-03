@@ -44,7 +44,7 @@ export default function DetCliente() {
 		<>
 			<h3>Cliente Presupuesto</h3>
 			<TextField
-				inputProps={{ maxLength: 45 }}
+				input={{ maxLength: 45 }}
 				size="small"
 				variant="outlined"
 				id="nomCliente"
@@ -63,7 +63,7 @@ export default function DetCliente() {
 					key={data.id}
 					id={data.id}
 					size="small"
-					inputProps={{ maxLength: 20 }}
+					input={{ maxLength: 20 }}
 					select
 					label={data.label}
 					value={data.value}

@@ -5,5 +5,5 @@ export const formdata = {
   StkUnMedDesc: '',
   datoserroneos: true,
   tablabase: 'UniMedidas',
-
+  titulotabla: 'Unidad de Medida',
 }

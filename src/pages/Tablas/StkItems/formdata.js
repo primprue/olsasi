@@ -13,5 +13,6 @@ export const formdata = {
   StkItemsMax: 0.00,
   datoserroneos: true,
   tablabase: 'StkItems',
+  titulotabla: 'Items de Stock',
 
 }
