@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { FormControl, FormLabel, ToggleButton, ToggleButtonGroup } from "@mui/material";
 
 const CustomSwitch = ({ value, onChange, opcion1, opcion2, opcion3, titulo1, titulo2, titulo3, tithelpertext }) => {
-    const [selectedText, setSelectedText] = useState("");
+    const [selectedText, setSelectedText] = useState(titulo1);
 
     const handleChange = (event, newValue) => {
         if (newValue !== null) {
@@ -11,6 +11,9 @@ const CustomSwitch = ({ value, onChange, opcion1, opcion2, opcion3, titulo1, tit
             setSelectedText(event.target.textContent)
         }
     };
+    var colorbackeleg = "#a8aeec";
+    var colorbacknoeleg = "#fc2205"
+    var colorbacknoeleg2 = "#d8e1e9"
 
     return (
         <FormControl fullWidth margin="dense">
@@ -25,10 +28,10 @@ const CustomSwitch = ({ value, onChange, opcion1, opcion2, opcion3, titulo1, tit
                     value={opcion1}
                     sx={{
                         fontWeight: "bold",
-                        backgroundColor: value === opcion1 ? "#14415c" : "#1e8bd313",
-                        color: value === opcion1 ? "#fff" : "#14415c",
+                        backgroundColor: value === opcion1 ? colorbackeleg : colorbacknoeleg2,
+                        color: value === opcion1 ? "#fff" : colorbackeleg,
                         "&:hover": {
-                            backgroundColor: value === opcion1 ? "#0f3246" : "#1e8bd313",
+                            backgroundColor: value === opcion1 ? colorbacknoeleg : colorbacknoeleg2,
                         },
                     }}
 
@@ -39,10 +42,10 @@ const CustomSwitch = ({ value, onChange, opcion1, opcion2, opcion3, titulo1, tit
                     value={opcion2}
                     sx={{
                         fontWeight: "bold",
-                        backgroundColor: value === opcion2 ? "#14415c" : "#1e8bd313",
-                        color: value === opcion2 ? "#fff" : "#14415c",
+                        backgroundColor: value === opcion2 ? colorbackeleg : colorbacknoeleg2,
+                        color: value === opcion2 ? "#fff" : colorbackeleg,
                         "&:hover": {
-                            backgroundColor: value === opcion2 ? "#0f3246" : "#1e8bd313",
+                            backgroundColor: value === opcion2 ? colorbacknoeleg : colorbacknoeleg2,
                         },
                     }}
 
@@ -54,10 +57,10 @@ const CustomSwitch = ({ value, onChange, opcion1, opcion2, opcion3, titulo1, tit
                         value={opcion3}
                         sx={{
                             fontWeight: "bold",
-                            backgroundColor: value === opcion3 ? "#14415c" : "#1e8bd313",
-                            color: value === opcion3 ? "#fff" : "#14415c",
+                            backgroundColor: value === opcion3 ? colorbackeleg : colorbacknoeleg2,
+                            color: value === opcion3 ? "#fff" : colorbackeleg,
                             "&:hover": {
-                                backgroundColor: value === opcion3 ? "#0f3246" : "#1e8bd313",
+                                backgroundColor: value === opcion3 ? colorbacknoeleg : colorbacknoeleg2,
                             },
                         }}
                     >

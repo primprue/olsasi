@@ -1,173 +1,94 @@
-import React from "react";
-import {
+import React, { useMemo } from "react";
 
-	Radio,
-	RadioGroup,
-	FormControlLabel,
-	TextField,
-} from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import styles from "../styles.module.css";
 // Context
-import estiloI from "../../../../Styles/RadioGroup.module.css";
-import estiloII from "../../../../Styles/TextField.module.css";
-import { useContext } from "react";
+import { use } from "react";
 import PresupPant from "../../../../context/PresupPant";
+import CustomSwitch from "../../../../components/comppropios/CustomSwitch";
+import TextFieldComun from "../../../../components/comppropios/TextFieldComun";
 
-export default function FilaModMed(props) {
-	const [selectedValue, setSelectedValue] = React.useState("cs");
-	const { state, setState } = useContext(PresupPant);
-	const [ojalbronce, setOjalBronce] = React.useState("hz");
-	const [lonanuesafu, setLonaNuesAfu] = React.useState("LN");
+export default function FilaModMed() {
+	const { state, setState } = use(PresupPant);
 
-	const handleChange1 = (event) => {
-		const id = event.target.id;
-		setState({ ...state, [id]: event.target.value });
+
+	// Memorizar la opción seleccionada basada en state.PresupProducto
+	const selectedOjal = useMemo(() => state.PresupOB || "hz", [state.PresupOB]);
+
+	// Función para actualizar la opción seleccionada
+	const handleOjal = (newOption) => {
+		setState({ ...state, PresupOB: newOption });
 	};
 
-	const handleChange = (event) => {
-		setSelectedValue(event.target.value);
-		setState({ ...state, PresupCsSs: event.target.value });
+	const selectDobladillo = useMemo(() => state.PresupCsSs || "cs", [state.PresupCsSs]);
+
+	// Función para actualizar la opción seleccionada
+	const handleDobladillo = (newOption) => {
+		setState({ ...state, PresupCsSs: newOption });
 	};
 
-	const handleChange2 = (event) => {
-		setOjalBronce(event.target.value);
-		setState({ ...state, PresupOB: event.target.value });
+
+	const selectLonaNuesAfu = useMemo(() => state.lonanuesafu || "LN", [state.lonanuesafu]);
+
+	// Función para actualizar la opción seleccionada
+	const handleLonaNuesAfu = (newOption) => {
+		setState({ ...state, lonanuesafu: newOption });
 	};
 
-	const handleChange3 = (event) => {
-		setLonaNuesAfu(event.target.value);
-		setState({ ...state, PreuspLNLF: event.target.value });
+
+	const handleChange = (value, id) => {
+		setState({ ...state, [id]: value });
+
 	};
-	const classes = styles;
+
+
 	return (
 		<>
 			<Grid container spacing={2} span={{ xs: 12 }}>
-				<Grid span={{ xs: 1 }}>
-					<TextField
-						input={{ maxLength: 3 }}
-						size="small"
-						variant="outlined"
+				<Grid span={{ xs: 2 }}>
+					<TextFieldComun
 						id="PresupLargoN"
 						type="number"
 						label="Largo Nuevo"
-						fullWidth
-						margin="dense"
 						value={state.PresupLargoN}
-						onChange={handleChange1}
-						className={estiloII.textfcantidad}
+						onChange={handleChange}
+						width="120px"
 					/>
+
 				</Grid>
 
-				<Grid span={{ xs: 1 }}>
-					<TextField
-						input={{ maxLength: 3 }}
-						size="small"
-						variant="outlined"
+				<Grid span={{ xs: 2 }}>
+					<TextFieldComun
 						id="PresupAnchoN"
 						type="number"
 						label="Ancho Nuevo"
-						fullWidth
-						margin="dense"
 						value={state.PresupAnchoN}
-						onChange={handleChange1}
-						className={estiloII.textfcantidad}
+						onChange={handleChange}
+						width="100px"
 					/>
+
 				</Grid>
 
+
+
 				<Grid span={{ xs: 2 }}>
-					<RadioGroup
-						className={estiloI.radioGroup1}
-						row
-						size="small"
-						name="tipoDobladillo"
-						value={selectedValue}
-						onChange={handleChange}
-						margin="dense"
-					>
-						<FormControlLabel
-							size="small"
-							value="cs"
-							label="C/S"
-							control={<Radio />}
-							labelPlacement="top"
-							disabled={props.disable}
-							margin="dense"
-						/>
-						<FormControlLabel
-							size="small"
-							value="ss"
-							control={<Radio />}
-							label="S/S"
-							labelPlacement="top"
-							disabled={props.disable}
-							margin="dense"
-						/>
-					</RadioGroup>
+					<CustomSwitch value={selectDobladillo} onChange={handleDobladillo} opcion1={'cs'} opcion2={'ss'}
+						titulo1={'C/S'} titulo2={'S/S'}
+						tithelpertext={'Dobladillo :'} />
+
 				</Grid>
 				<Grid span={{ xs: 2 }}>
-					<RadioGroup
-						className={estiloI.radioGroup1}
-						row
-						size="small"
-						name="tipoOjal"
-						value={ojalbronce}
-						onChange={handleChange2}
-						margin="dense"
-					>
-						<FormControlLabel
-							size="small"
-							value="hz"
-							className={estiloI.formControlLabel1}
-							label="HZ"
-							control={<Radio />}
-							labelPlacement="top"
-							disabled={props.disable}
-							margin="dense"
-						/>
-						<FormControlLabel
-							className={estiloI.formControlLabel1}
-							size="small"
-							value="br"
-							control={<Radio />}
-							label="BR"
-							labelPlacement="top"
-							disabled={props.disable}
-							margin="dense"
-						/>
-					</RadioGroup>
+					<CustomSwitch value={selectedOjal} onChange={handleOjal} opcion1={'hz'} opcion2={'bz'}
+						titulo1={'HZ'} titulo2={'BR'}
+						tithelpertext={'Ojal :'} />
 				</Grid>
 				<Grid span={{ xs: 2 }}>
-					<RadioGroup
-						className={estiloI.radioGroup1}
-						row
-						size="small"
-						name="lonadeAca"
-						value={lonanuesafu}
-						onChange={handleChange3}
-						margin="dense"
-					>
-						<FormControlLabel
-							size="small"
-							value="LN"
-							control={<Radio />}
-							label="LN"
-							labelPlacement="top"
-							disabled={props.disable}
-							margin="dense"
-						/>
-						<FormControlLabel
-							size="small"
-							value="LA"
-							control={<Radio />}
-							label="LA"
-							labelPlacement="top"
-							disabled={props.disable}
-							margin="dense"
-						/>
-					</RadioGroup>
+					<CustomSwitch value={selectLonaNuesAfu} onChange={handleLonaNuesAfu} opcion1={'LN'} opcion2={'LA'}
+						titulo1={'LN'} titulo2={'LA'}
+						tithelpertext={'Nues/Af. :'} />
+
 				</Grid>
 			</Grid>
 		</>
 	);
 }
+
