@@ -3,7 +3,7 @@ const Agregar = async (
 	indicetp1,
 	rubrosn,
 	PresupCantidadM,
-	otramoneda,
+	// otramoneda,
 	sDescripPresup,
 	srenglonanexo,
 	dcalculo
@@ -35,19 +35,14 @@ const Agregar = async (
 						StkRubroDesc + " " + sDescripPresup + " " + dcalculo[0].detaller;
 				}
 				datoimpunitario = datosrenglon1[0][0].ImpUnitario;
-				if (otramoneda) {
-					ImpUnitario = Number(
-						Math.ceil(datoimpunitario / dcalculo[0].cotdivisa)
-					).toFixed(2);
-					ImpItem = Number(
-						Math.ceil(datoimpunitario / dcalculo[0].cotdivisa) * PresupCantidadM
-					).toFixed(2);
-				} else {
-					ImpUnitario = Number(Math.ceil(datoimpunitario)).toFixed(2);
-					ImpItem = Number(
-						Math.ceil(datoimpunitario * PresupCantidadM)
-					).toFixed(2);
-				}
+
+				ImpUnitario = Number(
+					Math.ceil(datoimpunitario / dcalculo[0].cotdivisa)
+				).toFixed(2);
+				ImpItem = Number(
+					Math.ceil(datoimpunitario / dcalculo[0].cotdivisa) * PresupCantidadM
+				).toFixed(2);
+
 
 				PresupLargo = datosrenglon1[0][0].Largo;
 				PresupAncho = datosrenglon1[0][0].Ancho;
@@ -56,11 +51,11 @@ const Agregar = async (
 				// cuando pregunta srenglonanexo.length !== 0, y tiene anexos viene indefinido, por lo tanto ingresa por ser undefined que es distinto de 0
 				if (srenglonanexo.length !== 0) {
 
-					if (otramoneda) {
-						importeanexo = srenglonanexo.ImpItemAnexo / dcalculo[0].cotdivisa;
-					} else {
-						importeanexo = srenglonanexo.ImpItemAnexo;
-					}
+					// if (otramoneda) {
+					importeanexo = srenglonanexo.ImpItemAnexo / dcalculo[0].cotdivisa;
+					// } else {
+					// 	importeanexo = srenglonanexo.ImpItemAnexo;
+					// }
 					ImpUnitario = Number(Math.ceil(ImpUnitario * 1 + importeanexo)).toFixed(2);
 					ImpItem = Number(Math.ceil(ImpItem * 1 + importeanexo * dcalculo[0].cantidad)).toFixed(2);
 					StkRubroDesc = StkRubroDesc + srenglonanexo.StkRubroDesc;
@@ -87,14 +82,14 @@ const Agregar = async (
 			//si no es algo que se necesita rubro
 			else {
 				StkRubroDesc = detalle;
-				if (otramoneda) {
-					ImpUnitario = datosrenglon1[0] / dcalculo[0].cotdivisa;
-					ImpItem =
-						(datosrenglon1[0] / dcalculo[0].cotdivisa) * PresupCantidadM;
-				} else {
-					ImpUnitario = datosrenglon1[0];
-					ImpItem = datosrenglon1[0] * PresupCantidadM;
-				}
+				// if (otramoneda) {
+				ImpUnitario = datosrenglon1[0] / dcalculo[0].cotdivisa;
+				ImpItem =
+					(datosrenglon1[0] / dcalculo[0].cotdivisa) * PresupCantidadM;
+				// } else {
+				// 	ImpUnitario = datosrenglon1[0];
+				// 	ImpItem = datosrenglon1[0] * PresupCantidadM;
+				// }
 			}
 
 			if (dcalculo[0].tipopresup === "MODIFICA MEDIDAS") {

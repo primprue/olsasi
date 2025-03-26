@@ -45,7 +45,7 @@ export default function FilaUnoIzq() {
 
 		return [{
 			id: "TipoConfeccion",
-			label: "Confección",
+			label: 'Confección',
 			value: state.NroConfTipo,
 			options: tipopresupleidos.map((option) => ({
 				value: option.NroConfTipo,
@@ -58,6 +58,7 @@ export default function FilaUnoIzq() {
 		<Grid>
 			{textdata.length > 0 ? (
 				textdata.map(({ id, label, value, options }) => (
+
 					<TextFieldSelect
 						key={id}
 						id={id}

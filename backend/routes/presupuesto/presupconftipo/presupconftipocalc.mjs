@@ -56,7 +56,7 @@ router.get("/", function (req, res, next) {
         }
 
         var q2 = ['SELECT PresupConfTipoImprime as PresupConfTipoImprime FROM BasePresup.PresupConfTipo where PresupConfTipoDesc = "' + tipo + '"'].join("");
-        console.log('q2 en presupconftipocalc.mjs', q2)
+
         conexion.query(q2, function (err, result1) {
 
           if (err) {

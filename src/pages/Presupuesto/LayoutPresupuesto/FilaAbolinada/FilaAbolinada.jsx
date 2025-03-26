@@ -1,8 +1,6 @@
 import React, { useMemo } from "react";
 
-import {
-	FormHelperText,
-} from "@mui/material";
+
 import Grid from "@mui/material/Grid2";
 // Context
 import { use } from "react";
@@ -26,8 +24,8 @@ export default function FilaAbolinada(props) {
 
 	return (
 		<>
-			<Grid container spacing={2}>
-				<Grid span={{ xs: 2 }}>
+			<Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ marginTop: "3px" }} >
+				<Grid span={{ xs: 1 }}>
 					<TextFieldComun
 						id="PresupOjalesC"
 						type="number"
@@ -38,7 +36,7 @@ export default function FilaAbolinada(props) {
 					/>
 
 				</Grid>
-				<Grid span={{ xs: 2 }}>
+				<Grid span={{ xs: 1 }}>
 					<CustomSwitch value={selectedOption} onChange={handleOptionChange} opcion1={'hz'} opcion2={'bz'}
 						titulo1={'HZ'} titulo2={'BR'}
 						tithelpertext={'Ojal :'} />

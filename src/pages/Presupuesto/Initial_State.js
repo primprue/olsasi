@@ -35,24 +35,24 @@ export const initial_state = {
   CantBrazos: 0,
   LargoBrazo: 0,
   VolDS: 'S',
-  FajaBrazo: [
-    {
-      value: 20,
-      label: '20 x 20'
-    },
-    {
-      value: 25,
-      label: '25 x 25'
-    },
-    {
-      value: 30,
-      label: '30 x 30'
-    },
-    {
-      value: 40,
-      label: '30 x 40'
-    }
-  ],
+  // FajaBrazo: [
+  //   {
+  //     value: 20,
+  //     label: '20 x 20'
+  //   },
+  //   {
+  //     value: 25,
+  //     label: '25 x 25'
+  //   },
+  //   {
+  //     value: 30,
+  //     label: '30 x 30'
+  //   },
+  //   {
+  //     value: 40,
+  //     label: '30 x 40'
+  //   }
+  // ],
   //FilaTanques
   TipoMedidaEleg: 'CC',
   // ParedSN: 'SP',
@@ -97,25 +97,25 @@ export const initial_state = {
     }
   ],
 
-  AnchoComederoEleg: '0.00',
-  AnchoComedero: [
-    {
-      value: '0.42',
-      label: 'Ancho 0.42'
-    },
-    {
-      value: '0.68',
-      label: 'Ancho 0.68'
-    },
-    {
-      value: '0.90',
-      label: 'Ancho 0.90'
-    },
-    {
-      value: '1.2',
-      label: 'Ancho 1.2'
-    }
-  ],
+  AnchoComederoEleg: '0.42',
+  // AnchoComedero: [
+  //   {
+  //     value: '0.42',
+  //     label: 'Ancho 0.42'
+  //   },
+  //   {
+  //     value: '0.68',
+  //     label: 'Ancho 0.68'
+  //   },
+  //   {
+  //     value: '0.90',
+  //     label: 'Ancho 0.90'
+  //   },
+  //   {
+  //     value: '1.2',
+  //     label: 'Ancho 1.2'
+  //   }
+  // ],
   //FilaDos
   AnexoMedida: 0,
   PresupCantidad: 1.0,

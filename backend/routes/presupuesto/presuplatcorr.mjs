@@ -19,6 +19,8 @@ router.get('/', (req, res, next) => {
   var datosrec, totalreg, cantHeb, detallep, ivasn, tipoheb, cantCarro, cantPlaca
   var tipoplaca, tipocarro, colocacion, largocalc, coefMOT, valorMOTmin, MOTarmado, detalle
   var valorheb, valorplaheb, valorind, valcarro, valorplaca, valortela
+
+
   q = ['select * from BasePresup.PresupParam'].join(' ')
   conexion.query(q,
     function (err, result) {
@@ -27,6 +29,7 @@ router.get('/', (req, res, next) => {
       }
       var costooriginal = 0;
       datosrec = JSON.parse(req.query.datoscalculo)
+      console.log('datosrec  ', datosrec)
       totalreg = datosrec.length
       datosrec.map(datos => {
         cantidad = datos.cantidad;
@@ -43,7 +46,6 @@ router.get('/', (req, res, next) => {
         largo = (datos.largo * 1)
         largocalc = (datos.largo * 1) + 0.40
         colocacion = datos.colocacion;
-
 
         if (datos.minmay == 'my') {
           coeficiente = result[0].coeficientemay

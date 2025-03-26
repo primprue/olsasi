@@ -25,7 +25,6 @@ router.post('/', function (req, res, next) {
         StkMonedasSigno: req.body.StkMonedasSigno
     }
 
-    console.log('registro en monedas  ', registro)
 
     conexion.query('INSERT INTO StkMonedas SET ?', registro,
         function (err, result) {

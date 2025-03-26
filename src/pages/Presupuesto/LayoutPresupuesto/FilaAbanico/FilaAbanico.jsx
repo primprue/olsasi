@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
 	Radio,
 	RadioGroup,
@@ -12,181 +12,152 @@ import estiloI from "../../../../Styles/RadioGroup.module.css";
 import estiloII from "../../../../Styles/TextField.module.css";
 
 // Context
-import { useContext } from "react";
+import { use } from "react";
 import PresupPant from "../../../../context/PresupPant";
+import CustomSwitch from "../../../../components/comppropios/CustomSwitch";
+import TextFieldComun from "../../../../components/comppropios/TextFieldComun";
+import TextFieldSelect from "../../../../components/comppropios/TextFieldSelect";
+import { PresupParCalcLee } from "../PresupParCalc/PresupParCalcLee";
 
-export default function FilaAbanico(props) {
-	const { state, setState } = useContext(PresupPant);
-	const handleChange = (event) => {
-		const id = event.target.id;
-		setState({ ...state, [id]: event.target.value });
-	};
+export default function FilaAbanico() {
+	const { state, setState } = use(PresupPant);
 
-	const handleChangeLargo = (event) => {
-		const id = event.target.id;
+	const paracalular = useRef(false);
+	const busparacalular = useRef();
 
-		var valor = event.target.value;
+	async function leeparacalcular() {
+		const result = await PresupParCalcLee('FajaBrazo');
+		busparacalular.current = result
+	}
+	useEffect(() => {
+		leeparacalcular()
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-		if (valor < 1.26) {
-			setState({ ...state, [id]: event.target.value });
-		} else {
-			swal({
-				title: "Error",
-				text: "No puede ser mayor a 1.26",
-				icon: "error",
-				button: "OK",
-				dangerMode: true,
-			});
+	let fajadebrazo = [];
+
+
+	if (busparacalular.current !== undefined) {
+		if (busparacalular.current.length > 0) {
+
+			paracalular.current = true;
+			fajadebrazo = [{
+				id: "FajaBrazoEleg",
+				label: "Faja para Brazo :",
+				value: busparacalular.current[0].value,
+				options: busparacalular.current.map((option) => ({
+					value: option.value,
+					label: option.label
+				}))
+			}];
+
 		}
+	}
+
+
+
+	const [selectedValues, setSelectedValues] = useState({});
+	const handleSelectChange = (value, id) => {
+		setState({ ...state, [id]: value });
+		setSelectedValues((prev) => ({
+			...prev,
+			[id]: value,
+		}));
+
 	};
 
-	const voladods = (event) => {
-		setState({ ...state, VolDS: event.target.value });
+	const selectedOption = useMemo(() => state.VolDS || "D", [state.VolDS]);
+	// Función para actualizar la opción seleccionada
+	const handleOptionChange = (newOption) => {
+		setState({ ...state, VolDS: newOption });
 	};
 
-	const fajadebrazo = [
-		{
-			id: "FajaBrazoEleg",
-			label: "Faja para Brazo :",
-			value: state.value,
-			mapeo: (
-				<>
-					<option></option>
-					{state.FajaBrazo.map((option) => (
-						<option key={option.value} value={option.value}>
-							{option.label}
-						</option>
-					))}
-				</>
-			),
-		},
-	];
+
+
+
+	const handleChange = (value, id) => {
+		if (id === "LargoBrazo") {
+			if (value < 1.26) {
+				setState({ ...state, [id]: value });
+			} else {
+				swal({
+					title: "Error",
+					text: "No puede ser mayor a 1.26",
+					icon: "error",
+					button: "OK",
+					dangerMode: true,
+				});
+				return;
+			}
+
+		}
+		setState({ ...state, [id]: value });
+	};
+
 
 	return (
 		<>
-			<Grid container spacing={2}>
-				<Grid span={{ xs: 1 }}>
-					<TextField
-						input={{ maxLength: 3 }}
-						size="small"
-						variant="outlined"
+			<Grid container spacing={2} alignItems="center" justifyContent="center" sx={{ marginTop: "3px" }} >
+				<Grid span={{ xs: 2 }}>
+					<TextFieldComun
 						id="CantBrazos"
 						type="number"
-						margin="dense"
-						label="Cantidad Brazos : "
-						fullWidth
+						label="Cant.Brazos : "
 						value={state.CantBrazos}
 						onChange={handleChange}
-						className={estiloII.textfcantidad}
+						width="150px"
 					/>
+
 				</Grid>
-				<Grid span={{ xs: 1 }}>
-					<TextField
-						input={{ maxLength: 3 }}
-						//no más de 1.25
-						size="small"
-						variant="outlined"
+				<Grid span={{ xs: 2 }}>
+					<TextFieldComun
 						id="LargoBrazo"
 						type="number"
-						margin="dense"
 						label="Largo Brazos : "
-						fullWidth
 						value={state.LargoBrazo}
-						onChange={handleChangeLargo}
-						className={estiloII.textfcantidad}
-						helperText="No mayor a 1.25"
+						onChange={handleChange}
+						tooltip={"No mayor a 1.25"}
+						width="150px"
 					/>
+
 				</Grid>
-				<Grid span={{ xs: 1 }}>
-					{fajadebrazo.map((data) => (
-						<TextField
-							id={data.id}
-							key={data.id}
-							fullWidth
-							size="small"
-							select
-							label={data.label}
-							margin="dense"
-							value={data.value}
-							onChange={handleChange}
-							className={estilo.selectField}
-							InputLabelProps={{
-								className: estilo.selectLabel,
-							}}
-							SelectProps={{
-								native: true,
-								className: estilo.menuItem,
-							}}
-							variant="outlined"
-						// helperText="Brazos de?"
-						// className={classes.textField}
-						>
-							{data.mapeo}
-						</TextField>
+				<Grid span={{ xs: 2 }}>
+					{fajadebrazo.map(({ id, label, value, options }) => (
+						<TextFieldSelect
+							key={id}
+							id={id}
+							label={label}
+							value={selectedValues[id] ?? value ?? ""}
+							onChange={handleSelectChange}
+							options={options}
+							width="150px"
+						/>
 					))}
+
 				</Grid>
-				<Grid span={{ xs: 1 }}>
-					<TextField
-						input={{ maxLength: 3 }}
-						size="small"
-						variant="outlined"
+				<Grid span={{ xs: 2 }}>
+					<TextFieldComun
 						id="AltoVolado"
 						type="number"
-						label="Volado en cm :  "
-						fullWidth
-						margin="dense"
+						label="Volado en cm : "
 						value={state.AltoVolado}
 						onChange={handleChange}
-						className={estiloII.textfcantidad}
+						width="150px"
+
 					/>
+
 				</Grid>
-				<Grid ms={2}>
-					<RadioGroup
-						className={estiloI.radioGroup1}
-						row
-						size="small"
-						name="Volado"
-						value={state.VolDS}
-						onChange={voladods}
-						margin="dense"
-					>
-						<FormControlLabel
-							size="small"
-							value="S"
-							control={
-								<Radio
-									classes={{
-										root: estiloI.radio1,
-										checked: estiloI.radioChecked1,
-									}}
-								/>
-							}
-							className={estiloI.formControlLabel1}
-							label="Simple"
-							labelPlacement="top"
-							disabled={props.enable}
-							margin="dense"
-						/>
-						<FormControlLabel
-							size="small"
-							value="D"
-							control={
-								<Radio
-									classes={{
-										root: estiloI.radio1,
-										checked: estiloI.radioChecked1,
-									}}
-								/>
-							}
-							className={estiloI.formControlLabel1}
-							label="Doble"
-							labelPlacement="top"
-							disabled={props.disable}
-							margin="dense"
-						/>
-					</RadioGroup>
+				<Grid sx={{ marginTop: "2px" }}>
+					<CustomSwitch
+						value={selectedOption}
+						onChange={handleOptionChange}
+						opcion1={'S'}
+						opcion2={'D'}
+						titulo1={'Simple'}
+						titulo2={'Doble'}
+						tithelpertext={'Volado : '} />
+
 				</Grid>
-			</Grid>
+			</Grid >
 		</>
 	);
 }

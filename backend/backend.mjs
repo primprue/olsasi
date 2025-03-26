@@ -165,6 +165,7 @@ import presuppiletafca from "./routes/presupuesto/presuppiletafca.mjs";
 import presupponchorie from "./routes/presupuesto/presupponchorie.mjs";
 import presupmodificamed from "./routes/presupuesto/presupmodificamed.mjs";
 import presupabanico from "./routes/presupuesto/presupabanico.mjs";
+import presupparcalclee from "./routes/presupuesto/presupparcalc/presupparcalclee.mjs"
 
 //22-12-2022
 import presuppisopil from "./routes/presupuesto/presuppisopil.mjs";
@@ -498,6 +499,7 @@ app.use("/presupdetpieleer", presupdetpieleer);
 app.use("/presupdetpiemodificar", presupdetpiemodificar);
 app.use("/presupdetpieborrar", presupdetpieborrar);
 app.use("/presupdetpieagregar", presupdetpieagregar);
+app.use("/presupparcalclee", presupparcalclee);
 
 
 app.use("/imppresup", imppresup);

@@ -1,145 +1,109 @@
-import React from "react";
-import {
-
-	Radio,
-	RadioGroup,
-	FormControlLabel,
-	TextField,
-	FormHelperText,
-} from "@mui/material";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Grid from "@mui/material/Grid2";
-import estilo from "../../../../Styles/TextFieldSelect.module.css";
-import estiloI from "../../../../Styles/RadioGroup.module.css";
-import estiloII from "../../../../Styles/TextField.module.css";
+
 // Context
-import { useContext } from "react";
+import { use } from "react";
 import PresupPant from "../../../../context/PresupPant";
+import { PresupParCalcLee } from "../PresupParCalc/PresupParCalcLee";
+import TextFieldSelect from "../../../../components/comppropios/TextFieldSelect";
+import TextFieldComun from "../../../../components/comppropios/TextFieldComun";
+import CustomSwitch from "../../../../components/comppropios/CustomSwitch";
 
-export default function FilaComedero(props) {
-	const { state, setState } = useContext(PresupPant);
-	const [ojalbronce, setOjalBronce] = React.useState("hz");
-	const handleChange = (event) => {
-		const id = event.target.id;
-		setState({ ...state, [id]: event.target.value });
+export default function FilaComedero() {
+	const { state, setState } = use(PresupPant);
+
+	const handleChange = (value, id) => {
+		setState({ ...state, [id]: value });
 	};
 
-	const handleChange2 = (event) => {
-		setOjalBronce(event.target.value);
-		setState({ ...state, PresupOB: event.target.value });
+
+
+	// Memorizar la opción seleccionada basada en state.PresupProducto
+	const selectedOption = useMemo(() => state.PresupOB || "hz", [state.PresupOB]);
+
+	// Función para actualizar la opción seleccionada
+	const handleOptionChange = (newOption) => {
+		setState({ ...state, PresupOB: newOption });
 	};
 
-	const anchocom = [
-		{
-			id: "AnchoComederoEleg",
-			label: "Ancho Comedero",
-			value: state.value,
-			mapeo: (
-				<>
-					<option></option>
-					{state.AnchoComedero.map((option) => (
-						<option key={option.value} value={option.value}>
-							{option.label}
-						</option>
-					))}
-				</>
-			),
-		},
-	];
 
+	const paracalular = useRef(false);
+	const busparacalular = useRef();
+
+	async function leeparacalcular() {
+		const result = await PresupParCalcLee('AnchoComedero');
+		busparacalular.current = result
+	}
+	useEffect(() => {
+		leeparacalcular()
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+
+	const [selectedValues, setSelectedValues] = useState({});
+	const handleSelectChange = (value, id) => {
+		setState({ ...state, [id]: value });
+		setSelectedValues((prev) => ({
+			...prev,
+			[id]: value,
+		}));
+
+	};
+
+
+	let anchocom = [];
+
+
+	if (busparacalular.current !== undefined) {
+		if (busparacalular.current.length > 0) {
+
+			paracalular.current = true;
+			anchocom = [{
+				id: "AnchoComederoEleg",
+				label: "Ancho Comedero",
+				value: busparacalular.current[0].value,
+				options: busparacalular.current.map((option) => ({
+					value: option.value,
+					label: option.label
+				}))
+			}];
+
+		}
+	}
 
 	return (
 		<>
 			<Grid container spacing={2}>
-				<Grid >
-					{/* <FormLabel component="legend">Ancho del comedero </FormLabel> */}
-					{anchocom.map((data) => (
-						<TextField
-							id={data.id}
-							key={data.id}
-							size="small"
-							select
-							label={data.label}
-							margin="dense"
-							value={data.value}
-							onChange={handleChange}
-							className={estilo.selectField}
-							InputLabelProps={{
-								className: estilo.selectLabel,
-							}}
-							SelectProps={{
-								native: true,
-								className: estilo.menuItem,
-							}}
-							variant="outlined"
-						// helperText="Ancho del comedero"
-						>
-							{data.mapeo}
-						</TextField>
-					))}
+				<Grid span={{ xs: 1 }}>
+					{paracalular.current &&
+						anchocom.map(({ id, label, value, options }, index) => (
+							<TextFieldSelect
+								key={index}
+								id={id}
+								label={label}
+								value={selectedValues[id] ?? value ?? ''}
+								onChange={handleSelectChange}
+								options={options}
+								width="150px"
+							/>
+						))}
 				</Grid>
 				<Grid span={{ xs: 1 }}>
-					<TextField
-						input={{ maxLength: 3 }}
-						size="small"
-						variant="outlined"
+					<TextFieldComun
 						id="PresupOjalesC"
 						type="number"
 						label="Ojales cada, en cm :  "
-						fullWidth
-						margin="dense"
-						hidden="true"
 						value={state.PresupOjalesC}
 						onChange={handleChange}
-						className={estiloII.textfcantidad}
+						width="150px"
 					/>
+
 				</Grid>
-				<Grid ms={1}>
-					<RadioGroup
-						className={estiloI.radioGroup1}
-						row
-						size="small"
-						name="tipoOjal"
-						value={ojalbronce}
-						onChange={handleChange2}
-						margin="dense"
-					>
-						<FormControlLabel
-							size="small"
-							value="hz"
-							label="HZ"
-							labelPlacement="top"
-							disabled={props.disable}
-							margin="dense"
-							control={
-								<Radio
-									classes={{
-										root: estiloI.radio1,
-										checked: estiloI.radioChecked1,
-									}}
-								/>
-							}
-							className={estiloI.formControlLabel1}
-						/>
-						<FormControlLabel
-							className={estiloI.formControlLabel1}
-							size="small"
-							value="br"
-							label="BR"
-							labelPlacement="top"
-							disabled={props.disable}
-							margin="dense"
-							control={
-								<Radio
-									classes={{
-										root: estiloI.radio,
-										checked: estiloI.radioChecked,
-									}}
-								/>
-							}
-						/>
-					</RadioGroup>
-					<FormHelperText>Ojales de hierro o bronce</FormHelperText>
-				</Grid>
+				<Grid span={{ xs: 1 }}>
+					<CustomSwitch value={selectedOption} onChange={handleOptionChange} opcion1={'hz'} opcion2={'bz'}
+						titulo1={'HZ'} titulo2={'BR'}
+						tithelpertext={'Ojal :'} />
+				</Grid >
+
 			</Grid>
 		</>
 	);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import {
 	TextField,
 
@@ -11,171 +11,83 @@ import estiloI from "../../../../Styles/RadioGroup.module.css";
 import estiloII from "../../../../Styles/TextField.module.css";
 
 // Context
-import { useContext } from "react";
+import { use } from "react";
 import PresupPant from "../../../../context/PresupPant";
+import CustomSwitch from "../../../../components/comppropios/CustomSwitch";
+import TextFieldComun from "../../../../components/comppropios/TextFieldComun";
 
-export default function FilaEnrollables(props) {
-	const { state, setState } = useContext(PresupPant);
-	const [faja, setFaja] = React.useState("2P");
-	const [cristal, setCristal] = React.useState("PVC05");
+export default function FilaEnrollables() {
+	const { state, setState } = use(PresupPant);
 
-	const handleChange = (event) => {
-		const id = event.target.id;
-		setState({ ...state, [id]: event.target.value });
+
+	const handleChange = (value, id) => {
+		setState({ ...state, [id]: value });
 	};
 
-	const tamcristal = (event) => {
-		setCristal(event.target.value);
-		setState({ ...state, TamCristal: event.target.value });
+	const selectedOption = useMemo(() => state.TamCristal || "1.35", [state.TamCristal]);
+	// Función para actualizar la opción seleccionada
+	const handleOptionChange = (newOption) => {
+		setState({ ...state, TamCristal: newOption });
 	};
 
-	const tamfaja = (event) => {
-		setFaja(event.target.value);
-		setState({ ...state, TamFaja: event.target.value });
+	const selectedOption1 = useMemo(() => state.TamFaja || "2P", [state.TamFaja]);
+	// Función para actualizar la opción seleccionada
+	const handleOptionChange1 = (newOption) => {
+		setState({ ...state, TamFaja: newOption });
 	};
 
 	return (
 		<>
 			<Grid container spacing={2} span={{ xs: 8 }}>
 				<Grid span={{ xs: 4 }}>
-					<RadioGroup
-						className={estiloI.radioGroup1}
-						row
-						size="small"
-						name="CristalSN"
-						label="Cristal"
-						value={cristal}
-						onChange={tamcristal}
-						margin="dense"
-					>
-						<FormControlLabel
-							size="small"
-							value="PVC05"
-							control={
-								<Radio
-									classes={{
-										root: estiloI.radio1,
-										checked: estiloI.radioChecked1,
-									}}
-								/>
-							}
-							className={estiloI.formControlLabel1}
-							label="Cristal 1.35"
-							labelPlacement="top"
-							disabled={props.disable}
-							margin="dense"
-						/>
-						<FormControlLabel
-							size="small"
-							value="PVC06"
-							control={
-								<Radio
-									classes={{
-										root: estiloI.radio1,
-										checked: estiloI.radioChecked1,
-									}}
-								/>
-							}
-							className={estiloI.formControlLabel1}
-							label="Cristal 1.80"
-							labelPlacement="top"
-							disabled={props.disable}
-							margin="dense"
-						/>
-						<FormControlLabel
-							size="small"
-							value="NOPVC"
-							control={
-								<Radio
-									classes={{
-										root: estiloI.radio1,
-										checked: estiloI.radioChecked1,
-									}}
-								/>
-							}
-							className={estiloI.formControlLabel1}
-							label="s/Cristal"
-							labelPlacement="top"
-							disabled={props.disable}
-							margin="dense"
-						/>
-					</RadioGroup>
+					<Grid sx={{ marginTop: "2px" }}>
+						<CustomSwitch
+							value={selectedOption}
+							onChange={handleOptionChange}
+							opcion1={'PVC05'}
+							opcion2={'PVC06'}
+							opcion3={'NOPVC'}
+							titulo1={'Cristal 1.35'}
+							titulo2={'Cristal 1.80'}
+							titulo3={'Cristal s/cristal'}
+							tithelpertext={'Cristal : '} />
+
+					</Grid>
 				</Grid>
 				<Grid span={{ xs: 2 }}>
-					<RadioGroup
-						className={estiloI.radioGroup1}
-						row
-						size="small"
-						name="Faja"
-						value={faja}
-						onChange={tamfaja}
-						margin="dense"
-					>
-						<FormControlLabel
-							size="small"
-							value="2P"
-							control={
-								<Radio
-									classes={{
-										root: estiloI.radio1,
-										checked: estiloI.radioChecked1,
-									}}
-								/>
-							}
-							className={estiloI.formControlLabel1}
-							label="2''"
-							labelPlacement="top"
-							disabled={props.disable}
-							margin="dense"
-						/>
-						<FormControlLabel
-							size="small"
-							value="25P"
-							control={
-								<Radio
-									classes={{
-										root: estiloI.radio1,
-										checked: estiloI.radioChecked1,
-									}}
-								/>
-							}
-							className={estiloI.formControlLabel1}
-							label="2''y 1/2"
-							labelPlacement="top"
-							disabled={props.disable}
-							margin="dense"
-						/>
-					</RadioGroup>
+					<Grid sx={{ marginTop: "2px" }}>
+						<CustomSwitch
+							value={selectedOption1}
+							onChange={handleOptionChange1}
+							opcion1={'2P'}
+							opcion2={'25P'}
+							titulo1={'2"'}
+							titulo2={'2"y 1/2'}
+							tithelpertext={'Faja : '} />
+
+					</Grid>
+
 				</Grid>
 
 				<Grid span={{ xs: 1 }}>
-					<TextField
-						input={{ maxLength: 3 }}
-						size="small"
-						variant="outlined"
+					<TextFieldComun
 						id="AltoVolado"
 						type="number"
 						label="Volado en cm :  "
-						fullWidth
-						margin="dense"
 						value={state.AltoVolado}
 						onChange={handleChange}
-						className={estiloII.textfcantidad}
+						width="150px"
 					/>
 				</Grid>
+
 				<Grid span={{ xs: 1 }}>
-					<TextField
-						input={{ maxLength: 3 }}
-						size="small"
-						variant="outlined"
+					<TextFieldComun
 						id="SobranteMarco"
 						type="number"
-						margin="dense"
 						label="Marco en cm : "
-						fullWidth
 						value={state.SobranteMarco}
 						onChange={handleChange}
-						className={estiloII.textfcantidad}
+						width="150px"
 					/>
 				</Grid>
 			</Grid>

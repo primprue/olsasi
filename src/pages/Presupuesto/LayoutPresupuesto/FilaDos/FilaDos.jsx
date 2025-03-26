@@ -1,14 +1,11 @@
 import React, { useEffect, lazy, Suspense, useState, useRef } from "react";
-import { TextField, IconButton, FormHelperText, MenuItem } from "@mui/material";
+import { IconButton } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import styles from "../styles.module.css";
 import Snackbar from '@mui/material/Snackbar';
 
 import Alert from "@mui/material/Alert";
 import Slide from '@mui/material/Slide';
 
-import estilo from "../../../../Styles/TextFieldSelect.module.css";
-import estilot from "../../../../Styles/TextField.module.css";
 import { stkrubroleeconf } from "../../../Tablas/StkRubros/StkRubroLeeConf";
 import { presupcalculador } from "../../PresupCalculador";
 import { stkmonedasleerorig } from "../../../Tablas/Monedas/StkMonedasLeerOrig";
@@ -47,9 +44,8 @@ export default function FilaDos() {
 	const { state, setState } = use(PresupPant);
 	const { datosrenglon, setDatosRenglon } = use(PresupPant);
 
-	const [otramoneda, setOtraMoneda] = useState(false);
-	const [eligemoneda, setEligeMoneda] = useState(false);
-	const [cotidivisa, setCotidivisa] = useState(0.0);
+
+
 	let labellargo = "Largo";
 	let labelancho = "Ancho";
 	const { inicializaPresup } = use(PresupPant);
@@ -60,6 +56,16 @@ export default function FilaDos() {
 
 	const monedasleidos = useRef(false);
 	const stkmonedasleidos = useRef();
+
+
+	// const [otramoneda, setOtraMoneda] = useState(false);
+	// const [eligemoneda, setEligeMoneda] = useState(false);
+	// const otramoneda = useRef(false);
+	const eligemoneda = useRef(false);
+	// const monedaelegida = useRef('');
+	// const [cotidivisa, setCotidivisa] = useState(0.0);
+	const cotidivisa = useRef(0.0);
+
 
 	if (state.DatosPresupEleg.length !== 0) {
 		var largo = state.DatosPresupEleg[0].PresupConfTipoLargo;
@@ -99,36 +105,11 @@ export default function FilaDos() {
 	}
 
 
-	// const handleChange = (event) => {
-
-	// 	const id = event.target.id;
-	// 	setState({ ...state, [id]: event.target.value });
-
-	// 	if (id === "idStkMonedas") {
-	// 		setEligeMoneda(true);
-	// 	}
-	// };
-
-
 	const handleChange = (value, id) => {
 		setState({ ...state, [id]: value });
-		if (id === "idStkMonedas") {
-			setEligeMoneda(true);
-		}
+
 	};
 
-	const sacadatosmonedas = () => {
-		const objetosFiltrados = state.monedasleidas.filter(
-			(objeto) => objeto.idStkMonedas === state.idStkMonedas
-		);
-
-		if (objetosFiltrados.length > 0) {
-			setCotidivisa(objetosFiltrados[0].StkMonedasCotizacion);
-			setState({ ...state, signomoneda: objetosFiltrados[0].StkMonedasSigno });
-			setOtraMoneda(true);
-			setEligeMoneda(false);
-		}
-	};
 	async function stkrubroleerconf(cuallee) {
 		const result = await stkrubroleeconf(cuallee);
 		stkrubrosleidos.current = result;
@@ -137,7 +118,6 @@ export default function FilaDos() {
 	async function leermonedas() {
 		const result = await stkmonedasleerorig();
 		stkmonedasleidos.current = result
-		// setState({ ...state, monedasleidas: result });
 	}
 
 	useEffect(() => {
@@ -148,15 +128,10 @@ export default function FilaDos() {
 		}
 	}, [presuptipo]); // eslint-disable-line react-hooks/exhaustive-deps
 
-	useEffect(() => {
-		sacadatosmonedas();
-	}, [eligemoneda]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	useEffect(() => {
 		leermonedas();
-		sacadatosmonedas();
-	}, [state.monedasleidas.length <= 0]); // eslint-disable-line react-hooks/exhaustive-deps
-
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	async function agregar() {
 		var indicetp1 = state.indicetp + 1;
@@ -167,8 +142,7 @@ export default function FilaDos() {
 		var dcalculo = [];
 
 		var statepasante = state;
-
-		var dcalculo1 = await GeneraDCalculo(statepasante, presuptipo, cotidivisa);
+		var dcalculo1 = await GeneraDCalculo(statepasante, presuptipo, cotidivisa.current);
 
 		if (dcalculo1.faltadato === true) {
 			setSnackbar({
@@ -188,7 +162,7 @@ export default function FilaDos() {
 				indicetp1,
 				rubrosn,
 				PresupCantidadM,
-				otramoneda,
+				// otramoneda.current,
 				state.DescripPresup,
 				state.renglonanexo,
 				dcalculo
@@ -210,6 +184,12 @@ export default function FilaDos() {
 			...prev,
 			[id]: value,
 		}));
+		if (id === "idStkMonedas") {
+			eligemoneda.current = true;
+			// monedaelegida.current = value;
+			const monedaEncontrada = stkmonedasleidos.current.find(m => m.idStkMonedas === value);
+			cotidivisa.current = monedaEncontrada.StkMonedasCotizacion;
+		}
 	};
 
 
@@ -256,8 +236,8 @@ export default function FilaDos() {
 	return (
 		<>
 			<Grid >
-				<p>Renderizado: {renderCount.current} veces   </p>
-				<Grid container span={{ xs: 1 }}>
+				{/* <p>Renderizado: {renderCount.current} veces   </p> */}
+				<Grid container size={{ xs: 1 }}>
 					{rubrosn === "S" &&
 						rubrosleidos.current &&
 						textdata.map(({ id, label, value, options }, index) => (
@@ -275,7 +255,7 @@ export default function FilaDos() {
 				</Grid>
 			</Grid>
 			{presuptipo === "PAÑO UNIDO" && (
-				<Grid span={{ xs: 1 }}>
+				<Grid size={{ xs: 1 }}>
 					<TextFieldComun
 						id="PresupVeces"
 						type="number"
@@ -284,25 +264,10 @@ export default function FilaDos() {
 						onChange={handleChange}
 						width="100px"
 					/>
-
-
-					{/* <TextField
-						input={{ maxLength: 5 }}
-						size="small"
-						variant="outlined"
-						id="PresupVeces"
-						type="number"
-						label="Veces"
-						fullWidth
-						margin="dense"
-						value={state.PresupVeces}
-						onChange={handleChange}
-						className={estilot.textfcantidad}
-					/> */}
 				</Grid>
 			)}
 			{presuptipo !== "MODIFICA MEDIDAS" && (
-				<Grid span={{ xs: 1 }}>
+				<Grid size={{ xs: 1 }}>
 					<TextFieldComun
 						id="PresupCantidad"
 						type="number"
@@ -311,49 +276,23 @@ export default function FilaDos() {
 						onChange={handleChange}
 						width="100px"
 					/>
-					{/* <TextField
-						input={{ maxLength: 5 }}
-						size="small"
-						variant="outlined"
-						id="PresupCantidad"
-						type="number"
-						label="Cantidad"
-						fullWidth
-						margin="dense"
-						value={state.PresupCantidad}
-						onChange={handleChange}
-						className={estilot.textfcantidad}
-					/> */}
 				</Grid>
 			)}
 			{largo !== "N" && (
-				<Grid span={{ xs: 1 }}>
+				<Grid size={{ xs: 1 }}>
 					<TextFieldComun
 						id="PresupLargo"
 						type="number"
 						label={labellargo}
 						value={state.PresupLargo}
 						onChange={handleChange}
-						width="100px"
+						width="120px"
 					/>
-					{/* <TextField
-						disabled={largo === "N"}
-						input={{ maxLength: 3 }}
-						size="small"
-						variant="outlined"
-						id="PresupLargo"
-						type="number"
-						label={labellargo}
-						fullWidth
-						margin="dense"
-						value={state.PresupLargo}
-						onChange={handleChange}
-						className={estilot.textfcantidad}
-					/> */}
+
 				</Grid>
 			)}{" "}
 			{ancho !== "N" && (
-				<Grid span={{ xs: 1 }}>
+				<Grid size={{ xs: 1 }}>
 					<TextFieldComun
 						id="PresupAncho"
 						type="number"
@@ -362,23 +301,10 @@ export default function FilaDos() {
 						onChange={handleChange}
 						width="100px"
 					/>
-					{/* <TextField
-						disabled={ancho === "N"}
-						input={{ maxLength: 3 }}
-						size="small"
-						variant="outlined"
-						id="PresupAncho"
-						type="number"
-						label={labelancho}
-						fullWidth
-						margin="dense"
-						value={state.PresupAncho}
-						onChange={handleChange}
-						className={estilot.textfcantidad}
-					/> */}
+
 				</Grid>
 			)}
-			<Grid container span={{ xs: 12 }}>
+			<Grid container size={{ xs: 12 }}>
 				{presuptipo === "CONFECCIONADA" && <FilaConf></FilaConf>}
 				{presuptipo === "LONAS ENROLLABLES" && (
 					<FilaEnrollables></FilaEnrollables>
@@ -402,27 +328,29 @@ export default function FilaDos() {
 				) : (
 					<></>
 				)}
-				{presuptipo !== "UNIDAD" && rubrosn === "S" ? (
-					<FilaDetDesc presuptipo={presuptipo}></FilaDetDesc>
-				) : (
-					<></>
-				)}
-			</Grid>{" "}
-			<Grid container span={{ xs: 1 }}>
 
-				{monedasleidos.current &&
-					textdatam.map(({ id, label, value, options }, index) => (
-						<TextFieldSelect
-							key={index}
-							id={id}
-							label={label}
-							value={selectedValues[id] ?? value ?? ''}
-							onChange={handleSelectChange}
-							options={options} />
-					))}
-
-
+				<Grid size={2} padding={2}>
+					{monedasleidos.current &&
+						textdatam.map(({ id, label, value, options }, index) => (
+							<TextFieldSelect
+								key={index}
+								id={id}
+								label={label}
+								width="150px"
+								value={selectedValues[id] ?? value ?? ''}
+								onChange={handleSelectChange}
+								options={options} />
+						))}
+				</Grid>
 			</Grid>
+
+			{presuptipo !== "UNIDAD" && rubrosn === "S" ? (
+				<FilaDetDesc presuptipo={presuptipo}></FilaDetDesc>
+			) : (
+				<></>
+			)
+			}
+
 			<Grid >
 				<IconButton onClick={() => agregar()} color="primary">
 					<ArchiveIcon
@@ -440,23 +368,24 @@ export default function FilaDos() {
 						titleAccess="Reinicio de Presupuesto"
 					/>
 				</IconButton>
-			</Grid>
+			</Grid >
 			<Suspense fallback={<>...</>}>
 				<TablaPresup data={datosrenglon} />
 			</Suspense>
-			{/* </Grid> */}
-			{!!snackbar && (
-				<Snackbar
-					open
-					anchorOrigin={{ vertical: "top", horizontal: "center" }}
-					onClose={handleCloseSnackbar}
-					autoHideDuration={1200}
-					sx={{ width: '100%' }}
-				// TransitionComponent={TransitionRight}
-				>
-					<Alert {...snackbar} variant="filled" onClose={handleCloseSnackbar} />
-				</Snackbar>
-			)}
+			{
+				!!snackbar && (
+					<Snackbar
+						open
+						anchorOrigin={{ vertical: "top", horizontal: "center" }}
+						onClose={handleCloseSnackbar}
+						autoHideDuration={1200}
+						sx={{ width: '100%' }}
+					// TransitionComponent={TransitionRight}
+					>
+						<Alert {...snackbar} variant="filled" onClose={handleCloseSnackbar} />
+					</Snackbar>
+				)
+			}
 		</>
 	);
 }

@@ -1,107 +1,109 @@
 import React from "react";
-import styles from "../styles.module.css";
-import estilos from "../../../../Styles/TextField.module.css";
-import { useContext } from "react";
+import { use } from "react";
 import PresupPant from "../../../../context/PresupPant";
 import Grid from "@mui/material/Grid2";
-import { TextField } from "@mui/material";
+
+import TextFieldComunChico from "../../../../components/comppropios/TextFieldComunChico";
 export default function FilaDetDesc(props) {
-	const { state, setState } = useContext(PresupPant);
-	const [DescripPresup, setDescripPresup] = React.useState("");
-	//  const [selectedValue, setSelectedValue] = React.useState("");
+	const { state, setState } = use(PresupPant);
 
 	const { presuptipo } = props;
 
-	const handleChange3 = (event) => {
-		setDescripPresup(event.target.value);
-		setState({ ...state, DescripPresup: event.target.value });
-	};
 
-	const handleChange4 = (event) => {
-		//   setSelectedValue(event.target.value);
-		setState({ ...state, DetallePresup: event.target.value });
+	const handleChange = (value, id) => {
+		setState({ ...state, [id]: value });
 	};
-
-	const handleChange5 = (event) => {
-		//   setSelectedValue(event.target.value);
-		setState({ ...state, DetalleRenglon: event.target.value });
-	};
-
-	const handleChange6 = (event) => {
-		//   setSelectedValue(event.target.value);
-		setState({ ...state, ExplicaPresup: event.target.value });
-	};
-
-	const classes = styles;
 	return (
-		<>
-			<Grid container spacing={2} alignItems="center" padding={3}>
-				{presuptipo !== "CARGA DESCRIPCION" && (
-					<div>
-						<TextField
-							input={{ maxLength: 15 }}
-							size="small"
-							variant="filled"
+		<Grid container spacing={2} alignItems="center">
+			{presuptipo !== "CARGA DESCRIPCION" && (
+				<>
+					<Grid span={{ xs: 3 }}>
+						<TextFieldComunChico
 							id="DescripPresup"
-							margin="normal"
 							label="Descripción"
-							// fullWidth
-							value={DescripPresup}
+							value={state.DescripPresup}
+							onChange={handleChange}
+							width="200px"
 							helperText="No imprime medidas"
-							onChange={handleChange3}
-							className={estilos.textftexto}
 						/>
-
-						<TextField
-							input={{ maxLength: 100 }}
-							size="small"
-							variant="filled"
+					</Grid>
+					<Grid span={{ xs: 3 }}>
+						<TextFieldComunChico
 							id="DetallePresup"
-							margin="normal"
-							label="Detalle Presupuesto "
-							// fullWidth
+							label="Detalle Presupuesto"
 							value={state.DetallePresup}
+							onChange={handleChange}
+							width="200px"
 							helperText="Saca la descripción por defecto"
-							onChange={handleChange4}
-							className={estilos.textftexto}
 						/>
-						<TextField
-							input={{ maxLength: 100 }}
-							size="small"
-							variant="filled"
+					</Grid>
+					<Grid span={{ xs: 3 }}>
+						<TextFieldComunChico
 							id="DetalleRenglon"
-							margin="normal"
-							label="Agrega en Renglón "
-							// fullWidth
+							label="Agrega en Renglón"
 							value={state.DetalleRenglon}
+							onChange={handleChange}
+							width="200px"
 							helperText="Se agrega a la descripción"
-							onChange={handleChange5}
-							className={estilos.textftexto}
 						/>
-					</div>
-				)}
-				<TextField
-					input={{ maxLength: 100 }}
-					size="small"
-					variant="filled"
+					</Grid>
+				</>
+			)}
+			<Grid span={{ xs: 3 }}>
+				<TextFieldComunChico
 					id="ExplicaPresup"
-					margin="normal"
-					InputLabelProps={{
-						classes: {
-							root: estilos.formLabel,
-							input: estilos.input,
-							MuiFormHelperTextroot: estilos.input,
-							//	helperText: estilos.formControlLabel,
-						},
-					}}
-					label="Explicación de Presupuesto "
-					// fullWidth
+					label="Explicación de Presupuesto"
 					value={state.ExplicaPresup}
+					onChange={handleChange}
+					width="200px"
 					helperText="No aparece en el presupuesto"
-					onChange={handleChange6}
-					className={estilos.textftexto}
 				/>
 			</Grid>
-		</>
+		</Grid>
+
+		// <Grid>
+		// 	{presuptipo !== "CARGA DESCRIPCION" && (
+		// 		<Grid container size={{ xs: 12 }}>
+		// 			<Grid size={4}>
+		// 				<TextFieldComunChico
+		// 					id="DescripPresup"
+		// 					label="Descripción "
+		// 					value={state.DescripPresup}
+		// 					onChange={handleChange}
+		// 					width="200px"
+		// 					helperText="No imprime medidas" />
+		// 			</Grid>,
+		// 			<Grid size={4}>
+		// 				<TextFieldComunChico
+		// 					id="DetallePresup"
+		// 					label="Detalle Presupuesto "
+		// 					value={state.DetallePresup}
+		// 					onChange={handleChange}
+		// 					width="200px"
+		// 					helperText="Saca la descripción por defecto" />
+		// 			</Grid>,
+		// 			<Grid size={4}>
+		// 				<TextFieldComunChico
+		// 					id="DetalleRenglon"
+		// 					label="Agrega en Renglón "
+		// 					value={state.DetalleRenglon}
+		// 					onChange={handleChange}
+		// 					width="200px"
+		// 					helperText="Se agrega a la descripción"
+		// 				/>
+		// 			</Grid>
+		// 		</Grid>
+		// 	)}
+		// 	<Grid size={4}>
+		// 		<TextFieldComunChico
+		// 			id="ExplicaPresup"
+		// 			label="Explicación de Presupuesto "
+		// 			value={state.ExplicaPresup}
+		// 			onChange={handleChange}
+		// 			width="200px"
+		// 			helperText="No aparece en el presupuesto"
+		// 		/>
+		// 	</Grid>
+		// </Grid>
 	);
 }

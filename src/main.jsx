@@ -4,6 +4,7 @@ import App from "./App";
 import { ToastContainer } from "react-toastify"; //para los mensajes de error o exito
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter } from "react-router-dom";
+import "tailwindcss";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 // let theme = createTheme({});
 // theme = createTheme(theme, {

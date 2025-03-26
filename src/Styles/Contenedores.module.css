@@ -1,0 +1,9 @@
+.Contenedor {
+	display: grid;
+    background: azure;
+	/* flex-direction: column; */
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+	/* justify-content: center;
+	align-items: center; */
+	padding: 2px;
+}

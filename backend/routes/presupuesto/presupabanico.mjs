@@ -32,7 +32,7 @@ router.get('/', (req, res, next) => {
       }
       let datosrec = JSON.parse(req.query.datoscalculo)
       let totalreg = datosrec.length
-
+      console.log('datosrec', datosrec)
       datosrec.map(datos => {
         cantbrazos = datos.cantbrazos * 1
         largobrazo = datos.largobrazo * 1
@@ -70,6 +70,7 @@ router.get('/', (req, res, next) => {
         telatapas = paniostapas * telatapas * 2
         telatotal = telatapas + (paniosfrente * largoabanico)
 
+
         // tiempo de cortar paños (2 min / paño)
         minMOT1 = (paniostapas * 2 + paniosfrente) * 2
         //tiempo soldar paños frente (2.5 min / metro)
@@ -101,7 +102,7 @@ router.get('/', (req, res, next) => {
           'where StkRubro.StkRubroAbr = "', StkRubroAbrP, '" ',
           'and StkRubro.StkRubroTM = idStkMonedas '
         ].join('')
-
+        console.log('q  ', q)
         if (detallep == '') {
           detalle = "Toldo Abanico de " + ancho + " mts. de ancho con " + cantbrazos + " brazos de " + largobrazo + " mts., faja para caño de " + fajabrazo
         }

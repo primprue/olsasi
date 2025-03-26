@@ -4,15 +4,15 @@ import estilo from "../../Styles/TextField.module.css";
 
 import { green } from "@mui/material/colors";
 import { FormControl, FormLabel, TextField, Tooltip } from "@mui/material";
-const TextFieldComun = ({ id, type, label, value, onChange, tooltip, width = "100%", ...other }) => {
+const TextFieldComunChico = ({ id, type, label, value, onChange, tooltip, width = "80%", ...other }) => {
 
     return (
         <FormControl fullWidth margin="dense">
             {/* // <Tooltip title={tooltip} arrow sx={{ "& .MuiTooltip-tooltip": { backgroundColor: 'green', color: "white" } }}> */}
-            <FormLabel sx={{ color: "blue", fontWeight: "bold", fontSize: "15px" }}>{label}</FormLabel>
+            <FormLabel sx={{ color: "green", fontWeight: "bold", fontSize: "12px" }}>{label}</FormLabel>
             <TextField
                 {...other}
-                className={estilo.textfcantidad}
+                className={estilo.textfcomunchico}
                 key={id}
                 id={id}
                 type={type}
@@ -21,7 +21,7 @@ const TextFieldComun = ({ id, type, label, value, onChange, tooltip, width = "10
                 onChange={(event) => {
                     onChange(event.target.value, id);
                 }}
-                variant="outlined"
+                variant="standard"
                 margin="dense"
                 // fullWidth
                 sx={{ width }} // Controla el ancho dinámicamente
@@ -34,4 +34,4 @@ const TextFieldComun = ({ id, type, label, value, onChange, tooltip, width = "10
     );
 };
 
-export default TextFieldComun;
+export default TextFieldComunChico;

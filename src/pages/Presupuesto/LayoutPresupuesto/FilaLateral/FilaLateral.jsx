@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
 
 	Radio,
@@ -11,200 +11,225 @@ import Grid from "@mui/material/Grid2";
 import styles from "../styles.module.css";
 import { stkrubroleelat } from "../../../Tablas/StkRubros/StkRubroLeeLAT";
 // Context
-import { useContext } from "react";
+import { use } from "react";
 import PresupPant from "../../../../context/PresupPant";
 import estilo from "../../../../Styles/TextFieldSelect.module.css";
 import estiloI from "../../../../Styles/RadioGroup.module.css";
 import estiloII from "../../../../Styles/TextField.module.css";
 import estiloIII from "../../../../Styles/Check.module.css";
+import TextFieldComun from "../../../../components/comppropios/TextFieldComun";
+import TextFieldSelect from "../../../../components/comppropios/TextFieldSelect";
+import TildeSiNo from "../../../../components/comppropios/TildeSiNo";
 
 export default function FilaLateral() {
-	const { state, setState } = useContext(PresupPant);
-	const [chcarros, setChCarros] = React.useState(false);
-	const [chcolocacion, setColocacion] = React.useState(false);
-	const [hebillas, setHebillas] = React.useState([]);
-	const [carros, setCarros] = React.useState([]);
-	const [placaajus, setPlacaajus] = React.useState([]);
-
-	const handleChecked = (event) => {
-		if (event.target.name === "checkedCarros") {
-			setChCarros(event.target.checked);
-		} else {
-			setColocacion(event.target.checked);
-			setState({ ...state, colocacion: event.target.checked });
-		}
-	};
+	const { state, setState } = use(PresupPant);
+	const [chcolocacion, setColocacion] = useState(false);
+	const hebillasleidas = useRef(false);
+	const hebillas = useRef();
+	const carrosleidos = useRef(false);
+	const carros = useRef();
+	const placaajusleidas = useRef(false);
+	const placaajus = useRef();
 
 	async function stkrubroleerlat() {
 		const result = await stkrubroleelat();
-
-		setHebillas(result[0]);
-		setCarros(result[1]);
-		setPlacaajus(result[2]);
-		// setState({ ...state, stkrubrolat: result });
+		hebillas.current = result[0];
+		carros.current = result[1];
+		placaajus.current = result[2];
+		setState({ ...state, stkrubrolat: result });
 	}
-	const handleChange = (event) => {
-		const id = event.target.id;
-		setState({ ...state, [id]: event.target.value });
+
+
+	let datahebillas = [];
+
+	if (hebillas.current !== undefined) {
+		if (hebillas.current.length > 0) {
+			hebillasleidas.current = true;
+			datahebillas = [{
+				id: "tipoheb",
+				label: "Hebillas",
+				value: hebillas.current[0].StkRubroAbrLAT,
+				options: hebillas.current.map((option) => ({
+					value: option.StkRubroAbrLAT,
+					label: option.StkRubroDescLAT
+				}))
+			}];
+
+		}
+	}
+
+	let datacarros = [];
+
+	if (carros.current !== undefined) {
+		if (carros.current.length > 0) {
+			carrosleidos.current = true;
+			datacarros = [{
+				id: "tipocarro",
+				label: "Carros",
+				value: carros.current[0].StkRubroAbrLAT,
+				options: carros.current.map((option) => ({
+					value: option.StkRubroAbrLAT,
+					label: option.StkRubroDescLAT
+				}))
+			}];
+
+		}
+	}
+
+	let dataplacaajus = [];
+
+	if (placaajus.current !== undefined) {
+		if (placaajus.current.length > 0) {
+			dataplacaajus = [{
+				label: "..",
+				value: '..',
+			}];
+			placaajusleidas.current = true;
+			dataplacaajus = [{
+				id: "tipoplaca",
+				label: "Placa Ajuste",
+				value: placaajus.current[0].StkRubroAbrLAT,
+
+				options: placaajus.current.map((option) => ({
+					value: option.StkRubroAbrLAT,
+					label: option.StkRubroDescLAT
+				}))
+
+			}];
+
+		}
+	}
+
+	const handleChange = (value, id) => {
+
+		setState({ ...state, [id]: value });
 	};
 
-	const classes = styles;
+	const handleChecked = (event) => {
+		// setColocacion(event);
+		console.log('event', event)
+		setState({ ...state, colocacion: event });
+	}
+
+
+	const [selectedValues, setSelectedValues] = useState({});
+	const handleSelectChange = (value, id) => {
+
+		setState({ ...state, [id]: value });
+		setSelectedValues((prev) => ({
+			...prev,
+			[id]: value,
+		}));
+
+	};
 
 	useEffect(() => {
 		if (state.stkrubrolat.length === 0) {
 			stkrubroleerlat();
 		}
+		if (state.stkrubrolat.length > 0) {
+			setState({
+				...state, tipoheb: hebillas.current[0].StkRubroAbrLAT,
+				tipocarro: carros.current[0].StkRubroAbrLAT,
+				tipoplaca: placaajus.current[0].StkRubroAbrLAT
+			});
+		}
 	}, [state.stkrubrolat]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<>
-			{/* <Grid container spacing={2} span={{ xs: 12 }}>*/}
 			<Grid container spacing={2}>
 				<Grid span={{ xs: 1 }}>
-					{/* <Grid  span={{ xs: 1 }}> */}
-					<TextField
-						input={{ maxLength: 1 }}
-						size="small"
-						variant="outlined"
+					<TextFieldComun
 						id="CantHeb"
 						type="number"
-						label="Cant.Hebillas :  "
-						margin="dense"
+						label="Cant.Hebillas"
 						value={state.CantHeb}
 						onChange={handleChange}
-						className={estiloII.textfcantpadchico}
+						width="100px"
 					/>
+
 				</Grid>
 				<Grid span={{ xs: 3 }}>
 					{state.CantHeb !== 0 && (
-						<TextField
-							id="tipoheb"
-							select
-							label="Hebillas"
-							variant="outlined"
-							value={state.tipoheb}
-							className={estilo.selectField}
-							onChange={handleChange}
-							InputLabelProps={{
-								className: estilo.selectLabel,
-							}}
-							SelectProps={{
-								native: true,
-								className: estilo.menuItem,
-							}}
-							helperText="Seleccionar tipo hebillas incluye placa"
-						>
-							<>
-								<option></option>
-								{hebillas.map((option) => (
-									<option
-										key={option.StkRubroAbrLAT}
-										value={option.StkRubroAbrLAT}
-									>
-										{option.StkRubroDescLAT}
-									</option>
-								))}
-							</>
-						</TextField>
-					)}
+						hebillasleidas.current &&
+						datahebillas.map(({ id, label, value, options }, index) => (
+
+							<TextFieldSelect
+								key={index}
+								id={id}
+								label={label}
+								value={selectedValues[id] ?? value ?? ''}
+								onChange={handleSelectChange}
+								options={options}
+								width="400px"
+								helperText="Incluye placa de ajuste"
+							/>
+						)))}
+
 				</Grid>
 				<Grid span={{ xs: 1 }}>
-					<TextField
-						input={{ maxLength: 1 }}
-						size="small"
-						variant="outlined"
+					<TextFieldComun
 						id="CantCarro"
 						type="number"
-						label="Cant.Carros :  "
-						margin="dense"
+						label="Cant.Carros"
 						value={state.CantCarro}
 						onChange={handleChange}
-						className={estiloII.textfcantpadchico}
+						width="100px"
 					/>
 				</Grid>
 				<Grid span={{ xs: 3 }}>
 					{state.CantCarro !== 0 && (
-						<TextField
-							id="tipocarro"
-							select
-							variant="outlined"
-							label="Carro"
-							value={state.tipocarro}
-							onChange={handleChange}
-							className={estilo.selectField}
-							InputLabelProps={{
-								className: estilo.selectLabel,
-							}}
-							SelectProps={{
-								native: true,
-								className: estilo.menuItem,
-							}}
-							helperText="Seleccionar tipo carro"
-						>
-							<>
-								<option></option>
-								{carros.map((option) => (
-									<option
-										key={option.StkRubroAbrLAT}
-										value={option.StkRubroAbrLAT}
-									>
-										{option.StkRubroDescLAT}
-									</option>
-								))}
-							</>
-						</TextField>
-					)}
+						carrosleidos.current &&
+						datacarros.map(({ id, label, value, options }, index) => (
+							<TextFieldSelect
+								key={index}
+								id={id}
+								label={label}
+								value={selectedValues[id] ?? value ?? ''}
+								onChange={handleSelectChange}
+								options={options}
+								width="400px"
+								helperText="Seleccionar tipo carro"
+							/>
+						)))}
 				</Grid>
 				<Grid span={{ xs: 1 }}>
-					<TextField
-						input={{ maxLength: 1 }}
-						size="small"
-						variant="outlined"
+					<TextFieldComun
 						id="CantPlaca"
 						type="number"
-						label="Cant.Placas :  "
-						margin="dense"
+						label="Cant.Placas"
 						value={state.CantPlaca}
 						onChange={handleChange}
-						className={estiloII.textfcantpadchico}
+						width="100px"
 					/>
 				</Grid>
 				<Grid span={{ xs: 3 }}>
 					{state.CantCarro !== 0 && (
-						<TextField
-							id="tipoplaca"
-							select
-							variant="outlined"
-							label="Placa Ajuste"
-							value={state.tipoplaca}
-							onChange={handleChange}
-							className={estilo.selectField}
-							InputLabelProps={{
-								className: estilo.selectLabel,
-							}}
-							SelectProps={{
-								native: true,
-								className: estilo.menuItem,
-							}}
-							helperText="Seleccionar placa ajuste"
-						>
-							<>
-								<option></option>
-								{placaajus.map((option) => (
-									<option
-										key={option.StkRubroAbrLAT}
-										value={option.StkRubroAbrLAT}
-									>
-										{option.StkRubroDescLAT}
-									</option>
-								))}
-							</>
-						</TextField>
-					)}
+						placaajusleidas.current &&
+						dataplacaajus.map(({ id, label, value, options }, index) => (
+							<TextFieldSelect
+								key={index}
+								id={id}
+								label={label}
+								value={selectedValues[id] ?? value ?? ''}
+								onChange={handleSelectChange}
+								options={options}
+								width="400px"
+								helperText="Seleccionar placa ajuste"
+							/>
+						)))}
+
 				</Grid>
-				{/* <Grid  spacing={2} span={{ xs: 4 }}>*/}
 				<Grid container padding={4}>
-					<FormControlLabel
+					<TildeSiNo
+						checked={chcolocacion}
+						onChange={handleChecked}
+						name="checkedColocacion"
+						label="Colocación?"
+						id="colocacion"
+					/>
+					{/* <FormControlLabel
 						className={estiloIII.formControlLabelCheck}
 						control={
 							<Checkbox
@@ -215,9 +240,11 @@ export default function FilaLateral() {
 							/>
 						}
 						label="Colocación?"
-					/>
+					/> */}
 				</Grid>
 			</Grid>
+
 		</>
 	);
 }
+
