@@ -13,7 +13,12 @@ const caminoynombrearch = path.resolve(variables.caminoynombrearch);
 router.get("/", function (req, res) {
 
     var nombrepresupeleg = req.query.id;
-    const comando = `cp -a ${dirpresupdocumento}/${nombrepresupeleg} ${caminoynombrearch}/.`;
+
+    console.log('dirpresupdocumento ', dirpresupdocumento);
+    console.log('nombrepresupeleg ', nombrepresupeleg);
+    console.log('caminoynombrearch ', caminoynombrearch);
+    const comando = `cp -a ${dirpresupdocumento}/${nombrepresupeleg} ${caminoynombrearch}/basics.pdf`;
+    console.log('comando ', comando);
     exec(comando, (error, stdout, stderr) => {
         console.log('Intentando copiar archivo...');
         if (error) {

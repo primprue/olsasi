@@ -110,7 +110,6 @@ router.get('/', (req, res, next) => {
         ].join('')
 
 
-
         conexion.query(
           valortoldobarrac,
           function (err, resulttbr) {

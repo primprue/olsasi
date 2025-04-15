@@ -102,11 +102,11 @@ export default function ListaPrecios() {
 						padding: '8px 0px 8px 0px'
 					}}
 				>
-					<Typography
+					{/* <Typography
 						className={estilotabla.titulo}
 					>
 						Lista de Precios
-					</Typography>
+					</Typography> */}
 					<Box
 						sx={{
 							width: "80%",

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Estilos from "./Ingreso.module.css";
 import { Card, CardContent, Button, TextField } from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import { columnasdi } from "./columnasdi";
 import { stkrubrolee } from "./LeeRubro";
 import { stkgrupoleer } from "./LeeGrupos";

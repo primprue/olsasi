@@ -8,6 +8,7 @@ const wss = new WebSocketServer({ port: 3000 })
 
 wss.on('connection', (ws) => {
     console.log('Cliente conectado');
+    console.log('nombrearch en servidor', nombrearch)
     ws.on('message', (message) => {
         const { action, nombrearch, pdfData } = JSON.parse(message);
         if (action === 'save') {

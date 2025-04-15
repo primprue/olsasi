@@ -5,7 +5,7 @@ import { llenarcolumns } from "./columns.jsx";
 import { useEffect } from "react";
 import { useState } from "react";
 
-import { useContext } from "react";
+import { use } from "react";
 import TablasContexto from "../../../context/TablasContext.jsx";
 import CtasCtesContext from "../../../context/CtasCtesContext.jsx";
 import FitbitIcon from "@mui/icons-material/Fitbit";
@@ -29,10 +29,11 @@ import { ClientesLeerDesCod } from "../../Tablas/Clientes/ClientesLeerDesCod.jsx
 import { Route, useNavigate } from "react-router-dom";
 import OrdTrabajo from "../../../context/OrdTrabajo.jsx";
 export default function OTMovimiento() {
+	console.log('OTMovimiento  ');
 	// console.log("OTMovimiento  ");
-	const { formdatos, setFormdatos } = useContext(TablasContexto);
-	const { fcdatos, setFCdatos } = useContext(CtasCtesContext);
-	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
+	const { formdatos, setFormdatos } = use(TablasContexto);
+	const { fcdatos, setFCdatos } = use(CtasCtesContext);
+	const { otdatos, setOTdatos } = use(OrdTrabajo);
 	const [rows, setRows] = useState([]);
 	const [pdfUrl, setPdfUrl] = useState(null);
 	const [columns, setColumns] = useState([]);

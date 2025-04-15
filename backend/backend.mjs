@@ -179,6 +179,8 @@ import presuprenglonleer from "./routes/presupuesto/presuprenglonleer.mjs";
 import presupnombre from "./routes/presupuesto/presupnombre.mjs";
 import presuprengleer from "./routes/presupuesto/presuprengleer.mjs";
 import presupborrar from "./routes/presupuesto/presupborrar.mjs";
+import presupborrarenpreview from "./routes/presupuesto/presupborrarenpreview.mjs";
+
 import presupconftipoleer from "./routes/presupuesto/presupconftipo/presupconftipoleer.mjs";
 import presupconftipoleerdesc from "./routes/presupuesto/presupconftipo/presupconftipoleerdesc.mjs";
 import presupconftipoleeanexo from "./routes/presupuesto/presupconftipo/presupconftipoleeanexo.mjs";
@@ -222,6 +224,9 @@ import otcondpagomodificar from "./routes/otcondpago/otcondpagomodificar.mjs";
 import otcondpagoborrar from "./routes/otcondpago/otcondpagoborrar.mjs";
 
 import otdatoslee from "./routes/ordentrabajo/otdatos/otdatoslee.mjs";
+import otdatosagregar from "./routes/ordentrabajo/otdatos/otdatosagregar.mjs";
+import otdatosagregaselec from "./routes/ordentrabajo/otdatos/otdatosagregaselec.mjs";
+
 //para ctacte
 // var conectaafip = require("./routes/afip/conectaafip")
 
@@ -483,6 +488,7 @@ app.use("/presuprenglonleer", presuprenglonleer);
 app.use("/presupnombre", presupnombre);
 app.use("/presuprengleer", presuprengleer);
 app.use("/presupborrar", presupborrar);
+app.use("/presupborrarenpreview", presupborrarenpreview);
 
 
 app.use("/presupconftipoleer", presupconftipoleer);
@@ -531,6 +537,9 @@ app.use("/otcondpagomodificar", otcondpagomodificar);
 app.use("/otcondpagoborrar", otcondpagoborrar);
 
 app.use("/otdatoslee", otdatoslee);
+app.use("/otdatosagregar", otdatosagregar);
+app.use("/otdatosagregaselec", otdatosagregaselec);
+
 
 //temas ctacte
 // app.use("/conectaafip", conectaafip);

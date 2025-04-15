@@ -1,6 +1,6 @@
 import React, { useEffect, lazy, Suspense, useState, useRef } from "react";
 import { IconButton } from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import Snackbar from '@mui/material/Snackbar';
 
 import Alert from "@mui/material/Alert";

@@ -1,6 +1,6 @@
 import React, { createContext, useState, useMemo } from "react";
 import { initial_state } from "../pages/Presupuesto/Initial_State.js";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 
 const PresupPantContext = createContext();
 
@@ -41,7 +41,7 @@ export default PresupPantContext;
 
 // import React, { createContext, useState } from "react";
 // import { initial_state } from "../pages/Presupuesto/Initial_State.js";
-// import Grid from '@mui/material/Grid2';
+// import Grid from "@mui/material/Grid";
 // const PresupPantContext = createContext();
 // export function PresupPant({ children }) {
 // 	const [state, setState] = useState(initial_state);

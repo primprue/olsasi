@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 // Context
 import { use } from "react";
 import PresupPant from "../../../../context/PresupPant";
@@ -26,7 +26,7 @@ export default function FilaCambPanio(props) {
 
 	return (
 		<>
-			<Grid span={{ xs: 2 }}>
+			<Grid span={{ xs: 4 }}>
 				<CustomSwitch
 					value={selectLNLA}
 					onChange={handleOptionChangeLNLA}
@@ -36,7 +36,7 @@ export default function FilaCambPanio(props) {
 					titulo2={'LA.'}
 					tithelpertext={'Lona : '} />
 			</Grid>
-			<Grid span={{ xs: 2 }}>
+			<Grid span={{ xs: 4 }}>
 				<CustomSwitch
 					value={selectOjal}
 					onChange={handleOptionChangeOjal}

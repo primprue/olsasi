@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import EstiloBoton from "../../Styles/Boton.module.css";
 
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import DialogTitle from "@mui/material/DialogTitle";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";

@@ -17,7 +17,6 @@ conexion.connect(function (err) {
 
 
 router.delete("/", function (req, res, next) {
-  var errores = []
   var respuesta = []
   var indice = req.query.id;
   var nombrepresup = 'Presupuesto\\ nro\\ ' + indice + '*.pdf'

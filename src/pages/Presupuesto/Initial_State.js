@@ -60,42 +60,42 @@ export const initial_state = {
   AnchoPared: 0,
   Medida: 0,
   Alto: 1.10,
-  TipoMedida: [
-    {
-      value: 'CC',
-      label: 'Chapas'
-    },
-    {
-      value: 'DI',
-      label: 'Diámetro Interno'
-    },
-    {
-      value: 'DE',
-      label: 'Diámetro Externo'
-    },
-    {
-      value: 'PE',
-      label: 'Perímetro Externo'
-    }
-  ],
-  TermBorde: [
-    {
-      value: 'SF',
-      label: 'Sin Forma'
-    },
-    {
-      value: 'CF',
-      label: 'Con Forma'
-    },
-    {
-      value: 'CFS',
-      label: 'Con Forma y Soga'
-    },
-    {
-      value: 'CFC',
-      label: 'Con Forma y Criquet'
-    }
-  ],
+  // TipoMedida: [
+  //   {
+  //     value: 'CC',
+  //     label: 'Chapas'
+  //   },
+  //   {
+  //     value: 'DI',
+  //     label: 'Diámetro Interno'
+  //   },
+  //   {
+  //     value: 'DE',
+  //     label: 'Diámetro Externo'
+  //   },
+  //   {
+  //     value: 'PE',
+  //     label: 'Perímetro Externo'
+  //   }
+  // ],
+  // TermBorde: [
+  //   {
+  //     value: 'SF',
+  //     label: 'Sin Forma'
+  //   },
+  //   {
+  //     value: 'CF',
+  //     label: 'Con Forma'
+  //   },
+  //   {
+  //     value: 'CFS',
+  //     label: 'Con Forma y Soga'
+  //   },
+  //   {
+  //     value: 'CFC',
+  //     label: 'Con Forma y Criquet'
+  //   }
+  // ],
 
   AnchoComederoEleg: '0.42',
   // AnchoComedero: [
@@ -121,7 +121,7 @@ export const initial_state = {
   PresupCantidad: 1.0,
   PresupVeces: 1.0,
   PresupTipo: "",
-  // DescripPresup: "",
+  DescripPresup: "",
   ImporteAnexo: 0.0,
   renglonanexo: [],
   DetalleAnexo: "",

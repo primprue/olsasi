@@ -10,7 +10,7 @@ import { llenarcolumns } from "./columns.jsx";
 import OrdTrabajo from "../../../context/OrdTrabajo.jsx";
 import OTFilaGral from "../OTFilas/OTFilaGral/OTFilaGral.jsx";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import OTFilasConf from "../OTFilasConf/OTFilasConf.jsx";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FitbitIcon from "@mui/icons-material/Fitbit";

@@ -18,8 +18,6 @@ import {
 } from "@mui/x-data-grid";
 
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
-import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
-import CompressSharpIcon from "@mui/icons-material/CompressSharp";
 import PlaylistAddCheckRoundedIcon from "@mui/icons-material/PlaylistAddCheckRounded";
 import PreviewTwoToneIcon from "@mui/icons-material/PreviewTwoTone";
 import { TablaMuestraRenglon } from "./TablaMuestraRenglon/index.jsx";
@@ -49,8 +47,9 @@ export default function PresupMuestra() {
 
 	const handleClose1 = () => {
 		setIsOpen(false);
+		console.log('estoy en handleClose1')
 		// Redirecciona a donde quieras cuando se cierra el componente
-		navigate("/OTrabajo");
+		navigate("/orden-trabajo/orden-trabajo");
 	};
 	//empiezan las cosas del sistema
 	async function columnsFetch() {
@@ -84,6 +83,7 @@ export default function PresupMuestra() {
 	};
 
 	const handleClose = () => {
+
 		dataFetch();
 		setOpen(!open);
 		if (otdatos.renglonespresup) {
@@ -92,11 +92,11 @@ export default function PresupMuestra() {
 	};
 
 	async function armanombre(rowsel) {
-		console.log('rowsel  ', rowsel)
 		let resultrescatenombre = await PresupNombre(rowsel);
 		if (resultrescatenombre.text === '[{"error":1}]')
 			alert(`El presupuesto nro ${rowsel.id} no se encuentra`);
-		else setPPreview({ ppreview: true });
+		else
+			setPPreview({ ppreview: true });
 	}
 
 	useEffect(() => {
@@ -116,11 +116,11 @@ export default function PresupMuestra() {
 							padding: '8px 0px 8px 0px'
 						}}
 					>
-						<Typography
+						{/* <Typography
 							className={estilotabla.titulo}
 						>
 							Muestra Presupuesto
-						</Typography>
+						</Typography> */}
 						<Box
 							sx={{
 								width: "80%",
@@ -175,7 +175,7 @@ export default function PresupMuestra() {
 			>
 				{isOpen && (
 					<DataGrid
-						autoHeight
+						// autoHeight
 						rows={rows}
 						columns={columns}
 
@@ -208,6 +208,7 @@ export default function PresupMuestra() {
 				<PresupPreview
 					open={ppreview.ppreview}
 					setOpen={setPPreview}
+					rowsel={rowsel}
 				></PresupPreview>
 			</Box>
 		</>

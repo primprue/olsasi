@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { copiafact } from "./CopiaFact";
 
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Dialog, GridListTile, TextField } from "@material-ui/core";
 import { DialogActions } from "@material-ui/core";

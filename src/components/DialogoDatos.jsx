@@ -2,17 +2,17 @@ import { useState, useRef } from "react";
 import { Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { ValidatedTextField } from "../hooks/useValidTextField";
 // import { Grid } from "@mui/material";
-import Grid from '@mui/material/Grid2';
+import Grid from "@mui/material/Grid";
 import MuestraMensaje from "./lib/MuestraMensaje";
-import { useContext } from "react";
+import { use } from "react";
 import { onRowAdd } from "./onRowAdd";
 import { onRowDelete } from "./onRowDelete";
 import TablasContexto from "../context/TablasContext";
 import estilos from "../Styles/Boton.module.css";
 export function DialogoDatos(props) {
-	const { formdatos, setFormdatos } = useContext(TablasContexto);
+	const { formdatos, setFormdatos } = use(TablasContexto);
 	const submitButtonRef = useRef(null);
-	const { datoborrado, setDatoborrado } = useContext(TablasContexto);
+	const { datoborrado, setDatoborrado } = use(TablasContexto);
 	const [selectedOption, setSelectedOption] = useState("");
 	const { open, handleClose, columns, nombrebtn, paramsbor, titulodial } = props;
 	const [error, setError] = useState({

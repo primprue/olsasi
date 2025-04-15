@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import {
 	DataGrid,

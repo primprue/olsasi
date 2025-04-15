@@ -5,31 +5,11 @@ import { Dialog, DialogTitle } from "@mui/material";
 import BCierraDialogo from "../../../Styles/Boton.module.css";
 import CloseIcon from "@mui/icons-material/Close";
 import { useLocation } from "react-router-dom";
-import { PresupBorradespPreview } from "./TablaPresup/PresupBorradespPreview";
 
 export const PresupPreview = (props) => {
-	var datos = props.rowsel;
-	var nombrepresupue = "";
-	var nombrepresupueb = "";
-	if (datos) {
-		var Clienteb = datos.NombreCliente.trimRight();
-		const Cliente = datos.NombreCliente.trim();
-		Clienteb = Cliente.replace(/ /g, "\\ ");
-		var fecha = datos.PresupEncabFecha
-		const filename = `Presupuesto nro ${datos.id} ${Cliente} ${fecha}.pdf`;
-		nombrepresupue = `/${encodeURIComponent(filename)}`;
-		nombrepresupueb = `/Presupuesto\\ nro\\ ${datos.id}\\ ${Clienteb}\\ ${fecha}.pdf`;
-	}
-	else {
-		nombrepresupue = `/basics.pdf`;
-	}
-	async function cierradialogo() {
-		if (nombrepresupue !== "/basics.pdf") {
-			await PresupBorradespPreview(nombrepresupue);
-		}
+	function cierradialogo() {
 		props.setOpen({ ppreview: false });
 	}
-
 
 
 	return (
@@ -48,7 +28,8 @@ export const PresupPreview = (props) => {
 				</DialogTitle>
 
 				<iframe
-					src={nombrepresupue}
+					key={Date.now()}
+					src="/basics.pdf"
 					title="Visualizador de PDF"
 					width="100%"
 					height="500px"

@@ -10,7 +10,7 @@ import {
 	RadioGroup,
 	TextField,
 } from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 
 import React, { useEffect, useState } from "react";
 import { useContext } from "react";

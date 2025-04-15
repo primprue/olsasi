@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { FormControl, FormLabel, ToggleButton, ToggleButtonGroup } from "@mui/material";
 
-const CustomSwitch = ({ value, onChange, opcion1, opcion2, opcion3, titulo1, titulo2, titulo3, tithelpertext }) => {
+const CustomSwitch = ({ value, onChange, opcion1, opcion2, opcion3, titulo1, titulo2, titulo3, ancho, tithelpertext }) => {
     const [selectedText, setSelectedText] = useState(titulo1);
 
     const handleChange = (event, newValue) => {
@@ -11,10 +11,10 @@ const CustomSwitch = ({ value, onChange, opcion1, opcion2, opcion3, titulo1, tit
             setSelectedText(event.target.textContent)
         }
     };
-    var colorbackeleg = "#a8aeec";
-    var colorbacknoeleg = "#fc2205"
-    var colorbacknoeleg2 = "#d8e1e9"
-
+    var colorbackeleg = "#a8aeecfd";
+    var colorbacknoeleg = "#05a1fc7a"
+    var colorbacknoeleg2 = "#ecf3f8be"
+    var colorbacknoeleg3 = "#0e046d"
     return (
         <FormControl fullWidth margin="dense">
             <FormLabel sx={{ color: "blue", fontWeight: "bold", fontSize: "15px", padding: "5px" }}>{tithelpertext} {selectedText}</FormLabel>
@@ -29,9 +29,21 @@ const CustomSwitch = ({ value, onChange, opcion1, opcion2, opcion3, titulo1, tit
                     sx={{
                         fontWeight: "bold",
                         backgroundColor: value === opcion1 ? colorbackeleg : colorbacknoeleg2,
-                        color: value === opcion1 ? "#fff" : colorbackeleg,
+                        color: value === opcion1 ? colorbacknoeleg3 : colorbackeleg,
+                        width: ancho,  // Ancho del botón
+                        height: "50px",  // Alto del botón
+                        border: `2px solid ${value === opcion1 ? colorbacknoeleg3 : colorbackeleg}`, // Borde en hover
+                        borderRadius: "5px", // Agregar bordes redondeados para evitar solapamientos
+
                         "&:hover": {
                             backgroundColor: value === opcion1 ? colorbacknoeleg : colorbacknoeleg2,
+                            color: value === opcion1 ? colorbacknoeleg3 : colorbackeleg, // Asegura que cambie en hover también
+                        },
+                        "&.Mui-selected": {
+                            color: colorbacknoeleg3, // Color cuando está seleccionado
+                        },
+                        "&.Mui-selected:hover": {
+                            color: colorbacknoeleg3, // Color cuando está seleccionado y en hover
                         },
                     }}
 
@@ -42,10 +54,22 @@ const CustomSwitch = ({ value, onChange, opcion1, opcion2, opcion3, titulo1, tit
                     value={opcion2}
                     sx={{
                         fontWeight: "bold",
+
                         backgroundColor: value === opcion2 ? colorbackeleg : colorbacknoeleg2,
-                        color: value === opcion2 ? "#fff" : colorbackeleg,
+                        color: value === opcion2 ? colorbacknoeleg3 : colorbackeleg,
+                        width: ancho,  // Ancho del botón
+                        height: "50px",  // Alto del botón
+                        border: `2px solid ${value === opcion2 ? colorbacknoeleg3 : colorbackeleg}`, // Borde en hover
+                        borderRadius: "5px", // Agregar bordes redondeados para evitar solapamientos
                         "&:hover": {
-                            backgroundColor: value === opcion2 ? colorbacknoeleg : colorbacknoeleg2,
+                            backgroundColor: value === opcion1 ? colorbacknoeleg : colorbacknoeleg2,
+                            color: value === opcion1 ? colorbacknoeleg3 : colorbackeleg, // Asegura que cambie en hover también
+                        },
+                        "&.Mui-selected": {
+                            color: colorbacknoeleg3, // Color cuando está seleccionado
+                        },
+                        "&.Mui-selected:hover": {
+                            color: colorbacknoeleg3, // Color cuando está seleccionado y en hover
                         },
                     }}
 
@@ -58,9 +82,20 @@ const CustomSwitch = ({ value, onChange, opcion1, opcion2, opcion3, titulo1, tit
                         sx={{
                             fontWeight: "bold",
                             backgroundColor: value === opcion3 ? colorbackeleg : colorbacknoeleg2,
-                            color: value === opcion3 ? "#fff" : colorbackeleg,
+                            color: value === opcion3 ? colorbacknoeleg3 : colorbackeleg,
+                            width: ancho,  // Ancho del botón
+                            height: "50px",  // Alto del botón
+                            border: `2px solid ${value === opcion3 ? colorbacknoeleg3 : colorbackeleg}`, // Borde en hover
+                            borderRadius: "5px", // Agregar bordes redondeados para evitar solapamientos
                             "&:hover": {
-                                backgroundColor: value === opcion3 ? colorbacknoeleg : colorbacknoeleg2,
+                                backgroundColor: value === opcion1 ? colorbacknoeleg : colorbacknoeleg2,
+                                color: value === opcion1 ? colorbacknoeleg3 : colorbackeleg, // Asegura que cambie en hover también
+                            },
+                            "&.Mui-selected": {
+                                color: colorbacknoeleg3, // Color cuando está seleccionado
+                            },
+                            "&.Mui-selected:hover": {
+                                color: colorbacknoeleg3, // Color cuando está seleccionado y en hover
                             },
                         }}
                     >

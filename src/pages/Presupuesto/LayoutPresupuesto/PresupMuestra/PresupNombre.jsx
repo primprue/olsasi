@@ -7,55 +7,83 @@ export const PresupNombre = (datos) => {
 	if (datos) {
 		var Cliente = datos.NombreCliente.trimRight();
 		Cliente = Cliente.replace(/ /g, "\\ ");
-		nombrepresupue = `Presupuesto\\ nro\\ ${datos.id}*.pdf`;
-		//nombrepresupue = 'Presupuesto nro ' + datos.id + '*.pdf';
-		// `\\ ${Cliente}\\ ${datos.PresupEncabFecha}\\.pdf`;
+		var fecha = datos.PresupEncabFecha
 
-		// nombrepresupue =
-		// 	"Presupuesto nro " +
-		// 	datos.id +
-		// 	" " +
-		// 	Cliente +
-		// 	" " +
-		// 	datos.PresupEncabFecha +
-		// 	" .pdf";
+		nombrepresupue = `Presupuesto\\ nro\\ ${datos.id}\\ ${Cliente}\\ ${fecha}.pdf`;
+		// nombrepresupue = `Presupuesto\\ nro\\ ${datos.id}*.pdf`;
+
+		// nombrepresupue = encodeURIComponent(nombrepresupue);
+		return new Promise((resolve) => {
+			setTimeout(() => {
+				const url = IpServidor + "/presupnombre/?id=" + nombrepresupue;
+				request
+					.get(url)
+					.set("Content-Type", "application/json")
+					.then((res) => {
+						resolve(res);
+					});
+			}, 1000);
+		});
 	}
-	// Presupuesto\ nro\ 6372\ la\ luna\ verde\ 19-02-2024\ .pdf
-	console.log('nombrepresupue antes de codificar', nombrepresupue)
-	// nombrepresupue = encodeURIComponent(nombrepresupue);
-	console.log('nombrepresupue', nombrepresupue)
-	return new Promise((resolve) => {
-		setTimeout(() => {
-			const url = IpServidor + "/presupnombre/?id=" + nombrepresupue;
-			console.log('url en PresupNombre', url)
-			request
-				.get(url)
-				.set("Content-Type", "application/json")
-				.then((res) => {
-					resolve(res);
-				});
-		}, 1000);
-	});
+}
 
-	// const remoteFilePath =
-	// 	"http://192.168.2.11/home/sandra/Documentos/OLSAFrecuentes/PresupSistema/Presupuesto nro 6922*.pdf";
-	// const localFilePath = "/home/sandra/SistOLSA/olsasi/public/basics.pdf"; // Cambia la ruta según tu directorio de la aplicación
+/*traido de olsasg
+import request from "superagent";
 
-	// fetch(remoteFilePath)
-	// 	.then((response) => {
-	// 		if (!response.ok) {
-	// 			throw new Error(`HTTP error! Status: ${response.status}`);
-	// 		}
-	// 		return response.arrayBuffer();
-	// 	})
-	// 	.then((buffer) => {
-	// 		// Guardar el archivo localmente
-	// 		fs.writeFileSync(localFilePath, Buffer.from(buffer));
+import IpServidor from "../../../VariablesDeEntorno";
 
-	// 		console.log("Descarga completada");
-	// 		// Aquí puedes integrar lógica de React para mostrar el PDF en un iframe
-	// 	})
-	// 	.catch((error) => {
-	// 		console.error("Error al descargar el archivo:", error);
-	// 	});
-};
+
+export const PresupNombre = (nombrepresup) => {
+console.log('estoy en PresupNombre nombrepresup ', nombrepresup)
+var nombrepresupue = "Presupuesto\\ nro\\ " + nombrepresup + "*.pdf";
+console.log('estoy en PresupNombre  ', nombrepresupue)
+return new Promise(resolve => {
+	setTimeout(() => {
+		const url = IpServidor + "/presupnombre/?id=" + nombrepresupue
+		request
+			.get(url)
+			.set("Content-Type", "application/json")
+			.then(res => {
+				console.log('estoy en PresupNombre res ', res)
+				resolve(res.text);
+			});
+	}, 1000);
+});
+}
+
+
+*/
+// const remoteFilePath =
+// 	"http://192.168.2.11/home/sandra/Documentos/OLSAFrecuentes/PresupSistema/Presupuesto nro 6922*.pdf";
+// const localFilePath = "/home/sandra/SistOLSA/olsasi/public/basics.pdf"; // Cambia la ruta según tu directorio de la aplicación
+
+// fetch(remoteFilePath)
+// 	.then((response) => {
+// 		if (!response.ok) {
+// 			throw new Error(`HTTP error! Status: ${response.status}`);
+// 		}
+// 		return response.arrayBuffer();
+// 	})
+// 	.then((buffer) => {
+// 		// Guardar el archivo localmente
+// 		fs.writeFileSync(localFilePath, Buffer.from(buffer));
+
+// 		console.log("Descarga completada");
+// 		// Aquí puedes integrar lógica de React para mostrar el PDF en un iframe
+// 	})
+// 	.catch((error) => {
+// 		console.error("Error al descargar el archivo:", error);
+// 	});
+//nombrepresupue = 'Presupuesto nro ' + datos.id + '*.pdf';
+// `\\ ${Cliente}\\ ${datos.PresupEncabFecha}\\.pdf`;
+
+// nombrepresupue =
+// 	"Presupuesto nro " +
+// 	datos.id +
+// 	" " +
+// 	Cliente +
+// 	" " +
+// 	datos.PresupEncabFecha +
+// 	" .pdf";
+
+// Presupuesto\ nro\ 6372\ la\ luna\ verde\ 19-02-2024\ .pdf

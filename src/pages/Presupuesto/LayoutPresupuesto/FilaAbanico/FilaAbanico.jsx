@@ -5,7 +5,7 @@ import {
 	FormControlLabel,
 	TextField,
 } from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import swal from "sweetalert";
 import estilo from "../../../../Styles/TextFieldSelect.module.css";
 import estiloI from "../../../../Styles/RadioGroup.module.css";

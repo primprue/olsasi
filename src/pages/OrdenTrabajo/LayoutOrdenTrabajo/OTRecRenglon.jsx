@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import React from "react";
-import { useContext } from "react";
+import { use } from "react";
 import OrdTrabajo from "../../../context/OrdTrabajo.jsx";
 import { OTLeeEncPresup } from "./OTLeeEncPresup.jsx";
 import { Box, Button, Paper, TextField } from "@mui/material";
@@ -18,7 +18,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function OTRecRenglon() {
-	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
+	const { otdatos, setOTdatos } = use(OrdTrabajo);
 	async function datosencab() {
 		//acá lee el encabezado del preuspuesto y los datos del cliente
 		const encabezamiento = await OTLeeEncPresup(
@@ -154,22 +154,22 @@ export default function OTRecRenglon() {
 					</Box>
 				)) ||
 					((<></>),
-					(
-						<Box
-							height={50}
-							width={1600}
-							my={4}
-							display="flex"
-							alignItems="center"
-							gap={4}
-							p={2}
-							sx={{ border: "2px solid grey" }}
-						>
-							<Item>
-								Cliente: {otdatos.datosencab[0][0].PresupEncabCliente}
-							</Item>
-						</Box>
-					))}
+						(
+							<Box
+								height={50}
+								width={1600}
+								my={4}
+								display="flex"
+								alignItems="center"
+								gap={4}
+								p={2}
+								sx={{ border: "2px solid grey" }}
+							>
+								<Item>
+									Cliente: {otdatos.datosencab[0][0].PresupEncabCliente}
+								</Item>
+							</Box>
+						))}
 				<OTDataGrid />
 				{/* data={otdatos.renglonespresup} */}
 			</div>

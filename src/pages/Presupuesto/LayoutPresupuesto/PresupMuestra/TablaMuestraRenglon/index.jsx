@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 import estilotabla from "../../../../../Styles/Tabla.module.css";
 import {
 	Box,
@@ -13,14 +13,18 @@ import { DataGrid, GridToolbarContainer } from "@mui/x-data-grid";
 import { presuprenglonleer } from "./PresupRenglonLeer.jsx";
 import { llenarcolumns } from "./columns.jsx";
 import { PresupBorrar } from "../PresupBorrar.jsx";
-import { useContext } from "react";
+import { use } from "react";
 import OrdTrabajo from "../../../../../context/OrdTrabajo.jsx";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-	return <Slide direction="up" ref={ref} {...props} />;
-});
+// const Transition = React.forwardRef(function Transition(props, ref) {
+// 	return <Slide direction="up" ref={ref} {...props} />;
+// });
+// const Transition = forwardRef((props, ref) => (
+// 	<Slide direction="up" ref={ref} {...props} />
+// ));
+
 export function TablaMuestraRenglon(props) {
-	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
+	const { otdatos, setOTdatos } = use(OrdTrabajo);
 	const { open, handleClose, Presup, origen } = props;
 	const [renglon, setRenglon] = useState([]);
 	const [columns, setColumns] = useState([]);
@@ -83,7 +87,7 @@ export function TablaMuestraRenglon(props) {
 				fullWidth={true}
 				maxWidth={"xl"}
 				open={open}
-				TransitionComponent={Transition}
+				// TransitionComponent={Transition}
 				keepMounted
 				onClose={handleClose}
 				aria-labelledby="alert-dialog-slide-title"
@@ -123,13 +127,13 @@ export function TablaMuestraRenglon(props) {
 							Borrar
 						</Button>
 					)) || (
-						<Button
-							onClick={AceptaItemOT}
-							className={estilotabla.botontablamuestrarenglon}
-						>
-							Aceptar
-						</Button>
-					)}
+							<Button
+								onClick={AceptaItemOT}
+								className={estilotabla.botontablamuestrarenglon}
+							>
+								Aceptar
+							</Button>
+						)}
 				</DialogActions>
 			</Dialog>
 		</div>

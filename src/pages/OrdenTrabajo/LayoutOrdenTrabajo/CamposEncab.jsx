@@ -1,6 +1,6 @@
 import { InputAdornment, TextField, Typography } from "@mui/material";
 import estilos1 from "../../../Styles/CampoDinamico.module.css";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import React from "react";
 
 export function CampoEncab({ arregloencab, nropresup }) {

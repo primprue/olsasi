@@ -4,7 +4,7 @@ import OrdTrabajo from "../../../../context/OrdTrabajo.jsx";
 import { llenarcolumns } from "../../../Tablas/Clientes/columns.jsx";
 import { formdata } from "../../../Tablas/Clientes/formdata.js";
 import { Button, TextField } from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import { ClientesLeer } from "../../../Tablas/Clientes/ClientesLeer.jsx";
 import { clientesleercod } from "../../../Tablas/Clientes/ClientesLeerCod.jsx";
 import { leerTransporte } from "../../../Tablas/Transporte/TransporteLeer.jsx";

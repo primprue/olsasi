@@ -1,160 +1,162 @@
-import React from "react";
-import { TextField } from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import React, { useEffect, useRef, useState } from "react";
+import Grid from "@mui/material/Grid";
 
-import estilo from "../../../../Styles/TextFieldSelect.module.css";
-import estiloII from "../../../../Styles/TextField.module.css";
 // Context
-import { useContext } from "react";
+import { use } from "react";
 import PresupPant from "../../../../context/PresupPant";
+import TextFieldSelect from "../../../../components/comppropios/TextFieldSelect";
+import { PresupParCalcLee } from "../PresupParCalc/PresupParCalcLee";
+import TextFieldComun from "../../../../components/comppropios/TextFieldComun";
 
 export default function FilaTanques() {
-	//  const [selectedValue, setSelectedValue] = React.useState("PVC05");
-	const { state, setState } = useContext(PresupPant);
-	// const [setFaja] = React.useState('2P');
+	const { state, setState } = use(PresupPant);
 
-	// const [AnchoPared, setAnchoPared] = React.useState(0.20)
-	// const [DetallePresup, setDetallePresup] = React.useState('')
+	const tipomedida = useRef(false);
+	const bustipomedida = useRef();
 
-	const handleChange = (event) => {
-		const id = event.target.id;
-		setState({ ...state, [id]: event.target.value });
+	const termborde = useRef(false);
+	const bustermborde = useRef();
+
+	async function leeparacalcular() {
+		var result = await PresupParCalcLee('TipoMedida');
+		bustipomedida.current = result
+		result = await PresupParCalcLee('TermBorde');
+		bustermborde.current = result
+	}
+	useEffect(() => {
+		leeparacalcular()
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+	let tipomedidatanque = [];
+
+	if (bustipomedida.current !== undefined) {
+		if (bustipomedida.current.length > 0) {
+			tipomedida.current = true;
+			tipomedidatanque = [{
+				id: "TipoMedidaEleg",
+				label: "Medida de :",
+				value: bustipomedida.current[0].value,
+				options: bustipomedida.current.map((option) => ({
+					value: option.value,
+					label: option.label
+				}))
+			}];
+
+		}
+	}
+
+
+	let terminacionborde = [];
+
+	if (bustermborde.current !== undefined) {
+		if (bustermborde.current.length > 0) {
+			termborde.current = true;
+			terminacionborde = [{
+				id: "TermBordeEleg",
+				label: "Terminación :",
+				value: bustermborde.current[0].value,
+				options: bustermborde.current.map((option) => ({
+					value: option.value,
+					label: option.label
+				}))
+			}];
+
+		}
+	}
+
+
+	const [selectedValues, setSelectedValues] = useState({});
+	const handleSelectChange = (value, id) => {
+		setState({ ...state, [id]: value });
+		setSelectedValues((prev) => ({
+			...prev,
+			[id]: value,
+		}));
+
 	};
-
-	const tipomedidatanque = [
-		{
-			id: "TipoMedidaEleg",
-			label: "Medida de :",
-			value: state.value,
-			mapeo: (
-				<>
-					<option></option>
-					{state.TipoMedida.map((option) => (
-						<option key={option.value} value={option.value}>
-							{option.label}
-						</option>
-					))}
-				</>
-			),
-		},
-	];
-
-	const terminacionborde = [
-		{
-			id: "TermBordeEleg",
-			label: "Terminación :",
-			value: state.value,
-			mapeo: (
-				<>
-					<option></option>
-					{state.TermBorde.map((option) => (
-						<option key={option.value} value={option.value}>
-							{option.label}
-						</option>
-					))}
-				</>
-			),
-		},
-	];
+	const handleChange = (value, id) => {
+		setState({ ...state, [id]: value });
+	};
 
 	return (
 		<>
 			<Grid container spacing={2}>
-				<Grid >
-					{tipomedidatanque.map((data) => (
-						<TextField
-							id={data.id}
-							key={data.id}
-							size="small"
-							select
-							label={data.label}
-							margin="dense"
-							value={data.value}
-							onChange={handleChange}
-							className={estilo.selectField}
-							InputLabelProps={{
-								className: estilo.selectLabel,
-							}}
-							SelectProps={{
-								native: true,
-								className: estilo.menuItem,
-							}}
-							variant="outlined"
-							helperText="Qué medida tenemos?"
-						>
-							{data.mapeo}
-						</TextField>
-					))}
-				</Grid>
+				{/* <Grid > */}
 				<Grid span={{ xs: 2 }}>
-					{terminacionborde.map((data) => (
-						<TextField
-							id={data.id}
-							key={data.id}
-							size="small"
-							select
-							label={data.label}
-							margin="dense"
-							value={data.value}
-							onChange={handleChange}
-							className={estilo.selectField}
-							InputLabelProps={{
-								className: estilo.selectLabel,
-							}}
-							SelectProps={{
-								native: true,
-								className: estilo.menuItem,
-							}}
-							variant="outlined"
-							helperText="Cómo termina el Bolsón"
-						>
-							{data.mapeo}
-						</TextField>
-					))}
-				</Grid>
-				<Grid span={{ xs: 2 }}>
-					<TextField
-						input={{ maxLength: 3 }}
-						size="small"
-						variant="outlined"
-						id="AnchoPared"
-						margin="dense"
-						label="Pared en cm : "
-						// fullWidth
-						value={state.AnchoPared}
-						onChange={handleChange}
-						className={estiloII.textfcantidad}
-						helperText="Si tiene pared"
-					/>
+					{tipomedida.current === true &&
+						(
+							tipomedidatanque.map(({ id, label, value, options }) => (
+								<TextFieldSelect
+									key={id}
+									id={id}
+									label={label}
+									value={selectedValues[id] ?? value ?? ""}
+									onChange={handleSelectChange}
+									options={options}
+									width="200px"
+									helperText="Qué medida tenemos?"
+								/>
+							))
+						)}
+
+
 				</Grid>
 
 				<Grid span={{ xs: 2 }}>
-					<TextField
-						input={{ maxLength: 5 }}
-						size="small"
-						variant="outlined"
+					{termborde.current === true &&
+
+						(
+							terminacionborde.map(({ id, label, value, options }) => (
+								<TextFieldSelect
+									key={id}
+									id={id}
+									label={label}
+									value={selectedValues[id] ?? value ?? ""}
+									onChange={handleSelectChange}
+									options={options}
+									width="230px"
+									helperText="Cómo termina el Bolsón"
+								/>
+							))
+						)}
+
+				</Grid>
+				<Grid span={{ xs: 2 }}>
+					<TextFieldComun
+						id="AnchoPared"
+						type="number"
+						label="Pared en cm :  "
+						value={state.AnchoPared}
+						onChange={handleChange}
+						helperText="Si tiene pared"
+						width="120px"
+					/>
+
+				</Grid>
+
+				<Grid span={{ xs: 2 }}>
+					<TextFieldComun
 						id="Medida"
-						margin="dense"
+						type="number"
 						label="Medida/Cant."
 						value={state.Medida}
 						onChange={handleChange}
-						className={estiloII.textfcantidad}
-						helperText="Medida o Cantidad de chapas"
+						helperText="Med./Cant. chapas"
+						width="150px"
 					/>
+
 				</Grid>
 				<Grid span={{ xs: 2 }}>
-					<TextField
-						input={{ maxLength: 4 }}
-						size="small"
-						variant="outlined"
+					<TextFieldComun
 						id="Alto"
-						margin="dense"
+						type="number"
 						label="Alto"
 						value={state.Alto}
 						onChange={handleChange}
-						className={estiloII.textfcantidad}
 						helperText="Altura del tanque"
+						width="150px"
 					/>
+
 				</Grid>
 			</Grid>
 		</>

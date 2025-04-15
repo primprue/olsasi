@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PantallaIngreso from "./LayoutMovStock/Ingreso/PantallaMovimiento.jsx";
 // import SalidaDisponible from "./LayoutMovStock/SalidaDisp/SalidaDisponible";
 
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 
 import { Button } from "@mui/material";
 import AssignmentReturnedIcon from "@mui/icons-material/AssignmentReturned";

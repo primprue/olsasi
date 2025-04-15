@@ -6,12 +6,11 @@ export function OTDatosAgregar(props) {
 	return new Promise(function () {
 		setTimeout(() => {
 			const { OTDatosTipoConf, OTDatosConfCod, OTDatosDesc, OTDatosOpciones, OTDatosTipoPed, OTDatosRequerido, OTDatosOrdenAparicion, OTDatosAncho } = props;
-			const url = IpServidor + "/otcondpagoagregar";
+			const url = IpServidor + "/otdatosagregar";
 			request
 				.post(url)
 				.set("Content-Type", "application/json")
 				.send({ OTDatosTipoConf: OTDatosTipoConf })
-				.send({ OTDatosConfCod: OTDatosConfCod })
 				.send({ OTDatosConfCod: OTDatosConfCod })
 				.send({ OTDatosDesc: OTDatosDesc })
 				.send({ OTDatosOpciones: OTDatosOpciones })

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import leePresupConfTipoLeerDesc from "../../leePresupConfTipoLeerDesc";
 import leePresupConfTipoLeeAnexo from "../../leePresupConfTipoLeeAnexo";
 // Context

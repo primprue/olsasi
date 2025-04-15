@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { initial_state } from "./Initial_State";
 import PantallaInicial from "./PantallaInicial.jsx";
 
-import Grid from '@mui/material/Grid2';
+import Grid from "@mui/material/Grid";
 import { useContext } from "react";
 import StaticContexto from "../../context/StaticContext.jsx";
 

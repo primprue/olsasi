@@ -4,21 +4,27 @@ import { llenarcolumns } from "./columns.jsx";
 import { useEffect } from "react";
 import { useState } from "react";
 
-import { useContext } from "react";
+import { use } from "react";
 import PresupPant from "../../../context/PresupPant.jsx";
 import FilaUnoIzq from "../../Presupuesto/LayoutPresupuesto/FilaUno/FilaUnoIzq.jsx";
-import { Button, TextField } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import { formdata } from "./formdata.js";
 import TablaMuestra from '../../../components/TablaMuestra.jsx';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { set } from 'date-fns';
 import OTDatosAgregarForm from './OTDatosAgregarForm.jsx';
 import FitbitIcon from "@mui/icons-material/Fitbit";
 import { deepOrange, red, blue, green, purple } from "@mui/material/colors";
 import OTDatosAgrOpc from './OTDatosAgrOpc.jsx';
+import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
+import AddToPhotosTwoToneIcon from "@mui/icons-material/AddToPhotosTwoTone";
+import CheckCircleTwoToneIcon from "@mui/icons-material/CheckCircleTwoTone";
+import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
+import PreviewTwoToneIcon from "@mui/icons-material/PreviewTwoTone";
+import estilotabla from "../../../Styles/Tabla.module.css";
 import { DialogoDatos } from '../../../components/DialogoDatos.jsx';
 export default function OTDatosForm() {
-    const { state, setState } = useContext(PresupPant);
+    const { state, setState } = use(PresupPant);
     const [abreagregar, setAbreagregar] = useState(false);
     const [abreagregaritem, setAbreagregarItem] = useState(false);
     const [formdatos, setFormdatos] = useState(formdata);
@@ -138,6 +144,61 @@ export default function OTDatosForm() {
     const handleClickOpen = () => {
         setAbreagregar(true);
     };
+    function CustomToolbar() {
+        return (
+            <GridToolbarContainer className={estilotabla.tablasgenerales}>
+                <Box
+                    sx={{
+                        width: "100%",
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'left',
+                        padding: '8px 0px 8px 0px'
+                    }}
+                >
+                    <Box
+                        sx={{
+                            width: "80%",
+                            display: 'flex',
+                            justifyContent: 'right',
+                            alignItems: 'right',
+                            padding: '8px'
+                        }}
+                    >
+
+                        <GridToolbarColumnsButton className={estilotabla.coloropcioncol} />
+                        <GridToolbarFilterButton className={estilotabla.coloropcioncol} />
+                        <GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
+                        <GridToolbarExport className={estilotabla.coloropcioncol} />
+                        <AddToPhotosTwoToneIcon
+                            className={estilotabla.iconoagregar}
+                            size="large"
+                            titleAccess="Agregar"
+                            onClick={() => handleAlta()}
+                        />
+                        <CheckCircleTwoToneIcon
+                            variant="contained"
+                            titleAccess="Confirma Modificación"
+                            className={estilotabla.iconomodificar}
+                            onClick={() => handleModifica(rown)}
+                        />
+
+                        <LocalPrintshopRoundedIcon
+                            onClick={() => setImprimirTF(true)}
+                            className={estilotabla.iconoimpresora}
+                            titleAccess="Imprimir"
+                        />
+                        <DeleteSharpIcon
+                            variant="contained"
+                            titleAccess="Borrar"
+                            className={estilotabla.iconoborrar}
+                            onClick={() => handleDelete(rowsel)}
+                        />
+                    </Box>
+                </Box>
+            </GridToolbarContainer>
+        );
+    }
 
     return (
         <div style={{ marginTop: "20px", marginLeft: "20px" }}>
@@ -148,6 +209,9 @@ export default function OTDatosForm() {
                     columns={columns}
                     processRowUpdate={handleProcessRowUpdate}
                     pageSize={5}
+                    slots={{
+                        toolbar: CustomToolbar,
+                    }}
                 />
             }
             {/* <DialogoDatos

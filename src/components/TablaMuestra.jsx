@@ -68,14 +68,14 @@ import { esES } from '@mui/material/locale';
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { DialogoDatos } from "./DialogoDatos.jsx";
-import { useContext } from "react";
+import { use } from "react";
 import TablasContexto from "../context/TablasContext.jsx";
 import SelecCampos from "../pages/Impresion/SelecCampos.jsx";
 import { Box, Button, IconButton, Tooltip } from "@mui/material";
 import { PBSubRubrosModificar } from "../pages/Tablas/PBSubRubros/PBSubRubrosModificar.jsx";
 export default function TablaMuestra(props) {
 	const { rows1, columns1, formdatos } = props;
-	const { datoborrado, setDatoborrado } = useContext(TablasContexto);
+	const { datoborrado, setDatoborrado } = use(TablasContexto);
 	const [imprimirTF, setImprimirTF] = useState(false);
 	const [columns, setColumns] = useState([]);
 	const [rows, setRows] = useState([]);
@@ -280,11 +280,11 @@ export default function TablaMuestra(props) {
 						padding: '8px 0px 8px 0px'
 					}}
 				>
-					<Typography
+					{/* <Typography
 						className={estilotabla.titulo}
 					>
 						{formdatos.titulotabla}
-					</Typography>
+					</Typography> */}
 
 					<Box
 						sx={{
@@ -360,7 +360,7 @@ export default function TablaMuestra(props) {
 				align: "center",
 				justifycontent: "center",
 				boxShadow: 5,
-				padding: 5,
+				padding: 1,
 			}}
 		>
 			< DataGrid

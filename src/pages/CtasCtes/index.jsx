@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Grid from '@mui/material/Grid2';
+import Grid from "@mui/material/Grid";
 import { useContext } from "react";
 import StaticContexto from "../../context/StaticContext.jsx";
 import PantallaInicial from "./PantallaInicial.jsx";

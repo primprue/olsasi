@@ -1,22 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-
-	Radio,
-	RadioGroup,
-	FormControlLabel,
-	TextField,
-	Checkbox,
-} from "@mui/material";
-import Grid from "@mui/material/Grid2";
-import styles from "../styles.module.css";
+import Grid from "@mui/material/Grid";
 import { stkrubroleelat } from "../../../Tablas/StkRubros/StkRubroLeeLAT";
 // Context
 import { use } from "react";
 import PresupPant from "../../../../context/PresupPant";
-import estilo from "../../../../Styles/TextFieldSelect.module.css";
-import estiloI from "../../../../Styles/RadioGroup.module.css";
-import estiloII from "../../../../Styles/TextField.module.css";
-import estiloIII from "../../../../Styles/Check.module.css";
 import TextFieldComun from "../../../../components/comppropios/TextFieldComun";
 import TextFieldSelect from "../../../../components/comppropios/TextFieldSelect";
 import TildeSiNo from "../../../../components/comppropios/TildeSiNo";
@@ -107,7 +94,6 @@ export default function FilaLateral() {
 
 	const handleChecked = (event) => {
 		// setColocacion(event);
-		console.log('event', event)
 		setState({ ...state, colocacion: event });
 	}
 
@@ -229,18 +215,7 @@ export default function FilaLateral() {
 						label="Colocación?"
 						id="colocacion"
 					/>
-					{/* <FormControlLabel
-						className={estiloIII.formControlLabelCheck}
-						control={
-							<Checkbox
-								className={estiloIII.check}
-								checked={chcolocacion}
-								onChange={handleChecked}
-								name="checkedColocacion"
-							/>
-						}
-						label="Colocación?"
-					/> */}
+
 				</Grid>
 			</Grid>
 

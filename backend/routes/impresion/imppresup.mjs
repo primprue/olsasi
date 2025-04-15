@@ -55,7 +55,7 @@ router.post("/", function (req, res, next) {
 
     var maymin = req.body.PresupMnMy
     var d = new Date();
-    var Fecha = dateFormat(d, "dd-mm-yyyy ");
+    var Fecha = dateFormat(d, "dd-mm-yyyy");
     var condicionpago1 = []
     var tipoleygral = 0
     var operador = ''
@@ -415,7 +415,7 @@ router.post("/", function (req, res, next) {
     // pdfDoc.pipe(fs.createWriteStream('/home/sandra/SistOLSA/olsasi/public/basics.pdf'));
     // pdfDoc.pipe(fs.createWriteStream('/home/sandra/SistOLSA/OlsaSG/src/components/Main/pages/Presupuesto/static/media/basics.pdf'));
     // pdfDoc.pipe(fs.createWriteStream(('/home/sandra/Documentos/OLSAFrecuentes/PresupSistema/' + nombrepresup)));
-    pdfDoc.pipe(fs.createWriteStream((variables.caminoynombrearch + 'basics.pdf')));
+    pdfDoc.pipe(fs.createWriteStream((variables.caminoynombrearch + '/basics.pdf')));
     // pdfDoc.pipe(fs.createWriteStream(('/home/sandra/SistOLSA/olsasi/dist/basics.pdf')));
     pdfDoc.pipe(fs.createWriteStream((variables.dirpresupdocumento + nombrepresup)));
 

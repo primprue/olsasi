@@ -20,14 +20,14 @@ import FilaCuatro from "../FilaCuatro/FilaCuatro";
 import { PresupPreview } from "../PresupPreview";
 import FilaAnexo from "../FilaAnexo/FilaAnexo";
 // Context
-import { useContext } from "react";
+import { use } from "react";
 import PresupPant from "../../../../context/PresupPant.jsx";
 import { Box, Typography } from "@mui/material";
 
 
 export default function TablaPresup(props) {
-	const { state } = useContext(PresupPant);
-	const { datosrenglon, setDatosRenglon } = useContext(PresupPant);
+	const { state } = use(PresupPant);
+	const { datosrenglon, setDatosRenglon } = use(PresupPant);
 	const [anexos, setAnexos] = useState({ anexos: false });
 	const [ppreview, setPPreview] = useState({ ppreview: false });
 	const [filacuatro, setFilacuatro] = useState({ filacuatro: false });
@@ -37,7 +37,7 @@ export default function TablaPresup(props) {
 		setColumns(() => col);
 	}
 	// const [suma, setSuma] = useState(0);
-	const { suma, setSuma } = useContext(PresupPant);
+	const { suma, setSuma } = use(PresupPant);
 
 	const BorraFila = () => {
 		// var datosrenglon1 = [];

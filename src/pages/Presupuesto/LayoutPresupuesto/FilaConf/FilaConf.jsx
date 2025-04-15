@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Radio, RadioGroup, FormControlLabel } from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import estilo from "../../../../Styles/RadioGroup.module.css";
 // Context
 import { use } from "react";

@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import estilo from "../../Styles/TextField.module.css";
 
-import { green } from "@mui/material/colors";
 import { FormControl, FormLabel, TextField, Tooltip } from "@mui/material";
 const TextFieldComunChico = ({ id, type, label, value, onChange, tooltip, width = "80%", ...other }) => {
 
@@ -16,7 +15,6 @@ const TextFieldComunChico = ({ id, type, label, value, onChange, tooltip, width 
                 key={id}
                 id={id}
                 type={type}
-                // label={label}
                 value={value}
                 onChange={(event) => {
                     onChange(event.target.value, id);

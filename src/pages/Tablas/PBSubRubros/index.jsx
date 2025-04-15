@@ -4,13 +4,13 @@ import { llenarcolumns } from "./columns.jsx";
 import { useEffect } from "react";
 import { useState } from "react";
 
-import { useContext } from "react";
+import { use } from "react";
 import TablasContexto from "../../../context/TablasContext.jsx";
 import { formdata } from "./formdata.js";
 
 import TablaMuestra from "../../../components/TablaMuestra.jsx";
 export default function PBSubRubros() {
-	const { formdatos, setFormdatos } = useContext(TablasContexto);
+	const { formdatos, setFormdatos } = use(TablasContexto);
 	const [rows, setRows] = React.useState([]);
 	const [columns, setColumns] = useState([]);
 	//empiezan las cosas del sistema

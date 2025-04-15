@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 
-import Grid from "@mui/material/Grid2";
-import { useContext } from "react";
+import Grid from "@mui/material/Grid";
+import { use } from "react";
 import StaticContexto from "../../context/StaticContext.jsx";
 import OTRecRenglon from "./LayoutOrdenTrabajo/OTRecRenglon.jsx";
 import OrdTrabajo from "../../context/OrdTrabajo";
 export default function OTrabajo() {
-	const { setValor } = useContext(StaticContexto);
-	// const { otdatos, setOTdatos } = useContext(OrdTrabajo);
-	const { inicializaOT } = useContext(OrdTrabajo);
+	const { setValor } = use(StaticContexto);
+	// const { otdatos, setOTdatos } = use(OrdTrabajo);
+	const { inicializaOT } = use(OrdTrabajo);
 
 	useEffect(() => {
 		setValor("Orden de Trabajo");
