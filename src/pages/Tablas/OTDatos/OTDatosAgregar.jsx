@@ -3,6 +3,7 @@ import IpServidor from "../../VariablesDeEntorno";
 import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 
 export function OTDatosAgregar(props) {
+	console.log('props OTDatosAgregar  ', props)
 	return new Promise(function () {
 		setTimeout(() => {
 			const { OTDatosTipoConf, OTDatosConfCod, OTDatosDesc, OTDatosOpciones, OTDatosTipoPed, OTDatosRequerido, OTDatosOrdenAparicion, OTDatosAncho } = props;

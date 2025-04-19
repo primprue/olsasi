@@ -47,6 +47,7 @@ export function TablaMuestraRenglon(props) {
 		// handleClose();
 	}
 
+
 	const Cierra = () => {
 		handleClose();
 	};

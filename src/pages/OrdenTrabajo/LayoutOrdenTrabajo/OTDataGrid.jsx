@@ -335,7 +335,7 @@ export default function OTDataGrid() {
 			)}
 			<Grid container spacing={2}>
 				{/* {tieneiva === "CIVA" && ( */}
-				<Grid item>
+				<Grid >
 					<h5>Importe total c/IVA</h5>
 					<CurrencyTextField
 						id="Total"
@@ -347,7 +347,7 @@ export default function OTDataGrid() {
 					></CurrencyTextField>
 				</Grid>
 				{/* )}{" "} */}
-				<Grid item>
+				<Grid >
 					<h5>Importe s/IVA</h5>
 					<CurrencyTextField
 						id="TotalSIVA"
@@ -359,7 +359,7 @@ export default function OTDataGrid() {
 					></CurrencyTextField>
 				</Grid>
 				<Button onClick={sacaiva}>.</Button>
-				<Grid item>
+				<Grid >
 					<h5>Importe Seña</h5>
 					<CurrencyTextField
 						id="seniapresup"
@@ -370,7 +370,7 @@ export default function OTDataGrid() {
 						className={EstTF.tfcurrencyI}
 					></CurrencyTextField>
 				</Grid>
-				<Grid item>
+				<Grid >
 					<h5>Fecha Promesa</h5>
 					<TextField
 						id="fechaprom"

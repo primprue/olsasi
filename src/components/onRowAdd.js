@@ -12,6 +12,7 @@ import { ParamCompAgregar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompAg
 import { OTCondPagoAgregar } from "../pages/Tablas/OTCondPago/OTCondPagoAgregar";
 import { PBRubrosAgregar } from "../pages/Tablas/PBRubros/PBRubrosAgregar";
 import { PBSubRubrosAgregar } from "../pages/Tablas/PBSubRubros/PBSubRubrosAgregar";
+import { OTDatosAgregar } from "../pages/Tablas/OTDatos/OTDatosAgregar";
 export function onRowAdd(newData) {
   console.log('newData onRowAdd', newData)
   return new Promise((resolve) => {
@@ -57,6 +58,9 @@ export function onRowAdd(newData) {
       }
       if (newData.tablabase === 'PBSubRubros') {
         PBSubRubrosAgregar(newData);
+      }
+      if (newData.tablabase === 'OTDatos') {
+        OTDatosAgregar(newData);
       }
       resolve(50);
     }, 100);

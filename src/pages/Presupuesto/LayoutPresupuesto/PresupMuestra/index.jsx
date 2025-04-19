@@ -5,7 +5,7 @@ import { llenarcolumns } from "./columns.jsx";
 import { useEffect } from "react";
 import { useState } from "react";
 
-import { useContext } from "react";
+import { use } from "react";
 import OrdTrabajo from "../../../../context/OrdTrabajo.jsx";
 import estilotabla from "../../../../Styles/Tabla.module.css";
 import {
@@ -26,7 +26,7 @@ import { PresupNombre } from "./PresupNombre.jsx";
 import { Route, useNavigate } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 export default function PresupMuestra() {
-	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
+	const { otdatos, setOTdatos } = use(OrdTrabajo);
 	const [rows, setRows] = React.useState([]);
 	const [columns, setColumns] = useState([]);
 	var fecha = new Date();
@@ -46,10 +46,11 @@ export default function PresupMuestra() {
 	const navigate = useNavigate();
 
 	const handleClose1 = () => {
-		setIsOpen(false);
-		console.log('estoy en handleClose1')
+
 		// Redirecciona a donde quieras cuando se cierra el componente
-		navigate("/orden-trabajo/orden-trabajo");
+		navigate("/otrabajo/OTrabajo");
+		setIsOpen(false);
+
 	};
 	//empiezan las cosas del sistema
 	async function columnsFetch() {
@@ -107,7 +108,7 @@ export default function PresupMuestra() {
 		return (
 			<>
 				<GridToolbarContainer className={estilotabla.tablasgenerales}>
-					<Box
+					{/* <Box
 						sx={{
 							width: "100%",
 							display: 'flex',
@@ -115,13 +116,8 @@ export default function PresupMuestra() {
 							alignItems: 'left',
 							padding: '8px 0px 8px 0px'
 						}}
-					>
-						{/* <Typography
-							className={estilotabla.titulo}
-						>
-							Muestra Presupuesto
-						</Typography> */}
-						<Box
+					> */}
+					{/* <Box
 							sx={{
 								width: "80%",
 								display: 'flex',
@@ -129,33 +125,29 @@ export default function PresupMuestra() {
 								alignItems: 'right',
 								gap: 3,
 							}}
-						>
-							<GridToolbarColumnsButton className={estilotabla.coloropcioncol} />
-							<GridToolbarFilterButton className={estilotabla.coloropcioncol} />
-							<GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
-							<GridToolbarExport className={estilotabla.coloropcioncol} />
-							<PlaylistAddCheckRoundedIcon
-								onClick={() => handleMuestraRenglon(rowsel.id)}
-								className={estilotabla.iconoordentrabao}
-								titleAccess="Ve datos Presupuesto"
-							/>
-							<PreviewTwoToneIcon
-								onClick={() => armanombre(rowsel)}
-								className={estilotabla.iconomodificar}
-								titleAccess="Preview Presupuesto"
-							/>
-							{/* <LocalPrintshopRoundedIcon
-						onClick={() => setImprimirTF(true)}
-						className={estilotabla.iconoimpresora}
-						titleAccess="Imprimir"
-					/> */}
-							<DeleteSharpIcon
-								variant="contained"
-								titleAccess="Borrar"
-								className={estilotabla.iconoborrar}
-								onClick={() => handleDelete(rowsel)}
-							/>
-						</Box></Box>
+						> */}
+					<GridToolbarColumnsButton className={estilotabla.coloropcioncol} />
+					<GridToolbarFilterButton className={estilotabla.coloropcioncol} />
+					<GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
+					<GridToolbarExport className={estilotabla.coloropcioncol} />
+					<PlaylistAddCheckRoundedIcon
+						onClick={() => handleMuestraRenglon(rowsel.id)}
+						className={estilotabla.iconoordentrabao}
+						titleAccess="Ve datos Presupuesto"
+					/>
+					<PreviewTwoToneIcon
+						onClick={() => armanombre(rowsel)}
+						className={estilotabla.iconomodificar}
+						titleAccess="Preview Presupuesto"
+					/>
+					<DeleteSharpIcon
+						variant="contained"
+						titleAccess="Borrar"
+						className={estilotabla.iconoborrar}
+						onClick={() => handleDelete(rowsel)}
+					/>
+					{/* </Box> */}
+					{/* </Box> */}
 				</GridToolbarContainer>
 			</>
 		);
@@ -163,67 +155,52 @@ export default function PresupMuestra() {
 
 	return (
 		<>
-			<Box
+			{/* <Box
 				sx={{
 					width: "100%",
-					//height: "500px",
 					align: "center",
 					justifycontent: "center",
 					boxShadow: 5,
 					padding: 5,
 				}}
-			>
-				{isOpen && (
-					<DataGrid
-						// autoHeight
-						rows={rows}
-						columns={columns}
-
-						onRowClick={handleRowSelect}
-						onProcessRowUpdateError={handleProcessRowUpdateError}
-						showCellVerticalBorder={true}
-						columnHeaderHeight={35}
-						slots={{
-							toolbar: CustomToolbar,
-						}}
-						initialState={{
-							...rows.initialState,
-							pagination: {
-								...rows.initialState?.pagination,
-								paginationModel: {
-									pageSize: 25,
-								},
+			> */}
+			{isOpen && (
+				<DataGrid
+					rows={rows}
+					columns={columns}
+					onRowClick={handleRowSelect}
+					onProcessRowUpdateError={handleProcessRowUpdateError}
+					showCellVerticalBorder={true}
+					columnHeaderHeight={35}
+					slots={{
+						toolbar: CustomToolbar,
+					}}
+					initialState={{
+						...rows.initialState,
+						pagination: {
+							...rows.initialState?.pagination,
+							paginationModel: {
+								pageSize: 25,
 							},
-						}}
-					/>
-				)}
-				{rowsel !== undefined && (
-					<TablaMuestraRenglon
-						open={open}
-						handleClose={handleClose}
-						Presup={rowsel}
-						origen={origen}
-					/>
-				)}
-				<PresupPreview
-					open={ppreview.ppreview}
-					setOpen={setPPreview}
-					rowsel={rowsel}
-				></PresupPreview>
-			</Box>
+						},
+					}}
+				/>
+			)}
+			{rowsel !== undefined && (
+				<TablaMuestraRenglon
+					open={open}
+					handleClose={handleClose}
+					Presup={rowsel}
+					origen={origen}
+				/>
+			)}
+			<PresupPreview
+				open={ppreview.ppreview}
+				setOpen={setPPreview}
+				rowsel={rowsel}
+			></PresupPreview>
+			{/* </Box> */}
 		</>
 	);
 }
 
-{
-	/* {!!snackbar && (
-	<Snackbar
-		open
-		anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-		onClose={handleCloseSnackbar}
-		autoHideDuration={900}
-	>
-		<Alert {...snackbar} variant="filled" onClose={handleCloseSnackbar} />
-	</Snackbar>
-)} */
-}

@@ -19,6 +19,7 @@ export function DialogoDatos(props) {
 		error: false,
 		message: "",
 	});
+
 	const handleSelectChange = (event) => {
 		setSelectedOption(event.target.value);
 		setFormdatos({

@@ -23,7 +23,6 @@ import { deepOrange, red, blue, green, purple } from "@mui/material/colors";
 import SelecCampos from "../Impresion/SelecCampos.jsx";
 
 export default function ListaPrecios() {
-	// const { setValor } = useContext(StaticContexto);
 	const [paramitems, setParamItems] = useState({
 		idGrupo: 0,
 		idRubro: 0,
@@ -50,7 +49,6 @@ export default function ListaPrecios() {
 
 	useEffect(() => {
 		initialFetch();
-		// setValor("Lista de Precios");
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const openApp = (params) => {
@@ -93,51 +91,20 @@ export default function ListaPrecios() {
 	function CustomToolbar() {
 		return (
 			<GridToolbarContainer className={estilotabla.tablalistaprecios}>
-				<Box
-					sx={{
-						width: "100%",
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'left',
-						padding: '8px 0px 8px 0px'
-					}}
-				>
-					{/* <Typography
-						className={estilotabla.titulo}
-					>
-						Lista de Precios
-					</Typography> */}
-					<Box
-						sx={{
-							width: "80%",
-							display: 'flex',
-							justifyContent: 'right',
-							alignItems: 'right',
-							gap: 3,
-						}}
-					>
-						<LocalPrintshopRoundedIcon
-							onClick={() => setImprimirTF(true)}
-							style={{ color: blue[800] }}
-							fontSize="medium"
-							titleAccess="Imprimir"
-						/>
-						<GridToolbarExport style={{ color: green[800] }} />
-					</Box></Box>
+				<LocalPrintshopRoundedIcon
+					onClick={() => setImprimirTF(true)}
+					style={{ color: blue[800] }}
+					fontSize="medium"
+					titleAccess="Imprimir"
+				/>
+				<GridToolbarExport style={{ color: green[800] }} />
 			</GridToolbarContainer >
 		);
 	}
 
 	return (
-		<Box
-			sx={{
-				width: "100%",
-				align: "center",
-				justifycontent: "center",
-				boxShadow: 5,
-				padding: 5,
-			}}
-		>
+		<>
+
 			<DataGrid
 				rows={rows}
 				columns={columns}
@@ -162,6 +129,6 @@ export default function ListaPrecios() {
 				Grupo={paramitems.idGrupo}
 				Rubro={paramitems.idRubro}
 			/>
-		</Box>
+		</>
 	);
 }

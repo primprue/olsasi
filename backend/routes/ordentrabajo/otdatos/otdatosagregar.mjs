@@ -25,7 +25,7 @@ router.post('/', function (req, res) {
         OTDatosAncho: req.body.OTDatosAncho
     }
 
-
+    console.log('registro   ', registro)
     conexion.query('INSERT INTO BasesOrdenes.OTDatos SET ?', registro,
         function (err, result) {
             if (err) {

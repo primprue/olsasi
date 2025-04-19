@@ -6,13 +6,14 @@ import { BrowserRouter } from "react-router-dom";
 
 import "tailwindcss";
 import App from "./App.jsx";
+import { StaticContexto } from "./context/StaticContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
-		{/* <BrowserRouter basename="/toolpad"> */}
 		<BrowserRouter >
-
-			<App />
+			<StaticContexto>
+				<App />
+			</StaticContexto>
 		</BrowserRouter>
 		<ToastContainer />
 	</React.StrictMode>

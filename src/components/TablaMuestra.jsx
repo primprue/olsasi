@@ -271,98 +271,72 @@ export default function TablaMuestra(props) {
 	function CustomToolbar() {
 		return (
 			<GridToolbarContainer className={estilotabla.tablasgenerales}>
-				<Box
-					sx={{
-						width: "100%",
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'left',
-						padding: '8px 0px 8px 0px'
-					}}
-				>
-					{/* <Typography
+
+				{/* <Typography
 						className={estilotabla.titulo}
 					>
 						{formdatos.titulotabla}
 					</Typography> */}
 
-					<Box
-						sx={{
-							width: "80%",
-							display: 'flex',
-							justifyContent: 'right',
-							alignItems: 'right',
-							padding: '8px'
-						}}
-					>
 
-						<GridToolbarColumnsButton className={estilotabla.coloropcioncol} />
-						<GridToolbarFilterButton className={estilotabla.coloropcioncol} />
-						<GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
-						<GridToolbarExport className={estilotabla.coloropcioncol} />
-						{(formdatos.tablabase !== "MuestraPresupuesto" && formdatos.tablabase !== "OTDatos" && (
-							<React.Fragment>
-								<AddToPhotosTwoToneIcon
-									className={estilotabla.iconoagregar}
-									size="large"
-									titleAccess="Agregar"
-									onClick={() => handleAlta()}
-								/>
-								<CheckCircleTwoToneIcon
-									variant="contained"
-									titleAccess="Confirma Modificación"
-									className={estilotabla.iconomodificar}
-									onClick={() => handleModifica(rown)}
-								/>
-							</React.Fragment>
-
-						)) ||
-							(formdatos.tablabase === "MuestraPresupuesto" &&
-								(
-									<PreviewTwoToneIcon
-										onClick={() => handleModifica(rowsel.id)}
-										className={estilotabla.iconomodificar}
-										titleAccess="Ve datos Presupuesto"
-									/>
-								))
-							||
-							(formdatos.tablabase === "OTDatos" &&
-								(
-									<AddToPhotosTwoToneIcon
-										className={estilotabla.iconoagregar}
-										size="large"
-										titleAccess="Agregar"
-										onClick={() => handleAlta1()}
-									/>
-								))
-						}
-						<LocalPrintshopRoundedIcon
-							onClick={() => setImprimirTF(true)}
-							className={estilotabla.iconoimpresora}
-							titleAccess="Imprimir"
+				<GridToolbarColumnsButton className={estilotabla.coloropcioncol} />
+				<GridToolbarFilterButton className={estilotabla.coloropcioncol} />
+				<GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
+				<GridToolbarExport className={estilotabla.coloropcioncol} />
+				{(formdatos.tablabase !== "MuestraPresupuesto" && formdatos.tablabase !== "OTDatos" && (
+					<React.Fragment>
+						<AddToPhotosTwoToneIcon
+							className={estilotabla.iconoagregar}
+							size="large"
+							titleAccess="Agregar"
+							onClick={() => handleAlta()}
 						/>
-						<DeleteSharpIcon
+						<CheckCircleTwoToneIcon
 							variant="contained"
-							titleAccess="Borrar"
-							className={estilotabla.iconoborrar}
-							onClick={() => handleDelete(rowsel)}
+							titleAccess="Confirma Modificación"
+							className={estilotabla.iconomodificar}
+							onClick={() => handleModifica(rown)}
 						/>
-					</Box>
-				</Box>
+					</React.Fragment>
+
+				)) ||
+					(formdatos.tablabase === "MuestraPresupuesto" &&
+						(
+							<PreviewTwoToneIcon
+								onClick={() => handleModifica(rowsel.id)}
+								className={estilotabla.iconomodificar}
+								titleAccess="Ve datos Presupuesto"
+							/>
+						))
+					||
+					(formdatos.tablabase === "OTDatos" &&
+						(
+							<AddToPhotosTwoToneIcon
+								className={estilotabla.iconoagregar}
+								size="large"
+								titleAccess="Agregar"
+								onClick={() => handleAlta1()}
+							/>
+						))
+				}
+				<LocalPrintshopRoundedIcon
+					onClick={() => setImprimirTF(true)}
+					className={estilotabla.iconoimpresora}
+					titleAccess="Imprimir"
+				/>
+				<DeleteSharpIcon
+					variant="contained"
+					titleAccess="Borrar"
+					className={estilotabla.iconoborrar}
+					onClick={() => handleDelete(rowsel)}
+				/>
 			</GridToolbarContainer>
 		);
 	}
 
 	return (
-		<Box
-			sx={{
-				width: "100%",
-				align: "center",
-				justifycontent: "center",
-				boxShadow: 5,
-				padding: 1,
-			}}
-		>
+		<>
+
 			< DataGrid
 				//
 				rows={rows}
@@ -417,6 +391,6 @@ export default function TablaMuestra(props) {
 					</Snackbar>
 				)
 			}
-		</Box>
+		</>
 	);
 }

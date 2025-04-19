@@ -27,15 +27,7 @@ router.get('/', async function (req, res) {
                 }
             }
             else {
-                console.log('result', result)
                 res.json(result);
-                // result.forEach(row => {
-                //     const opciones = JSON.parse(row.OTDatosOpciones);  // Convertir JSON de MySQL a objeto JS
-                //     console.log(`ID: ${row.idOTDatos}, Descripción: ${row.OTDatosDesc}`);
-                //     Object.entries(opciones).forEach(([key, value]) => {
-                //         console.log(`  ${key}: ${value}`);
-                //     });
-                // });
 
             }
         });

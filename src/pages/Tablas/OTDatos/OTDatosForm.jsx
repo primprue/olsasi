@@ -1,6 +1,5 @@
 import React from 'react'
 import { OTDatosLee } from "./OTDatosLee.jsx";
-import { llenarcolumns } from "./columns.jsx";
 import { useEffect } from "react";
 import { useState } from "react";
 
@@ -13,6 +12,7 @@ import TablaMuestra from '../../../components/TablaMuestra.jsx';
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { set } from 'date-fns';
 import OTDatosAgregarForm from './OTDatosAgregarForm.jsx';
+import { OTDatosAgregar } from './OTDatosAgregar.jsx';
 import FitbitIcon from "@mui/icons-material/Fitbit";
 import { deepOrange, red, blue, green, purple } from "@mui/material/colors";
 import OTDatosAgrOpc from './OTDatosAgrOpc.jsx';
@@ -23,14 +23,20 @@ import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded
 import PreviewTwoToneIcon from "@mui/icons-material/PreviewTwoTone";
 import estilotabla from "../../../Styles/Tabla.module.css";
 import { DialogoDatos } from '../../../components/DialogoDatos.jsx';
+import TablasContexto from '../../../context/TablasContext.jsx';
 export default function OTDatosForm() {
+    const { formdatos, setFormdatos } = use(TablasContexto);
     const { state, setState } = use(PresupPant);
     const [abreagregar, setAbreagregar] = useState(false);
     const [abreagregaritem, setAbreagregarItem] = useState(false);
-    const [formdatos, setFormdatos] = useState(formdata);
+    // const [formdatos, setFormdatos] = useState(formdata);
     const [datosacargar, setDatosaCargar] = useState('');
     const [params, setParams] = useState();
     const [rows, setRows] = useState([]);
+    const [nombreboton, setNombreBoton] = useState("");
+    const [titulodial, setTituloDial] = useState("");
+    const [paramsbor, setParamsBor] = useState(0);
+    const [open, setOpen] = useState(false);
 
     async function leeotdatos(descripcion) {
         const result = await OTDatosLee(descripcion);
@@ -38,6 +44,7 @@ export default function OTDatosForm() {
     }
 
     useEffect(() => {
+
         if (state.PresupConfTipoDesc !== '') {
             leeotdatos(state.PresupConfTipoDesc);
             setFormdatos(formdata);
@@ -51,6 +58,27 @@ export default function OTDatosForm() {
             return data.flatMap((item) =>
                 Object.entries(JSON.parse(item.OTDatosOpciones)).map(([clave, valor]) => ({
                     id: `${item.idOTDatos}-${clave}`, // ID único
+                    idOTDatos: item.idOTDatos,
+                    OTDatosDesc: item.OTDatosDesc,
+                    OTDatosConfCod: item.OTDatosConfCod,
+                    opcion: clave,
+                    OTDatosOpciones: valor,
+                    OTDatosOrdenAparicion: item.OTDatosOrdenAparicion,
+                    OTDatosTipoPed: item.OTDatosTipoPed,
+                    OTDatosRequerido: item.OTDatosRequerido,
+                    OTDatosAncho: item.OTDatosAncho
+                }))
+
+            );
+        }
+    };
+
+    /*    const procesarDatos = (data) => {
+        if (data !== '') {
+            return data.flatMap((item) =>
+                Object.entries(JSON.parse(item.OTDatosOpciones)).map(([clave, valor]) => ({
+                    id: `${item.idOTDatos}-${clave}`, // ID único
+                    idOTDatos: item.idOTDatos,
                     descripcion: item.OTDatosDesc,
                     codconf: item.OTDatosConfCod,
                     opcion: clave,
@@ -62,16 +90,19 @@ export default function OTDatosForm() {
 
             );
         }
-    };
+    };*/
 
-
-
+    const tipocampo = [
+        { value: "select", label: "Select" },
+        { value: "textfield", label: "Texto" },
+    ];
 
     const columns = [
-        { field: "id", headerName: "id", width: 200 },
-        { field: "aparicion", headerName: "OTDatosOrdenAparicion", width: 200 },
+        { field: "id", type: "text", headerName: "id", width: 200, editable: false },
+        { field: "idOTDatos", type: "text", headerName: "id datos", width: 200, editable: true },
+        { field: "OTDatosOrdenAparicion", type: "text", headerName: "Orden de Aparición", width: 200, editable: true },
         {
-            field: "descripcion", headerName: "descripcion", width: 200,
+            field: "OTDatosDesc", type: "text", headerName: "descripcion", width: 200, editable: true,
             renderCell: (params) => {
                 const rowIndex = params.api.getAllRowIds().indexOf(params.id);
                 // Si no es la primera vez que aparece la categoría, la celda queda vacía
@@ -81,24 +112,15 @@ export default function OTDatosForm() {
                 return <strong>{params.value}</strong>;
             },
         },
-        { field: "opcion", headerName: "opcion", width: 150, editable: true },
-        { field: "valor", headerName: "valor", width: 100, editable: true },
-        // {
-        //     field: "tipo", headerName: "tipo", width: 100,
-        //     renderCell: (paramtipo) => {
-        //         const rowIndex = paramtipo.api.getAllRowIds().indexOf(paramtipo.id);
-        //         // Si no es la primera vez que aparece la categoría, la celda queda vacía
-        //         if (rowIndex > 0 && rows[rowIndex - 1].tipo === paramtipo.value) {
-        //             return null; // Celda vacía para las filas repetidas
-        //         }
-        //         return <strong>{paramtipo.value}</strong>;
-        //     },
-        // },
-        { field: "tipo", headerName: "tipo", width: 100, editable: true },
-        { field: "requerido", headerName: "requerido", width: 100, editable: true },
+        { field: "OTDatosOpciones", type: "text", headerName: "opcion", width: 150, editable: false },
+        { field: "valor", type: "text", headerName: "valor", width: 100, editable: true },
+        { field: "OTDatosTipoPed", type: "singleSelect", headerName: "tipo", width: 100, editable: true, valueOptions: tipocampo },
+        { field: "OTDatosRequerido", type: "singleSelect", headerName: "requerido", width: 100, editable: true, valueOptions: [{ value: "S", label: "S" }, { value: "N", label: "N" }] },
+        { field: "OTDatosAncho", type: "text", headerName: "Ancho", width: 100, editable: true },
         {
             field: "actions",
             headerName: "+ Opciones",
+            type: "text",
             width: 100,
             headerClassName: "encabcolumns",
             renderCell: (params) => (
@@ -108,15 +130,21 @@ export default function OTDatosForm() {
                     placeholder="Ver Stock"
                     fontSize="large"
                     onClick={() => openApp(params)}
-                    // (<OTDatosAgrOpc open={setAbreagregarItem(true)} params={params} handleClose={() => setAbreagregarItem(false)) /> }
-                    // openApp(params)
-
                     startIcon={<FitbitIcon />}
                 />
             ),
         }
 
     ];
+    // idOTDatos: 0,
+    //     OTDatosTipoConf: '',
+    //         OTDatosConfCod: 0,
+    //             OTDatosDesc: '',
+    //                 OTDatosOpciones: '',
+    //                     OTDatosTipoPed: '',
+    //                         OTDatosRequerido: '',
+    //                             OTDatosOrdenAparicion: 0,
+    //                                 OTDatosAncho: 0,
 
     const openApp = (params) => {
         setParams(params.row)
@@ -141,6 +169,19 @@ export default function OTDatosForm() {
             )
         );
     };
+    const handleAlta = () => {
+        setNombreBoton("Enviar");
+        setTituloDial(
+            `Alta de ${formdatos.tablabase} (moverse por los campos con tab)`
+        );
+        setOpen(true);
+    };
+    const handleClose = () => {
+        leeotdatos(state.PresupConfTipoDesc);
+
+        setOpen(false);
+    };
+
     const handleClickOpen = () => {
         setAbreagregar(true);
     };
@@ -226,6 +267,16 @@ export default function OTDatosForm() {
             {/* <Button variant="contained" color="primary" onClick={handleClickOpen}></Button> */}
             {abreagregar && <OTDatosAgregarForm open={abreagregar} handleClose={handleClickOpen} />}
             {abreagregaritem && <OTDatosAgrOpc open={abreagregaritem} params={params} handleClose={() => setAbreagregarItem(false)} />}
+
+            <DialogoDatos
+                open={open}
+                columns={columns}
+                handleClose={handleClose}
+                nombrebtn={nombreboton}
+                paramsbor={paramsbor}
+                titulodial={titulodial}
+            />
+
         </div>
     )
 }

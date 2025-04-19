@@ -8,6 +8,8 @@ export function ValidatedTextField(props) {
 	const { formdatos, setFormdatos } = useContext(TablasContexto);
 	const [isValid, setIsValid] = useState(true);
 	const label = props.label;
+	const { editable, ...restProps } = props;
+
 	const handleKeyPress = (event) => {
 		//if (event.key === "Enter" || event.key === "Tab") {
 		if (event.key === "Tab") {
@@ -66,7 +68,7 @@ export function ValidatedTextField(props) {
 	//inputProps={{ "data-testid": `validated-textfield-${label}` }} Añade un	atributo data-testid 	único
 	return (
 		<TextField
-			{...props}
+			{...restProps}
 			label={label}
 			helperText="<Tab> pasa al siguiente campo"
 			// inputProps={{ "data-testid": `validated-textfield-${label}` }}
@@ -76,6 +78,7 @@ export function ValidatedTextField(props) {
 				input: {
 					"data-testid": `validated-textfield-${label}`,
 					readOnly: props.readOnly,
+					readOnly: !editable,
 					startAdornment: isValid ? (
 						<CheckCircleIcon color="success" />
 					) : (

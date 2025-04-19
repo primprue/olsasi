@@ -5,8 +5,7 @@ import {
 	DataGrid,
 } from "@mui/x-data-grid";
 
-import { useContext } from "react";
-import StaticContexto from "../../context/StaticContext.jsx";
+
 import { presupcalculador } from "../Presupuesto/PresupCalculador.jsx";
 import { LeeParamRep } from "./LeeParamRep.jsx";
 import { RepLeeValorHs } from "./RepLeeValorHs.jsx";
@@ -30,7 +29,6 @@ import RadioButtonLNLA from "./RadioButtonLNLA.jsx";
 import ImpReparacion from "./ImpReparacion.jsx";
 
 export default function Reparacion() {
-	const { setValor } = useContext(StaticContexto);
 	const [valora, setValorA] = useState(0)
 	const [rowSelectionModel, setRowSelectionModel] = useState([]);
 	//tabla que recepciona los parches elegidos
@@ -163,7 +161,6 @@ export default function Reparacion() {
 	}
 	useEffect(() => {
 		initialFetch();
-		setValor("Reparacion");
 	}, [valora]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
@@ -512,16 +509,17 @@ export default function Reparacion() {
 
 
 	return (
-		<Box
+		<>
+			{/* // <Box
 
-			sx={{
-				width: "100%",
-				align: "center",
-				justifycontent: "center",
-				boxShadow: 5,
-				padding: 5,
-			}}
-		>
+		// 	sx={{
+		// 		width: "100%",
+		// 		align: "center",
+		// 		justifycontent: "center",
+		// 		boxShadow: 5,
+		// 		padding: 5,
+		// 	}}
+		// > */}
 			<Grid container >
 				{rowsparches !== undefined && columnsparches !== undefined &&
 					<div style={{ height: 435, width: '74%', paddingBottom: 5 }}>
@@ -686,6 +684,7 @@ export default function Reparacion() {
 				handleKeyDown={handleKeyDown}
 				handleConfirm={handleConfirm} />
 
-		</Box>
+			{/* </Box> */}</>
 	);
+
 }
