@@ -78,7 +78,7 @@ export function ValidatedTextField(props) {
 				input: {
 					"data-testid": `validated-textfield-${label}`,
 					readOnly: props.readOnly,
-					readOnly: !editable,
+					// readOnly: !editable,
 					startAdornment: isValid ? (
 						<CheckCircleIcon color="success" />
 					) : (

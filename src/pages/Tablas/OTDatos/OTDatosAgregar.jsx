@@ -3,16 +3,15 @@ import IpServidor from "../../VariablesDeEntorno";
 import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 
 export function OTDatosAgregar(props) {
-	console.log('props OTDatosAgregar  ', props)
 	return new Promise(function () {
 		setTimeout(() => {
-			const { OTDatosTipoConf, OTDatosConfCod, OTDatosDesc, OTDatosOpciones, OTDatosTipoPed, OTDatosRequerido, OTDatosOrdenAparicion, OTDatosAncho } = props;
+			const { OTDatosTipoConf, OTDatosDesc, OTDatosOpciones, OTDatosTipoPed, OTDatosRequerido, OTDatosOrdenAparicion, OTDatosAncho } = props;
 			const url = IpServidor + "/otdatosagregar";
 			request
 				.post(url)
 				.set("Content-Type", "application/json")
 				.send({ OTDatosTipoConf: OTDatosTipoConf })
-				.send({ OTDatosConfCod: OTDatosConfCod })
+				// .send({ OTDatosConfCod: OTDatosConfCod })
 				.send({ OTDatosDesc: OTDatosDesc })
 				.send({ OTDatosOpciones: OTDatosOpciones })
 				.send({ OTDatosTipoPed: OTDatosTipoPed })

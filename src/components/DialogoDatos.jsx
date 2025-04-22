@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
-import { Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
+import { Button, Dialog, DialogContent, DialogTitle, Select } from "@mui/material";
 import { ValidatedTextField } from "../hooks/useValidTextField";
+import estilo from "../Styles/TextFieldSelect.module.css";
 // import { Grid } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import MuestraMensaje from "./lib/MuestraMensaje";
@@ -90,6 +91,7 @@ export function DialogoDatos(props) {
 										/>
 									)) || (
 										<select
+											className={estilo.selectFieldDialogDatos}
 											key={index}
 											id={columns[index].field}
 											label={columns[index].headerName}

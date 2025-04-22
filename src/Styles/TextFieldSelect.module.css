@@ -56,3 +56,36 @@
     color: #f81130;
     /* Color del texto cuando se navega con el cursor */
 }
+
+
+
+.selectFieldDialogDatos {
+    padding: 1px 1px;  /* Menos padding para reducir la altura */
+    margin: 6px 0;  /* Margen más compacto */
+    font-size: 16px;  /* Tamaño de fuente más pequeño */
+    line-height: 2.5; /* Reduce la altura interna */
+    height: 50px;
+    width: 90px;
+    border: 2px solid rgba(12, 12, 12, 0.123);
+    border-bottom: 2px solid rgb(0, 4, 255);
+    border-radius: 6px; /* Redondeado más sutil */
+    background-color: rgba(248, 248, 248, 0.3);
+    color:  rgb(2, 11, 61);
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 1px 3px rgba(7, 4, 180, 0.2); /* Menos sombra */
+}
+
+/* Cambio visual al pasar el mouse */
+.selectFieldDialogDatos:hover {
+    box-shadow: 0 4px 10px rgba(7, 4, 180, 0.3);
+     border: 2px solid rgba(12, 12, 12, 0.562);
+}
+
+/* Estilos cuando el campo está enfocado */
+.selectFieldDialogDatos:focus {
+    /* border-color: rgb(0, 4, 255); */
+     border: 2px solid rgba(12, 12, 12, 0.562);
+    outline: none;
+    box-shadow: 0 4px 12px rgba(0, 4, 255, 0.4);
+}

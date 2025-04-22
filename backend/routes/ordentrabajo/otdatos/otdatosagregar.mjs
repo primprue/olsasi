@@ -13,18 +13,18 @@ conexion.connect(function (err) {
 
 const rows = []
 router.post('/', function (req, res) {
-
+    const nuevoValor = { "": 0 };
     var registro = {
         OTDatosTipoConf: req.body.OTDatosTipoConf,
-        OTDatosConfCod: req.body.OTDatosConfCod,
+        // OTDatosConfCod: req.body.OTDatosConfCod,
         OTDatosDesc: req.body.OTDatosDesc,
-        OTDatosOpciones: req.body.OTDatosOpciones,
+        // OTDatosOpciones: req.body.OTDatosOpciones,
+        OTDatosOpciones: JSON.stringify(nuevoValor),
         OTDatosTipoPed: req.body.OTDatosTipoPed,
         OTDatosRequerido: req.body.OTDatosRequerido,
         OTDatosOrdenAparicion: req.body.OTDatosOrdenAparicion,
         OTDatosAncho: req.body.OTDatosAncho
     }
-
     console.log('registro   ', registro)
     conexion.query('INSERT INTO BasesOrdenes.OTDatos SET ?', registro,
         function (err, result) {

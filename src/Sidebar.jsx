@@ -15,55 +15,70 @@ import InventorySharpIcon from '@mui/icons-material/InventorySharp';
 import PatternSharpIcon from '@mui/icons-material/PatternSharp';
 import ConstructionSharpIcon from '@mui/icons-material/ConstructionSharp';
 import BadgeSharpIcon from '@mui/icons-material/BadgeSharp';
+import GroupTwoToneIcon from '@mui/icons-material/GroupTwoTone';
+import MoneyTwoToneIcon from '@mui/icons-material/MoneyTwoTone';
+import LocalShippingTwoToneIcon from '@mui/icons-material/LocalShippingTwoTone';
+import VideoStableRoundedIcon from '@mui/icons-material/VideoStableRounded';
+import ClassTwoToneIcon from '@mui/icons-material/ClassTwoTone';
+import CategoryTwoToneIcon from '@mui/icons-material/CategoryTwoTone';
+import StraightenTwoToneIcon from '@mui/icons-material/StraightenTwoTone';
+import PlaceTwoToneIcon from '@mui/icons-material/PlaceTwoTone';
+import BalanceTwoToneIcon from '@mui/icons-material/BalanceTwoTone';
+import ArrowCircleDownTwoToneIcon from '@mui/icons-material/ArrowCircleDownTwoTone';
+import ChecklistRtlTwoToneIcon from '@mui/icons-material/ChecklistRtlTwoTone';
+import CurrencyExchangeTwoToneIcon from '@mui/icons-material/CurrencyExchangeTwoTone';
+import ShopTwoSharpIcon from '@mui/icons-material/ShopTwoSharp';
+import DeveloperBoardSharpIcon from '@mui/icons-material/DeveloperBoardSharp';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 import { AppProvider } from "@toolpad/core/AppProvider";
 import StaticContext from './context/StaticContext';
 
 
 const drawerWidthExpanded = 240; // Ancho cuando el menú está expandido
-const drawerWidthCollapsed = 60; // Ancho cuando el menú está colapsado
+const drawerWidthCollapsed = 70; // Ancho cuando el menú está colapsado
 
 const menuItems = [
-  { text: 'Inicio', icon: <HomeIcon />, path: '/' },
-  { text: 'Lista de Precios', icon: <DashboardIcon />, path: '/listaprecios' },
+  { text: 'Inicio', icon: <HomeIcon sx={{ color: '#03d403' }} />, path: '/' },
+  { text: 'Lista de Precios', icon: <DashboardIcon sx={{ color: '#055af8' }} />, path: '/listaprecios' },
   {
     text: 'Presupuesto',
-    icon: <SettingsIcon />,
+    icon: <BorderColorIcon sx={{ color: '#050463' }} />,
     children: [
-      { text: 'Presupuesto', icon: <CalculateSharpIcon />, path: '/presupuesto/Presupuesto' },
-      { text: 'Muestra Presupuesto', icon: <PreviewSharpIcon />, path: '/presupuesto/PresupMuestra' },
+      { text: 'Presupuesto', icon: <CalculateSharpIcon sx={{ color: '#0905dff4' }} />, path: '/presupuesto/Presupuesto' },
+      { text: 'Muestra Presupuesto', icon: <PreviewSharpIcon sx={{ color: '#0400fdd5' }} />, path: '/presupuesto/PresupMuestra' },
     ],
   },
-  { text: 'Reparación', icon: <ConstructionSharpIcon />, path: '/Reparacion' },
-  { text: 'Movimiento Orden de Trabajo', icon: <ManageHistorySharpIcon />, path: '/otrabajo/OTMovimiento' },
+  { text: 'Reparación', icon: <ConstructionSharpIcon sx={{ color: '#1d5f09' }} />, path: '/Reparacion' },
+  { text: 'Movimiento Orden de Trabajo', icon: <ManageHistorySharpIcon sx={{ color: '#e61677' }} />, path: '/otrabajo/OTMovimiento' },
   {
     text: 'Tablas',
-    icon: <SettingsIcon />,
+    icon: <DeveloperBoardSharpIcon sx={{ color: '#c52c11' }} />,
     children: [
-      { text: 'Proveedores', icon: <GridOnIcon />, path: '/tablas/Proveedores' },
-      { text: 'Clientes', icon: <GridOnIcon />, path: '/tablas/Clientes' },
-      { text: 'Monedas', icon: <GridOnIcon />, path: '/tablas/StkMonedas' },
-      { text: 'Transporte', icon: <GridOnIcon />, path: '/tablas/Transporte' },
-      { text: 'Grupos', icon: <GridOnIcon />, path: '/tablas/StkGrupos' },
-      { text: 'Rubros', icon: <GridOnIcon />, path: '/tablas/StkRubros' },
-      { text: 'Items', icon: <GridOnIcon />, path: '/tablas/StkItems' },
-      { text: 'Unidad deMedidas', icon: <GridOnIcon />, path: '/tablas/UnidadMedidas' },
-      { text: 'Ubicación Física', icon: <GridOnIcon />, path: '/tablas/UbicacionFisica' },
-      { text: 'PreBalance Rubros', icon: <GridOnIcon />, path: '/tablas/PBRubros' },
-      { text: 'Presupuesto Detalle Pie', icon: <GridOnIcon />, path: '/tablas/PresupDetPie' },
-      { text: 'Presupuesto Config Tipo', icon: <GridOnIcon />, path: '/tablas/PresupConfTipo' },
-      { text: 'OT Condiciones Pago', icon: <GridOnIcon />, path: '/tablas/OTCondPago' },
-      { text: 'OT Otros Datos', icon: <GridOnIcon />, path: '/tablas/OTDatos' },
+      { text: 'Proveedores', icon: <GridOnIcon sx={{ color: '#c52c11' }} />, path: '/tablas/Proveedores' },
+      { text: 'Clientes', icon: <GroupTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/Clientes' },
+      { text: 'Monedas', icon: <MoneyTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/StkMonedas' },
+      { text: 'Transporte', icon: <LocalShippingTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/Transporte' },
+      { text: 'Grupos', icon: <VideoStableRoundedIcon sx={{ color: '#c52c11' }} />, path: '/tablas/StkGrupos' },
+      { text: 'Rubros', icon: <ClassTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/StkRubros' },
+      { text: 'Items', icon: <CategoryTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/StkItems' },
+      { text: 'Unidad deMedidas', icon: <StraightenTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/UnidadMedidas' },
+      { text: 'Ubicación Física', icon: <PlaceTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/UbicacionFisica' },
+      { text: 'PreBalance Rubros', icon: <BalanceTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/PBRubros' },
+      { text: 'Presupuesto Detalle Pie', icon: <ArrowCircleDownTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/PresupDetPie' },
+      { text: 'Presupuesto Config Tipo', icon: <ChecklistRtlTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/PresupConfTipo' },
+      { text: 'OT Condiciones Pago', icon: <CurrencyExchangeTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/OTCondPago' },
+      { text: 'OT Otros Datos', icon: <ShopTwoSharpIcon sx={{ color: '#c52c11' }} />, path: '/tablas/OTDatos' },
     ],
   },
-  { text: 'Movimiento Stock', icon: <PatternSharpIcon />, path: '/MovStock' },
-  { text: 'Inventario', icon: <InventorySharpIcon />, path: '/Inventario' },
+  { text: 'Movimiento Stock', icon: <PatternSharpIcon sx={{ color: '#06c4a4' }} />, path: '/MovStock' },
+  { text: 'Inventario', icon: <InventorySharpIcon sx={{ color: '#7c0abe' }} />, path: '/Inventario' },
 
   {
     text: 'Cuentas Corrientes',
-    icon: <SettingsIcon />,
+    icon: <SettingsIcon sx={{ color: '#f8d405' }} />,
     children: [
-      { text: 'Cuentas Corrientes', icon: <BadgeSharpIcon />, path: '/CtasCtes' },
-      { text: 'Parametros Comprobantes', icon: <GridOnIcon />, path: '/CtasCtes/ParamComp' },
+      { text: 'Cuentas Corrientes', icon: <BadgeSharpIcon sx={{ color: '#f8d405' }} />, path: '/CtasCtes' },
+      { text: 'Parametros Comprobantes', icon: <GridOnIcon sx={{ color: '#f8d405' }} />, path: '/CtasCtes/ParamComp' },
     ],
   },
   // { text: 'Cerrar sesión', icon: <LogoutIcon />, path: '/logout' },

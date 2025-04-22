@@ -14,7 +14,6 @@ import { PBRubrosAgregar } from "../pages/Tablas/PBRubros/PBRubrosAgregar";
 import { PBSubRubrosAgregar } from "../pages/Tablas/PBSubRubros/PBSubRubrosAgregar";
 import { OTDatosAgregar } from "../pages/Tablas/OTDatos/OTDatosAgregar";
 export function onRowAdd(newData) {
-  console.log('newData onRowAdd', newData)
   return new Promise((resolve) => {
     setTimeout(() => {
       if (newData.tablabase === 'Clientes') {

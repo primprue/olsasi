@@ -71,7 +71,6 @@ import { DialogoDatos } from "./DialogoDatos.jsx";
 import { use } from "react";
 import TablasContexto from "../context/TablasContext.jsx";
 import SelecCampos from "../pages/Impresion/SelecCampos.jsx";
-import { Box, Button, IconButton, Tooltip } from "@mui/material";
 import { PBSubRubrosModificar } from "../pages/Tablas/PBSubRubros/PBSubRubrosModificar.jsx";
 export default function TablaMuestra(props) {
 	const { rows1, columns1, formdatos } = props;
@@ -283,7 +282,8 @@ export default function TablaMuestra(props) {
 				<GridToolbarFilterButton className={estilotabla.coloropcioncol} />
 				<GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
 				<GridToolbarExport className={estilotabla.coloropcioncol} />
-				{(formdatos.tablabase !== "MuestraPresupuesto" && formdatos.tablabase !== "OTDatos" && (
+				{/* {(formdatos.tablabase !== "MuestraPresupuesto" && formdatos.tablabase !== "OTDatos" && ( */}
+				{(formdatos.tablabase !== "MuestraPresupuesto" && (
 					<React.Fragment>
 						<AddToPhotosTwoToneIcon
 							className={estilotabla.iconoagregar}
@@ -308,16 +308,16 @@ export default function TablaMuestra(props) {
 								titleAccess="Ve datos Presupuesto"
 							/>
 						))
-					||
-					(formdatos.tablabase === "OTDatos" &&
-						(
-							<AddToPhotosTwoToneIcon
-								className={estilotabla.iconoagregar}
-								size="large"
-								titleAccess="Agregar"
-								onClick={() => handleAlta1()}
-							/>
-						))
+					// ||
+					// (formdatos.tablabase === "OTDatos" &&
+					// 	(
+					// 		<AddToPhotosTwoToneIcon
+					// 			className={estilotabla.iconoagregar}
+					// 			size="large"
+					// 			titleAccess="Agregar"
+					// 			onClick={() => handleAlta1()}
+					// 		/>
+					// 	))
 				}
 				<LocalPrintshopRoundedIcon
 					onClick={() => setImprimirTF(true)}

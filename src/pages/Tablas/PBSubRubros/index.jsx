@@ -20,7 +20,6 @@ export default function PBSubRubros() {
 	}
 	async function dataFetch() {
 		const data = await PBSubRubrosLeer();
-		console.log('esta en dataFetch  ', data)
 		setRows(data);
 	}
 	async function initialFetch() {

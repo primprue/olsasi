@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { OTDatosLee } from "./OTDatosLee.jsx";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -24,12 +24,13 @@ import PreviewTwoToneIcon from "@mui/icons-material/PreviewTwoTone";
 import estilotabla from "../../../Styles/Tabla.module.css";
 import { DialogoDatos } from '../../../components/DialogoDatos.jsx';
 import TablasContexto from '../../../context/TablasContext.jsx';
+import OrdTrabajo from '../../../context/OrdTrabajo.jsx';
 export default function OTDatosForm() {
     const { formdatos, setFormdatos } = use(TablasContexto);
+    const { otdatos, setOTdatos } = use(OrdTrabajo);
     const { state, setState } = use(PresupPant);
     const [abreagregar, setAbreagregar] = useState(false);
     const [abreagregaritem, setAbreagregarItem] = useState(false);
-    // const [formdatos, setFormdatos] = useState(formdata);
     const [datosacargar, setDatosaCargar] = useState('');
     const [params, setParams] = useState();
     const [rows, setRows] = useState([]);
@@ -39,19 +40,32 @@ export default function OTDatosForm() {
     const [open, setOpen] = useState(false);
 
     async function leeotdatos(descripcion) {
-        const result = await OTDatosLee(descripcion);
-        setRows(procesarDatos(result));
-    }
+        setOTdatos(descripcion);
 
+        const result = await OTDatosLee(descripcion);
+        // if (result.length === 0)
+        //     return
+        if (result.length !== 0) {
+            // confcod.current = result[0].OTDatosConfCod
+            setRows(procesarDatos(result));
+        }
+
+    }
     useEffect(() => {
 
         if (state.PresupConfTipoDesc !== '') {
             leeotdatos(state.PresupConfTipoDesc);
-            setFormdatos(formdata);
+            setFormdatos({
+                ...formdatos,
+                OTDatosTipoConf: state.PresupConfTipoDesc,
+            });
         }
 
     }, [state.PresupConfTipoDesc]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    useEffect(() => {
+        setFormdatos(formdata);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const procesarDatos = (data) => {
         if (data !== '') {
@@ -60,7 +74,7 @@ export default function OTDatosForm() {
                     id: `${item.idOTDatos}-${clave}`, // ID único
                     idOTDatos: item.idOTDatos,
                     OTDatosDesc: item.OTDatosDesc,
-                    OTDatosConfCod: item.OTDatosConfCod,
+                    // OTDatosConfCod: item.OTDatosConfCod,
                     opcion: clave,
                     OTDatosOpciones: valor,
                     OTDatosOrdenAparicion: item.OTDatosOrdenAparicion,
@@ -73,48 +87,29 @@ export default function OTDatosForm() {
         }
     };
 
-    /*    const procesarDatos = (data) => {
-        if (data !== '') {
-            return data.flatMap((item) =>
-                Object.entries(JSON.parse(item.OTDatosOpciones)).map(([clave, valor]) => ({
-                    id: `${item.idOTDatos}-${clave}`, // ID único
-                    idOTDatos: item.idOTDatos,
-                    descripcion: item.OTDatosDesc,
-                    codconf: item.OTDatosConfCod,
-                    opcion: clave,
-                    valor: valor,
-                    aparicion: item.OTDatosOrdenAparicion,
-                    tipo: item.OTDatosTipoPed,
-                    requerido: item.OTDatosRequerido
-                }))
-
-            );
-        }
-    };*/
-
     const tipocampo = [
         { value: "select", label: "Select" },
         { value: "textfield", label: "Texto" },
     ];
 
     const columns = [
-        { field: "id", type: "text", headerName: "id", width: 200, editable: false },
-        { field: "idOTDatos", type: "text", headerName: "id datos", width: 200, editable: true },
+        // { field: "id", type: "text", headerName: "id", width: 200, editable: false },
+        { field: "idOTDatos", type: "text", headerName: "id datos", width: 200, editable: false },
         { field: "OTDatosOrdenAparicion", type: "text", headerName: "Orden de Aparición", width: 200, editable: true },
         {
             field: "OTDatosDesc", type: "text", headerName: "descripcion", width: 200, editable: true,
             renderCell: (params) => {
                 const rowIndex = params.api.getAllRowIds().indexOf(params.id);
                 // Si no es la primera vez que aparece la categoría, la celda queda vacía
-                if (rowIndex > 0 && rows[rowIndex - 1].descripcion === params.value) {
+                if (rowIndex > 0 && rows[rowIndex - 1].OTDatosDesc === params.value) {
                     return null; // Celda vacía para las filas repetidas
                 }
                 return <strong>{params.value}</strong>;
             },
         },
-        { field: "OTDatosOpciones", type: "text", headerName: "opcion", width: 150, editable: false },
-        { field: "valor", type: "text", headerName: "valor", width: 100, editable: true },
         { field: "OTDatosTipoPed", type: "singleSelect", headerName: "tipo", width: 100, editable: true, valueOptions: tipocampo },
+        { field: "opcion", type: "text", headerName: "Opción Campo Select", width: 150, editable: false },
+        { field: "OTDatosOpciones", type: "text", headerName: "Valor por Defecto Campo Text", width: 100, editable: false },
         { field: "OTDatosRequerido", type: "singleSelect", headerName: "requerido", width: 100, editable: true, valueOptions: [{ value: "S", label: "S" }, { value: "N", label: "N" }] },
         { field: "OTDatosAncho", type: "text", headerName: "Ancho", width: 100, editable: true },
         {
@@ -122,6 +117,7 @@ export default function OTDatosForm() {
             headerName: "+ Opciones",
             type: "text",
             width: 100,
+            editable: false,
             headerClassName: "encabcolumns",
             renderCell: (params) => (
                 <Button
@@ -136,15 +132,6 @@ export default function OTDatosForm() {
         }
 
     ];
-    // idOTDatos: 0,
-    //     OTDatosTipoConf: '',
-    //         OTDatosConfCod: 0,
-    //             OTDatosDesc: '',
-    //                 OTDatosOpciones: '',
-    //                     OTDatosTipoPed: '',
-    //                         OTDatosRequerido: '',
-    //                             OTDatosOrdenAparicion: 0,
-    //                                 OTDatosAncho: 0,
 
     const openApp = (params) => {
         setParams(params.row)
@@ -244,27 +231,18 @@ export default function OTDatosForm() {
     return (
         <div style={{ marginTop: "20px", marginLeft: "20px" }}>
             <FilaUnoIzq />
-            {rows && rows.length > 0 &&
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    processRowUpdate={handleProcessRowUpdate}
-                    pageSize={5}
-                    slots={{
-                        toolbar: CustomToolbar,
-                    }}
-                />
-            }
-            {/* <DialogoDatos
-                open={open}
+            {/* {rows && rows.length > 0 && */}
+            <DataGrid
+                rows={rows}
                 columns={columns}
-                handleClose={handleClose}
-                nombrebtn={nombreboton}
-                paramsbor={paramsbor}
-                titulodial={titulodial}
-            /> */}
+                // processRowUpdate={handleProcessRowUpdate}
+                pageSize={5}
+                slots={{
+                    toolbar: CustomToolbar,
+                }}
+            />
+            {/* // } */}
 
-            {/* <Button variant="contained" color="primary" onClick={handleClickOpen}></Button> */}
             {abreagregar && <OTDatosAgregarForm open={abreagregar} handleClose={handleClickOpen} />}
             {abreagregaritem && <OTDatosAgrOpc open={abreagregaritem} params={params} handleClose={() => setAbreagregarItem(false)} />}
 
@@ -275,8 +253,29 @@ export default function OTDatosForm() {
                 nombrebtn={nombreboton}
                 paramsbor={paramsbor}
                 titulodial={titulodial}
+            // PresupConfTipoDesc={state.PresupConfTipoDesc}
+            // confcod={confcod.current}
             />
 
         </div>
     )
 }
+
+/*    const procesarDatos = (data) => {
+    if (data !== '') {
+        return data.flatMap((item) =>
+            Object.entries(JSON.parse(item.OTDatosOpciones)).map(([clave, valor]) => ({
+                id: `${item.idOTDatos}-${clave}`, // ID único
+                idOTDatos: item.idOTDatos,
+                descripcion: item.OTDatosDesc,
+                codconf: item.OTDatosConfCod,
+                opcion: clave,
+                valor: valor,
+                aparicion: item.OTDatosOrdenAparicion,
+                tipo: item.OTDatosTipoPed,
+                requerido: item.OTDatosRequerido
+            }))
+
+        );
+    }
+};*/

@@ -3,7 +3,6 @@
 export const formdata = {
   idOTDatos: 0,
   OTDatosTipoConf: '',
-  OTDatosConfCod: 0,
   OTDatosDesc: '',
   OTDatosOpciones: '',
   OTDatosTipoPed: '',

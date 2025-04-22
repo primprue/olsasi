@@ -104,29 +104,31 @@ export default function OTGenera(props) {
 		// Convertir el PDF a un blob
 	}
 	var textoImp = "";
-	var valorImp = 0.0;
+	var valorImp = formatCurrency(0.00);
 	var textoImpI = "";
-	var valorImpI = 0.0;
+	var valorImpI = formatCurrency(0.00);
 	if (otdatos.OTEncabconIVA === "N") {
 		textoImpI = "Importe c/IVA";
-		valorImpI = formatCurrency(0);
+		valorImpI = formatCurrency(0.00);
 		textoImp = "Importe s/IVA";
 		valorImp = formatCurrency(otdatos.TotalPresupuestoSIVA);
 	} else {
 		textoImpI = "Importe c/IVA";
-		valorImpI = formatCurrency(otdatos.TotalPresupuesto);
 		textoImp = "Importe s/IVA";
-		valorImp = formatCurrency(otdatos.TotalPresupuestoSIVA);
+		if (otdatos.TotalPresupuesto !== 0 && otdatos.TotalPresupuesto !== undefined) {
+			valorImpI = formatCurrency(otdatos.TotalPresupuesto);
+		}
+		if (otdatos.TotalPresupuestoSIVA !== 0 && otdatos.TotalPresupuestoSIVA !== undefined) {
+			valorImp = formatCurrency(otdatos.TotalPresupuestoSIVA);
+		}
 	}
 	var textoSeniaI = "Importe Seña";
 	var valorSeniaI = formatCurrency(0.0);
 	if (otdatos.ImporteSenia !== 0 && otdatos.ValorSenia !== undefined) {
 		valorSeniaI = formatCurrency(otdatos.ImporteSenia);
 	}
-
 	const sendPDFViaWebSocket = (pdfData, nombrearch) => {
-		console.log('nombrearch', nombrearch)
-		console.log('pdfData', pdfData)
+
 		const socket = new WebSocket("ws://localhost:3000");
 		const payload = {
 			action: "save",
@@ -169,16 +171,27 @@ export default function OTGenera(props) {
 		let y = 7;
 		let ancho = 40; // Ancho del recuadro
 		let alto = 4;
-		let dencliente = arregloencab[0].idClientes;
 		var columns = ["    Cliente  ", "Telefono", "Localidad", "CUIT"];
-		var data = [
-			[
-				"(" + dencliente + ")" + " " + arregloencab[0].ClientesDesc,
-				arregloencab[0].ClientesTel,
-				arregloencab[0].ClientesLoc,
-				arregloencab[0].ClientesCUIT,
-			],
-		];
+		if (arregloencab[0].idClientes) {
+			let dencliente = arregloencab[0].idClientes;
+			var data = [
+				[
+					"(" + dencliente + ")" + " " + arregloencab[0].ClientesDesc,
+					arregloencab[0].ClientesTel,
+					arregloencab[0].ClientesLoc,
+					arregloencab[0].ClientesCUIT,
+				],
+			];
+		}
+		else {
+
+			var data = [
+				[
+					"(" + '     ' + ")" + " " + arregloencab[0].PresupEncabCliente
+
+				],
+			];
+		}
 		let x = 0;
 		y += 8;
 		doc.autoTable({
@@ -512,7 +525,9 @@ export default function OTGenera(props) {
 			margin: { top: 10, left: 10, right: 10, bottom: 10 },
 		});
 		// Genera el PDF como Data URI y lo envía a pdfdata que si exite se muestra en el iframe
-		var Cliente = arregloencab[0].ClientesDesc;
+		// var Cliente = arregloencab[0].ClientesDesc;
+		var Cliente = arregloencab[0].PresupEncabCliente
+		console.log('arregloencab ', arregloencab)
 		var largocli = Cliente.length;
 		while (
 			(Cliente.substr(largocli, 1) == " " ||
@@ -523,6 +538,7 @@ export default function OTGenera(props) {
 		}
 
 		Cliente = Cliente.substr(0, largocli + 1);
+		console.log('Cliente ', Cliente)
 
 		const dataUri = doc.output("dataurlstring");
 		setPdfData(dataUri);
