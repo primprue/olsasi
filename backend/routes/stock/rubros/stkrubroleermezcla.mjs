@@ -23,7 +23,6 @@ router.get("/", function (req, res, next) {
     " from StkRubro JOIN StkGrupo, BasesGenerales.Proveedores ",
     " where StkRubroCodGrp = idStkGrupo and StkRubroProv = idProveedores "
   ].join(" ");
-  console.log('q stkrubrollermezcla  ', q)
   /*
   esto estaba así, tenía en el último renglón antes del where StkItems, y repetía todos los rubros
   se lo saqué y dió resultado

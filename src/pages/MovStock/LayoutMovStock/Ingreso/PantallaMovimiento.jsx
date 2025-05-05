@@ -9,13 +9,16 @@ import { datosingreso } from "./DatosIngreso";
 import { sumaingreso } from "./SumaIngreso";
 
 // Context
-import { useContext } from "react";
+import { use } from "react";
 import { MovStockPantContext } from "../../MovStockPant";
 import { DataGrid } from "@mui/x-data-grid";
 import { Proveedoresleertipo26 } from "./Proveedoresleertipo26";
 import { esES } from '@mui/material/locale';
+import { blue, green, red } from "@mui/material/colors";
+import AssignmentReturnedIcon from "@mui/icons-material/AssignmentReturned";
+import CardStock from "../../../../components/comppropios/CardStock";
 export default function PantallaMovimiento(props) {
-	const { state, setState } = useContext(MovStockPantContext);
+	const { state, setState } = use(MovStockPantContext);
 	const [trigger, setTrigger] = useState(false);
 	const [columns, setColumns] = useState([]);
 	const [data, setData] = useState([]);
@@ -28,6 +31,32 @@ export default function PantallaMovimiento(props) {
 	const textInput2 = useRef(null);
 	let abrrrubro;
 	let agregaingreso = "";
+	const [LlamaPI, setLlamaPI] = useState(false);
+	const [LlamaPE, setLlamaPE] = useState(false);
+	const [LlamaPC, setLlamaPC] = useState(false);
+	const AbrePI = () => {
+		setLlamaPI(true);
+	};
+
+	const CierraPI = () => {
+		setLlamaPI(false);
+	};
+
+	const AbrePE = () => {
+		setLlamaPE(true);
+	};
+
+	const CierraPE = () => {
+		setLlamaPE(false);
+	};
+
+	const AbrePC = () => {
+		setLlamaPC(true);
+	};
+
+	const CierraPC = () => {
+		setLlamaPC(false);
+	};
 
 	async function dataFetch() {
 		const result = await Proveedoresleertipo26();
@@ -101,6 +130,7 @@ export default function PantallaMovimiento(props) {
 		setTrigger((prev) => !prev);
 		it < data.length - 1 ? it++ : it--;
 		miraitem(it);
+		CierraPI();
 	}
 
 	const handleProcessRowUpdate = (newRow, oldRow) => {
@@ -180,7 +210,27 @@ export default function PantallaMovimiento(props) {
 						{datos.mapeo}
 					</TextField>
 				))}
-
+				<Button onClick={AbrePI} color="primary">
+					<AssignmentReturnedIcon
+						style={{ color: green[500] }}
+						fontSize="large"
+						titleAccess="Agregar"
+					/>
+				</Button>
+				<Button onClick={AbrePE} color="primary">
+					<AssignmentReturnedIcon
+						style={{ color: red[500] }}
+						fontSize="large"
+						titleAccess="Agregar"
+					/>
+				</Button>
+				<Button onClick={AbrePC} color="primary">
+					<AssignmentReturnedIcon
+						style={{ color: blue[500] }}
+						fontSize="large"
+						titleAccess="Agregar"
+					/>
+				</Button>
 				<DataGrid
 					key={trigger} // El cambio en trigger fuerza el re-renderizado
 					rows={data}
@@ -196,7 +246,8 @@ export default function PantallaMovimiento(props) {
 
 			</div>
 			<div className={Estilos.contenedor2}>
-				{selectedRow ? (
+				{selectedRow &&
+					LlamaPI ? (
 					<Card>
 						<CardContent className={Estilos.card1}>
 							<Grid container>
@@ -261,10 +312,8 @@ export default function PantallaMovimiento(props) {
 
 						</CardContent>
 					</Card>
-				) : (
-					""
-				)}
-
+				) : LlamaPE ? (<div> Pedido de Entrega </div>) :
+					LlamaPC ? (<div> Pedido de Compra </div>) : null}
 			</div>
 		</div>
 	);

@@ -1,21 +1,18 @@
-import React, { Component, useEffect, useState } from "react";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
-import EstiloBoton from "../../Styles/Boton.module.css";
-
-import Grid from "@mui/material/Grid";
-import DialogTitle from "@mui/material/DialogTitle";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { stkrubroleer } from "../Tablas/StkRubros/StkRubroLeer";
 import { stkgrupolee } from "../Tablas/StkGrupos/StkGrupoLee";
-import { proveedoresleer } from "../Tablas/Proveedores/ProveedoresLeer";
+import { Proveedoresleertipo26 } from "../Tablas/Proveedores/Proveedoresleertipo26";
 import { initial_state } from "./Initial_State";
+import TextFieldSelect from '../../components/comppropios/TextFieldSelect';
+import CustomSwitch from '../../components/comppropios/CustomSwitch';
+import TextFieldComun from '../../components/comppropios/TextFieldComun';
+import EstiloBoton from "../../Styles/Boton.module.css";
+import { Button, Grid } from '@mui/material';
 import { ModPrecios } from "./ModPrecios";
 export default function ModificaPrecios() {
+	const [opcionselecPGR, setOpcionSelecPGR] = useState('');
+	const [opcionImpPes, setOpcionImpPes] = useState('');
+	// const [valorSeleccionado, setValorSeleccionado] = useState('');
 	const [state, setState] = useState(initial_state);
 	const [proveedores, setProveedores] = useState([]);
 	const [grupos, setGrupos] = useState([]);
@@ -31,23 +28,59 @@ export default function ModificaPrecios() {
 		);
 	};
 
-	const toggleTipo = (tipo) => {
-		setState((prevState) => ({
-			...prevState,
-			toggle: {
-				...prevState.toggle,
-				[tipo]: !prevState.toggle[tipo], // Cambia el valor actual
-			},
-		}));
-	};
 
-	const handleChange = (prop) => (event) => {
-		setState({ ...state, [prop]: event.target.value });
-		toggleTipo(event.target.value);
-	};
+	let textdatap = [];
+
+	if (proveedores !== undefined) {
+		if (proveedores.length > 0) {
+			textdatap = [{
+				id: "idProveedores",
+				label: "Proveedores",
+				value: proveedores[0].idProveedores,
+				options: proveedores.map((option) => ({
+					value: option.idProveedores,
+					label: option.ProveedoresDesc
+				}))
+			}];
+
+		}
+	}
+	let textdatag = [];
+
+	if (grupos !== undefined) {
+		if (grupos.length > 0) {
+			textdatag = [{
+				id: "id",
+				label: "Grupo",
+				value: grupos[0].id,
+				options: grupos.map((option) => ({
+					value: option.id,
+					label: option.StkGrupoDesc
+				}))
+			}];
+
+		}
+	}
+
+	let textdatar = [];
+
+	if (rubros !== undefined) {
+		if (rubros.length > 0) {
+			textdatar = [{
+				id: "StkRubroAbr",
+				label: "Rubro",
+				value: rubros[0].StkRubroAbr,
+				options: rubros.map((option) => ({
+					value: option.StkRubroAbr,
+					label: option.StkRubroDesc
+				}))
+			}];
+
+		}
+	}
 
 	async function proveedorleer() {
-		const data = await proveedoresleer();
+		const data = await Proveedoresleertipo26();
 		setProveedores(data);
 	}
 
@@ -60,160 +93,182 @@ export default function ModificaPrecios() {
 		const data = await stkrubroleer();
 		setRubros(data);
 	}
-
 	useEffect(() => {
 		proveedorleer();
 		gruposleer();
 		rubrosleer();
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+
+	const [selectedValues, setSelectedValues] = useState('');
+	const handleSelectChange = (value, id) => {
+		setState({ ...state, [id]: value });
+		setSelectedValues((prev) => ({
+			...prev,
+			[id]: value,
+		}));
+		// setValorSeleccionado(value);
+
+	};
+
+	const renderComboBoxPGR = () => {
+		switch (opcionselecPGR) {
+
+			case 'Proveedor':
+				return (
+					textdatap.map(({ id, label, value, options }, index) => {
+						return (
+							<TextFieldSelect
+								key={index}
+								id={id}
+								label={label}
+								value={value}
+								onChange={handleSelectChange}
+								options={options}
+								width="400px"
+							/>
+						);
+					})
+				);
+
+
+
+			case 'Grupo':
+				return (
+					textdatag.map(({ id, label, value, options }, index) => {
+						return (
+							<TextFieldSelect
+								key={index}
+								id={id}
+								label={label}
+								value={value}
+								onChange={handleSelectChange}
+								options={options}
+								width="400px"
+							/>
+						);
+					})
+				);
+
+			case 'Rubro':
+				return (
+					textdatar.map(({ id, label, value, options }, index) => {
+						return (
+							<TextFieldSelect
+								key={index}
+								id={id}
+								label={label}
+								value={value}
+								onChange={handleSelectChange}
+								options={options}
+								width="400px"
+							/>
+						);
+					})
+				);
+
+			default:
+				return null; // No mostrar nada por defecto
+		}
+	};
+
+	const renderComboBoxImpPor = () => {
+		switch (opcionImpPes) {
+
+			case 'Importe':
+				return (
+
+					<TextFieldComun
+						id="Importe"
+						type="number"
+						label="Importe "
+						value={state.Importe}
+						onChange={handleChange}
+						width="100px"
+					/>
+				);
+
+
+
+			case 'Porcentaje':
+				return (
+					<TextFieldComun
+						id="Porcentaje"
+						type="number"
+						label="Porcentaje"
+						value={state.Porcentaje}
+						onChange={handleChange}
+						width="100px"
+					/>
+				);
+
+
+			default:
+				return null; // No mostrar nada por defecto
+		}
+	};
+
+	// Función para actualizar la opción seleccionada
+	const selecPGR = useMemo(() => opcionselecPGR || "", [opcionselecPGR]);
+	const handleOptionChangePGR = (newOption) => {
+		setOpcionSelecPGR(newOption);
+		setSelectedValues('');
+	};
+
+	const selecImpPor = useMemo(() => opcionImpPes || "", [opcionImpPes]);
+	const handleOptionChangeIP = (newOption) => {
+		setOpcionImpPes(newOption);
+	};
+
+
+	const handleChange = (value, id) => {
+		setState({ ...state, [id]: value });
+
+	};
+
 	return (
 		<div>
 			<form>
-				{/* <Grid container>
-					<Grid item span={{ xs: 4 }} sm={4} lg={4}></Grid>
-					<DialogTitle id="form-dialog-title">Modificar Precio</DialogTitle>
-					<Grid item span={{ xs: 4 }} sm={4} lg={4}></Grid>
-				</Grid> */}
 				<Grid container>
-					<Grid item span={{ xs: 3 }} sm={3} lg={3}>
-						<FormControl component="fieldset">
-							<RadioGroup
-								aria-label="gender"
-								name="pgr"
-								value={state.value}
-								onChange={handleChange("value")}
-							>
-								<FormControlLabel
-									value="proveedor"
-									control={<Radio color="primary" />}
-									label="Proveedor"
-									labelPlacement="start"
-								/>
-								<FormControlLabel
-									value="grupo"
-									control={<Radio color="primary" />}
-									label="Grupo"
-									labelPlacement="start"
-								/>
-								<FormControlLabel
-									value="rubro"
-									control={<Radio color="primary" />}
-									label="Rubro"
-									labelPlacement="start"
-								/>
-							</RadioGroup>
-						</FormControl>
-					</Grid>
-					<Grid item span={{ xs: 3 }} sm={3} lg={3}>
-						{state.toggle.proveedor && (
-							<TextField
-								id="idProveedores"
-								select={true}
-								label="Proveedor"
-								SelectProps={{ native: true }}
-								onChange={handleChange("idProveedores")}
-							>
-								<option value="0"></option>
-								{proveedores.map((proveedor) => (
-									<option key={proveedor.id} value={proveedor.id}>
-										{proveedor.ProveedoresDesc}
-									</option>
-								))}
-							</TextField>
-						)}
-						{state.toggle.grupo && (
-							<TextField
-								id="idStkGrupo"
-								select
-								label="Grupo"
-								SelectProps={{ native: true }}
-								onChange={handleChange("idStkGrupo")}
-							>
-								<option value="0"></option>
-								{grupos.map((grupo) => (
-									<option key={grupo.idStkGrupo} value={grupo.idStkGrupo}>
-										{grupo.StkGrupoDesc}
-									</option>
-								))}
-							</TextField>
-						)}
-						{state.toggle.rubro && (
-							<TextField
-								id="idStkRubro"
-								select
-								label="Rubro"
-								SelectProps={{ native: true }}
-								onChange={handleChange("StkRubroAbr")}
-							>
-								<option value="0"></option>
-								{rubros.map((rubro) => (
-									<option key={rubro.StkRubroAbr} value={rubro.StkRubroAbr}>
-										{rubro.StkRubroDesc}
-									</option>
-								))}
-							</TextField>
-						)}
-					</Grid>
-					<Grid item span={{ xs: 3 }} sm={3} lg={3}>
-						<FormControl component="fieldset">
-							<RadioGroup
-								aria-label="ip"
-								name="ip"
-								value={state.valueIp}
-								onChange={handleChange("valueIp")}
-							>
-								<FormControlLabel
-									value="importe"
-									control={<Radio color="primary" />}
-									label="Importe"
-									labelPlacement="start"
-								/>
-								<FormControlLabel
-									value="porcentaje"
-									control={<Radio color="primary" />}
-									label="Porcentaje"
-									labelPlacement="start"
-								/>
-							</RadioGroup>
-						</FormControl>
-					</Grid>
-					<Grid item span={{ xs: 1 }} sm={1} lg={1}>
-						{state.toggle.importe && (
-							<TextField
-								margin="dense"
-								id="Importe"
-								label="Importe"
-								type="number"
-								fullWidth
-								placeholder="Importe"
-								value={state.Importe}
-								onChange={handleChange("Importe")}
-							/>
-						)}
-						{state.toggle.porcentaje && (
-							<TextField
-								margin="dense"
-								id="Porcentaje"
-								label="Porcentaje"
-								type="number"
-								fullWidth
-								placeholder="Porcentaje"
-								value={state.Porcentaje}
-								onChange={handleChange("Porcentaje")}
-							/>
-						)}
-					</Grid>
-					<Grid item span={{ xs: 1 }} sm={1} lg={1}></Grid>
+					<Grid span={{ xs: 3 }} >
+						<CustomSwitch
+							value={selecPGR}
+							onChange={handleOptionChangePGR}
+							opcion1={'Proveedor'}
+							opcion2={'Grupo'}
+							opcion3={'Rubro'}
+							titulo1={'Proveedor'}
+							titulo2={'Grupo'}
+							titulo3={'Rubro'}
+							tithelpertext={'Modifica por : '} />
 
-					<Button
-						className={EstiloBoton.botonabreot}
-						onClick={() => submitModPrecio()}
-					>
-						Enviar
-					</Button>
+
+						{renderComboBoxPGR()}
+					</Grid>
+					<Grid span={{ xs: 3 }} >
+						<CustomSwitch
+							value={selecImpPor}
+							onChange={handleOptionChangeIP}
+							opcion1={'Importe'}
+							opcion2={'Porcentaje'}
+							titulo1={'Importe'}
+							titulo2={'Porcentaje'}
+							tithelpertext={'Modifica por : '} />
+
+						{renderComboBoxImpPor()}
+						<Button
+							className={EstiloBoton.botonabreot}
+							onClick={() => submitModPrecio()}
+						>
+							Enviar
+						</Button>
+					</Grid>
 				</Grid>
 			</form>
+			{/* {valorSeleccionado && (
+				<p>Valor seleccionado: {valorSeleccionado}</p>
+			)} */}
 		</div>
 	);
 }
+

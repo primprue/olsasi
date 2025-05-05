@@ -6,7 +6,6 @@ import estilo from "../../Styles/TextFieldSelect.module.css";
 import { TextField, MenuItem, FormControl, FormLabel } from "@mui/material";
 const TextFieldSelect = ({ id, label, value, onChange, options, width = "100%", ...other }) => {
     const [selectedValue, setSelectedValue] = useState(value ?? id); // Si value es null/undefined, usa id
-
     useEffect(() => {
         setSelectedValue(value ?? id); // Si value cambia, actualizar estado
     }, [value, id]);

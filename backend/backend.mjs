@@ -97,6 +97,8 @@ import stkrubroleerconf from "./routes/stock/rubros/stkrubroleerconf.mjs";
 import stkrubroleerTBR from "./routes/stock/rubros/stkrubroleerTBR.mjs";
 import stkrubroleerprov from "./routes/stock/rubros/stkrubroleerprov.mjs";
 import stkrubroleerconfgrp from "./routes/stock/rubros/stkrubroleerconfgrp.mjs";
+import stkrubroleerabr from "./routes/stock/rubros/stkrubroleerabr.mjs";
+
 
 //01-06-2023
 import stkrubroleerLAT from "./routes/stock/rubros/stkrubroleerLAT.mjs";
@@ -408,6 +410,9 @@ app.use("/stkrubroleerprov", stkrubroleerprov);
 app.use("/stkrubroleerconfgrp", stkrubroleerconfgrp);
 //01-06-2023
 app.use("/stkrubroleerLAT", stkrubroleerLAT);
+//02/05/20025
+app.use("/stkrubroleerabr", stkrubroleerabr);
+
 
 app.use("/stkitemsleer", stkitemsleer);
 app.use("/stkitemsagregar", stkitemsagregar);

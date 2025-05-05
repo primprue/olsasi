@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PantallaIngreso from "./LayoutMovStock/Ingreso/PantallaMovimiento.jsx";
+import PantallaMovimiento from "./LayoutMovStock/Ingreso/PantallaMovimiento.jsx";
 // import SalidaDisponible from "./LayoutMovStock/SalidaDisp/SalidaDisponible";
 
 import Grid from "@mui/material/Grid";
@@ -26,22 +26,23 @@ export default function PantallaInicial() {
 	return (
 		<>
 			<Grid>
+				<PantallaMovimiento />
 				{/* <Grid container item span={{ xs: 2 }}> */}
-				<Button onClick={LlamaPI} color="primary">
+				{/* <Button onClick={LlamaPI} color="primary">
 					<AssignmentReturnedIcon
 						style={{ color: green[500] }}
 						fontSize="large"
 						titleAccess="Agregar"
 					/>
-				</Button>
-
+				</Button> */}
+				{/* 
 				{pantingreso ? (
 					<div>
-						<PantallaIngreso />
+						<PantallaMovimiento />
 					</div>
 				) : (
 					""
-				)}
+				)} */}
 
 				{/* {saldisponible ? (
                     <div>

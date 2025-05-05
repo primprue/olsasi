@@ -27,6 +27,7 @@ import BalanceTwoToneIcon from '@mui/icons-material/BalanceTwoTone';
 import ArrowCircleDownTwoToneIcon from '@mui/icons-material/ArrowCircleDownTwoTone';
 import ChecklistRtlTwoToneIcon from '@mui/icons-material/ChecklistRtlTwoTone';
 import CurrencyExchangeTwoToneIcon from '@mui/icons-material/CurrencyExchangeTwoTone';
+import LowPriorityTwoToneIcon from '@mui/icons-material/LowPriorityTwoTone';
 import ShopTwoSharpIcon from '@mui/icons-material/ShopTwoSharp';
 import DeveloperBoardSharpIcon from '@mui/icons-material/DeveloperBoardSharp';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
@@ -38,47 +39,48 @@ const drawerWidthExpanded = 240; // Ancho cuando el menú está expandido
 const drawerWidthCollapsed = 70; // Ancho cuando el menú está colapsado
 
 const menuItems = [
-  { text: 'Inicio', icon: <HomeIcon sx={{ color: '#03d403' }} />, path: '/' },
-  { text: 'Lista de Precios', icon: <DashboardIcon sx={{ color: '#055af8' }} />, path: '/listaprecios' },
+  { text: 'Inicio', icon: <HomeIcon sx={{ fontSize: 40, color: '#03d403' }} />, path: '/' },
+  { text: 'Lista de Precios', icon: <DashboardIcon sx={{ fontSize: 32, color: '#055af8' }} />, path: '/listaprecios' },
   {
     text: 'Presupuesto',
-    icon: <BorderColorIcon sx={{ color: '#050463' }} />,
+    icon: <BorderColorIcon sx={{ fontSize: 32, color: '#050463' }} />,
     children: [
-      { text: 'Presupuesto', icon: <CalculateSharpIcon sx={{ color: '#0905dff4' }} />, path: '/presupuesto/Presupuesto' },
-      { text: 'Muestra Presupuesto', icon: <PreviewSharpIcon sx={{ color: '#0400fdd5' }} />, path: '/presupuesto/PresupMuestra' },
+      { text: 'Presupuesto', icon: <CalculateSharpIcon sx={{ fontSize: 32, color: '#f51808f4' }} />, path: '/presupuesto/Presupuesto' },
+      { text: 'Muestra Presupuesto', icon: <PreviewSharpIcon sx={{ fontSize: 32, color: '#949e07df' }} />, path: '/presupuesto/PresupMuestra' },
+      { text: 'Modifica Precios', icon: <CurrencyExchangeTwoToneIcon sx={{ fontSize: 32, color: '#8d07afd4' }} />, path: '/ListaPrecios/ModificaPrecios' },
     ],
   },
-  { text: 'Reparación', icon: <ConstructionSharpIcon sx={{ color: '#1d5f09' }} />, path: '/Reparacion' },
-  { text: 'Movimiento Orden de Trabajo', icon: <ManageHistorySharpIcon sx={{ color: '#e61677' }} />, path: '/otrabajo/OTMovimiento' },
+  { text: 'Reparación', icon: <ConstructionSharpIcon sx={{ fontSize: 32, color: '#1d5f09' }} />, path: '/Reparacion' },
+  { text: 'Movimiento Orden de Trabajo', icon: <ManageHistorySharpIcon sx={{ fontSize: 32, color: '#e61677' }} />, path: '/otrabajo/OTMovimiento' },
   {
     text: 'Tablas',
-    icon: <DeveloperBoardSharpIcon sx={{ color: '#c52c11' }} />,
+    icon: <DeveloperBoardSharpIcon sx={{ fontSize: 32, color: '#c52c11' }} />,
     children: [
-      { text: 'Proveedores', icon: <GridOnIcon sx={{ color: '#c52c11' }} />, path: '/tablas/Proveedores' },
-      { text: 'Clientes', icon: <GroupTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/Clientes' },
-      { text: 'Monedas', icon: <MoneyTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/StkMonedas' },
-      { text: 'Transporte', icon: <LocalShippingTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/Transporte' },
-      { text: 'Grupos', icon: <VideoStableRoundedIcon sx={{ color: '#c52c11' }} />, path: '/tablas/StkGrupos' },
-      { text: 'Rubros', icon: <ClassTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/StkRubros' },
-      { text: 'Items', icon: <CategoryTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/StkItems' },
-      { text: 'Unidad deMedidas', icon: <StraightenTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/UnidadMedidas' },
-      { text: 'Ubicación Física', icon: <PlaceTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/UbicacionFisica' },
-      { text: 'PreBalance Rubros', icon: <BalanceTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/PBRubros' },
-      { text: 'Presupuesto Detalle Pie', icon: <ArrowCircleDownTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/PresupDetPie' },
-      { text: 'Presupuesto Config Tipo', icon: <ChecklistRtlTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/PresupConfTipo' },
-      { text: 'OT Condiciones Pago', icon: <CurrencyExchangeTwoToneIcon sx={{ color: '#c52c11' }} />, path: '/tablas/OTCondPago' },
-      { text: 'OT Otros Datos', icon: <ShopTwoSharpIcon sx={{ color: '#c52c11' }} />, path: '/tablas/OTDatos' },
+      { text: 'Proveedores', icon: <GridOnIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/Proveedores' },
+      { text: 'Clientes', icon: <GroupTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/Clientes' },
+      { text: 'Monedas', icon: <MoneyTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/StkMonedas' },
+      { text: 'Transporte', icon: <LocalShippingTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/Transporte' },
+      { text: 'Grupos', icon: <VideoStableRoundedIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/StkGrupos' },
+      { text: 'Rubros', icon: <ClassTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/StkRubros' },
+      { text: 'Items', icon: <CategoryTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/StkItems' },
+      { text: 'Unidad deMedidas', icon: <StraightenTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/UnidadMedidas' },
+      { text: 'Ubicación Física', icon: <PlaceTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/UbicacionFisica' },
+      { text: 'PreBalance Rubros', icon: <BalanceTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/PBRubros' },
+      { text: 'Presupuesto Detalle Pie', icon: <ArrowCircleDownTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/PresupDetPie' },
+      { text: 'Presupuesto Config Tipo', icon: <ChecklistRtlTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/PresupConfTipo' },
+      { text: 'OT Condiciones Pago', icon: <LowPriorityTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/OTCondPago' },
+      { text: 'OT Otros Datos', icon: <ShopTwoSharpIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/OTDatos' },
     ],
   },
-  { text: 'Movimiento Stock', icon: <PatternSharpIcon sx={{ color: '#06c4a4' }} />, path: '/MovStock' },
-  { text: 'Inventario', icon: <InventorySharpIcon sx={{ color: '#7c0abe' }} />, path: '/Inventario' },
+  { text: 'Movimiento Stock', icon: <PatternSharpIcon sx={{ fontSize: 32, color: '#06c4a4' }} />, path: '/MovStock' },
+  { text: 'Inventario', icon: <InventorySharpIcon sx={{ fontSize: 32, color: '#7c0abe' }} />, path: '/Inventario' },
 
   {
     text: 'Cuentas Corrientes',
-    icon: <SettingsIcon sx={{ color: '#f8d405' }} />,
+    icon: <SettingsIcon sx={{ fontSize: 32, color: '#f8d405' }} />,
     children: [
-      { text: 'Cuentas Corrientes', icon: <BadgeSharpIcon sx={{ color: '#f8d405' }} />, path: '/CtasCtes' },
-      { text: 'Parametros Comprobantes', icon: <GridOnIcon sx={{ color: '#f8d405' }} />, path: '/CtasCtes/ParamComp' },
+      { text: 'Cuentas Corrientes', icon: <BadgeSharpIcon sx={{ fontSize: 32, color: '#f8d405' }} />, path: '/CtasCtes' },
+      { text: 'Parametros Comprobantes', icon: <GridOnIcon sx={{ fontSize: 32, color: '#f8d405' }} />, path: '/CtasCtes/ParamComp' },
     ],
   },
   // { text: 'Cerrar sesión', icon: <LogoutIcon />, path: '/logout' },
@@ -100,33 +102,41 @@ export default function Sidebar() {
   };
 
   // Función para renderizar los items del menú
-  const renderMenuItem = (item, nested = false) => (
-    <ListItemButton
-      key={item.text}
-      component={Link}
-      to={item.path}
-      selected={location.pathname === item.path}
-      onClick={() => {
-        setValor(item.text);
-        setCollapsed(true); // Colapsar el menú cuando se selecciona una opción
-        setOpen(false); // Cerrar el Drawer en dispositivos móviles
-      }}
-      sx={{
-        pl: nested ? 4 : 2,
-        justifyContent: open && !collapsed ? 'initial' : 'center', // Si colapsado, centrar los íconos
-      }}
-    >
-      {/* <Tooltip title={!open || collapsed ? item.text : ''} placement="right"> */}
+  const renderMenuItem = (item, nested = false) =>
+  // (
+  {
+    const button = (
+      <ListItemButton
+        key={item.text}
+        component={Link}
+        to={item.path}
+        selected={location.pathname === item.path}
+        onClick={() => {
+          setValor(item.text);
+          setCollapsed(true); // Colapsar el menú cuando se selecciona una opción
+          setOpen(false); // Cerrar el Drawer en dispositivos móviles
+        }}
+        sx={{
+          pl: nested ? 4 : 2,
+          justifyContent: open && !collapsed ? 'initial' : 'center', // Si colapsado, centrar los íconos
+        }}
+      >
+        {/* <Tooltip title={!open || collapsed ? item.text : ''} placement="right"> */}
 
 
-      <ListItemIcon sx={{ minWidth: 0, mr: open && !collapsed ? 2 : 'auto' }}>
-        {item.icon}
-      </ListItemIcon>
-      {/* </Tooltip> */}
-      {open && !collapsed && <ListItemText primary={item.text} />} {/* Solo mostrar texto si no está colapsado */}
-    </ListItemButton>
-  );
-
+        <ListItemIcon sx={{ minWidth: 0, mr: open && !collapsed ? 2 : 'auto' }}>
+          {item.icon}
+        </ListItemIcon>
+        {/* </Tooltip> */}
+        {open && !collapsed && <ListItemText primary={item.text} />} {/* Solo mostrar texto si no está colapsado */}
+      </ListItemButton>
+    );
+    return (!open || collapsed) ? (
+      <Tooltip title={item.text} placement="right" key={item.text}>
+        {button}
+      </Tooltip>
+    ) : button;
+  };
   // Función para abrir/cerrar el menú y restablecer el estado de collapsed
   const handleMenuToggle = () => {
     setOpen(!open);
@@ -199,6 +209,8 @@ export default function Sidebar() {
 
           // Si no tiene children, render normal
           return renderMenuItem(item, false);
+
+
         })}
       </List>
 

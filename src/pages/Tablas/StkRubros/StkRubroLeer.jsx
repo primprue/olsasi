@@ -5,7 +5,7 @@ import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 export const stkrubroleer = () => {
 	return new Promise((resolve) => {
 		setTimeout(() => {
-			const url = IpServidor + "/stkrubroleer";
+			const url = IpServidor + "/stkrubroleerabr";
 
 			request
 				.get(url)

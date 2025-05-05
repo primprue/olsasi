@@ -11,6 +11,7 @@ import { CtaCteContext } from './context/CtasCtesContext.jsx';
 const ListaPrecios = lazy(() => import("./pages/ListaPrecios/index.jsx"));
 const Presupuesto = lazy(() => import("./pages/Presupuesto/index.jsx"));
 const PresupMuestra = lazy(() => import("./pages/Presupuesto/LayoutPresupuesto/PresupMuestra/index.jsx"));
+const ModificaPrecios = lazy(() => import("./pages/ListaPrecios/ModificaPrecios.jsx"));
 const OTrabajo = lazy(() => import("./pages/OrdenTrabajo/OTrabajo.jsx"));
 const OTMovimiento = lazy(() => import("./pages/OrdenTrabajo/OTMovimiento/index.jsx"));
 
@@ -72,6 +73,7 @@ function App() {
                                         <Route path="/ListaPrecios" element={<ListaPrecios />} />
                                         <Route path="/presupuesto/Presupuesto" element={<Presupuesto />} />
                                         <Route path="/presupuesto/PresupMuestra" element={<PresupMuestra />} />
+                                        <Route path="/ListaPrecios/ModificaPrecios" element={<ModificaPrecios />} />
                                         <Route path="/otrabajo/OTrabajo" element={<OTrabajo />} />
                                         <Route path="/otrabajo/OTMovimiento" element={<OTMovimiento />} />
                                         <Route path="/tablas/Proveedores" element={<Proveedores />} />

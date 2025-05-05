@@ -15,7 +15,7 @@ conexion.connect(function (err) {
 
 
 router.post('/', async function (req, res, next) {
-
+    console.log('esta en modprecios ', req.body);
     var compbody, compmysql
     var d = new Date();
     var finalDate = d.toISOString().split("T")[0];
@@ -32,19 +32,20 @@ router.post('/', async function (req, res, next) {
         compbody = '"' + req.body.StkRubroAbr + '"'
         compmysql = 'StkRubroAbr'
     }
-
     var importemod = req.body.importemod;
     var porcentmod = req.body.porcentmod;
-
-    if (importemod != 0) {
+    if (importemod != 0 && importemod != undefined) {
         var q = ['UPDATE StkRubro SET',
             ' StkRubroFecha = "',
             finalDate,
             '", StkRubroCosto = StkRubroCosto + ' + importemod,
             ' WHERE ' + compmysql + ' = ' + compbody,
         ].join('')
+        console.log('q importemod ', q);
     }
+
     else {
+
         q = ['UPDATE StkRubro SET',
             ' StkRubroFecha = "',
             finalDate,
@@ -52,6 +53,7 @@ router.post('/', async function (req, res, next) {
             '(StkRubroCosto * ' + porcentmod / 100 + ')',
             ' WHERE ' + compmysql + ' = ' + compbody,
         ].join('')
+        console.log('q porcentmod ', q);
     }
     conexion.query(q,
         function (err, result) {
@@ -64,6 +66,7 @@ router.post('/', async function (req, res, next) {
                 console.log(err);
             }
             else {
+                console.log('resultado de UPDATE modprecios en ' + result);
                 res.json(result);
             }
         })

@@ -1,6 +1,6 @@
 import request from "superagent";
-import IpServidor from "../../../VariablesDeEntorno";
-import MuestraMensaje from "../../../../components/lib/MuestraMensaje";
+import IpServidor from "../../VariablesDeEntorno";
+import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 
 export function Proveedoresleertipo26() {
     return new Promise((resolve) => {

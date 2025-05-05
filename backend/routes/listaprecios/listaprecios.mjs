@@ -38,7 +38,7 @@ router.get('/', function (req, res, next) {
                 'and StkRubroTM = idStkMonedas ',
                 'and StkRubroCodGrp = idStkGrupo ',
                 'order by StkRubroCodGrp, idStkRubro',].join(' ')
-            console.log('wiiri  ', q)
+
             conexion.query(q,
                 function (err, result) {
                     if (err) {

@@ -6,6 +6,8 @@ export const initial_state = {
 	nuevocodigo: 0,
 	open: true,
 	value: "",
+	//agregado para ModificaPrecios
+	Importe: 0, // borrar
 	Porcentaje: 0,
 	valueIp: "",
 	msg_respuesta: "",
@@ -15,19 +17,17 @@ export const initial_state = {
 	StkRubroAbr: "",
 	importemod: 0,
 	porcentmod: 0,
-	toggle: {
-		proveedor: false,
-		grupo: false,
-		rubro: false,
-		mensaje: false,
-		importe: false,
-		porcentaje: false,
-	},
+	// toggle: {
+	// 	proveedor: false,
+	// 	grupo: false,
+	// 	rubro: false,
+	// 	mensaje: false,
+	// 	importe: false,
+	// 	porcentaje: false,
+	// },
 };
 
 // proveedores: [],
 // grupos: [],
 // rubros: [],
-//agregado para ModificaPrecios
-// rta: "", // borrar
-// Importe: 0, // borrar
+
