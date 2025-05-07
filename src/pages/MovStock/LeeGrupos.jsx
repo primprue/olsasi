@@ -1,6 +1,6 @@
 import request from "superagent";
-import IpServidor from "../../../VariablesDeEntorno.js";
-import MuestraMensaje from "../../../../components/lib/MuestraMensaje.js";
+import IpServidor from "../VariablesDeEntorno.js";
+import MuestraMensaje from "../../components/lib/MuestraMensaje.js";
 // Lee Grupo
 export const stkgrupoleer = () => {
 	return new Promise((resolve) => {

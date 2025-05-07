@@ -1,4 +1,4 @@
-import { StockModificar } from "./StockModificar";
+import { StockModificar } from "./LayoutMovStock/Ingreso/StockModificar";
 
 export function onRowUpdate(newData) {
   return new Promise((resolve) => {

@@ -1,6 +1,6 @@
 import request from "superagent";
-import IpServidor from "../../../VariablesDeEntorno.js";
-import MuestraMensaje from "../../../../components/lib/MuestraMensaje.js";
+import IpServidor from "../VariablesDeEntorno.js";
+import MuestraMensaje from "../../components/lib/MuestraMensaje.js";
 export const stkrubrolee = (idStkGrupo) => {
 	return new Promise((resolve) => {
 		const url = IpServidor + "/stkrubroleerprov/?idStkGrupo=" + idStkGrupo;

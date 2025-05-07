@@ -5,7 +5,6 @@ import PantallaInicial from "./PantallaInicial.jsx";
 import Grid from "@mui/material/Grid";
 import { useContext } from "react";
 import StaticContexto from "../../context/StaticContext.jsx";
-
 export const MovStockPantContext = React.createContext();
 
 var MovStockPant = () => {

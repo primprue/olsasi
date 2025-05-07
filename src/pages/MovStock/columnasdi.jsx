@@ -1,4 +1,4 @@
-import estilotabla from "../../../../Styles/Tabla.module.css";
+import estilotabla from "../../Styles/Tabla.module.css";
 export function columnasdi() {
 
   return new Promise(function (resolve) {
@@ -14,14 +14,14 @@ export function columnasdi() {
         headerName: "Items",
         field: "StkItemsDesc",
         editable: "never",
-        width: 350,
+        width: 300,
         headerClassName: estilotabla.encabcolumnsstock,
       },
 
       {
         headerName: "Fecha ",
         field: "StkItemsFAct",
-        width: 150,
+        width: 100,
         editable: "never",
         headerClassName: estilotabla.encabcolumnsstock,
       },
@@ -54,7 +54,7 @@ export function columnasdi() {
         headerName: "Stock Disponible",
         field: "StkItemsCantDisp",
         editable: "never",
-        width: 100,
+        width: 120,
         align: "right",
         headerClassName: estilotabla.encabcolumnsstock,
       },
