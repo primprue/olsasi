@@ -28,6 +28,7 @@ router.get("/", async function (req, res, next) {
     if (err) {
       console.log(err);
     } else {
+
       res.json(result);
     }
   });

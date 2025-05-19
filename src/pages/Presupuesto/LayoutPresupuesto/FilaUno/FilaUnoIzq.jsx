@@ -3,12 +3,12 @@ import Grid from "@mui/material/Grid";
 import leePresupConfTipoLeerDesc from "../../leePresupConfTipoLeerDesc";
 import leePresupConfTipoLeeAnexo from "../../leePresupConfTipoLeeAnexo";
 // Context
-import { useContext } from "react";
+import { use } from "react";
 import PresupPant from "../../../../context/PresupPant";
 import TextFieldSelect from "../../../../components/comppropios/TextFieldSelect";
 
 export default function FilaUnoIzq() {
-	const { state, setState } = useContext(PresupPant);
+	const { state, setState } = use(PresupPant);
 	const anexo = "N";
 
 	const [selectedValues, setSelectedValues] = useState({});

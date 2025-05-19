@@ -619,6 +619,7 @@ export default function Reparacion() {
 						rows={rowsparcheleg}
 						columns={colparcheleg}
 						onDeleteRow={borrafila}
+						onCellDoubleClick={borrafila}
 						toolbar={() => <CustomToolbarParchEleg sumaParcheleg={sumaParcheleg} />}
 						onRowSelectionModelChange={(newRowSelectionModel) => setRowSelectionModel(newRowSelectionModel)}
 						customStyles={{ width: '21%', paddingLeft: 0 }}
@@ -629,6 +630,7 @@ export default function Reparacion() {
 						rows={rowschicotes}
 						columns={colchicotes}
 						onDeleteRow={borrafila}
+						onCellDoubleClick={borrafila}
 						toolbar={() => <CustomToolbarChicotes sumaChicotes={sumaChicotes} cargachicotes={cargachicotes} />}
 						onRowSelectionModelChange={(newRowSelectionModel) => setRowSelectionModel(newRowSelectionModel)}
 						customStyles={{ width: '20%', paddingLeft: 10 }}
@@ -640,6 +642,7 @@ export default function Reparacion() {
 						columns={colvarios}
 						toolbar={() => <CustomToolbarVarios sumaVarios={sumaVarios} cargavarios={cargavarios} />}
 						onDeleteRow={borrafila}
+						onCellDoubleClick={borrafila}
 						onRowSelectionModelChange={(newRowSelectionModel) => setRowSelectionModel(newRowSelectionModel)}
 						customStyles={{ width: '19%', paddingLeft: 10 }}
 					/>
@@ -650,6 +653,7 @@ export default function Reparacion() {
 						columns={colMot1}
 						toolbar={() => <CustomToolbarMot1 sumaMot1={sumaMot1} cargaMot1={cargaMot1} thsMot1={thsMot1} tminMot1={tminMot1} />}
 						onDeleteRow={borrafila}
+						onCellDoubleClick={borrafila}
 						onRowSelectionModelChange={(newRowSelectionModel) => setRowSelectionModel(newRowSelectionModel)}
 						customStyles={{ width: '20%', paddingLeft: 10 }}
 					/>
@@ -660,6 +664,7 @@ export default function Reparacion() {
 						columns={colMot2}
 						toolbar={() => <CustomToolbarMot2 sumaMot2={sumaMot2} cargaMot2={cargaMot2} thsMot2={thsMot2} tminMot2={tminMot2} />}
 						onDeleteRow={borrafila}
+						onCellDoubleClick={borrafila}
 						onRowSelectionModelChange={(newRowSelectionModel) => setRowSelectionModel(newRowSelectionModel)}
 						customStyles={{ width: '20%', paddingLeft: 10 }}
 					/>

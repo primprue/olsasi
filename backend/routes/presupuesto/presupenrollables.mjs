@@ -173,6 +173,8 @@ router.get('/', (req, res, next) => {
                   result[0].Largo = (datos.largo * 1).toFixed(2)
                   result[0].Ancho = (datos.ancho * 1).toFixed(2)
                   result[0].MDesc = 'S'
+                  // result[0].panios = panios
+                  // result[0].largo = largo
                   datosenvio = []
                   datosenvio.push(result)
 

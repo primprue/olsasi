@@ -167,7 +167,7 @@ export default function TablaPresup(props) {
 						onRowSelectionModelChange={(newRowSelectionModel) => {
 							setRowSelectionModel(newRowSelectionModel);
 						}}
-						autoHeight={true}
+						// autoHeight={true}
 						localeText={esES}
 						shape="rounded"
 						slots={{

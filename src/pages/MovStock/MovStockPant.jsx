@@ -10,6 +10,7 @@ export const MovStockPantContext = React.createContext();
 var MovStockPant = () => {
 	const { setValor } = useContext(StaticContexto);
 	const [state, setState] = useState(initial_state);
+
 	// const [movimiento, setMovimiento] = useState("");
 	useEffect(() => {
 		setValor("Stock");

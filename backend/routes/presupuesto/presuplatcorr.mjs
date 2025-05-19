@@ -29,7 +29,6 @@ router.get('/', (req, res, next) => {
       }
       var costooriginal = 0;
       datosrec = JSON.parse(req.query.datoscalculo)
-      console.log('datosrec  ', datosrec)
       totalreg = datosrec.length
       datosrec.map(datos => {
         cantidad = datos.cantidad;

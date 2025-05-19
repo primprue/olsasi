@@ -72,6 +72,7 @@ import { use } from "react";
 import TablasContexto from "../context/TablasContext.jsx";
 import SelecCampos from "../pages/Impresion/SelecCampos.jsx";
 import { PBSubRubrosModificar } from "../pages/Tablas/PBSubRubros/PBSubRubrosModificar.jsx";
+
 export default function TablaMuestra(props) {
 	const { rows1, columns1, formdatos } = props;
 	const { datoborrado, setDatoborrado } = use(TablasContexto);
@@ -341,7 +342,7 @@ export default function TablaMuestra(props) {
 				//
 				rows={rows}
 				columns={columns}
-				// localeText={esES.components.MuiDataGrid.defaultProps.localeText}
+				//localeText={esES.components.MuiDataGrid.defaultProps.localeText}
 				localeText={esES}
 				processRowUpdate={processRowUpdate}
 

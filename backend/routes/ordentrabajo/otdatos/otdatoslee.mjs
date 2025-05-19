@@ -11,11 +11,10 @@ conexion.connect(function (err) {
 
 router.get('/', async function (req, res) {
     let indice = req.query.id;
-    console.log('indice ', indice)
     //JSON_KEYS(OTDatosOpciones) AS claves,
     //var q = ['SELECT *, JSON_KEYS(OTDatosOpciones) AS claves,  JSON_UNQUOTE(JSON_EXTRACT(OTDatosOpciones,' + "'$'" + ')) AS valores, idOTDatos as id FROM BasesOrdenes.OTDatos where OTDatosTipoConf = "' + indice + '" order by OTDatosOrdenAparicion'].join(' ')
     var q = ['SELECT idOTDatos, OTDatosOrdenAparicion, OTDatosDesc,  OTDatosOpciones,OTDatosTipoPed, OTDatosRequerido FROM BasesOrdenes.OTDatos where OTDatosTipoConf = "' + indice + '" order by OTDatosOrdenAparicion'].join(' ')
-    console.log('q ', q)
+
 
     conexion.query(q,
         function (err, result) {

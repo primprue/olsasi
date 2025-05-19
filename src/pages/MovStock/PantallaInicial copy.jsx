@@ -15,14 +15,9 @@ import { blue, green, red } from "@mui/material/colors";
 import ExpandTwoToneIcon from '@mui/icons-material/ExpandTwoTone';
 import FileDownloadTwoToneIcon from '@mui/icons-material/FileDownloadTwoTone';
 import FileUploadTwoToneIcon from '@mui/icons-material/FileUploadTwoTone';
-import MobiledataOffSharpIcon from '@mui/icons-material/MobiledataOffSharp';
-import RepeatOnSharpIcon from '@mui/icons-material/RepeatOnSharp';
 import { sumaingreso } from "./LayoutMovStock/Ingreso/SumaIngreso.jsx";
 import TextFieldSelect from "../../components/comppropios/TextFieldSelect.jsx";
 import SalidaDisponible from "./LayoutMovStock/SalidaDisp/SalidaDisponible.jsx";
-import SalidaStock from "./LayoutMovStock/SalidaStock/SalidaStock.jsx";
-import { comma } from "postcss/lib/list";
-import { RealizaCambioStock } from "./LayoutMovStock/SalidaStock/RealizaCambioStock.jsx";
 //import leePresupConfTipoLeeAnexo from "../Presupuesto/leePresupConfTipoLeeAnexo";
 // import { useContext } from "react";
 // import { MovStockPantContext } from './MovStockPant'
@@ -32,9 +27,12 @@ export default function PantallaInicial() {
 	const [trigger, setTrigger] = useState(false);
 	const [columns, setColumns] = useState([]);
 	const [data, setData] = useState([]);
+	// const tipopresupleidos = useRef();
+	//const [selectedRow, setSelectedRow] = useState(null);
 	const [indicetabla, setIndicetabla] = useState(-1);
 	const [cantpres, setCantpres] = useState(0);
 	const [canting, setCanting] = useState(0);
+	// const anexo = "N";
 	let abrrrubro;
 	let agregaingreso = "";
 	const [LlamaPI, setLlamaPI] = useState(false);
@@ -60,6 +58,7 @@ export default function PantallaInicial() {
 	};
 
 	const AbrePC = () => {
+
 		setLlamaPC(true);
 	};
 
@@ -104,7 +103,6 @@ export default function PantallaInicial() {
 		if (state.idStkGrupo !== "") {
 			leerubros(state.idStkGrupo);
 		}
-
 	}, [state.idStkGrupo]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
@@ -118,28 +116,10 @@ export default function PantallaInicial() {
 		setCanting(0);
 	};
 
-	async function botonokPC() {
-		var mtsmodifica = state.cantidad * state.largo
-		var infingreso = [
-			{
-				tingreso: mtsmodifica,
-				cambiatela: state.CambiaTela,
-				abrevrubroo: state.StkRubroAbr,
-				indiceitemo: state.selectRow.idStkItems,
-				abrevrubrocambio: state.idStkRubroCambio,
-				indiceitemocambio: state.idStkItemsCambio
-			},
-		];
-		agregaingreso = await RealizaCambioStock(infingreso);
-		const result = await datosingreso(state.StkRubroAbr);
-		setData(result);
-		const col = await columnasdi();
-		setColumns(() => col);
-		CierraPC();
-	}
 
 	async function botonok(value, cantpres, canting) {
 		setState({ ...state, totaling: cantpres * canting });
+		console.log('botonok ', LlamaPI, LlamaPE, LlamaPC)
 		var vienede = ''
 
 		var mtsmodifica = 0
@@ -202,6 +182,10 @@ export default function PantallaInicial() {
 	]
 
 
+
+
+
+
 	return (
 		<div >
 			{/* Fila de TextFieldSelect */}
@@ -235,7 +219,7 @@ export default function PantallaInicial() {
 					/>
 				</Button>
 				<Button onClick={AbrePC} color="primary">
-					<RepeatOnSharpIcon
+					<ExpandTwoToneIcon
 						style={{ color: blue[500] }}
 						fontSize="large"
 						titleAccess="Cambiar"
@@ -262,7 +246,7 @@ export default function PantallaInicial() {
 					) : LlamaPE ? (
 						<SalidaDisponible onClick={botonok} />
 					) : LlamaPC ? (
-						<SalidaStock datositems={data} onClick={botonokPC} />
+						<SalidaDisponible onClick={botonok} />
 					) : null
 				)}
 

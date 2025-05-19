@@ -132,8 +132,9 @@ import stkmovvtaagregar from "./routes/stock/envase/stkmovvtaagregar.mjs";
 import stkenvaseagregar from "./routes/stock/envase/stkenvaseagregar.mjs";
 import stkenvaseleeimp from "./routes/stock/envase/stkenvaseleeimp.mjs";
 import stkenvasecambiaimp from "./routes/stock/envase/stkenvasecambiaimp.mjs";
-import leedatosingreso from "./routes/stock/ingresos/leedatosingreso.mjs";
-import sumaingreso from "./routes/stock/ingresos/sumaingreso.mjs";
+import leedatosingreso from "./routes/stock/movstock/leedatosingreso.mjs";
+import sumaingreso from "./routes/stock/movstock/sumaingreso.mjs";
+import realizacambiostock from "./routes/stock/movstock/realizacambiostock.mjs";
 import listaprecios from "./routes/listaprecios/listaprecios.mjs";
 import modprecios from "./routes/listaprecios/modprecios.mjs";
 
@@ -448,7 +449,7 @@ app.use("/stkenvasecambiaimp", stkenvasecambiaimp);
 
 app.use("/leedatosingreso", leedatosingreso);
 app.use("/sumaingreso", sumaingreso);
-
+app.use("/realizacambiostock", realizacambiostock);
 
 // app.use('/imprime1', imprime1);
 app.use("/stkmovvtaagregar", stkmovvtaagregar);

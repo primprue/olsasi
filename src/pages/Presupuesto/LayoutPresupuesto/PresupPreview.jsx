@@ -4,7 +4,6 @@ import React from "react";
 import { Dialog, DialogTitle } from "@mui/material";
 import BCierraDialogo from "../../../Styles/Boton.module.css";
 import CloseIcon from "@mui/icons-material/Close";
-import { useLocation } from "react-router-dom";
 import { PresupBorradespPreview } from "./TablaPresup/PresupBorradespPreview";
 
 export const PresupPreview = (props) => {
@@ -24,17 +23,19 @@ export const PresupPreview = (props) => {
 		nombrepresupue = `/basics.pdf`;
 	}
 	async function cierradialogo() {
-		if (nombrepresupue !== "/basics.pdf") {
-			await PresupBorradespPreview(nombrepresupue);
-		}
-		props.setOpen({ ppreview: false });
+		// if (nombrepresupue !== "/basics.pdf") {
+		// 	await PresupBorradespPreview(nombrepresupue);
+		// }
+		// props.setOpen({ preview: false });
+		console.log('cierradialogo', nombrepresupue)
+		props.setOpen(false);
 	}
 
 
 
 	return (
 		<div>
-			<Dialog fullScreen open={props.open}>
+			<Dialog fullScreen open={props.open} onClose={cierradialogo}>
 				<DialogTitle>
 					<button
 						onClick={cierradialogo}

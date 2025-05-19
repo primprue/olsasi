@@ -1,4 +1,4 @@
-import React, { useEffect, lazy, Suspense, useState, useRef } from "react";
+import React, { useEffect, lazy, Suspense, useState, useRef, useMemo } from "react";
 import { IconButton } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Snackbar from '@mui/material/Snackbar';
@@ -52,12 +52,10 @@ export default function FilaDos() {
 	const { inicializaPresup } = use(PresupPant);
 	const renderCount = useRef(0);
 	renderCount.current += 1;
-	const rubrosleidos = useRef(false);
-	const stkrubrosleidos = useRef();
+	const [stkrubrosleidos, setStkRubrosleidos] = useState([]);
 
 	const monedasleidos = useRef(false);
 	const stkmonedasleidos = useRef();
-
 
 	// const [otramoneda, setOtraMoneda] = useState(false);
 	// const [eligemoneda, setEligeMoneda] = useState(false);
@@ -66,13 +64,13 @@ export default function FilaDos() {
 	// const monedaelegida = useRef('');
 	// const [cotidivisa, setCotidivisa] = useState(0.0);
 	const cotidivisa = useRef(0.0);
+	// const presuptipo = state.DatosPresupEleg?.[0]?.PresupConfTipoDesc || "";
 
 
 	if (state.DatosPresupEleg.length !== 0) {
 		var largo = state.DatosPresupEleg[0].PresupConfTipoLargo;
 		var ancho = state.DatosPresupEleg[0].PresupConfTipoAncho;
 		var presuptipo = state.DatosPresupEleg[0].PresupConfTipoDesc;
-
 		//esto es porque va a ser un cálculo especial, tiene un backend para eso
 		var rubrosn = "";
 
@@ -111,10 +109,10 @@ export default function FilaDos() {
 
 	};
 
+
 	async function stkrubroleerconf(cuallee) {
 		const result = await stkrubroleeconf(cuallee);
-		stkrubrosleidos.current = result;
-
+		setStkRubrosleidos(result)
 	}
 	async function leermonedas() {
 		const result = await stkmonedasleerorig();
@@ -192,26 +190,22 @@ export default function FilaDos() {
 			cotidivisa.current = monedaEncontrada.StkMonedasCotizacion;
 		}
 	};
+	const textdata = useMemo(() => {
+		if (stkrubrosleidos.length === 0) return [];
+
+		return [{
+			id: "StkRubroAbr",
+			label: "Rubro",
+			value: stkrubrosleidos.StkRubroAbr,
+			options: stkrubrosleidos.map((option) => ({
+				value: option.StkRubroAbr,
+				label: option.StkRubroDesc
+			}))
+		}];
+	}, [stkrubrosleidos]);
 
 
 
-	let textdata = [];
-
-	if (stkrubrosleidos.current !== undefined) {
-		if (stkrubrosleidos.current.length > 0) {
-			rubrosleidos.current = true;
-			textdata = [{
-				id: "StkRubroAbr",
-				label: "Rubro",
-				value: stkrubrosleidos.current[0].StkRubroAbr,
-				options: stkrubrosleidos.current.map((option) => ({
-					value: option.StkRubroAbr,
-					label: option.StkRubroDesc
-				}))
-			}];
-
-		}
-	}
 	let textdatam = [];
 
 	if (stkmonedasleidos.current !== undefined) {
@@ -240,7 +234,7 @@ export default function FilaDos() {
 				{/* <p>Renderizado: {renderCount.current} veces   </p> */}
 				<Grid container size={{ xs: 1 }}>
 					{rubrosn === "S" &&
-						rubrosleidos.current &&
+						textdata.length > 0 ? (
 						textdata.map(({ id, label, value, options }, index) => (
 							<TextFieldSelect
 								key={index}
@@ -251,7 +245,7 @@ export default function FilaDos() {
 								options={options}
 								width="400px"
 							/>
-						))}
+						))) : ('')}
 
 				</Grid>
 			</Grid>
