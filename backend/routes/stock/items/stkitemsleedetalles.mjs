@@ -19,6 +19,7 @@ router.get("/", async function (req, res, next) {
   var now = new Date();
   var q = [
     "select concat(idStkItems, StkItemsGrupo, StkItemsRubroAbr) as id, ",
+    " idStkItems, ",
     " StkItemsGrupo, StkItemsRubroAbr, ",
     " StkItemsDesc,  StkItemsOTD, StkItemsCantidad, StkItemsCantDisp,",
     ' date_format(StkItemsFAct, "%d-%m-%Y") as StkItemsFAct,  ',
@@ -29,7 +30,6 @@ router.get("/", async function (req, res, next) {
     "(StkRubro.StkRubroCodGrp = StkGrupo.idStkGrupo)",
     "order by  StkGrupo.StkGrupoDesc, StkRubro.StkRubroDesc",
   ].join("");
-  console.log('q  ', q)
   conexion.query(
     q,
     function (err, result) {

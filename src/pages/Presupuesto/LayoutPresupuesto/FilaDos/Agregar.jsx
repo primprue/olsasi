@@ -3,7 +3,7 @@ const Agregar = async (
 	indicetp1,
 	rubrosn,
 	PresupCantidadM,
-	// otramoneda,
+	otramoneda,
 	sDescripPresup,
 	srenglonanexo,
 	dcalculo

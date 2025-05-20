@@ -48,8 +48,10 @@ router.post("/", async function (req, res, next) {
     idStkItems,
     " and StkItemsGrupo = ",
     StkItemsGrupo,
-    " and  StkItemsRubro = ",
-    StkItemsRubro
+    " and StkItemsRubroAbr = '",
+    StkItemsRubroAbr, "'"
+    // " and  StkItemsRubro = ",
+    // StkItemsRubro
   ].join("");
   conexion.query(q, function (err, result) {
     if (err) {

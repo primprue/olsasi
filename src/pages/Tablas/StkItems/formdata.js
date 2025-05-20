@@ -3,6 +3,7 @@
 export const formdata = {
   StkItemsGrupo: 0,
   StkItemsRubro: 0,
+  idStkItems: 0,
   StkItemsRubroAbr: '',
   StkItemsDesc: '',
   StkItemsOTD: '',

@@ -53,18 +53,8 @@ export default function FilaDos() {
 	const renderCount = useRef(0);
 	renderCount.current += 1;
 	const [stkrubrosleidos, setStkRubrosleidos] = useState([]);
-
-	const monedasleidos = useRef(false);
-	const stkmonedasleidos = useRef();
-
-	// const [otramoneda, setOtraMoneda] = useState(false);
-	// const [eligemoneda, setEligeMoneda] = useState(false);
-	// const otramoneda = useRef(false);
-	const eligemoneda = useRef(false);
-	// const monedaelegida = useRef('');
-	// const [cotidivisa, setCotidivisa] = useState(0.0);
-	const cotidivisa = useRef(0.0);
-	// const presuptipo = state.DatosPresupEleg?.[0]?.PresupConfTipoDesc || "";
+	const [otramoneda, setOtraMoneda] = useState(false);
+	const [cotidivisa, setCotidivisa] = useState(0.0);
 
 
 	if (state.DatosPresupEleg.length !== 0) {
@@ -114,10 +104,13 @@ export default function FilaDos() {
 		const result = await stkrubroleeconf(cuallee);
 		setStkRubrosleidos(result)
 	}
+
 	async function leermonedas() {
 		const result = await stkmonedasleerorig();
-		stkmonedasleidos.current = result
+		setState({ ...state, monedasleidas: result });
+		setCotidivisa(result[0].StkMonedasCotizacion);
 	}
+
 
 	useEffect(() => {
 		if (presuptipo === "UNIDAD") {
@@ -126,6 +119,7 @@ export default function FilaDos() {
 			stkrubroleerconf("S");
 		}
 	}, [presuptipo]); // eslint-disable-line react-hooks/exhaustive-deps
+
 
 
 	useEffect(() => {
@@ -141,7 +135,7 @@ export default function FilaDos() {
 		var dcalculo = [];
 
 		var statepasante = state;
-		var dcalculo1 = await GeneraDCalculo(statepasante, presuptipo, cotidivisa.current);
+		var dcalculo1 = await GeneraDCalculo(statepasante, presuptipo, cotidivisa);
 
 		if (dcalculo1.faltadato === true) {
 			setSnackbar({
@@ -161,6 +155,7 @@ export default function FilaDos() {
 				indicetp1,
 				rubrosn,
 				PresupCantidadM,
+				otramoneda,
 				// otramoneda.current,
 				state.DescripPresup,
 				state.renglonanexo,
@@ -184,10 +179,10 @@ export default function FilaDos() {
 			[id]: value,
 		}));
 		if (id === "idStkMonedas") {
-			eligemoneda.current = true;
-			// monedaelegida.current = value;
-			const monedaEncontrada = stkmonedasleidos.current.find(m => m.idStkMonedas === value);
-			cotidivisa.current = monedaEncontrada.StkMonedasCotizacion;
+
+			const monedaEncontrada = state.monedasleidas.find(m => m.idStkMonedas === value);
+			setCotidivisa(monedaEncontrada.StkMonedasCotizacion);
+
 		}
 	};
 	const textdata = useMemo(() => {
@@ -205,17 +200,15 @@ export default function FilaDos() {
 	}, [stkrubrosleidos]);
 
 
-
 	let textdatam = [];
 
-	if (stkmonedasleidos.current !== undefined) {
-		if (stkmonedasleidos.current.length > 0) {
-			monedasleidos.current = true;
+	if (state.monedasleidas !== undefined) {
+		if (state.monedasleidas.length > 0) {
 			textdatam = [{
 				id: "idStkMonedas",
 				label: "Moneda",
-				value: stkmonedasleidos.current[0].idStkMonedas,
-				options: stkmonedasleidos.current.map((option) => ({
+				value: state.monedasleidas[0].idStkMonedas,
+				options: state.monedasleidas.map((option) => ({
 					value: option.idStkMonedas,
 					label: option.StkMonedasDescripcion
 				}))
@@ -223,6 +216,8 @@ export default function FilaDos() {
 
 		}
 	}
+
+
 
 
 	function TransitionRight(props) {
@@ -325,7 +320,7 @@ export default function FilaDos() {
 				)}
 
 				<Grid size={2} padding={2}>
-					{monedasleidos.current &&
+					{state.monedasleidas.length > 0 &&
 						textdatam.map(({ id, label, value, options }, index) => (
 							<TextFieldSelect
 								key={index}
@@ -384,3 +379,80 @@ export default function FilaDos() {
 		</>
 	);
 }
+
+
+// eligemoneda.current = true;
+// monedaelegida.current = value;
+// const monedaEncontrada = stkmonedasleidos.current.find(m => m.idStkMonedas === value);
+// cotidivisa.current = monedaEncontrada.StkMonedasCotizacion;
+// const monedaEncontrada = state.stkmonedasleidos.find(m => m.idStkMonedas === value);
+// setCotidivisa(monedaEncontrada.StkMonedasCotizacion);
+
+// let textdatam = [];
+
+// if (stkmonedasleidos.current !== undefined) {
+// 	if (stkmonedasleidos.current.length > 0) {
+// 		monedasleidos.current = true;
+// 		textdatam = [{
+// 			id: "idStkMonedas",
+// 			label: "Moneda",
+// 			value: stkmonedasleidos.current[0].idStkMonedas,
+// 			options: stkmonedasleidos.current.map((option) => ({
+// 				value: option.idStkMonedas,
+// 				label: option.StkMonedasDescripcion
+// 			}))
+// 		}];
+
+// 	}
+// }
+// const textdatam = useMemo(() => {
+
+// 	if (state.monedasleidas.length === 0) return [];
+// 	return [{
+// 		id: "idStkMonedas",
+// 		label: "Moneda",
+// 		value: state.monedasleidas[0].idStkMonedas,
+// 		options: state.monedasleidas.map((option) => ({
+// 			value: option.idStkMonedas,
+// 			label: option.StkMonedasDescripcion
+// 		}))
+// 	}];
+
+// }, [state.monedasleidas]);
+
+// useEffect(() => {
+// 	sacadatosmonedas();
+// }, [eligemoneda]); // eslint-disable-line react-hooks/exhaustive-deps
+
+// useEffect(() => {
+// 	leermonedas();
+// 	sacadatosmonedas();
+// }, [state.monedasleidas.length <= 0]); // eslint-disable-line react-hooks/exhaustive-deps
+
+//const [eligemoneda, setEligeMoneda] = useState(true);
+// const otramoneda = useRef(false);
+// const eligemoneda = useRef(false);
+// const monedaelegida = useRef('');
+// const monedasleidos = useRef(false);
+// const stkmonedasleidos = useRef();
+// const cotidivisa = useRef(0.0);
+// const presuptipo = state.DatosPresupEleg?.[0]?.PresupConfTipoDesc || "";
+
+
+// const sacadatosmonedas = () => {
+// 	console.log('sacadatosmonedas', state.monedasleidas)
+// 	const objetosFiltrados = state.monedasleidas.filter(
+// 		(objeto) => objeto.idStkMonedas === state.idStkMonedas
+// 	);
+// 	console.log('sacadatosmonedas objetosFiltrados ', objetosFiltrados)
+// 	if (objetosFiltrados.length > 0) {
+// 		setCotidivisa(objetosFiltrados[0].StkMonedasCotizacion);
+// 		setState({ ...state, signomoneda: objetosFiltrados[0].StkMonedasSigno });
+// 		setOtraMoneda(true);
+// 		setEligeMoneda(false);
+// 	}
+// };
+// async function leermonedas() {
+// 	const result = await stkmonedasleerorig();
+// 	stkmonedasleidos.current = result
+// }

@@ -18,6 +18,13 @@ function columnsFill(stkGrupos, stkRubros) {
 			// 	order: true,
 			// 	headerClassName: estilotabla.encabcolumns,
 			// },
+			// {
+			// 	headerName: "idStkItems",
+			// 	field: "idStkItems",
+			// 	editable: "never",
+			// 	order: true,
+			// 	headerClassName: estilotabla.encabcolumns,
+			// },
 
 			{
 				headerName: "Grupo",
