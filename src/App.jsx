@@ -25,7 +25,10 @@ const StkRubros = lazy(() => import("./pages/Tablas/StkRubros/index.jsx"));
 const StkItems = lazy(() => import("./pages/Tablas/StkItems/index.jsx"));
 const StkUnMed = lazy(() => import("./pages/Tablas/UnidadMedidas/index.jsx"));
 const UbFisica = lazy(() => import("./pages/Tablas/UbicacionFisica/index.jsx"));
-const PBRubros = lazy(() => import("./pages/Tablas/PBRubros/index.jsx"));
+const PBRubros = lazy(() => import("./pages/PreBalance/PBRubros/index.jsx"));
+const PBSubRubros = lazy(() => import("./pages/PreBalance/PBSubRubros/index.jsx"));
+const PBItems = lazy(() => import("./pages/PreBalance/PBItems/index.jsx"));
+const PBComprobantes = lazy(() => import("./pages/PreBalance/PBComprobantes/index.jsx"));
 const PresupDetPie = lazy(() => import("./pages/Tablas/PresupDetPie/index.jsx"));
 const PresupConfTipo = lazy(() => import("./pages/Tablas/PresupConfTipo/index.jsx"));
 const OTCondPago = lazy(() => import("./pages/Tablas/OTCondPago/index.jsx"));
@@ -85,7 +88,10 @@ function App() {
                                         <Route path="/tablas/StkItems" element={<StkItems />} />
                                         <Route path="/tablas/UnidadMedidas" element={<StkUnMed />} />
                                         <Route path="/tablas/UbicacionFisica" element={<UbFisica />} />
-                                        <Route path="/tablas/PBRubros" element={<PBRubros />} />
+                                        <Route path="/Prebalance/PBRubros" element={<PBRubros />} />
+                                        <Route path="/Prebalance/PBSubRubros" element={<PBSubRubros />} />
+                                        <Route path="/Prebalance/PBItems" element={<PBItems />} />
+                                        <Route path="/Prebalance/PBComprobantes" element={<PBComprobantes />} />
                                         <Route path="/tablas/PresupDetPie" element={<PresupDetPie />} />
                                         <Route path="/tablas/PresupConfTipo" element={<PresupConfTipo />} />
                                         <Route path="/tablas/OTCondPago" element={<OTCondPago />} />

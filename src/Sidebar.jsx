@@ -31,6 +31,10 @@ import LowPriorityTwoToneIcon from '@mui/icons-material/LowPriorityTwoTone';
 import ShopTwoSharpIcon from '@mui/icons-material/ShopTwoSharp';
 import DeveloperBoardSharpIcon from '@mui/icons-material/DeveloperBoardSharp';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import BalanceIcon from '@mui/icons-material/Balance';
+import BrightnessLowRoundedIcon from '@mui/icons-material/BrightnessLowRounded';
+import BrightnessMediumRoundedIcon from '@mui/icons-material/BrightnessMediumRounded';
+import BrightnessHighRoundedIcon from '@mui/icons-material/BrightnessHighRounded';
 import { AppProvider } from "@toolpad/core/AppProvider";
 import StaticContext from './context/StaticContext';
 
@@ -53,6 +57,17 @@ const menuItems = [
   { text: 'Reparación', icon: <ConstructionSharpIcon sx={{ fontSize: 32, color: '#1d5f09' }} />, path: '/Reparacion' },
   { text: 'Movimiento Orden de Trabajo', icon: <ManageHistorySharpIcon sx={{ fontSize: 32, color: '#e61677' }} />, path: '/otrabajo/OTMovimiento' },
   {
+    text: 'PreBalance',
+    icon: <BalanceIcon sx={{ fontSize: 32, color: '#07c2a9cc' }} />,
+    children: [
+      { text: 'PreBalance Rubros', icon: <BrightnessLowRoundedIcon sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/Prebalance/PBRubros' },
+      { text: 'PreBalance SubRubros', icon: <BrightnessMediumRoundedIcon sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/Prebalance/PBSubRubros' },
+      { text: 'PreBalance Items', icon: <BrightnessHighRoundedIcon sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/Prebalance/PBItems' },
+      { text: 'Comprobantes', icon: <BrightnessHighRoundedIcon sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/Prebalance/PBComprobantes' },
+    ],
+  },
+
+  {
     text: 'Tablas',
     icon: <DeveloperBoardSharpIcon sx={{ fontSize: 32, color: '#c52c11' }} />,
     children: [
@@ -63,9 +78,15 @@ const menuItems = [
       { text: 'Grupos', icon: <VideoStableRoundedIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/StkGrupos' },
       { text: 'Rubros', icon: <ClassTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/StkRubros' },
       { text: 'Items', icon: <CategoryTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/StkItems' },
-      { text: 'Unidad deMedidas', icon: <StraightenTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/UnidadMedidas' },
+      { text: 'Unidad de Medidas', icon: <StraightenTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/UnidadMedidas' },
       { text: 'Ubicación Física', icon: <PlaceTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/UbicacionFisica' },
-      { text: 'PreBalance Rubros', icon: <BalanceTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/PBRubros' },
+      // { text: 'PreBalance Rubros', icon: <BalanceTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/PBRubros' },
+
+      // {
+      //   text: 'PreBalance', icon: <BalanceTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />,
+      //   children: [
+      //   ],
+      // },
       { text: 'Presupuesto Detalle Pie', icon: <ArrowCircleDownTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/PresupDetPie' },
       { text: 'Presupuesto Config Tipo', icon: <ChecklistRtlTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/PresupConfTipo' },
       { text: 'OT Condiciones Pago', icon: <LowPriorityTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/OTCondPago' },
@@ -146,6 +167,7 @@ export default function Sidebar() {
       setCollapsed(false); // Si se abre el menú, mostramos tanto íconos como nombres
     }
   };
+
 
   return (
     <Drawer

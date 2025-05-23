@@ -8,7 +8,6 @@ export const PBSubRubrosLeer = () => {
 
     return new Promise(resolve => {
         const url = IpServidor + "/pbsubrubrosleer";
-        console.log('url', url)
         request
             .get(url)
             .set("Content-Type", "application/json")

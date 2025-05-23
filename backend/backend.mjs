@@ -251,6 +251,10 @@ import pbsubrubrosleer from "./routes/prebalance/subrubros/pbsubrubrosleer.mjs";
 import pbrubrosvalueleer from "./routes/prebalance/pbrubros/pbrubrosvalueleer.mjs";
 import pbsubrubrosmodificar from "./routes/prebalance/subrubros/pbsubrubrosmodificar.mjs";
 import pbsubrubrosagregar from "./routes/prebalance/subrubros/pbsubrubrosagregar.mjs";
+import pbitemsleer from "./routes/prebalance/items/pbitemsleer.mjs";
+import pbcomprobantesleer from "./routes/prebalance/pbcomprobantes/pbcomprobantesleer.mjs";
+import pbcomprobantesborrar from "./routes/prebalance/pbcomprobantes/pbcomprobantesborrar.mjs";
+import pbcomprobantesmodificar from "./routes/prebalance/pbcomprobantes/pbcomprobantesmodificar.mjs";
 
 
 function perimitirCrossDomain(req, res, next) {
@@ -567,7 +571,10 @@ app.use("/pbsubrubrosleer", pbsubrubrosleer);
 app.use("/pbrubrosvalueleer", pbrubrosvalueleer);
 app.use("/pbsubrubrosmodificar", pbsubrubrosmodificar);
 app.use("/pbsubrubrosagregar", pbsubrubrosagregar);
-
+app.use("/pbitemsleer", pbitemsleer);
+app.use("/pbcomprobantesleer", pbcomprobantesleer);
+app.use("/pbcomprobantesborrar", pbcomprobantesborrar);
+app.use("/pbcomprobantesmodificar", pbcomprobantesmodificar);
 
 app.use("/", proveedoresleer);
 

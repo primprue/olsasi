@@ -7,7 +7,6 @@ import estilotabla from "../../../Styles/Tabla.module.css";
 export async function llenarcolumns() {
 	const stkgrupo = await stkGrupoLeerRedRubro();
 	const stkrubro = await stkrubroleeproveedor();
-	console.log('stkrubro  ', stkrubro)
 	const stkUnMed = await stkUnMedLeerRed();
 	const stkMonedas = await stkMonedasleerRed();
 	const confsn = [

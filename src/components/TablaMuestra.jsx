@@ -39,10 +39,15 @@ import { ParamCompModificar } from "../pages/CtasCtes/Tablas/ParamComp/ParamComp
 import { OTCondPagoLeer } from "../pages/Tablas/OTCondPago/OTCondPagoLeer.jsx";
 import { OTCondPagoModificar } from "../pages/Tablas/OTCondPago/OTCondPagoModificar.jsx";
 
-import { PBRubrosLee } from "../pages/Tablas/PBRubros/PBRubrosLee.jsx";
-import { PBRubrosModificar } from "../pages/Tablas/PBRubros/PBRubrosModificar.jsx";
+import { PBRubrosLee } from "../pages/PreBalance/PBRubros/PBRubrosLee.jsx";
+import { PBRubrosModificar } from "../pages/PreBalance/PBRubros/PBRubrosModificar.jsx";
 
-import { PBSubRubrosLeer } from "../pages/Tablas/PBSubRubros/PBSubRubrosLeer.jsx";
+import { PBSubRubrosLeer } from "../pages/PreBalance/PBSubRubros/PBSubRubrosLeer.jsx";
+import { PBSubRubrosModificar } from "../pages/PreBalance/PBSubRubros/PBSubRubrosModificar.jsx";
+
+import { PBComprobantesLeer } from "../pages/PreBalance/PBComprobantes/PBComprobantesLeer.jsx";
+// import { PBComprobantesLee } from "../pages/PreBalance/PBComprobantes/PBComprobantesLee.jsx";
+import { PBComprobantesModificar } from "../pages/PreBalance/PBComprobantes/PBComprobantesModificar.jsx";
 
 // import { TablaMuestraRenglon } from "../pages/Presupuesto/LayoutPresupuesto/PresupMuestra/TablaMuestraRenglon/index.jsx";
 // import { presupDatos } from "../pages/Presupuesto/LayoutPresupuesto/PresupMuestra/presupDatos.jsx";
@@ -71,7 +76,7 @@ import { DialogoDatos } from "./DialogoDatos.jsx";
 import { use } from "react";
 import TablasContexto from "../context/TablasContext.jsx";
 import SelecCampos from "../pages/Impresion/SelecCampos.jsx";
-import { PBSubRubrosModificar } from "../pages/Tablas/PBSubRubros/PBSubRubrosModificar.jsx";
+
 
 export default function TablaMuestra(props) {
 	const { rows1, columns1, formdatos } = props;
@@ -174,6 +179,11 @@ export default function TablaMuestra(props) {
 			const data = await PBSubRubrosLeer();
 			setRows(data);
 		}
+		if (formdatos.tablabase === "PBComprobantes") {
+			const data = await PBComprobantesLeer();
+			setRows(data);
+		}
+
 
 	}
 	const handleClose = () => {
@@ -215,6 +225,8 @@ export default function TablaMuestra(props) {
 			if (formdatos.tablabase === "OTCondPago") OTCondPagoModificar(params);
 			if (formdatos.tablabase === "PBRubros") PBRubrosModificar(params);
 			if (formdatos.tablabase === "PBSubRubros") PBSubRubrosModificar(params);
+			if (formdatos.tablabase === "PBComprobantes") PBComprobantesModificar(params);
+
 
 			relee();
 		}, 100);

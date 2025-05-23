@@ -94,29 +94,31 @@ export default function SelecCampos(props) {
 				<DialogTitle>Elija los Campos a IMPRIMIR !!!!!!!</DialogTitle>
 				{props.columns.length > 0 && (
 					<List>
-						{props.columns.slice(length, -1).map((value, index) => {
-							const labelId = `checkbox-list-label-${value}`;
-							return (
-								<ListItem
-									key={value.headerName}
-									role={undefined}
-									dense
-									// button
-									onClick={handleToggle(value)}
-								>
-									<ListItemIcon>
-										<Checkbox
-											edge="start"
-											checked={checked.indexOf(value) !== -1}
-											tabIndex={-1}
-											disableRipple
-											input={{ "aria-labelledby": labelId }}
-										/>
-									</ListItemIcon>
-									<ListItemText id={labelId} primary={`${value.headerName}`} />
-								</ListItem>
-							);
-						})}
+						{/* {props.columns.slice(length, -1).map((value, index) => { */}
+						{
+							props.columns.slice(length).map((value, index) => {
+								const labelId = `checkbox-list-label-${value}`;
+								return (
+									<ListItem
+										key={value.headerName}
+										role={undefined}
+										dense
+										// button
+										onClick={handleToggle(value)}
+									>
+										<ListItemIcon>
+											<Checkbox
+												edge="start"
+												checked={checked.indexOf(value) !== -1}
+												tabIndex={-1}
+												disableRipple
+												input={{ "aria-labelledby": labelId }}
+											/>
+										</ListItemIcon>
+										<ListItemText id={labelId} primary={`${value.headerName}`} />
+									</ListItem>
+								);
+							})}
 					</List>
 				)}
 

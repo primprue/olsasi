@@ -8,7 +8,8 @@ import { StkUnMedBorrar } from "../pages/Tablas/UnidadMedidas/StkUnMedBorrar";
 import { PresupDetPieBorrar } from "../pages/Tablas/PresupDetPie/PresupDetPieBorrar";
 import { ParamCompBorrar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompBorrar";
 import { OTCondPagoBorrar } from "../pages/Tablas/OTCondPago/OTCondPagoBorrar";
-import { PBRubrosBorrar } from "../pages/Tablas/PBRubros/PBRubrosBorrar";
+import { PBRubrosBorrar } from "../pages/PreBalance/PBRubros/PBRubrosBorrar";
+import { PBComprobantesBorrar } from "../pages/PreBalance/PBComprobantes/PBComprobantesBorrar";
 // import { PresupBorrar } from "../pages/Presupuesto/LayoutPresupuesto/PrespuConMod/PresupBorrar";
 export function onRowDelete(paramsid, newData) {
   return new Promise((resolve) => {
@@ -45,6 +46,9 @@ export function onRowDelete(paramsid, newData) {
       }
       if (newData.tablabase === 'PBRubros') {
         PBRubrosBorrar(paramsid)
+      }
+      if (newData.tablabase === 'PBComprobantes') {
+        PBComprobantesBorrar(paramsid)
       }
       resolve(50);
     }, 100);

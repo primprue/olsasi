@@ -8,8 +8,7 @@ import { useState } from "react";
 import { use } from "react";
 import TablasContexto from "../../../context/TablasContext.jsx";
 import { formdata } from "./formdata.js";
-
-import TablaMuestra from "../../../components/TablaMuestra.jsx";
+import TablaMuestra from "../../../components/TablaMuestra";
 export default function PBRubros() {
 	const { formdatos, setFormdatos } = use(TablasContexto);
 	const [rows, setRows] = React.useState([]);

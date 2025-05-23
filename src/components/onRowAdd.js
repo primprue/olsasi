@@ -10,8 +10,8 @@ import { PresupDetPieAgregar } from "../pages/Tablas/PresupDetPie/PresupDetPieAg
 import { ClientesAgregar } from "../pages/Tablas/Clientes/ClientesAgregar";
 import { ParamCompAgregar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompAgregar";
 import { OTCondPagoAgregar } from "../pages/Tablas/OTCondPago/OTCondPagoAgregar";
-import { PBRubrosAgregar } from "../pages/Tablas/PBRubros/PBRubrosAgregar";
-import { PBSubRubrosAgregar } from "../pages/Tablas/PBSubRubros/PBSubRubrosAgregar";
+import { PBRubrosAgregar } from "../pages/PreBalance/PBRubros/PBRubrosAgregar";
+import { PBSubRubrosAgregar } from "../pages/PreBalance/PBSubRubros/PBSubRubrosAgregar";
 import { OTDatosAgregar } from "../pages/Tablas/OTDatos/OTDatosAgregar";
 export function onRowAdd(newData) {
   return new Promise((resolve) => {

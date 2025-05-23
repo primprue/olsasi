@@ -2,8 +2,8 @@ import request from "superagent";
 import IpServidor from "../../VariablesDeEntorno";
 import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 
-export function StkMonedasBorrar(props) {
-	const url = IpServidor + "/stkmonedasborrar/?id=" + props;
+export function PBComprobantesBorrar(props) {
+	const url = IpServidor + "/pbcomprobantesborrar/?id=" + props;
 	request
 		.delete(url)
 		.set("Content-Type", "application/json")
