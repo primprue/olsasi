@@ -7,6 +7,7 @@ import { PresupPant } from './context/PresupPant.jsx';
 import { DatosTablas } from './context/TablasContext.jsx';
 import { OrdenTrabajo } from './context/OrdTrabajo.jsx';
 import { CtaCteContext } from './context/CtasCtesContext.jsx';
+import PBPorIVA from './pages/PreBalance/PBPorIVA/index.jsx';
 
 const ListaPrecios = lazy(() => import("./pages/ListaPrecios/index.jsx"));
 const Presupuesto = lazy(() => import("./pages/Presupuesto/index.jsx"));
@@ -92,6 +93,7 @@ function App() {
                                         <Route path="/Prebalance/PBSubRubros" element={<PBSubRubros />} />
                                         <Route path="/Prebalance/PBItems" element={<PBItems />} />
                                         <Route path="/Prebalance/PBComprobantes" element={<PBComprobantes />} />
+                                        <Route path="/Prebalance/PBPorIVA" element={<PBPorIVA />} />
                                         <Route path="/tablas/PresupDetPie" element={<PresupDetPie />} />
                                         <Route path="/tablas/PresupConfTipo" element={<PresupConfTipo />} />
                                         <Route path="/tablas/OTCondPago" element={<OTCondPago />} />

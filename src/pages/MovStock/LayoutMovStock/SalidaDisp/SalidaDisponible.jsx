@@ -15,11 +15,13 @@ export default function SalidaDisponible({ onClick, ...other }) {
 	const [cantidad, setCantidad] = useState(1);
 	const [largo, setLargo] = useState(0);
 	const [ancho, setAncho] = useState(0);
+	// const [cliente, setCliente] = useState('');
 	const confeccioneleg = useRef(null);
 	const textInput = useRef(null);
 	const textInput1 = useRef(null);
 	const textInput2 = useRef(null);
 	const textInput3 = useRef(null);
+	const textInput4 = useRef(null);
 	const [tipopresupleidos, setTipopresupleidos] = useState();
 	// let telaadescontar = 0
 
@@ -33,6 +35,10 @@ export default function SalidaDisponible({ onClick, ...other }) {
 		}
 		if (id === "ancho") {
 			setAncho(value);
+		}
+		if (id === "cliente") {
+			// setCliente(value);
+			setState({ ...state, clienteorden: value });
 		}
 	};
 	const telaadescontar = useMemo(() => {
@@ -206,13 +212,31 @@ export default function SalidaDisponible({ onClick, ...other }) {
 									}
 								}}
 							/>
+
+							<TextFieldComun
+								inputRef={textInput3}
+								size="small"
+								type="string"
+								id="cliente"
+								width="100px"
+								label="Cliente"
+								onChange={handleChange}
+								value={state.clienteorden}
+								onKeyDown={(e2) => {
+									if (e2.key === "Enter") {
+										setTimeout(() => {
+											textInput4.current.focus();
+										}, 100);
+									}
+								}}
+							/>
 						</div>
 
 						<Button
 							onClick={(event) => {
 								onClick(telaadescontar, cantidad, largo, ancho);
 							}}
-							ref={textInput3}
+							ref={textInput4}
 						>
 							TOTAL A DESCONTAR :{telaadescontar}
 						</Button>

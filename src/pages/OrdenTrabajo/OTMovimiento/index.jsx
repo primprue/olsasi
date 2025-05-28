@@ -25,12 +25,9 @@ import TablaMuestra from "../../../components/TablaMuestra.jsx";
 import { Button, Dialog, DialogContent } from "@mui/material";
 import { TablaMuestraRenglon } from "./TablaMuestraRenglon/index.jsx";
 import { ClientesLeerDesCod } from "../../Tablas/Clientes/ClientesLeerDesCod.jsx";
-// import OTFacturacion from "../../CtasCtes/Facturacion/index.jsx";
 import { Route, useNavigate } from "react-router-dom";
 import OrdTrabajo from "../../../context/OrdTrabajo.jsx";
 export default function OTMovimiento() {
-	console.log('OTMovimiento  ');
-	// console.log("OTMovimiento  ");
 	const { formdatos, setFormdatos } = use(TablasContexto);
 	const { fcdatos, setFCdatos } = use(CtasCtesContext);
 	const { otdatos, setOTdatos } = use(OrdTrabajo);
@@ -40,7 +37,6 @@ export default function OTMovimiento() {
 	const [open, setOpen] = useState(false);
 	const [open1, setOpen1] = useState(false);
 	const [nroordeleg, setNroordeleg] = useState(0);
-	// const [encabfact, setEncabfact] = useState("");
 	const navigate = useNavigate();
 	//empiezan las cosas del sistema
 
@@ -76,10 +72,7 @@ export default function OTMovimiento() {
 	}
 
 	async function datosafacturar(event) {
-		// let nroordafac = event.row;
-		console.log("otdatos en datosafacturar  ", otdatos);
 		setFCdatos({ ...fcdatos, nroordafac: event.row });
-		// setFCdatos(nroordafac);
 		navigate("/CtasCtes");
 	}
 
@@ -93,32 +86,26 @@ export default function OTMovimiento() {
 		let nrootceros = agregarCeros(params.row.id, 6);
 		var nombcli = await ClientesLeerDesCod(params.row.OTEncabCliente);
 		var fileName = `OT Nro ${nrootceros} ${nombcli[0].ClientesDesc.trim()}.pdf`;
-		console.log('fileName', fileName)
 		var pdfData = "";
 		sendPDFViaWebSocket(fileName);
 		setOpen1(!open1);
 	}
 	const sendPDFViaWebSocket = (fileName) => {
-		console.log('fielName', fileName)
 		const socket = new WebSocket("ws://localhost:3000");
 		socket.onopen = () => {
-			console.log("Conexión WebSocket abierta");
 
 			// Enviar la solicitud de lectura al servidor
 			const payload = {
 				action: "read",
 				nombrearch: fileName, // Nombre del archivo a leer
 			};
-			console.log('payload', payload)
 			socket.send(JSON.stringify(payload));
-			console.log('JSON.stringify(payload)', JSON.stringify(payload))
 		};
 
 		socket.onmessage = (event) => {
 			// Establecer la URL del PDF para mostrarlo
 			if (event.data !== 'Error al leer el archivo') {
 				const { pdfData } = JSON.parse(event.data);
-				console.log('pdfData', pdfData)
 				setPdfUrl(pdfData);
 			}
 			else { console.log('error  ') }

@@ -12,6 +12,8 @@ import { ParamCompAgregar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompAg
 import { OTCondPagoAgregar } from "../pages/Tablas/OTCondPago/OTCondPagoAgregar";
 import { PBRubrosAgregar } from "../pages/PreBalance/PBRubros/PBRubrosAgregar";
 import { PBSubRubrosAgregar } from "../pages/PreBalance/PBSubRubros/PBSubRubrosAgregar";
+import { PBItemsAgregar } from "../pages/PreBalance/PBItems/PBItemsAgregar";
+import { PBPorIVAAgregar } from "../pages/PreBalance/PBPorIVA/PBPorIVAAgregar";
 import { OTDatosAgregar } from "../pages/Tablas/OTDatos/OTDatosAgregar";
 export function onRowAdd(newData) {
   return new Promise((resolve) => {
@@ -57,6 +59,12 @@ export function onRowAdd(newData) {
       }
       if (newData.tablabase === 'PBSubRubros') {
         PBSubRubrosAgregar(newData);
+      }
+      if (newData.tablabase === 'PBItems') {
+        PBItemsAgregar(newData);
+      }
+      if (newData.tablabase === 'PBPorIVA') {
+        PBPorIVAAgregar(newData);
       }
       if (newData.tablabase === 'OTDatos') {
         OTDatosAgregar(newData);

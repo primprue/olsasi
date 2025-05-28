@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Estilos from "./Ingreso.module.css";
 import { Card, CardContent, Button } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -7,6 +7,8 @@ import Grid from "@mui/material/Grid";
 import { use } from "react";
 import { MovStockPantContext } from "../../MovStockPant";
 import TextFieldComun from "../../../../components/comppropios/TextFieldComun";
+// import { Proveedoresleertipo26 } from "../../../Tablas/Proveedores/Proveedoresleertipo26"
+// import TextFieldSelect from "../../../../components/comppropios/TextFieldSelect";
 
 // export default function PantallaIngreso({ onClick }) {
 const PantallaIngreso = ({ onClick, ...other }) => {
@@ -17,7 +19,7 @@ const PantallaIngreso = ({ onClick, ...other }) => {
 	const textInput = useRef(null);
 	const textInput1 = useRef(null);
 	const textInput2 = useRef(null);
-
+	const textInput3 = useRef(null);
 	const handleChange = (value, id) => {
 		setState({ ...state, [id]: value });
 		if (id === "cantpres") {
@@ -43,15 +45,15 @@ const PantallaIngreso = ({ onClick, ...other }) => {
 								" " +
 								state.selectRow.StkItemsDesc}
 						</Grid>
-						<br></br>
 
-						<label> Ingresaron </label>
+
+						<br></br>
 						<TextFieldComun
 							inputRef={textInput}
-							id="cantpres"
-							type="number"
-							label="Cantidad "
-							value={cantpres}
+							id="MovNroRef"
+							type="string"
+							label="Nro Factura "
+							value={state.MovNroRef}
 							onChange={handleChange}
 							width="100px"
 							autoFocus
@@ -64,31 +66,50 @@ const PantallaIngreso = ({ onClick, ...other }) => {
 							}}
 						/>
 
-						<TextFieldComun
-							input={{ maxLength: 4 }}
-							className={Estilos.input}
-							inputRef={textInput1}
-							size="small"
-							type="number"
-							id="canting"
-							width="100px"
-							label="de "
-							onChange={handleChange}
-							value={canting}
-							onKeyDown={(e2) => {
-								if (e2.key === "Enter") {
-									setTimeout(() => {
-										textInput2.current.focus();
-									}, 100);
-								}
-							}}
-						/>
+						<label> Ingresaron
+							<TextFieldComun
+								inputRef={textInput1}
+								id="cantpres"
+								type="number"
+								label="Cantidad "
+								value={cantpres}
+								onChange={handleChange}
+								width="100px"
+								autoFocus
+								onKeyDown={(e1) => {
+									if (e1.key === "Enter") {
+										setTimeout(() => {
+											textInput2.current.focus();
+										}, 100);
+									}
+								}}
+							/>
 
+							<TextFieldComun
+								input={{ maxLength: 4 }}
+								className={Estilos.input}
+								inputRef={textInput2}
+								size="small"
+								type="number"
+								id="canting"
+								width="100px"
+								label="de "
+								onChange={handleChange}
+								value={canting}
+								onKeyDown={(e2) => {
+									if (e2.key === "Enter") {
+										setTimeout(() => {
+											textInput3.current.focus();
+										}, 100);
+									}
+								}}
+							/>
+						</label>
 						<Button
 							onClick={(event) => {
 								onClick(event.target.value, cantpres, canting);
 							}}
-							ref={textInput2}
+							ref={textInput3}
 
 						>
 							{" "}

@@ -15,4 +15,5 @@ export const formdata = {
   datoserroneos: true,
   tablabase: 'PresupConfTipo',
   titulotabla: 'Confección Tipo de Presupuesto',
+  color: '#05036317',
 }

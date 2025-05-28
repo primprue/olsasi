@@ -9,13 +9,14 @@ import { stkgrupoleer } from "./LeeGrupos";
 import { datosingreso } from "./LayoutMovStock/Ingreso/DatosIngreso";
 import Estilos from "./LayoutMovStock/Ingreso/Ingreso.module.css";
 import { Button, TextField } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, renderActionsCell } from "@mui/x-data-grid";
 import { esES } from '@mui/material/locale';
-import { blue, green, red } from "@mui/material/colors";
+import { blue, green, red, yellow, } from "@mui/material/colors";
 import ExpandTwoToneIcon from '@mui/icons-material/ExpandTwoTone';
 import FileDownloadTwoToneIcon from '@mui/icons-material/FileDownloadTwoTone';
 import FileUploadTwoToneIcon from '@mui/icons-material/FileUploadTwoTone';
-import MobiledataOffSharpIcon from '@mui/icons-material/MobiledataOffSharp';
+import StormTwoToneIcon from '@mui/icons-material/StormTwoTone';
+import AutoAwesomeMotionIcon from '@mui/icons-material/AutoAwesomeMotion';
 import RepeatOnSharpIcon from '@mui/icons-material/RepeatOnSharp';
 import { sumaingreso } from "./LayoutMovStock/Ingreso/SumaIngreso.jsx";
 import TextFieldSelect from "../../components/comppropios/TextFieldSelect.jsx";
@@ -23,6 +24,9 @@ import SalidaDisponible from "./LayoutMovStock/SalidaDisp/SalidaDisponible.jsx";
 import SalidaStock from "./LayoutMovStock/SalidaStock/SalidaStock.jsx";
 import { comma } from "postcss/lib/list";
 import { RealizaCambioStock } from "./LayoutMovStock/SalidaStock/RealizaCambioStock.jsx";
+import ImpStockReal from "./LayoutMovStock/ImpMueMovStock/ImpStockReal.jsx";
+import { MovStockAgregar } from "./LayoutMovStock/RegistraMovStock/MovStockAgregar.jsx";
+import MueMovStock from "./LayoutMovStock/ImpMueMovStock/MueMovStock.jsx";
 //import leePresupConfTipoLeeAnexo from "../Presupuesto/leePresupConfTipoLeeAnexo";
 // import { useContext } from "react";
 // import { MovStockPantContext } from './MovStockPant'
@@ -40,6 +44,8 @@ export default function PantallaInicial() {
 	const [LlamaPI, setLlamaPI] = useState(false);
 	const [LlamaPE, setLlamaPE] = useState(false);
 	const [LlamaPC, setLlamaPC] = useState(false);
+	const [LlamaImp, setLlamaImp] = useState(false);
+	const [LlamaMue, setLlamaMue] = useState(false);
 	const AbrePI = () => {
 		setLlamaPI(true);
 	};
@@ -67,6 +73,23 @@ export default function PantallaInicial() {
 		setLlamaPC(false);
 	};
 
+
+	const AbreImp = () => {
+		setLlamaImp(true);
+	};
+
+	const CierraImp = () => {
+		setLlamaImp(false);
+	};
+
+
+	const AbreMue = () => {
+		setLlamaMue(true);
+	};
+
+	const CierraMue = () => {
+		setLlamaMue(false);
+	};
 
 	async function leegrupos() {
 		const result = await stkgrupoleer();
@@ -139,18 +162,44 @@ export default function PantallaInicial() {
 	}
 
 	async function botonok(value, cantpres, canting) {
-		setState({ ...state, totaling: cantpres * canting });
+		// setState({ ...state, totaling: cantpres * canting });
 		var vienede = ''
-
+		var largoing = 0
+		var anchoing = 0
 		var mtsmodifica = 0
+		var clienteing = ''
+		var proveing = ''
+		var nroref = ''
 		if (LlamaPI) {
 			vienede = 'LlamaPI'
 			mtsmodifica = cantpres * canting
+			largoing = 0
+			anchoing = 0
+			proveing = data[0].StkRubroProv
+			clienteing = ''
+			nroref = state.MovNroRef
+
 		}
 		if (LlamaPE) {
 			vienede = 'LlamaPE'
 			mtsmodifica = value * -1
+			largoing = state.largo
+			anchoing = state.ancho
+			proveing = 0
+			clienteing = state.clienteorden
+			nroref = ''
 		}
+		var movareg = [
+			{
+				StkLargo: parseInt(largoing),
+				StkAncho: parseInt(anchoing),
+				StkMovTotal: mtsmodifica,
+				StkMovRubroAbr: state.StkRubroAbr,
+				StkMovItemDesc: state.selectRow.StkItemsDesc,
+				StkMovCliente: clienteing,
+				StkMovProv: proveing,
+				StkMovNroRef: nroref
+			}]
 		var infingreso = [
 			{
 				tingreso: mtsmodifica,
@@ -159,7 +208,11 @@ export default function PantallaInicial() {
 				vienede: vienede
 			},
 		];
+
+
+		var resultadoagregado = await MovStockAgregar(movareg);
 		agregaingreso = await sumaingreso(infingreso);
+
 		var it = state.selectRow.id;
 		data[it - 1].StkItemsCantDisp =
 			agregaingreso.body[1][0].StkItemsCantDisp;
@@ -217,6 +270,12 @@ export default function PantallaInicial() {
 						width="350px"
 					/>
 				))}
+				{data.length > 0 &&
+					<div style={{ display: 'flex', gap: '8px', marginBottom: '16px', justifyContent: 'flex-start' }}>
+						Proveedor : ({data[0].StkRubroProv})   {data[0].ProveedoresDesc}
+
+					</div>
+				}
 			</div>
 
 			<div style={{ display: 'flex', gap: '8px', marginBottom: '16px', justifyContent: 'flex-start' }}>
@@ -241,6 +300,20 @@ export default function PantallaInicial() {
 						titleAccess="Cambiar"
 					/>
 				</Button>
+				<Button onClick={AbreImp} color="primary">
+					<StormTwoToneIcon
+						style={{ color: yellow[500] }}
+						fontSize="large"
+						titleAccess="Imprimr Stock Real"
+					/>
+				</Button>
+				<Button onClick={AbreMue} color="primary">
+					<AutoAwesomeMotionIcon
+						style={{ color: red[300] }}
+						fontSize="large"
+						titleAccess="Imprimr Stock Real"
+					/>
+				</Button>
 			</div>
 
 			<div style={{ display: 'flex', height: 400, width: '100%' }}>
@@ -263,9 +336,15 @@ export default function PantallaInicial() {
 						<SalidaDisponible onClick={botonok} />
 					) : LlamaPC ? (
 						<SalidaStock datositems={data} onClick={botonokPC} />
-					) : null
-				)}
 
+					) : null
+
+				)}
+				{LlamaImp ? (
+					<ImpStockReal datositems={data} open={LlamaImp}
+						handleClose={CierraImp} />) : null}
+				{LlamaMue ? (<MueMovStock open={LlamaMue}
+					handleClose={CierraMue} />) : null}
 			</div>
 
 		</div>

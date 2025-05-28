@@ -38,7 +38,6 @@ router.post('/', function (req, res) {
         ClientesObserv2: req.body.clienobserv2,
         ClientesFecha: fechafinal,
     }
-    console.log('registro ', registro);
     conexion.query('INSERT INTO BasesGenerales.Clientes SET ?', registro,
         function (err, result) {
             if (err) {

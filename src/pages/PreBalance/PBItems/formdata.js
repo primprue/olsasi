@@ -20,4 +20,5 @@ export const formdata = {
   datoserroneos: true,
   tablabase: 'PBItems',
   titulotabla: 'Items de PreBalance',
+  color: '#07c2a90c',
 }

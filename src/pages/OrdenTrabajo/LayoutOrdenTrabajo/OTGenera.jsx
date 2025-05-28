@@ -1,32 +1,26 @@
-import React, { useContext, useState, useRef } from "react";
+import { useContext, useState } from "react";
 import OrdTrabajo from "../../../context/OrdTrabajo.jsx";
-import IpServidor from "../../VariablesDeEntorno.js";
 import { Button, Dialog, DialogContent } from "@mui/material";
 import { format } from "date-fns";
-import { CampoEncab } from "./CamposEncab.jsx";
 import { OTGrabar } from "./OTGrabar.jsx";
-import { CurrencyTextField } from "../../../hooks/useCurrencyTextField.jsx";
-import EstTF from "../../../Styles/TextField.module.css";
-
-import html2canvas from "html2canvas";
 import { parse } from "date-fns";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 //react-pdf
-import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
+// import {  StyleSheet } from "@react-pdf/renderer";
 
-// Create styles
-const styles = StyleSheet.create({
-	page: {
-		flexDirection: "row",
-		backgroundColor: "#E4E4E4",
-	},
-	section: {
-		margin: 10,
-		padding: 10,
-		flexGrow: 1,
-	},
-});
+// // Create styles
+// const styles = StyleSheet.create({
+// 	page: {
+// 		flexDirection: "row",
+// 		backgroundColor: "#E4E4E4",
+// 	},
+// 	section: {
+// 		margin: 10,
+// 		padding: 10,
+// 		flexGrow: 1,
+// 	},
+// });
 export default function OTGenera(props) {
 	const { open, handleClose, datospot, renglondef } = props; //trae PresupRenglonParamInt separado
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
@@ -138,7 +132,6 @@ export default function OTGenera(props) {
 		socket.onopen = () => {
 			socket.send(JSON.stringify(payload));
 		};
-		console.log('payload', payload)
 		socket.onmessage = (event) => {
 			socket.close();
 		};
@@ -538,7 +531,6 @@ export default function OTGenera(props) {
 		}
 
 		Cliente = Cliente.substr(0, largocli + 1);
-		console.log('Cliente ', Cliente)
 
 		const dataUri = doc.output("dataurlstring");
 		setPdfData(dataUri);

@@ -346,12 +346,14 @@ export default function TablaMuestra(props) {
 			</GridToolbarContainer>
 		);
 	}
-
 	return (
 		<>
 
 			< DataGrid
 				//
+				sx={{
+					backgroundColor: formdatos.color, // Cambia el fondo general
+				}}
 				rows={rows}
 				columns={columns}
 				//localeText={esES.components.MuiDataGrid.defaultProps.localeText}

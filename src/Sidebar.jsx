@@ -24,12 +24,14 @@ import CategoryTwoToneIcon from '@mui/icons-material/CategoryTwoTone';
 import StraightenTwoToneIcon from '@mui/icons-material/StraightenTwoTone';
 import PlaceTwoToneIcon from '@mui/icons-material/PlaceTwoTone';
 import BalanceTwoToneIcon from '@mui/icons-material/BalanceTwoTone';
+import PriceChangeTwoToneIcon from '@mui/icons-material/PriceChangeTwoTone';
 import ArrowCircleDownTwoToneIcon from '@mui/icons-material/ArrowCircleDownTwoTone';
 import ChecklistRtlTwoToneIcon from '@mui/icons-material/ChecklistRtlTwoTone';
 import CurrencyExchangeTwoToneIcon from '@mui/icons-material/CurrencyExchangeTwoTone';
 import LowPriorityTwoToneIcon from '@mui/icons-material/LowPriorityTwoTone';
 import ShopTwoSharpIcon from '@mui/icons-material/ShopTwoSharp';
 import DeveloperBoardSharpIcon from '@mui/icons-material/DeveloperBoardSharp';
+import PercentIcon from '@mui/icons-material/Percent';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import BalanceIcon from '@mui/icons-material/Balance';
 import BrightnessLowRoundedIcon from '@mui/icons-material/BrightnessLowRounded';
@@ -52,6 +54,8 @@ const menuItems = [
       { text: 'Presupuesto', icon: <CalculateSharpIcon sx={{ fontSize: 32, color: '#f51808f4' }} />, path: '/presupuesto/Presupuesto' },
       { text: 'Muestra Presupuesto', icon: <PreviewSharpIcon sx={{ fontSize: 32, color: '#949e07df' }} />, path: '/presupuesto/PresupMuestra' },
       { text: 'Modifica Precios', icon: <CurrencyExchangeTwoToneIcon sx={{ fontSize: 32, color: '#8d07afd4' }} />, path: '/ListaPrecios/ModificaPrecios' },
+      { text: 'Tabla Detalle Pie', icon: <ArrowCircleDownTwoToneIcon sx={{ fontSize: 32, color: '#050463' }} />, path: '/tablas/PresupDetPie' },
+      { text: 'Tabla Config Tipo', icon: <ChecklistRtlTwoToneIcon sx={{ fontSize: 32, color: '#050463' }} />, path: '/tablas/PresupConfTipo' },
     ],
   },
   { text: 'Reparación', icon: <ConstructionSharpIcon sx={{ fontSize: 32, color: '#1d5f09' }} />, path: '/Reparacion' },
@@ -64,6 +68,7 @@ const menuItems = [
       { text: 'PreBalance SubRubros', icon: <BrightnessMediumRoundedIcon sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/Prebalance/PBSubRubros' },
       { text: 'PreBalance Items', icon: <BrightnessHighRoundedIcon sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/Prebalance/PBItems' },
       { text: 'Comprobantes', icon: <BrightnessHighRoundedIcon sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/Prebalance/PBComprobantes' },
+      { text: 'Porcentaje IVA', icon: <PercentIcon sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/Prebalance/PBPorIVA' },
     ],
   },
 
@@ -73,7 +78,7 @@ const menuItems = [
     children: [
       { text: 'Proveedores', icon: <GridOnIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/Proveedores' },
       { text: 'Clientes', icon: <GroupTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/Clientes' },
-      { text: 'Monedas', icon: <MoneyTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/StkMonedas' },
+      { text: 'Monedas', icon: <PriceChangeTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/StkMonedas' },
       { text: 'Transporte', icon: <LocalShippingTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/Transporte' },
       { text: 'Grupos', icon: <VideoStableRoundedIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/StkGrupos' },
       { text: 'Rubros', icon: <ClassTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/StkRubros' },
@@ -87,13 +92,13 @@ const menuItems = [
       //   children: [
       //   ],
       // },
-      { text: 'Presupuesto Detalle Pie', icon: <ArrowCircleDownTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/PresupDetPie' },
-      { text: 'Presupuesto Config Tipo', icon: <ChecklistRtlTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/PresupConfTipo' },
+      // { text: 'Presupuesto Detalle Pie', icon: <ArrowCircleDownTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/PresupDetPie' },
+      // { text: 'Presupuesto Config Tipo', icon: <ChecklistRtlTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/PresupConfTipo' },
       { text: 'OT Condiciones Pago', icon: <LowPriorityTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/OTCondPago' },
       { text: 'OT Otros Datos', icon: <ShopTwoSharpIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/OTDatos' },
     ],
   },
-  { text: 'Movimiento Stock', icon: <PatternSharpIcon sx={{ fontSize: 32, color: '#06c4a4' }} />, path: '/MovStock' },
+  { text: 'Movimiento Stock', icon: <PatternSharpIcon sx={{ fontSize: 32, color: '#f86605' }} />, path: '/MovStock' },
   { text: 'Inventario', icon: <InventorySharpIcon sx={{ fontSize: 32, color: '#7c0abe' }} />, path: '/Inventario' },
 
   {

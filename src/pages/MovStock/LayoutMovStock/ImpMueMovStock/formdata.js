@@ -1,0 +1,15 @@
+export const formdata = {
+  idStkMov: 0,
+  StkMovFecha: '',
+  StkMovLargo: 0.00,
+  StkMovAncho: 0.00,
+  StkMovTotal: 0.00,
+  StkMovRubroAbr: '',
+  StkMovItemDesc: '',
+  StkMovCliente: '',
+  StkMovProv: 0,
+  StkMovNroRef: '',
+  datoserroneos: true,
+  tablabase: 'StkMov',
+  titulotabla: 'Movimiento Stock',
+}

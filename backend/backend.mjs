@@ -137,6 +137,8 @@ import sumaingreso from "./routes/stock/movstock/sumaingreso.mjs";
 import realizacambiostock from "./routes/stock/movstock/realizacambiostock.mjs";
 import listaprecios from "./routes/listaprecios/listaprecios.mjs";
 import modprecios from "./routes/listaprecios/modprecios.mjs";
+import movstockagregar from "./routes/stock/movstock/movstockagregar.mjs";
+import movstockleer from "./routes/stock/movstock/movstockleer.mjs";
 
 //Movimiento Stock
 import leestock from "./routes/movstock/leestock.mjs";
@@ -251,10 +253,18 @@ import pbsubrubrosleer from "./routes/prebalance/subrubros/pbsubrubrosleer.mjs";
 import pbrubrosvalueleer from "./routes/prebalance/pbrubros/pbrubrosvalueleer.mjs";
 import pbsubrubrosmodificar from "./routes/prebalance/subrubros/pbsubrubrosmodificar.mjs";
 import pbsubrubrosagregar from "./routes/prebalance/subrubros/pbsubrubrosagregar.mjs";
+import pbsubrubrosborrar from "./routes/prebalance/subrubros/pbsubrubrosborrar.mjs";
 import pbitemsleer from "./routes/prebalance/items/pbitemsleer.mjs";
+import pbitemsagregar from "./routes/prebalance/items/pbitemsagregar.mjs";
+
 import pbcomprobantesleer from "./routes/prebalance/pbcomprobantes/pbcomprobantesleer.mjs";
 import pbcomprobantesborrar from "./routes/prebalance/pbcomprobantes/pbcomprobantesborrar.mjs";
 import pbcomprobantesmodificar from "./routes/prebalance/pbcomprobantes/pbcomprobantesmodificar.mjs";
+
+import pbporivaleer from "./routes/prebalance/poriva/porivaleer.mjs";
+import pbporivaagregar from "./routes/prebalance/poriva/porivaagregar.mjs";
+import pbporivamodificar from "./routes/prebalance/poriva/porivamodificar.mjs";
+import pbporivaborrar from "./routes/prebalance/poriva/porivaborrar.mjs";
 
 
 function perimitirCrossDomain(req, res, next) {
@@ -454,6 +464,9 @@ app.use("/stkenvasecambiaimp", stkenvasecambiaimp);
 app.use("/leedatosingreso", leedatosingreso);
 app.use("/sumaingreso", sumaingreso);
 app.use("/realizacambiostock", realizacambiostock);
+app.use("/movstockagregar", movstockagregar);
+app.use("/movstockleer", movstockleer);
+
 
 // app.use('/imprime1', imprime1);
 app.use("/stkmovvtaagregar", stkmovvtaagregar);
@@ -571,10 +584,18 @@ app.use("/pbsubrubrosleer", pbsubrubrosleer);
 app.use("/pbrubrosvalueleer", pbrubrosvalueleer);
 app.use("/pbsubrubrosmodificar", pbsubrubrosmodificar);
 app.use("/pbsubrubrosagregar", pbsubrubrosagregar);
+app.use("/pbsubrubrosborrar", pbsubrubrosborrar);
 app.use("/pbitemsleer", pbitemsleer);
+app.use("/pbitemsagregar", pbitemsagregar);
+
 app.use("/pbcomprobantesleer", pbcomprobantesleer);
 app.use("/pbcomprobantesborrar", pbcomprobantesborrar);
 app.use("/pbcomprobantesmodificar", pbcomprobantesmodificar);
+
+app.use("/pbporivaleer", pbporivaleer);
+app.use("/pbporivaagregar", pbporivaagregar);
+app.use("/pbporivamodificar", pbporivamodificar);
+app.use("/pbporivaborrar", pbporivaborrar);
 
 app.use("/", proveedoresleer);
 

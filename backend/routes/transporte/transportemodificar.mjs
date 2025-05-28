@@ -12,7 +12,6 @@ conexion.connect(function (err) {
 router.use(express.json()); // Asegúrate de que esto está habilitado para que `req.body` no sea vacío
 router.post("/", async function (req, res, next) {
   var indice = req.query.id;
-  console.log('indice en transportemodificar ', indice)
   // router.post("/?:id", function (req, res) {
   //   var indice = req.params.id;
   var transdesc = req.body.TransporteDesc;
