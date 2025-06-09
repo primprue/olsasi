@@ -7,8 +7,9 @@ import { StkItemsBorrar } from "../pages/Tablas/StkItems/StkItemsBorrar";
 import { StkUnMedBorrar } from "../pages/Tablas/UnidadMedidas/StkUnMedBorrar";
 import { PresupDetPieBorrar } from "../pages/Tablas/PresupDetPie/PresupDetPieBorrar";
 import { ParamCompBorrar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompBorrar";
-import { OTCondPagoBorrar } from "../pages/Tablas/OTCondPago/OTCondPagoBorrar";
+import { OTCondPagoBorrar } from "../pages/OrdenTrabajo/OTTablas/OTCondPago/OTCondPagoBorrar";
 import { PBRubrosBorrar } from "../pages/PreBalance/PBRubros/PBRubrosBorrar";
+import { PBSubRubrosBorrar } from "../pages/PreBalance/PBSubRubros/PBSubRubrosBorrar";
 import { PBComprobantesBorrar } from "../pages/PreBalance/PBComprobantes/PBComprobantesBorrar";
 import { PBPorIVABorrar } from "../pages/PreBalance/PBPorIVA/PBPorIVABorrar";
 // import { PresupBorrar } from "../pages/Presupuesto/LayoutPresupuesto/PrespuConMod/PresupBorrar";
@@ -47,6 +48,9 @@ export function onRowDelete(paramsid, newData) {
       }
       if (newData.tablabase === 'PBRubros') {
         PBRubrosBorrar(paramsid)
+      }
+      if (newData.tablabase === 'PBSubRubros') {
+        PBSubRubrosBorrar(paramsid)
       }
       if (newData.tablabase === 'PBComprobantes') {
         PBComprobantesBorrar(paramsid)

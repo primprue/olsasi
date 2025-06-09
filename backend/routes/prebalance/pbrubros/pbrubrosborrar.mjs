@@ -11,12 +11,12 @@ conexion.connect(function (err) {
     console.log("no se conecto en pbrubrosborrar");
   }
 });
-
-router.delete("/?:id", function (req, res, next) {
-  var indice = req.params.id;
+router.delete('/', async function (req, res) {
+  var indice = req.query.id;
   var q = ["delete", ' from BasePreBalance.PBRubros where idPBRubros = "', indice, '"'].join(
     ""
   );
+  console.log('q', q);
   conexion.query(q, function (err, result) {
     if (err) {
       if (err.errno == 1451) {

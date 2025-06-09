@@ -14,4 +14,5 @@ export const formdata = {
   datoserroneos: false,
   tablabase: 'Transportes',
   titulotabla: 'Transportes',
+  color: '#f8050541'
 }

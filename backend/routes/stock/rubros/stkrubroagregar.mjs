@@ -15,8 +15,8 @@ conexion.connect(function (err) {
 });
 
 router.all("/", async function (req, res) {
-  let codgrupo
-  let codrubro = req.body.StkRubroCodGrp;
+  // let codgrupo
+  let codgrupo = req.body.StkRubroCodGrp;
   var d = new Date();
   let finalDate = d.toISOString().split("T")[0];
   var RubroDesc = req.body.StkRubroDesc === undefined ? '' : req.body.StkRubroDesc.toUpperCase()

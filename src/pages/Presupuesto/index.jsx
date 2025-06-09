@@ -8,8 +8,8 @@ import FilaUnoIzq from "./LayoutPresupuesto/FilaUno/FilaUnoIzq.jsx";
 import { PresupPant } from "../../context/PresupPant.jsx";
 export default function Presupuesto() {
 	return (
-		<div>
-			<Grid container spacing={2} alignItems="center" padding={4}>
+		<>
+			<Grid container spacing={2} alignItems="center" padding={2}>
 				{/* <PresupPant > */}
 				<TipoCliente />
 				<TipoIVA />
@@ -18,6 +18,6 @@ export default function Presupuesto() {
 				<FilaDos />
 				{/* </PresupPant> */}
 			</Grid>
-		</div>
+		</>
 	);
 }

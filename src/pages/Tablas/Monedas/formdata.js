@@ -8,4 +8,5 @@ export const formdata = {
   datoserroneos: true,
   tablabase: 'Monedas',
   titulotabla: 'Monedas',
+  color: '#f8050541',
 }

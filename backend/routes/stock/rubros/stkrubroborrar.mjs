@@ -12,7 +12,7 @@ conexion.connect(function (err) {
   }
 });
 
-router.all("/", async function (req, res, next) {
+router.delete("/", async function (req, res, next) {
   var idStkRubro = req.query.idStkRubro;
   var StkRubroCodGrp = req.query.StkRubroCodGrp;
   var q = [

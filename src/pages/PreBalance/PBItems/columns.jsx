@@ -33,16 +33,6 @@ function columnsFill(pbrubro) {
 			// 	headerClassName: "encabcolumns",
 			// },
 			{
-				headerName: "SubRubros(ID)",
-				field: "PBidSubRubro",
-				editable: false,
-				required: false,
-				order: true,
-				autoFocus: false,
-
-				headerClassName: estilotabla.encabcolumns,
-			},
-			{
 				headerName: "Rubro",
 				field: "PBItemsSubRubro",
 				type: "singleSelect",
@@ -53,6 +43,16 @@ function columnsFill(pbrubro) {
 				readOnly: false,
 				autoFocus: true,
 				xs: 4,
+				headerClassName: estilotabla.encabcolumns,
+			},
+			{
+				headerName: "SubRubros(ID)",
+				field: "PBidSubRubro",
+				editable: false,
+				required: false,
+				order: true,
+				autoFocus: false,
+
 				headerClassName: estilotabla.encabcolumns,
 			},
 			{

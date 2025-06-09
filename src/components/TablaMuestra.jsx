@@ -1,6 +1,5 @@
 import React, { Component, useEffect } from "react";
 import Typography from "@mui/material/Typography";
-
 import { TransporteModificar } from "../pages/Tablas/Transporte/TransporteModificar.jsx";
 import { leerTransporte } from "../pages/Tablas/Transporte/TransporteLeer.jsx";
 
@@ -36,8 +35,8 @@ import { StkUbFisicaLee } from "../pages/Tablas/UbicacionFisica/StkUbFisicaLee.j
 import { ParamCompLeer } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompLeer.jsx";
 import { ParamCompModificar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompModificar.jsx";
 
-import { OTCondPagoLeer } from "../pages/Tablas/OTCondPago/OTCondPagoLeer.jsx";
-import { OTCondPagoModificar } from "../pages/Tablas/OTCondPago/OTCondPagoModificar.jsx";
+import { OTCondPagoLeer } from "../pages/OrdenTrabajo/OTTablas/OTCondPago/OTCondPagoLeer.jsx";
+import { OTCondPagoModificar } from "../pages/OrdenTrabajo/OTTablas/OTCondPago/OTCondPagoModificar.jsx";
 
 import { PBRubrosLee } from "../pages/PreBalance/PBRubros/PBRubrosLee.jsx";
 import { PBRubrosModificar } from "../pages/PreBalance/PBRubros/PBRubrosModificar.jsx";
@@ -46,7 +45,6 @@ import { PBSubRubrosLeer } from "../pages/PreBalance/PBSubRubros/PBSubRubrosLeer
 import { PBSubRubrosModificar } from "../pages/PreBalance/PBSubRubros/PBSubRubrosModificar.jsx";
 
 import { PBComprobantesLeer } from "../pages/PreBalance/PBComprobantes/PBComprobantesLeer.jsx";
-// import { PBComprobantesLee } from "../pages/PreBalance/PBComprobantes/PBComprobantesLee.jsx";
 import { PBComprobantesModificar } from "../pages/PreBalance/PBComprobantes/PBComprobantesModificar.jsx";
 
 // import { TablaMuestraRenglon } from "../pages/Presupuesto/LayoutPresupuesto/PresupMuestra/TablaMuestraRenglon/index.jsx";
@@ -78,6 +76,7 @@ import TablasContexto from "../context/TablasContext.jsx";
 import SelecCampos from "../pages/Impresion/SelecCampos.jsx";
 
 
+
 export default function TablaMuestra(props) {
 	const { rows1, columns1, formdatos } = props;
 	const { datoborrado, setDatoborrado } = use(TablasContexto);
@@ -87,6 +86,19 @@ export default function TablaMuestra(props) {
 	const [nombreboton, setNombreBoton] = useState("");
 	const [titulodial, setTituloDial] = useState("");
 	const [paramsbor, setParamsBor] = useState(0);
+	const estiloBoton = {
+		backgroundColor: formdatos.color,
+		'& .MuiButton-root': {
+			color: 'rgb(10, 0, 0)',
+			transition: 'all 0.2s ease-in-out', // hace que el agrandamiento sea suave
+			fontSize: '0.9rem', // tamaño base
+			'&:hover': {
+				fontStyle: 'italic',
+				fontSize: '1.05rem', // más grande al pasar el mouse
+				backgroundColor: formdatos.color,
+			},
+		}
+	}
 
 	useEffect(() => {
 		initialFetch();
@@ -209,27 +221,26 @@ export default function TablaMuestra(props) {
 	};
 
 	const handleModifica = (params) => {
-		setTimeout(() => {
-			if (formdatos.tablabase === "Transportes") TransporteModificar(params);
-			if (formdatos.tablabase === "Clientes") ClientesModificar(params);
-			if (formdatos.tablabase === "Monedas") StkMonedasModificar(params);
-			if (formdatos.tablabase === "PresupConfTipo")
-				PresupConfTipoModificar(params);
-			if (formdatos.tablabase === "PresupDetPie") PresupDetPieModificar(params);
-			if (formdatos.tablabase === "Proveedores") ProveedoresModificar(params);
-			if (formdatos.tablabase === "StkGrupos") StkGrupoModificar(params);
-			if (formdatos.tablabase === "StkRubros") StkRubroModificar(params);
-			if (formdatos.tablabase === "StkItems") StkItemsModificar(params);
-			if (formdatos.tablabase === "UniMedidas") StkUnMedModificar(params);
-			if (formdatos.tablabase === "ParamComp") ParamCompModificar(params);
-			if (formdatos.tablabase === "OTCondPago") OTCondPagoModificar(params);
-			if (formdatos.tablabase === "PBRubros") PBRubrosModificar(params);
-			if (formdatos.tablabase === "PBSubRubros") PBSubRubrosModificar(params);
-			if (formdatos.tablabase === "PBComprobantes") PBComprobantesModificar(params);
+		// setTimeout(() => {
+		if (formdatos.tablabase === "Transportes") TransporteModificar(params);
+		if (formdatos.tablabase === "Clientes") ClientesModificar(params);
+		if (formdatos.tablabase === "Monedas") StkMonedasModificar(params);
+		if (formdatos.tablabase === "PresupConfTipo")
+			PresupConfTipoModificar(params);
+		if (formdatos.tablabase === "PresupDetPie") PresupDetPieModificar(params);
+		if (formdatos.tablabase === "Proveedores") ProveedoresModificar(params);
+		if (formdatos.tablabase === "StkGrupos") StkGrupoModificar(params);
+		if (formdatos.tablabase === "StkRubros") StkRubroModificar(params);
+		if (formdatos.tablabase === "StkItems") StkItemsModificar(params);
+		if (formdatos.tablabase === "UniMedidas") StkUnMedModificar(params);
+		if (formdatos.tablabase === "ParamComp") ParamCompModificar(params);
+		if (formdatos.tablabase === "OTCondPago") OTCondPagoModificar(params);
+		if (formdatos.tablabase === "PBRubros") PBRubrosModificar(params);
+		if (formdatos.tablabase === "PBSubRubros") PBSubRubrosModificar(params);
+		if (formdatos.tablabase === "PBComprobantes") PBComprobantesModificar(params);
 
-
-			relee();
-		}, 100);
+		relee();
+		// }, 50);
 	};
 
 	const handleDelete = () => {
@@ -282,20 +293,14 @@ export default function TablaMuestra(props) {
 
 	function CustomToolbar() {
 		return (
-			<GridToolbarContainer className={estilotabla.tablasgenerales}>
+			<GridToolbarContainer sx={estiloBoton}
+			// className={estilotabla.tablasgenerales}
+			>
+				<GridToolbarColumnsButton />
+				<GridToolbarFilterButton />
+				<GridToolbarDensitySelector />
+				<GridToolbarExport />
 
-				{/* <Typography
-						className={estilotabla.titulo}
-					>
-						{formdatos.titulotabla}
-					</Typography> */}
-
-
-				<GridToolbarColumnsButton className={estilotabla.coloropcioncol} />
-				<GridToolbarFilterButton className={estilotabla.coloropcioncol} />
-				<GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
-				<GridToolbarExport className={estilotabla.coloropcioncol} />
-				{/* {(formdatos.tablabase !== "MuestraPresupuesto" && formdatos.tablabase !== "OTDatos" && ( */}
 				{(formdatos.tablabase !== "MuestraPresupuesto" && (
 					<React.Fragment>
 						<AddToPhotosTwoToneIcon
@@ -321,16 +326,7 @@ export default function TablaMuestra(props) {
 								titleAccess="Ve datos Presupuesto"
 							/>
 						))
-					// ||
-					// (formdatos.tablabase === "OTDatos" &&
-					// 	(
-					// 		<AddToPhotosTwoToneIcon
-					// 			className={estilotabla.iconoagregar}
-					// 			size="large"
-					// 			titleAccess="Agregar"
-					// 			onClick={() => handleAlta1()}
-					// 		/>
-					// 	))
+
 				}
 				<LocalPrintshopRoundedIcon
 					onClick={() => setImprimirTF(true)}
@@ -347,26 +343,35 @@ export default function TablaMuestra(props) {
 		);
 	}
 	return (
-		<>
+		<div style={{ margin: 80, height: 600, width: "85%" }}>
 
-			< DataGrid
-				//
-				sx={{
-					backgroundColor: formdatos.color, // Cambia el fondo general
-				}}
+			<DataGrid
 				rows={rows}
 				columns={columns}
-				//localeText={esES.components.MuiDataGrid.defaultProps.localeText}
 				localeText={esES}
 				processRowUpdate={processRowUpdate}
-
+				className={estilotabla.tablasgenerales}
 				onRowClick={handleRowSelect}
 				onProcessRowUpdateError={handleProcessRowUpdateError}
 				showCellVerticalBorder={true}
 				columnHeaderHeight={35}
+				sx={{
+					'& .MuiDataGrid-row:hover': {
+						backgroundColor: '#1976d2a4', // azul fuerte
+						color: '#fff',              // texto blanco
+					},
+					'& .MuiDataGrid-row.Mui-selected': {
+						backgroundColor: '#2fd3a25c', // rojo fuerte
+						color: '#0a0000',
+					},
+					'& .MuiDataGrid-row.Mui-selected:hover': {
+						backgroundColor: '#2fd3a25c', // rojo más oscuro al hover si está seleccionada
+					},
+				}}
 				slots={{
 					toolbar: CustomToolbar,
 				}}
+
 				initialState={{
 					...rows.initialState,
 					pagination: {
@@ -391,21 +396,19 @@ export default function TablaMuestra(props) {
 				columns={columns}
 				datos={rows}
 				open={imprimirTF}
-				setOpen={setImprimirTF}
 				handleClose={handleCloseImprimir}
 			/>
-			{
-				!!snackbar && (
-					<Snackbar
-						open
-						anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-						onClose={handleCloseSnackbar}
-						autoHideDuration={900}
-					>
-						<Alert {...snackbar} variant="filled" onClose={handleCloseSnackbar} />
-					</Snackbar>
-				)
-			}
-		</>
+			{snackbar && (
+				<Snackbar
+					open
+					autoHideDuration={100}
+					anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+					onClose={handleCloseSnackbar}
+				>
+					<Alert {...snackbar} variant="filled" onClose={handleCloseSnackbar} />
+				</Snackbar>
+			)}
+
+		</div>
 	);
 }

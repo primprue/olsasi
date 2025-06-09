@@ -30,7 +30,6 @@ router.get("/?:StkItemsRubroAbr", function (req, res, next) {
       }
     }
     else {
-      console.log('resul en la lectura  ', result)
       res.json(result);
 
     }

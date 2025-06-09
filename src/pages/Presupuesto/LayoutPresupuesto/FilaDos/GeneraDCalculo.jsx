@@ -168,9 +168,6 @@ export const GeneraDCalculo = (props, presuptipo, cotidivisa) => {
 	}
 
 	if (presuptipo === "TOLDO BARRACUADRA") {
-		console.log('props.TipoMecanismo  ', props.TipoMecanismo)
-		console.log('props.StkRubroAbrTBR; ', props.StkRubroAbrTBR)
-		console.log('props.AltoVolado; ', props.AltoVolado)
 		objetoModificado.tipomecanismo = props.TipoMecanismo;
 		objetoModificado.stkrubroabrtbr = props.StkRubroAbrTBR;
 		objetoModificado.altovolado = props.AltoVolado;

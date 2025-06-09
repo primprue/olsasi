@@ -43,8 +43,8 @@ router.get("/", (req, res, next) => {
       // totalreg = datosrec.length;
       datosrec.map(datos => {
         cantidad = datos.cantidad;
-        tipoconf = datos.tipoconf;
-        tipoojale = datos.tipoojale;
+        tipoconf = 'cs';
+        tipoojale = 'hz';
         detallep = datos.detallep
         StkRubroAbrP = datos.StkRubroAbr;
         ivasn = datos.ivasn;
@@ -245,7 +245,6 @@ router.get("/", (req, res, next) => {
             metroscuad = anchoreal * largoreal
             costooriginal = costooriginal * metroscuad
             costooriginal = costooriginal + importecostochicote + importecostoganchos
-
             ciclo = (metroscuad < 12) ? 3 : 0
             ciclo = (metroscuad < 16 && metroscuad >= 12) ? 2 : 0
             ciclo = (metroscuad < 22 && metroscuad >= 16) ? 1 : ciclo = 0
@@ -268,7 +267,6 @@ router.get("/", (req, res, next) => {
 
             datosenvio[0][0]['MDesc'] = 'S'
             costooriginal = 0;
-
             res.json(datosenvio);
             datosenvio = [];
           }

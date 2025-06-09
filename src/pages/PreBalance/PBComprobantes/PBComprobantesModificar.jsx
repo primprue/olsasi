@@ -4,7 +4,6 @@ import IpServidor from "../../VariablesDeEntorno";
 import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 
 export function PBComprobantesModificar(props) {
-	console.log('modificando ', props);
 	const { PBCompDesc, PBCompSumaResta, id } = props;
 
 	const url = IpServidor + "/pbcomprobantesmodificar/?id=" + id;

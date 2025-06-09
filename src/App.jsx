@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Box } from '@mui/material';
+import { useLocation } from 'react-router-dom';
+
 import Sidebar from './Sidebar';
 import { lazy, Suspense, use } from 'react';
 import StaticContext from './context/StaticContext.jsx';
@@ -32,21 +34,21 @@ const PBItems = lazy(() => import("./pages/PreBalance/PBItems/index.jsx"));
 const PBComprobantes = lazy(() => import("./pages/PreBalance/PBComprobantes/index.jsx"));
 const PresupDetPie = lazy(() => import("./pages/Tablas/PresupDetPie/index.jsx"));
 const PresupConfTipo = lazy(() => import("./pages/Tablas/PresupConfTipo/index.jsx"));
-const OTCondPago = lazy(() => import("./pages/Tablas/OTCondPago/index.jsx"));
-const OTDatos = lazy(() => import("./pages/Tablas/OTDatos/index.jsx"));
-const MovStockPant = lazy(() => import("./pages/MovStock/MovStockPant.jsx"));
-const Inventario = lazy(() => import("./pages/MovStock/Inventario/index.jsx"));
+const OTCondPago = lazy(() => import("./pages/OrdenTrabajo/OTTablas/OTCondPago/index.jsx"));
+const OTDatos = lazy(() => import("./pages/OrdenTrabajo/OTTablas/OTDatos/index.jsx"));
+const MovStockPant = lazy(() => import("./pages/Stock/MovStock/MovStockPant.jsx"));
+const Inventario = lazy(() => import("./pages/Stock/MovStock/Inventario/index.jsx"));
 const Reparacion = lazy(() => import("./pages/Reparacion/index.jsx"));
 const CtasCtes = lazy(() => import("./pages/CtasCtes/index.jsx"));
 const ParamComp = lazy(() => import("./pages/CtasCtes/Tablas/ParamComp/index.jsx"));
-
+// const location = useLocation();
 function App() {
     const { valor } = use(StaticContext);
     return (
         <>
             <AppBar position="static" sx={{ borderRadius: 1 }}>
                 <Toolbar>
-                    <Typography variant="h6" sx={{ flexGrow: 2, ml: 5 }}>
+                    <Typography variant="h8" sx={{ flexGrow: 2, ml: 5 }}>
                         Sistema Integrado
                     </Typography>
                     <Typography variant="h6" sx={{ flexGrow: 2, ml: 5 }}>
@@ -70,9 +72,10 @@ function App() {
                 <DatosTablas>
                     <OrdenTrabajo>
                         <CtaCteContext>
-                            <Box sx={{ px: 8, py: 4 }}>
+                            <Box sx={{ px: 8, py: 2 }}>
                                 <Suspense fallback={<div>Cargando...</div>}>
                                     <Routes>
+                                        {/* <Route path="/" element={<Inicio key={location.pathname} />} /> */}
                                         <Route path="/" element={<div>Bienvenido a la App</div>} />
                                         <Route path="/ListaPrecios" element={<ListaPrecios />} />
                                         <Route path="/presupuesto/Presupuesto" element={<Presupuesto />} />

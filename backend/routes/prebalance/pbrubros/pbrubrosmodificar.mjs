@@ -19,11 +19,10 @@ router.post("/", async function (req, res, next) {
   var q = [
     'UPDATE BasePreBalance.PBRubros SET PBRubrosDetalle = "' +
     descr +
-
-    ' WHERE idPBRubros = "' +
-    indice +
-    '"',
+    '" WHERE idPBRubros = ' +
+    indice
   ];
+
   conexion.query(q[0], function (err, result) {
     if (err) {
       if (err.errno == 1062) {

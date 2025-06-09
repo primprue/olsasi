@@ -35,7 +35,6 @@ router.post("/", async function (req, res) {
     StkItemsMax: req.body.StkItemsMax
   };
 
-  console.log('registro altaitem  ', registro)
   conexion.query("INSERT INTO StkItems SET ?", registro, function (
     err,
     result

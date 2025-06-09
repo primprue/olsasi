@@ -19,7 +19,7 @@ export const formdata = {
   datoserroneos: true,
   tablabase: 'Proveedores',
   titulotabla: 'Proveedores',
-
+  color: '#f8050541',
 
   // idStkMonedas: '',
   // StkMonedasDescripcion: '',

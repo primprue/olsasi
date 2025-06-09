@@ -10,6 +10,8 @@ import { fileURLToPath } from 'url';
 // require('events').EventEmitter.defaultMaxListeners = 20;
 
 //el mensaje que larga al ejecutarse el backend es el de la pimer linea del requiere en este caso proveedoresleer
+// import importacsv from "./routes/prebalance/importacsv.mjs";
+
 import proveedoresleer from "./routes/proveedores/proveedoresleer.mjs";
 
 import proveedoresleercod from "./routes/proveedores/proveedoresleercod.mjs";
@@ -328,7 +330,7 @@ app.use(perimitirCrossDomain);
 
 
 
-
+// app.use("/importacsv", importacsv);
 
 app.use("/proveedoresleer", proveedoresleer);
 app.use("/proveedoresleercod", proveedoresleercod);

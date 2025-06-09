@@ -64,7 +64,8 @@ router.post("/", function (req, res, next) {
     var index = 0
     condicionesvs.forEach(element => {
         if (element[0].PresupDetPieLeyenda.search('Operador') === 0) {
-            operador = req.body.condpagoeleg[i].PresupDetPieLeyenda
+            // operador = req.body.condpagoeleg[i].PresupDetPieLeyenda
+            operador = element[0].PresupDetPieLeyenda
         }
         else {
             condicionpago1.push(element[0].PresupDetPieLeyenda)

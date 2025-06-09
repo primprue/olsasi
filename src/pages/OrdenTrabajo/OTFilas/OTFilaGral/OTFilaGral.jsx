@@ -9,7 +9,7 @@ import { ClientesLeer } from "../../../Tablas/Clientes/ClientesLeer.jsx";
 import { clientesleercod } from "../../../Tablas/Clientes/ClientesLeerCod.jsx";
 import { leerTransporte } from "../../../Tablas/Transporte/TransporteLeer.jsx";
 import { TransporteLeerCod } from "../../../Tablas/Transporte/TransporteLeerCod.jsx";
-import { OTCondPagoLeer } from "../../../Tablas/OTCondPago/OTCondPagoLeer.jsx";
+import { OTCondPagoLeer } from "../../OTTablas/OTCondPago/OTCondPagoLeer.jsx";
 // import { TransporteLeerTodo } from "../../../Tablas/Transporte/TransporteLeerTodo.jsx";
 import styles from "../../../../Styles/Boton.module.css";
 import { DialogoDatos } from "../../../../components/DialogoDatos.jsx";

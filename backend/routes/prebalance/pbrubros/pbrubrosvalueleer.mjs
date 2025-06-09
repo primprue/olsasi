@@ -15,6 +15,7 @@ conexion.connect(function (err) {
 
 router.get("/", function (req, res, next) {
   var q = ["Select idPBRubros as value,  PBRubrosDetalle as label from BasePreBalance.PBRubros"].join(" ");
+  console.log('q en pbrubrosvalueleer', q);
   conexion.query(q, function (err, result) {
     if (err) {
       console.log(err);

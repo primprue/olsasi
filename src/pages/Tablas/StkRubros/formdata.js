@@ -16,5 +16,7 @@ export const formdata = {
   datoserroneos: true,
   tablabase: 'StkRubros',
   titulotabla: 'Rubros de Stock',
+  color: '#f866059d',
+
 }
 

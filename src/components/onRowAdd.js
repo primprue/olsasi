@@ -9,12 +9,12 @@ import { StkUnMedAgregar } from "../pages/Tablas/UnidadMedidas/StkUnMedAgregar";
 import { PresupDetPieAgregar } from "../pages/Tablas/PresupDetPie/PresupDetPieAgregar";
 import { ClientesAgregar } from "../pages/Tablas/Clientes/ClientesAgregar";
 import { ParamCompAgregar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompAgregar";
-import { OTCondPagoAgregar } from "../pages/Tablas/OTCondPago/OTCondPagoAgregar";
+import { OTCondPagoAgregar } from "../pages/OrdenTrabajo/OTTablas/OTCondPago/OTCondPagoAgregar";
 import { PBRubrosAgregar } from "../pages/PreBalance/PBRubros/PBRubrosAgregar";
 import { PBSubRubrosAgregar } from "../pages/PreBalance/PBSubRubros/PBSubRubrosAgregar";
 import { PBItemsAgregar } from "../pages/PreBalance/PBItems/PBItemsAgregar";
 import { PBPorIVAAgregar } from "../pages/PreBalance/PBPorIVA/PBPorIVAAgregar";
-import { OTDatosAgregar } from "../pages/Tablas/OTDatos/OTDatosAgregar";
+import { OTDatosAgregar } from "../pages/OrdenTrabajo/OTTablas/OTDatos/OTDatosAgregar";
 export function onRowAdd(newData) {
   return new Promise((resolve) => {
     setTimeout(() => {

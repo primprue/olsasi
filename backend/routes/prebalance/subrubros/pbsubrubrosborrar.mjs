@@ -12,9 +12,10 @@ conexion.connect(function (err) {
   }
 });
 
-router.delete("/?:id", function (req, res, next) {
-  var indice = req.params.id;
-  var q = ["delete", ' from BasePreBalance.PBSubRubros where PBidSubRubro = "', indice, '"'].join(
+
+router.delete('/', async function (req, res) {
+  var indice = req.query.id;
+  var q = ["delete", ' from BasePreBalance.PBSubRubros where concat(PBidSubRubro, PBSubRubroIdRubro) = "', indice, '"'].join(
     ""
   );
   conexion.query(q, function (err, result) {

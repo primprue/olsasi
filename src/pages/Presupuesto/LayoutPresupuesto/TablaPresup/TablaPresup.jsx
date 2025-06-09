@@ -155,7 +155,7 @@ export default function TablaPresup(props) {
 	const [rowSelectionModel, setRowSelectionModel] = React.useState([]);
 	return (
 		<div>
-			<div style={{ margin: 80, height: 300, width: "100%" }}>
+			<div style={{ margin: 80, height: 600, width: "100%" }}>
 				{datosrenglon !== undefined ? (
 					<DataGrid
 						className={estilotabla.tablapresupuesto}
@@ -172,6 +172,15 @@ export default function TablaPresup(props) {
 						shape="rounded"
 						slots={{
 							toolbar: CustomToolbar,
+						}}
+						initialState={{
+							...datosrenglon.initialState,
+							pagination: {
+								...datosrenglon.initialState?.pagination,
+								paginationModel: {
+									pageSize: 25,
+								},
+							},
 						}}
 					/>
 				) : (

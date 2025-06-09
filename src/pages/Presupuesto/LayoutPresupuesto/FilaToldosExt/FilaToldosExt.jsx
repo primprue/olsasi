@@ -22,10 +22,12 @@ export default function FilaToldosExt(props) {
 	const { state, setState } = use(PresupPant);
 	// const [mecanismo, setMecanismo] = React.useState("Manual");
 
-	const selectedOption = useMemo(() => state.mecanismo || "Manual", [state.mecanismo]);
+	const selectedOption = useMemo(() => state.TipoMecanismo || "Manual", [state.TipoMecanismo]);
 	// Función para actualizar la opción seleccionada
 	const handleOptionChange = (newOption) => {
-		setState({ ...state, mecanismo: newOption });
+		console.log('newOption', newOption)
+		// setState({ ...state, mecanismo: newOption });
+		setState({ ...state, TipoMecanismo: newOption });
 	};
 	const handleChange = (value, id) => {
 		setState({ ...state, [id]: value });
@@ -105,6 +107,7 @@ export default function FilaToldosExt(props) {
 
 	const [selectedValues, setSelectedValues] = useState({});
 	const handleSelectChange = (value, id) => {
+
 		setState({ ...state, [id]: value });
 		setSelectedValues((prev) => ({
 			...prev,

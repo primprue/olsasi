@@ -7,4 +7,5 @@ export const formdata = {
   datoserroneos: true,
   tablabase: 'StkGrupos',
   titulotabla: 'Grupos de Stock',
+  color: '#f866059d',
 }

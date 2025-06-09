@@ -4,7 +4,6 @@ import IpServidor from "../../VariablesDeEntorno";
 import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 
 export function PBSubRubrosModificar(props) {
-	console.log("props PBSubRubrosModificar ", props);
 	const { PBSubRubroDetalle, PBSubRubroIdRubro, PBidSubRubro } = props;
 
 	const url = IpServidor + "/pbsubrubrosmodificar/?id=" + PBidSubRubro;

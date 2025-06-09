@@ -1,8 +1,6 @@
 // import React from "react";
 import Mensaje from "./Mensaje";
 function MuestraMensaje(err, ruta) {
-
-
   switch (err.status) {
     case 409:
       Mensaje("error", "Código/Clave ingresado EXISTENTE no se puede duplicar ");

@@ -23,7 +23,6 @@ function buscacodigo(codgrupo) {
     " where idStkGrupo = ",
     codgrupo
   ].join(" ");
-
   conexion.query(q, function (err, result) {
     if (err) {
       console.log("Error en UPDATE StkGrupo");
