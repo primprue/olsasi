@@ -1,5 +1,5 @@
 import React, { useEffect, lazy, Suspense, useState, useRef, useMemo } from "react";
-import { IconButton } from "@mui/material";
+import { Box, IconButton, Toolbar } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Snackbar from '@mui/material/Snackbar';
 
@@ -106,9 +106,10 @@ export default function FilaDos() {
 	}
 
 	async function leermonedas() {
+
 		const result = await stkmonedasleerorig();
 		setState({ ...state, monedasleidas: result });
-		setCotidivisa(result[0].StkMonedasCotizacion);
+		// setCotidivisa(result[0].StkMonedasCotizacion);
 	}
 
 
@@ -150,7 +151,8 @@ export default function FilaDos() {
 				datoscalculos,
 				presuptipo
 			);
-			var datospresup = await Agregar(
+			var datospresup = ''
+			datospresup = await Agregar(
 				datosrenglon1,
 				indicetp1,
 				rubrosn,
@@ -179,10 +181,8 @@ export default function FilaDos() {
 			[id]: value,
 		}));
 		if (id === "idStkMonedas") {
-
 			const monedaEncontrada = state.monedasleidas.find(m => m.idStkMonedas === value);
 			setCotidivisa(monedaEncontrada.StkMonedasCotizacion);
-
 		}
 	};
 	const textdata = useMemo(() => {
@@ -225,7 +225,7 @@ export default function FilaDos() {
 	}
 	return (
 		<>
-			<Grid >
+			<Grid>
 				{/* <p>Renderizado: {renderCount.current} veces   </p> */}
 				<Grid container size={{ xs: 1 }}>
 					{rubrosn === "S" &&
@@ -294,7 +294,7 @@ export default function FilaDos() {
 
 				</Grid>
 			)}
-			<Grid container size={{ xs: 12 }}>
+			<Grid container size={{ xs: 8 }}>
 				{presuptipo === "CONFECCIONADA" && <FilaConf></FilaConf>}
 				{presuptipo === "LONAS ENROLLABLES" && (
 					<FilaEnrollables></FilaEnrollables>
@@ -308,6 +308,9 @@ export default function FilaDos() {
 				{presuptipo === "PILETA ENROLLABLE" && (
 					<FilaPiletasEnr></FilaPiletasEnr>
 				)}
+				{presuptipo === "PILETAS C/SOGA ELASTICA" && (
+					<FilaPiletasEnr></FilaPiletasEnr>
+				)}
 				{presuptipo === "BOLSON PARA TANQUE" && <FilaTanques></FilaTanques>}
 				{presuptipo === "PILETA CAÑOS ALUMINIO" && (
 					<FilaPiletasEnr></FilaPiletasEnr>
@@ -319,7 +322,7 @@ export default function FilaDos() {
 					<></>
 				)}
 
-				<Grid size={2} padding={2}>
+				<Grid size={2} padding={1}>
 					{state.monedasleidas.length > 0 &&
 						textdatam.map(({ id, label, value, options }, index) => (
 							<TextFieldSelect

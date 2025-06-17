@@ -107,9 +107,8 @@ router.get("/", (req, res, next) => {
             }
 
             cantidadojales = datos.largo * 2
+
             valorMOT = result[0].costoMOT * coefMOT / 60 * ((metroscuad * minutospmc) + minutosdren)
-
-
             mcuadcob = ['Select ',
               'StkRubroDesc, StkRubroAbr, ',
               '((StkRubroCosto / StkRubroAncho * StkMonedasCotizacion * ', coeficiente,
@@ -160,7 +159,6 @@ router.get("/", (req, res, next) => {
               else {
                 costooriginal = Math.ceil(costooriginal.toFixed(0) / 1.21 / 10) * 10
               }
-
 
               datosenvio[0][0]['ImpUnitario'] = costooriginal
               datosenvio[0][0]['Detalle'] = detalle

@@ -1,24 +1,17 @@
 import {
-	Box,
 	Button,
-	Checkbox,
-	FormControl,
-	FormControlLabel,
-	FormGroup,
 
-	Radio,
-	RadioGroup,
-	TextField,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import TextFieldComun from "../../../components/comppropios/TextFieldComun";
+import TextFieldSelect from "../../../components/comppropios/TextFieldSelect";
 import { useContext } from "react";
 import OrdTrabajo from "../../../context/OrdTrabajo";
 import { StkItemsLeeAbrRub } from "../../Tablas/StkItems/StkItemsLeeAbrRub";
-import styles from "../styles.module.css";
 import estilos from "../../../Styles/Boton.module.css";
 import { OTDatosLeer } from "../OTVarios/OTDatosLeer";
+import TextFieldSelectObject from "../../../components/comppropios/TextFieldSelectObject";
 export default function OTFilasConf(props) {
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
 	const { datosgenot, setDatosgenot } = useContext(OrdTrabajo);
@@ -62,29 +55,31 @@ export default function OTFilasConf(props) {
 		leedatosot();
 	}, [datospot]); // eslint-disable-line react-hooks/exhaustive-deps
 
-	const textdataI = [
-		{
+
+	const textdataI = useMemo(() => {
+		if (items.length === 0) return [];
+
+		return [{
 			id: "coloreleg",
 			label: "Color",
 			value: coloreleg,
-			mapeo: (
-				<>
-					<option></option>
-					{items.map((option) => (
-						<option key={option.StkItemsDesc} value={option.StkItemsDesc}>
-							{option.StkItemsDesc}
-						</option>
-					))}
-				</>
-			),
-		},
-	];
+			options: items.map((option) => ({
+				value: option.StkItemsDesc,
+				label: option.StkItemsDesc
+			}))
+		}];
+	}, [items]);
 
-	const handleChangeG = (event) => {
-		const id = event.target.id;
-		setDatosgenot({ ...datosgenot, [id]: event.target.value });
+
+
+
+	const handleChangeG = (value, id) => {
+		setDatosgenot({ ...datosgenot, [id]: value });
 	};
-
+	// const handleChangeG = (event) => {
+	// 		const id = event.target.id;
+	// 	setDatosgenot({ ...datosgenot, [id]: event.target.value });
+	// };
 	const Terminocarga = () => {
 		setOTdatos({ ...otdatos, datosconfec: datosgenot });
 	};
@@ -104,8 +99,7 @@ export default function OTFilasConf(props) {
 		}
 
 		let canttela = (datospot.ancho * 1 + 0.08) * paños;
-		console.log('items[indice].StkItemsCantDisp', items[indice].StkItemsCantDisp);
-		console.log('items  ', !items[indice].StkItemsCantDisp)
+
 		if (canttela > items[indice].StkItemsCantDisp) {
 			setBackgroundColor("lightcoral"); // Cambia el color de fondo si el resultado es mayor de 50
 		} else {
@@ -114,93 +108,56 @@ export default function OTFilasConf(props) {
 	};
 	const { largo } = datospot;
 
+
+	const [selectedValues, setSelectedValues] = useState({});
+	const handleSelectChange = (value, id) => {
+		if (id === "coloreleg") {
+			setDatosgenot({ ...datosgenot, ColorMaterial: value });
+		}
+
+		setSelectedValues((prev) => ({
+			...prev,
+			[id]: value,
+		}));
+
+	};
 	return (
 		<div>
 			<Grid container spacing={2} alignItems="center">
 				{/* acá muestra opción de colores */}
+				{textdataI.map(({ id, label, value, options }, index) => (
+					<TextFieldSelect
+						key={index}
+						id={id}
+						label={label}
+						value={selectedValues[id] ?? value ?? ''}
+						onChange={handleSelectChange}
+						options={options}
+						width="200px"
+					/>
 
-				{textdataI.map((data, index) => (
-					<TextField
-						className={`${styles.textField} ${backgroundColor && styles[backgroundColor]
-							}`}
-						// style={{ background: "#7a7af318" }}
-						key={data.id}
-						id={data.id}
-						size="small"
-						input={{ maxLength: 3 }}
-						select
-						label={data.label}
-						value={data.value}
-						helperText="Requerido"
-						onChange={(event) =>
-							handleChange(event.target.selectedIndex, event)
-						}
-						SelectProps={{ native: true }}
-						variant="outlined"
-						margin="dense"
-					>
-						{data.mapeo}
-					</TextField>
+
 				))}
-				{/* </Grid> */}
 
 				{datosrestantes.map((dato, index) => (
+
 					<div key={index}>
 						{dato.tipocomponete === "select" && (
-							<TextField
-								id={dato.nombre}
-								size="small"
-								select
-								onChange={handleChangeG}
-								defaultValue={dato.nombre}
-								sx={{ input: { color: "#00000f" } }}
-								label={dato.nombre}
-								placeholder={dato.nombre}
-								helperText={dato.requerido === "S" ? "Requerido" : "------"}
-								variant="outlined" // Puedes cambiar el tipo de variante según tus preferencias
-								margin="dense"
-								style={
-									dato.requerido === "S"
-										? { background: "#7a7af318" }
-										: { background: "#94fcd42b" }
-								}
-								inputProps={{
-									maxLength: 3,
-								}}
-								SelectProps={{
-									native: true, // Esto es importante para que funcione como un campo de texto select
-								}}
-							>
-								{Object.keys(dato.opciones).map((opcion, index) => (
-									<option key={index} value={opcion}>
-										{opcion}
-									</option>
-								))}
-							</TextField>
+							<TextFieldSelectObject dato={dato} onChange={handleChangeG} />
 						)}
 						{dato.tipocomponete === "textfield" && (
-							<TextField
+							<TextFieldComun
 								disabled={largo === "N"}
-								size="small"
-								variant="outlined"
 								id={dato.nombre}
-								sx={{ input: { color: "#00000f" } }}
-								label={dato.nombre}
-								placeholder={dato.nombre}
-								helperText={dato.requerido === "S" ? "Requerido" : "-----"}
-								// fullWidth
-								inputProps={{
-									maxLength: dato.anchocomp,
-								}}
-								style={
-									dato.requerido === "S"
-										? { background: "#7a7af318" }
-										: { background: "#94fcd42b" }
-								}
-								margin="dense"
+								type="string"
+								// label={dato.nombre}
 								value={otdatos.OTDatosDesc}
 								onChange={handleChangeG}
+								width="120px"
+								helperText={dato.requerido === "S" ? "Requerido" : "-----"}
+								placeholder={dato.nombre}
 							/>
+
 						)}{" "}
 					</div>
 				))}
@@ -231,7 +188,7 @@ export default function OTFilasConf(props) {
 					</Grid>
 	
 	
-	<p>StkRubroAbr: {StkRubroAbr}</p>
+	<p>StkItemsDesc: {StkRubroAbr}</p>
 			<p>minmay: {minmay}</p>
 			<p>ivasn: {ivasn}</p>
 			<p>cantidad: {cantidad}</p>
@@ -295,3 +252,131 @@ export default function OTFilasConf(props) {
 						</Grid>
 					)}{" "} */
 }
+// <TextField
+// 	className={`${styles.textField} ${backgroundColor && styles[backgroundColor]
+// 		}`}
+// 	// style={{ background: "#7a7af318" }}
+// 	key={data.id}
+// 	id={data.id}
+// 	size="small"
+// 	input={{ maxLength: 3 }}
+// 	select
+// 	label={data.label}
+// 	value={data.value}
+// 	helperText="Requerido"
+// 	onChange={(event) =>
+// 		handleChange(event.target.selectedIndex, event)
+// 	}
+// 	SelectProps={{ native: true }}
+// 	variant="outlined"
+// 	margin="dense"
+// >
+// 	{data.mapeo}
+// </TextField>
+
+// const textdataI = [
+// 	{
+// 		id: "coloreleg",
+// 		label: "Color",
+// 		value: coloreleg,
+// 		mapeo: (
+// 			<>
+// 				<option></option>
+// 				{items.map((option) => (
+// 					<option key={option.StkItemsDesc} value={option.StkItemsDesc}>
+// 						{option.StkItemsDesc}
+// 					</option>
+// 				))}
+// 			</>
+// 		),
+// 	},
+// ];
+
+// <TextField
+// 	id={dato.nombre}
+// 	size="small"
+// 	select
+// 	onChange={handleChangeG}
+// 	defaultValue={dato.nombre}
+// 	sx={{ input: { color: "#00000f" } }}
+// 	label={dato.nombre}
+// 	placeholder={dato.nombre}
+// 	helperText={dato.requerido === "S" ? "Requerido" : "------"}
+// 	variant="outlined" // Puedes cambiar el tipo de variante según tus preferencias
+// 	margin="dense"
+// 	style={
+// 		dato.requerido === "S"
+// 			? { background: "#7a7af318" }
+// 			: { background: "#94fcd42b" }
+// 	}
+// 	inputProps={{
+// 		maxLength: 3,
+// 	}}
+// 	SelectProps={{
+// 		native: true, // Esto es importante para que funcione como un campo de texto select
+// 	}}
+// >
+// 	{Object.keys(dato.opciones).map((opcion, index) => (
+// 		<option key={index} value={opcion}>
+// 			{opcion}
+// 		</option>
+// 	))}
+// </TextField>
+
+
+// id = dato.nombre,
+// label = dato.nombre,
+// Object.keys(dato[index].opciones).map(({ id, label, value, options }, index) => (
+// 	<TextFieldSelect
+// 		key={index}
+// 		id={id}
+// 		label={label}
+// 		value={selectedValues[id] ?? value ?? ''}
+// 		onChange={handleSelectChange}
+// 		options={options}
+// 		width="200px"
+// 	/>
+// ))
+
+// <TextField
+// 	disabled={largo === "N"}
+// 	size="small"
+// 	variant="outlined"
+// 	id={dato.nombre}
+// 	sx={{ input: { color: "#00000f" } }}
+// 	label={dato.nombre}
+// 	placeholder={dato.nombre}
+// 	helperText={dato.requerido === "S" ? "Requerido" : "-----"}
+// 	// fullWidth
+// 	inputProps={{
+// 		maxLength: dato.anchocomp,
+// 	}}
+// 	style={
+// 		dato.requerido === "S"
+// 			? { background: "#7a7af318" }
+// 			: { background: "#94fcd42b" }
+// 	}
+// 	margin="dense"
+// 	value={otdatos.OTDatosDesc}
+// 	onChange={handleChangeG}
+// />
+
+
+
+// if (datosrestantes.length > 0) {
+// 	console.log('datosrestantes ', datosrestantes)
+// 	datosrestantes.map((dato, index) => {
+// 		// console.log('dato ', dato)
+// 		// console.log('index ', index)
+// 		// console.log('datosrestantes.opciones ', datosrestantes[index].opciones)
+// 		if (datosrestantes[0].opciones !== undefined) {
+// 			console.log('Object.keys(datosrestantes[index].opciones) ', Object.keys(datosrestantes[index].opciones))
+// 			Object.keys(datosrestantes[index].opciones).map((opcion, index) => (
+// 				console.log('opcion ', opcion),
+// 				console.log('index ', index)
+// 				// console.log('datosrestantes.opciones[opcion] ', datosrestantes.opciones[opcion]),
+// 				// console.log('datosrestantes.opciones ', datosrestantes.opciones)
+// 			))
+// 		}
+// 	})
+// }

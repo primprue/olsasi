@@ -31,7 +31,7 @@ const CustomSwitch = ({ value, onChange, opcion1, opcion2, opcion3, titulo1, tit
                         backgroundColor: value === opcion1 ? colorbackeleg : colorbacknoeleg2,
                         color: value === opcion1 ? colorbacknoeleg3 : colorbackeleg,
                         width: ancho,  // Ancho del botón
-                        height: "50px",  // Alto del botón
+                        height: "40px",  // Alto del botón
                         border: `2px solid ${value === opcion1 ? colorbacknoeleg3 : colorbackeleg}`, // Borde en hover
                         borderRadius: "5px", // Agregar bordes redondeados para evitar solapamientos
 
@@ -58,7 +58,7 @@ const CustomSwitch = ({ value, onChange, opcion1, opcion2, opcion3, titulo1, tit
                         backgroundColor: value === opcion2 ? colorbackeleg : colorbacknoeleg2,
                         color: value === opcion2 ? colorbacknoeleg3 : colorbackeleg,
                         width: ancho,  // Ancho del botón
-                        height: "50px",  // Alto del botón
+                        height: "40px",  // Alto del botón
                         border: `2px solid ${value === opcion2 ? colorbacknoeleg3 : colorbackeleg}`, // Borde en hover
                         borderRadius: "5px", // Agregar bordes redondeados para evitar solapamientos
                         "&:hover": {
@@ -84,7 +84,7 @@ const CustomSwitch = ({ value, onChange, opcion1, opcion2, opcion3, titulo1, tit
                             backgroundColor: value === opcion3 ? colorbackeleg : colorbacknoeleg2,
                             color: value === opcion3 ? colorbacknoeleg3 : colorbackeleg,
                             width: ancho,  // Ancho del botón
-                            height: "50px",  // Alto del botón
+                            height: "40px",  // Alto del botón
                             border: `2px solid ${value === opcion3 ? colorbacknoeleg3 : colorbackeleg}`, // Borde en hover
                             borderRadius: "5px", // Agregar bordes redondeados para evitar solapamientos
                             "&:hover": {

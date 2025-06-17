@@ -46,9 +46,10 @@ function App() {
     const { valor } = use(StaticContext);
     return (
         <>
-            <AppBar position="static" sx={{ borderRadius: 1 }}>
+
+            <AppBar position="fixed" sx={{ borderRadius: 1 }}>
                 <Toolbar>
-                    <Typography variant="h8" sx={{ flexGrow: 2, ml: 5 }}>
+                    <Typography variant="h8" sx={{ flexGrow: 2, ml: 8 }}>
                         Sistema Integrado
                     </Typography>
                     <Typography variant="h6" sx={{ flexGrow: 2, ml: 5 }}>
@@ -67,7 +68,8 @@ function App() {
                     <Sidebar />
                 </Toolbar>
             </AppBar>
-
+            <Toolbar disableGutters sx={{ backgroundColor: '#c2f7f79b', color: '#fff', minHeight: 30 }} />
+            {/* <br></br> */}
             <PresupPant>
                 <DatosTablas>
                     <OrdenTrabajo>

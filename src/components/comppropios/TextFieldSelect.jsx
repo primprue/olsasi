@@ -26,7 +26,15 @@ const TextFieldSelect = ({ id, label, value, onChange, options, width = "100%", 
                     onChange(newValue, id, selectedLabel);
                 }}
                 margin="dense"
-                sx={{ width }}
+                sx={{
+                    width,
+                    '& .MuiInputBase-root': {
+                        height: '35px', // altura total
+                    },
+                    '& input': {
+                        padding: '8px 10px', // padding del campo de texto
+                    },
+                }}
                 fullWidth
             >
 

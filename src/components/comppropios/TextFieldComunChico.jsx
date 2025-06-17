@@ -1,13 +1,10 @@
-import * as React from 'react';
-
 import estilo from "../../Styles/TextField.module.css";
 
 import { FormControl, FormLabel, TextField, Tooltip } from "@mui/material";
 const TextFieldComunChico = ({ id, type, label, value, onChange, tooltip, width = "80%", ...other }) => {
-
     return (
         <FormControl fullWidth margin="dense">
-            {/* // <Tooltip title={tooltip} arrow sx={{ "& .MuiTooltip-tooltip": { backgroundColor: 'green', color: "white" } }}> */}
+            {/* <Tooltip title={tooltip} arrow sx={{ "& .MuiTooltip-tooltip": { backgroundColor: 'green', color: "white" } }}> */}
             <FormLabel sx={{ color: "green", fontWeight: "bold", fontSize: "12px" }}>{label}</FormLabel>
             <TextField
                 {...other}
@@ -21,8 +18,20 @@ const TextFieldComunChico = ({ id, type, label, value, onChange, tooltip, width 
                 }}
                 variant="standard"
                 margin="dense"
-                // fullWidth
-                sx={{ width }} // Controla el ancho dinámicamente
+                sx={{
+                    width,
+                    '& .MuiInputBase-root': {
+                        height: '35px', // altura total
+                    },
+                    '& input': {
+                        padding: '8px 10px', // padding del campo de texto
+                    },
+                    '& .MuiFormHelperText-root': {
+                        fontSize: '10px',         // Tamaño del texto
+                        color: 'green',            // Color opcional
+                        marginTop: '1px',         // Espacio superior
+                    },
+                }}// Controla el ancho dinámicamente// Controla el ancho dinámicamente
 
             >
 

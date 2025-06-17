@@ -25,6 +25,9 @@ import estilotabla from "../../../../Styles/Tabla.module.css";
 import { DialogoDatos } from '../../../../components/DialogoDatos.jsx';
 import TablasContexto from '../../../../context/TablasContext.jsx';
 import OrdTrabajo from '../../../../context/OrdTrabajo.jsx';
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import { OTDatosModificar } from './OTDatosModificar.jsx';
 export default function OTDatosForm() {
     const { formdatos, setFormdatos } = use(TablasContexto);
     const { otdatos, setOTdatos } = use(OrdTrabajo);
@@ -163,6 +166,58 @@ export default function OTDatosForm() {
         );
         setOpen(true);
     };
+    const useFakeMutation = () => {
+        return React.useCallback(
+            (user) =>
+                new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        if (user.name?.trim() === "") {
+                            reject(new Error("Error el campo no puede estar vacío"));
+                        } else {
+                            resolve({ ...user, name: user.name?.toUpperCase() });
+                        }
+                    }, 200);
+                }),
+            []
+        );
+    };
+    const [rowv, setRowv] = useState();
+    const [rown, setRown] = useState();
+    const [rowsel, setRowSel] = useState();
+    const [snackbar, setSnackbar] = React.useState(null);
+    const handleCloseSnackbar = () => setSnackbar(null);
+
+    const handleProcessRowUpdateError = React.useCallback((error) => {
+        setSnackbar({ children: error.message, severity: "error" });
+    }, []);
+    const mutateRow = useFakeMutation();
+    const processRowUpdate = React.useCallback(
+        async (newRow, oldRow) => {
+            setRown(newRow);
+            setRowv(oldRow);
+            const response = await mutateRow(newRow);
+            setSnackbar({
+                children: "Modificado no confirmado",
+                severity: "success",
+            });
+            return response;
+        },
+        [mutateRow]
+    );
+    const handleRowSelect = ({ row }) => {
+        setRowSel(row);
+    };
+
+    const handleModifica = (params) => {
+        if (formdatos.tablabase === "OTDatos") OTDatosModificar(params);
+
+        relee();
+    };
+    async function relee() {
+        const data = await OTDatosLee();
+        setRows(data);
+    }
+
     const handleClose = () => {
         leeotdatos(state.PresupConfTipoDesc);
 
@@ -235,7 +290,8 @@ export default function OTDatosForm() {
             <DataGrid
                 rows={rows}
                 columns={columns}
-                // processRowUpdate={handleProcessRowUpdate}
+                processRowUpdate={processRowUpdate}
+                onRowClick={handleRowSelect}
                 pageSize={5}
                 slots={{
                     toolbar: CustomToolbar,

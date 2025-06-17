@@ -343,8 +343,8 @@ export default function TablaMuestra(props) {
 		);
 	}
 	return (
-		<div style={{ margin: 80, height: 600, width: "85%" }}>
-
+		// <div style={{ margin: 6, height: 600, width: "85%" }}>
+		<div >
 			<DataGrid
 				rows={rows}
 				columns={columns}

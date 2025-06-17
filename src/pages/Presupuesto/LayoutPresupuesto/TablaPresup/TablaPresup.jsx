@@ -58,10 +58,10 @@ export default function TablaPresup(props) {
 				<Box
 					sx={{
 						width: "100%",
-						display: 'flex',
+						display: 'static',
 						justifyContent: 'center',
 						alignItems: 'left',
-						padding: '8px 0px 8px 0px'
+						padding: '4px 0px 4px 0px'
 					}}
 				>
 					<Typography

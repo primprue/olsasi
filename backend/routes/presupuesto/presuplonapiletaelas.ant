@@ -13,12 +13,13 @@ conexion.connect(function (err) {
 
 var datosenvio = [];
 
-router.get("/", (req, res, next) => {
-  var q,
-    i = 0, j = 0, ciclo = 0;
-  let detalle = '', ganancia = 0, coefimpuesto = 0, tipoojal = '', gancho = '', sogachicote = '', sogadobladillo = ''
 
-  let valorflete = 0, costomincolchi = 0, costoMOTDren = 0, coefmaymin = 0, valorMOT = 0, costoHMOT = 0, codmoneda = 0, minutosdren, drenajesn
+router.get("/", (req, res, next) => {
+  var q, i = 0;
+
+  var datosrec, tipoconf, tipoojale, detallep, ivasn, j, ciclo, ganancia, coefimpuesto, valorflete, valorMOT, codmoneda, mcuadcob, msogachicote, msogadobladillo, ojales, cotizacion
+  var largoreal, anchoreal, tipoojal, sogachicote, sogadobladillo, gancho, mgancho, detalle
+  var costoMinMOT, cantidadganchos, importecostoganchos, importecostochicote, minutosdren, drenajesn, minutosunion, importedrenaes
   q = ['select * from BasePresup.PresupParam'].join(' ')
   conexion.query(q,
     function (err, result) {
@@ -26,30 +27,37 @@ router.get("/", (req, res, next) => {
         console.log(err);
       }
 
-      var costooriginal = 0.00;
-      var coeficiente = 0,
+      var costooriginal = 0;
+      var coeficienteMOT = 0,
         cantidad = 0,
         metroscuad = 0,
         StkRubroAbrP = "",
         largo = 0,
         ancho = 0.0;
-      let datosrec = JSON.parse(req.query.datoscalculo);
+      cantidadganchos = 0.0;
+      importecostoganchos = 0.0;
+      importecostochicote = 0.0;
+      minutosdren = 0.0;
+      // var enteroancho = 0,
+      //   decimancho = 0.0;
+      datosrec = JSON.parse(req.query.datoscalculo);
+      // totalreg = datosrec.length;
       datosrec.map(datos => {
-        drenajesn = datos.drenajesn;
         cantidad = datos.cantidad;
-        let tipoconf = 'cs';
-        let tipoojale = datos.tipoojale;
-        let detallep = datos.detallep
+        //agregado para que calcule ojales y drenajes como pileta enrollable
+        drenajesn = datos.drenajesn;
+        tipoojale = datos.tipoojale;
+        tipoconf = 'cs';
+        // tipoojale = 'hz';
+        detallep = datos.detallep
         StkRubroAbrP = datos.StkRubroAbr;
-        let ivasn = datos.ivasn;
-        let largoreal = (datos.largo * 1)
-        let anchoreal = (datos.ancho * 1)
+        ivasn = datos.ivasn;
+        largoreal = (datos.largo * 1)
+        anchoreal = (datos.ancho * 1)
         largo = (datos.largo * 1) + 0.08;
         ancho = (datos.ancho * 1) + 0.08;
-
-        costoHMOT = result[0].costoMOT
-
-        costomincolchi = 2 * costoHMOT / 60
+        cantidadganchos = Math.ceil((largoreal * 2 + anchoreal * 2) / 0.70 / (largoreal * anchoreal)
+        )
         if (tipoconf == 'cs') {
           if (detallep == '') {
             detalle = "Lona con ojales reforzados, soga elástica y gancho rulo y soga en dobladillo"
@@ -67,27 +75,7 @@ router.get("/", (req, res, next) => {
           }
           ganancia = result[0].coefganssoga
         }
-        if (datos.minmay == 'my') {
-          coefmaymin = result[0].coeficientemay;
-          tipoojal = result[0].abrojales28;
-          sogachicote = result[0].sogaelastica;
-          ganancia = result[0].coefganmay
-          ivasn = 'CIVA'
-        }
-        else {
-          sogachicote = result[0].sogaelastica;
-          coefmaymin = result[0].coeficientemin;
-        }
-        if (tipoojale == 'hz') {
-          tipoojal = result[0].abrojales3hz
-          detalle = detalle + ' en : '
-        }
-        else {
-          tipoojal = result[0].abrojales3b
-          detalle = detalle + ' c/ojales de bronce en : '
-        }
-
-
+        //agregado porque ahora pedimos si quiere drenaje o no
         if (drenajesn == 'cd') {
           if (detallep == '') {
             detalle = detalle + " con drenaje "
@@ -95,8 +83,7 @@ router.get("/", (req, res, next) => {
           else {
             detalle = detallep + ' '
           }
-          minutosdren = ((largo / 1.50) * 12)
-          costoMOTDren = costoHMOT / 60 * minutosdren * coefmaymin
+          minutosdren = ((largo / 1.50) + 2)
           //   minutosdren = ((largo / 1.50) + 2) * 12
           /* 12 minutos por drenaje*/
         } else {
@@ -107,17 +94,41 @@ router.get("/", (req, res, next) => {
             detalle = detallep + ' '
           }
         }
+        //     datosenvio.push([{ mindrenajes: minutosdren }]);
 
+        sogachicote = result[0].sogaelastica;
+        gancho = result[0].ganchorulo;
 
+        if (datos.minmay == 'my') {
+          coeficienteMOT = result[0].coefMOTmay;
+          tipoojal = result[0].abrojales28;
+          // sogachicote = result[0].sogaelastica; 
+          //agregar gancho rulo y colocación que son 2 minutos por gancho  sogaelastica  ganchorulo
+          ganancia = result[0].coefganmay
+          ivasn = 'CIVA'
+        }
+        else {
+          coeficienteMOT = result[0].coefMOTmin;
+          // sogachicote = result[0].sogaelastica; 
+
+        }
+        if (tipoojale == 'hz') {
+          tipoojal = result[0].abrojales3hz
+          detalle = detalle + ' en : '
+        }
+        else {
+          tipoojal = result[0].abrojales3b
+          detalle = detalle + ' c/ojales de bronce en : '
+        }
         minutosunion = (datos.ancho + 0.08) * largo * 5;
         sogadobladillo = result[0].sogadobladillo;
-        gancho = result[0].ganchorulo;
         valorflete = result[0].flete;
-        valorMOT = result[0].MOTpM2;
+        valorMOT = result[0].MOTpM2; //costo por m2 en dólares de MOT
+        costoMinMOT = (result[0].costoMOT / 60)
         codmoneda = result[0].codmoneda;
         coefimpuesto = result[0].coefimpuestos
 
-        let mcuadcob = [
+        mcuadcob = [
           "Select ",
           "StkRubroDesc, StkRubroAbr, ",
           "(StkRubroCosto * StkMonedasCotizacion / StkRubroAncho * 1.02 ) as CostoCobMC, ",
@@ -129,9 +140,9 @@ router.get("/", (req, res, next) => {
           "and StkRubro.StkRubroTM = idStkMonedas"
         ].join("");
 
-        let msogachicote = [
+        msogachicote = [
           "Select ",
-          "(StkRubroCosto * StkMonedasCotizacion  * 1.65) as CostoMSChicote ",
+          "(StkRubroCosto * StkMonedasCotizacion  * 1) as CostoMSChicote ",
           "from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ",
           "where StkRubro.StkRubroAbr = '",
           sogachicote,
@@ -139,19 +150,7 @@ router.get("/", (req, res, next) => {
           "and StkRubro.StkRubroTM = idStkMonedas"
         ].join("");
 
-
-        let msogadobladillo = [
-          "Select ",
-          "(StkRubroCosto * StkMonedasCotizacion) as CostoMSDobladillo ",
-          "from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ",
-          "where StkRubro.StkRubroAbr = '",
-          sogadobladillo,
-          "'",
-          "and StkRubro.StkRubroTM = idStkMonedas"
-        ].join("");
-
-
-        let mgancho = [
+        mgancho = [
           "Select ",
           "(StkRubroCosto * StkMonedasCotizacion  * 1) as CostoGancho ",
           "from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ",
@@ -161,7 +160,17 @@ router.get("/", (req, res, next) => {
           "and StkRubro.StkRubroTM = idStkMonedas"
         ].join("");
 
-        let ojales = [
+        msogadobladillo = [
+          "Select ",
+          "(StkRubroCosto * StkMonedasCotizacion) as CostoMSDobladillo ",
+          "from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ",
+          "where StkRubro.StkRubroAbr = '",
+          sogadobladillo,
+          "'",
+          "and StkRubro.StkRubroTM = idStkMonedas"
+        ].join("");
+
+        ojales = [
           "Select ",
           "(StkRubroCosto * StkMonedasCotizacion / 144) as CostoOjalM2 ",
           "from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ",
@@ -171,7 +180,7 @@ router.get("/", (req, res, next) => {
           " and StkRubro.StkRubroTM = idStkMonedas"
         ].join("");
 
-        let cotizacion = [
+        cotizacion = [
           "Select ",
           "StkMonedasCotizacion ",
           "from   BaseStock.StkMonedas ",
@@ -198,6 +207,17 @@ router.get("/", (req, res, next) => {
           }
         });
 
+        conexion.query(mgancho, function (err, result) {
+          if (err) {
+            console.log("error en mysql");
+            console.log(err);
+          } else {
+            datosenvio.push(result);
+          }
+        });
+
+
+
         if (tipoconf === 'cs') {
           conexion.query(msogadobladillo, function (err, result) {
             if (err) {
@@ -208,14 +228,7 @@ router.get("/", (req, res, next) => {
             }
           });
         }
-        conexion.query(mgancho, function (err, result) {
-          if (err) {
-            console.log("error en mysql");
-            console.log(err);
-          } else {
-            datosenvio.push(result);
-          }
-        });
+
         conexion.query(cotizacion, function (err, result) {
           if (err) {
             console.log("error en mysql");
@@ -232,60 +245,53 @@ router.get("/", (req, res, next) => {
           } else {
             datosenvio.push(result);
             j = 0;
-            while (j < 4) {
-              costooriginal =
-                datosenvio[j][0].CostoCobMC + datosenvio[j][0].CostoRefuerzo;
+            console.log('datosenvio antes sogel ', datosenvio)
+            j++;
+            costooriginal = costooriginal + ((datosenvio[j][0].CostoMSChicote + (costoMinMOT * 2)));
+            j++;
+            costooriginal = costooriginal + ((datosenvio[j][0].CostoGancho + (costoMinMOT * 2)));
+
+            if (tipoconf === 'cs') {
               j++;
-              costooriginal = costooriginal + datosenvio[j][0].CostoMSChicote;
-              if (tipoconf === 'cs') {
-                j++;
-                costooriginal = costooriginal + datosenvio[j][0].CostoMSDobladillo;
-              }
-              j++;
-              costooriginal = costooriginal + datosenvio[j][0].CostoGancho;
-              j++;
-              costooriginal =
-                costooriginal +
-                datosenvio[j][0].StkMonedasCotizacion * valorflete +
-                +(datosenvio[j][0].StkMonedasCotizacion * valorMOT);
-              j++;
-              costooriginal = costooriginal + datosenvio[j][0].CostoOjalM2;
-
-              j++;
-
-
-
-              costooriginal = costooriginal + costomincolchi
-              costooriginal = costooriginal * ganancia * coefimpuesto;
-              metroscuad = anchoreal * largoreal
-              costooriginal = costooriginal * metroscuad
-
-              ciclo = (metroscuad < 12) ? 3 : 0
-              ciclo = (metroscuad < 16 && metroscuad >= 12) ? 2 : 0
-              ciclo = (metroscuad < 22 && metroscuad >= 16) ? 1 : ciclo = 0
-              i = 0
-              while (i < ciclo) {
-                costooriginal = costooriginal * 1.0325
-                i++
-              }
-              costooriginal = costooriginal + costoMOTDren
-              Math.fround(costooriginal)
-              if (ivasn == 'CIVA') {
-                costooriginal = Math.ceil(costooriginal.toFixed(2) / 10) * 10
-              }
-              else {
-                costooriginal = Math.ceil(costooriginal.toFixed(2) / 1.21 / 10) * 10
-              }
-              datosenvio[0][0]['ImpUnitario'] = costooriginal
-              datosenvio[0][0]['Detalle'] = detalle
-              datosenvio[0][0]['Largo'] = (largoreal * 1).toFixed(2)
-              datosenvio[0][0]['Ancho'] = (anchoreal * 1).toFixed(2)
-
-              //esto es para que imprima o no la descripción que se pide
-              datosenvio[0][0]['MDesc'] = 'S'
-              costooriginal = 0;
+              costooriginal = costooriginal + datosenvio[j][0].CostoMSDobladillo;
             }
-            console.log('datosenvio confe ', datosenvio)
+            j++;
+            costooriginal =
+              costooriginal +
+              datosenvio[j][0].StkMonedasCotizacion * valorflete +
+              +(datosenvio[j][0].StkMonedasCotizacion * valorMOT);
+            j++;
+            costooriginal = costooriginal + datosenvio[j][0].CostoOjalM2;
+
+            j++
+            costooriginal = costooriginal * ganancia * coefimpuesto;
+
+            metroscuad = anchoreal * largoreal
+            costooriginal = costooriginal * metroscuad
+
+            ciclo = (metroscuad < 12) ? 3 : 0
+            ciclo = (metroscuad < 16 && metroscuad >= 12) ? 2 : 0
+            ciclo = (metroscuad < 22 && metroscuad >= 16) ? 1 : ciclo = 0
+            i = 0
+            while (i < ciclo) {
+              costooriginal = costooriginal * 1.0325
+              i++
+            }
+            Math.fround(costooriginal)
+            if (ivasn == 'CIVA') {
+              costooriginal = Math.ceil(costooriginal.toFixed(0) / 10) * 10
+            }
+            else {
+              costooriginal = Math.ceil(costooriginal.toFixed(0) / 1.21 / 10) * 10
+            }
+            datosenvio[0][0]['ImpUnitario'] = costooriginal
+            datosenvio[0][0]['Detalle'] = detalle
+            datosenvio[0][0]['Largo'] = (largoreal * 1).toFixed(2)
+            datosenvio[0][0]['Ancho'] = (anchoreal * 1).toFixed(2)
+
+            datosenvio[0][0]['MDesc'] = 'S'
+            costooriginal = 0;
+
             res.json(datosenvio);
             datosenvio = [];
           }

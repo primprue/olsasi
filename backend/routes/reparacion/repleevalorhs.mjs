@@ -24,11 +24,13 @@ router.get('/', (req, res, next) => {
         console.log(err);
       }
 
-      costhora = result[0].costoMOT
+      costhora = result[0].costoMOT / 60
       coefMOTmay = result[0].coefMOTmay
       coefMOTmin = result[0].coefMOTmin
-      minlonanues = costhora * coefMOTmay
-      minlonaafuera = costhora * coefMOTmin
+
+      minlonanues = (costhora + 1) * 60 * coefMOTmay //esto se hizo para que el valor sea el mismo que en el anexo
+      minlonaafuera = (costhora + 1) * 60 * coefMOTmin  //esto se hizo para que el valor sea el mismo que en el anexo
+
       datosenvio.push(minlonanues)
       datosenvio.push(minlonaafuera)
 

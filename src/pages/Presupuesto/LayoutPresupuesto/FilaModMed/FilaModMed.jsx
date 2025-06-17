@@ -27,11 +27,11 @@ export default function FilaModMed() {
 	};
 
 
-	const selectLonaNuesAfu = useMemo(() => state.lonanuesafu || "LN", [state.lonanuesafu]);
+	const selectLonaNuesAfu = useMemo(() => state.PreuspLNLF || "LN", [state.PreuspLNLF]);
 
 	// Función para actualizar la opción seleccionada
 	const handleLonaNuesAfu = (newOption) => {
-		setState({ ...state, lonanuesafu: newOption });
+		setState({ ...state, PreuspLNLF: newOption });
 	};
 
 

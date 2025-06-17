@@ -6,7 +6,6 @@ export const GeneraDCalculo = (props, presuptipo, cotidivisa) => {
 		if (props.PresupCantidad === 0) faltadato = true
 		if (props.StkRubroAbr === '') faltadato = true
 	}
-
 	let datosobligatorios = {
 		StkRubroAbr: props.StkRubroAbr,
 		minmay: props.PresupMnMy,
@@ -137,7 +136,7 @@ export const GeneraDCalculo = (props, presuptipo, cotidivisa) => {
 		objetoModificado.faltadato = faltadato;
 	}
 
-	if (presuptipo === "PILETA ENROLLABLE") {
+	if (presuptipo === "PILETA ENROLLABLE" || presuptipo === "PILETAS C/SOGA ELASTICA") {
 		if (props.PresupAncho === 0) faltadato = true
 		if (props.PresupLargo === 0) faltadato = true
 

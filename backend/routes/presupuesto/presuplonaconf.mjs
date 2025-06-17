@@ -16,8 +16,8 @@ var datosenvio = [];
 router.get("/", (req, res, next) => {
   var q,
     i = 0, j = 0, ciclo = 0;
-  let detalle = '', ganancia = 0, coefimpuesto = 0, ivasn = '', tipoojal = '', tipochicote = '', sogachicote = '', sogadobladillo = ''
-  let minutosunion = 0, cantidadojales = 0, valorflete = 0, valorMOT = 0, codmoneda = 0
+  let detalle = '', ganancia = 0, coefimpuesto = 0, tipoojal = '', sogachicote = '', sogadobladillo = ''
+  let valorflete = 0, valorMOT = 0, codmoneda = 0
   q = ['select * from BasePresup.PresupParam'].join(' ')
   conexion.query(q,
     function (err, result) {
@@ -26,16 +26,12 @@ router.get("/", (req, res, next) => {
       }
 
       var costooriginal = 0.00;
-      var coeficiente = 0,
-        cantidad = 0,
+      cantidad = 0,
         metroscuad = 0,
         StkRubroAbrP = "",
         largo = 0,
         ancho = 0.0;
-      // var enteroancho = 0,
-      //   decimancho = 0.0;
       let datosrec = JSON.parse(req.query.datoscalculo);
-      // totalreg = datosrec.length;
       datosrec.map(datos => {
         cantidad = datos.cantidad;
         let tipoconf = datos.tipoconf;
@@ -67,14 +63,12 @@ router.get("/", (req, res, next) => {
           ganancia = result[0].coefganssoga
         }
         if (datos.minmay == 'my') {
-          coeficiente = result[0].coeficientemay;
           tipoojal = result[0].abrojales28;
           sogachicote = result[0].sogachicotemay;
           ganancia = result[0].coefganmay
           ivasn = 'CIVA'
         }
         else {
-          coeficiente = result[0].coeficientemin;
           sogachicote = result[0].sogachicotemin;
 
         }
@@ -96,7 +90,6 @@ router.get("/", (req, res, next) => {
         let mcuadcob = [
           "Select ",
           "StkRubroDesc, StkRubroAbr, ",
-          //      "(StkRubroCosto * StkMonedasCotizacion / 1.50 * 1.02 ) as CostoCobMC, ",
           "(StkRubroCosto * StkMonedasCotizacion / StkRubroAncho * 1.02 ) as CostoCobMC, ",
           "(StkRubroCosto * StkMonedasCotizacion * 0.20 / 11 ) as CostoRefuerzo ",
           "from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ",
@@ -191,7 +184,6 @@ router.get("/", (req, res, next) => {
           } else {
             datosenvio.push(result);
             j = 0;
-
             while (j < 4) {
               costooriginal =
                 datosenvio[j][0].CostoCobMC + datosenvio[j][0].CostoRefuerzo;
@@ -201,7 +193,6 @@ router.get("/", (req, res, next) => {
                 j++;
                 costooriginal = costooriginal + datosenvio[j][0].CostoMSDobladillo;
               }
-
               j++;
               costooriginal =
                 costooriginal +
@@ -215,7 +206,6 @@ router.get("/", (req, res, next) => {
 
 
               costooriginal = costooriginal * ganancia * coefimpuesto;
-
               metroscuad = anchoreal * largoreal
               costooriginal = costooriginal * metroscuad
 

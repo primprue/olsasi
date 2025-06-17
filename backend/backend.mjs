@@ -224,6 +224,8 @@ import otleeencab from "./routes/ordentrabajo/otleeencab.mjs";
 import otestadoleer from "./routes/ordentrabajo/otestadoleer.mjs";
 import otrengleerpot from "./routes/ordentrabajo/otrengleerpot.mjs";
 import otguardapdf from "./routes/ordentrabajo/otguardapdf.mjs";
+
+
 import otcondpagoleer from "./routes/otcondpago/otcondpagoleer.mjs";
 import otcondpagoleercod from "./routes/otcondpago/otcondpagoleercod.mjs";
 import otcondpagoagregar from "./routes/otcondpago/otcondpagoagregar.mjs";
@@ -233,7 +235,7 @@ import otcondpagoborrar from "./routes/otcondpago/otcondpagoborrar.mjs";
 import otdatoslee from "./routes/ordentrabajo/otdatos/otdatoslee.mjs";
 import otdatosagregar from "./routes/ordentrabajo/otdatos/otdatosagregar.mjs";
 import otdatosagregaselec from "./routes/ordentrabajo/otdatos/otdatosagregaselec.mjs";
-
+import otdatosmodificar from "./routes/ordentrabajo/otdatos/otdatosmodificar.mjs";
 //para ctacte
 // var conectaafip = require("./routes/afip/conectaafip")
 
@@ -553,6 +555,8 @@ app.use("/otleeencab", otleeencab);
 app.use("/otestadoleer", otestadoleer);
 app.use("/otrengleerpot", otrengleerpot);
 app.use("/otguardapdf", otguardapdf);
+app.use("/otdatosmodificar", otdatosmodificar);
+
 
 
 app.use("/otcondpagoleer", otcondpagoleer);
