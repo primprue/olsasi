@@ -17,7 +17,7 @@ router.get("/", (req, res, next) => {
   var q,
     i = 0, j = 0, ciclo = 0;
   let detalle = '', ganancia = 0, coefimpuesto = 0, tipoojal = '', sogachicote = '', sogadobladillo = ''
-  let valorflete = 0, valorMOT = 0, codmoneda = 0
+  let valorflete = 0, valorMOT = 0, codmoneda = 0, minutosunion = 0
   q = ['select * from BasePresup.PresupParam'].join(' ')
   conexion.query(q,
     function (err, result) {
@@ -25,8 +25,8 @@ router.get("/", (req, res, next) => {
         console.log(err);
       }
 
-      var costooriginal = 0.00;
-      cantidad = 0,
+      var costooriginal = 0.00,
+        cantidad = 0,
         metroscuad = 0,
         StkRubroAbrP = "",
         largo = 0,

@@ -17,7 +17,7 @@ router.get("/", (req, res, next) => {
   var q,
     i = 0, j = 0, ciclo = 0;
   let detalle = '', ganancia = 0, coefimpuesto = 0, tipoojal = '', gancho = '', sogachicote = '', sogadobladillo = ''
-
+  let minutosunion = 0
   let valorflete = 0, costomincolchi = 0, costoMOTDren = 0, coefmaymin = 0, valorMOT = 0, costoHMOT = 0, codmoneda = 0, minutosdren, drenajesn
   q = ['select * from BasePresup.PresupParam'].join(' ')
   conexion.query(q,

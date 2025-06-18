@@ -141,6 +141,8 @@ import listaprecios from "./routes/listaprecios/listaprecios.mjs";
 import modprecios from "./routes/listaprecios/modprecios.mjs";
 import movstockagregar from "./routes/stock/movstock/movstockagregar.mjs";
 import movstockleer from "./routes/stock/movstock/movstockleer.mjs";
+import movstockleetipoconf from "./routes/stock/movstock/movstockleetipoconf.mjs";
+
 
 //Movimiento Stock
 import leestock from "./routes/movstock/leestock.mjs";
@@ -470,7 +472,7 @@ app.use("/sumaingreso", sumaingreso);
 app.use("/realizacambiostock", realizacambiostock);
 app.use("/movstockagregar", movstockagregar);
 app.use("/movstockleer", movstockleer);
-
+app.use("/movstockleetipoconf", movstockleetipoconf);
 
 // app.use('/imprime1', imprime1);
 app.use("/stkmovvtaagregar", stkmovvtaagregar);

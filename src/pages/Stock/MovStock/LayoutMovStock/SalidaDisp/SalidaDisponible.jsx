@@ -5,6 +5,7 @@ import { Card, CardContent, Button, Grid } from "@mui/material";
 import { use } from "react";
 import { MovStockPantContext } from "../../MovStockPant";
 import TextFieldComun from "../../../../../components/comppropios/TextFieldComun";
+import MovStockLeeTipoConf from "./MovStockLeeTipoConf";
 import leePresupConfTipoLeeAnexo from "../../../../Presupuesto/leePresupConfTipoLeeAnexo";
 import TextFieldSelect from "../../../../../components/comppropios/TextFieldSelect";
 
@@ -87,13 +88,20 @@ export default function SalidaDisponible({ onClick, ...other }) {
 			resultado = (pañosenbruto * (ancho * 1 + masancho)).toFixed(2);
 		}
 		else {
-			resultado = largo * 1 * ancho * 1 * cantidad
+			if (ancho === 0) {
+				resultado = largo * 1 * cantidad
+			}
+			else {
+				resultado = largo * 1 * ancho * 1 * cantidad
+			}
 		}
 		return resultado;
 	}, [cantidad, largo, ancho, confeccioneleg.current, state.selectRow]);
 
 	async function conftipoleer() {
-		const result = await leePresupConfTipoLeeAnexo(anexo, "PAE");
+		const result = await MovStockLeeTipoConf();
+		//	const result = await leePresupConfTipoLeeAnexo(anexo, "PAE");
+		//	console.log('result', result)
 		setTipopresupleidos(result);
 	}
 
@@ -194,24 +202,24 @@ export default function SalidaDisponible({ onClick, ...other }) {
 									}
 								}}
 							/>
-
-							<TextFieldComun
-								inputRef={textInput2}
-								size="small"
-								type="number"
-								id="ancho"
-								width="100px"
-								label="Ancho"
-								onChange={handleChange}
-								value={ancho}
-								onKeyDown={(e2) => {
-									if (e2.key === "Enter") {
-										setTimeout(() => {
-											textInput3.current.focus();
-										}, 100);
-									}
-								}}
-							/>
+							{confeccioneleg.current !== 'UNIDAD' && (
+								<TextFieldComun
+									inputRef={textInput2}
+									size="small"
+									type="number"
+									id="ancho"
+									width="100px"
+									label="Ancho"
+									onChange={handleChange}
+									value={ancho}
+									onKeyDown={(e2) => {
+										if (e2.key === "Enter") {
+											setTimeout(() => {
+												textInput3.current.focus();
+											}, 100);
+										}
+									}}
+								/>)}
 
 							<TextFieldComun
 								inputRef={textInput3}
