@@ -40,6 +40,8 @@ import BrightnessLowRoundedIcon from '@mui/icons-material/BrightnessLowRounded';
 import BrightnessMediumRoundedIcon from '@mui/icons-material/BrightnessMediumRounded';
 import BrightnessHighRoundedIcon from '@mui/icons-material/BrightnessHighRounded';
 import GradientIcon from '@mui/icons-material/Gradient';
+import SavingsTwoToneIcon from '@mui/icons-material/SavingsTwoTone';
+import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
 import { AppProvider } from "@toolpad/core/AppProvider";
 import StaticContext from './context/StaticContext';
 
@@ -63,6 +65,9 @@ const menuItems = [
     ],
   },
   { text: 'Reparación', icon: <ConstructionSharpIcon sx={{ fontSize: 32, color: '#1d5f09' }} />, path: '/Reparacion' },
+  { text: 'Caja', icon: <SavingsRoundedIcon sx={{ fontSize: 32, color: '#fc00fc' }} />, path: '/CajaIE' },
+
+
   {
     text: 'Orden de Trabajo',
     icon: <NewspaperIcon sx={{ fontSize: 32, color: '#050463' }} />,

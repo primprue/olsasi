@@ -15,59 +15,70 @@ import { PBSubRubrosAgregar } from "../pages/PreBalance/PBSubRubros/PBSubRubrosA
 import { PBItemsAgregar } from "../pages/PreBalance/PBItems/PBItemsAgregar";
 import { PBPorIVAAgregar } from "../pages/PreBalance/PBPorIVA/PBPorIVAAgregar";
 import { OTDatosAgregar } from "../pages/OrdenTrabajo/OTTablas/OTDatos/OTDatosAgregar";
-export function onRowAdd(newData) {
+import { CajaIEAgregar } from "../pages/CajaIE/CajaIEAgregar";
+export function onRowAdd(newData, formdatos) {
+  console.log('newData onRowAdd ', newData);
+  console.log('formdatos onRowAdd', formdatos);
   return new Promise((resolve) => {
     setTimeout(() => {
-      if (newData.tablabase === 'Clientes') {
+      if (formdatos.tablabase === 'Clientes') {
         ClientesAgregar(newData)
       }
-      if (newData.tablabase === 'Proveedores') {
+      if (formdatos.tablabase === 'Proveedores') {
         stkProveedoresAgregar(newData)
       }
-      if (newData.tablabase === 'Monedas') {
+      if (formdatos.tablabase === 'Monedas') {
         StkMonedasAgregar(newData);
       }
-      if (newData.tablabase === 'Transportes') {
+      if (formdatos.tablabase === 'Transportes') {
 
         TransporteAgregar(newData);
       }
-      if (newData.tablabase === 'StkGrupos') {
+      if (formdatos.tablabase === 'StkGrupos') {
         StkGruposAgregar(newData);
       }
-      if (newData.tablabase === 'StkRubros') {
+      if (formdatos.tablabase === 'StkRubros') {
         StkRubroAgregar(newData);
       }
-      if (newData.tablabase === 'UniMedidas') {
+      if (formdatos.tablabase === 'UniMedidas') {
         StkUnMedAgregar(newData);
 
       }
-      if (newData.tablabase === 'StkItems') {
+      if (formdatos.tablabase === 'StkItems') {
         // StkItemsAgregar(newData);
+        console.log('stkitems', newData);
         stkItemsBuscaCod(newData)
       }
-      if (newData.tablabase === 'PresupDetPie') {
+      // if (formdatos.tablabase === 'StkItemsAgregar') {
+      //   // StkItemsAgregar(newData);
+      //   StkItemsAgregar(newData)
+      // }
+      if (formdatos.tablabase === 'PresupDetPie') {
         PresupDetPieAgregar(newData);
       }
-      if (newData.tablabase === 'ParamComp') {
+      if (formdatos.tablabase === 'ParamComp') {
         ParamCompAgregar(newData);
       }
-      if (newData.tablabase === 'OTCondPago') {
+      if (formdatos.tablabase === 'OTCondPago') {
         OTCondPagoAgregar(newData);
       }
-      if (newData.tablabase === 'PBRubros') {
+      if (formdatos.tablabase === 'PBRubros') {
         PBRubrosAgregar(newData);
       }
-      if (newData.tablabase === 'PBSubRubros') {
+      if (formdatos.tablabase === 'PBSubRubros') {
         PBSubRubrosAgregar(newData);
       }
-      if (newData.tablabase === 'PBItems') {
+      if (formdatos.tablabase === 'PBItems') {
         PBItemsAgregar(newData);
       }
-      if (newData.tablabase === 'PBPorIVA') {
+      if (formdatos.tablabase === 'PBPorIVA') {
         PBPorIVAAgregar(newData);
       }
-      if (newData.tablabase === 'OTDatos') {
+      if (formdatos.tablabase === 'OTDatos') {
         OTDatosAgregar(newData);
+      }
+      if (formdatos.tablabase === 'CajaIE') {
+        CajaIEAgregar(newData);
       }
       resolve(50);
     }, 100);

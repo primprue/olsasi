@@ -13,7 +13,8 @@ import { PBSubRubrosBorrar } from "../pages/PreBalance/PBSubRubros/PBSubRubrosBo
 import { PBComprobantesBorrar } from "../pages/PreBalance/PBComprobantes/PBComprobantesBorrar";
 import { PBPorIVABorrar } from "../pages/PreBalance/PBPorIVA/PBPorIVABorrar";
 // import { PresupBorrar } from "../pages/Presupuesto/LayoutPresupuesto/PrespuConMod/PresupBorrar";
-export function onRowDelete(paramsid, newData) {
+export function onRowDelete(paramsid, newData, paramsbor) {
+
   return new Promise((resolve) => {
     setTimeout(() => {
       if (newData.tablabase === 'Proveedores') {
@@ -32,7 +33,7 @@ export function onRowDelete(paramsid, newData) {
         StkRubroBorrar(paramsid)
       }
       if (newData.tablabase === 'StkItems') {
-        StkItemsBorrar(paramsid)
+        StkItemsBorrar(paramsbor)
       }
       if (newData.tablabase === 'UniMedidas') {
         StkUnMedBorrar(paramsid)

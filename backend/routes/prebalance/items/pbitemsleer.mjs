@@ -13,10 +13,10 @@ conexion.connect(function (err) {
 
 
 router.get("/", function (req, res, next) {
-    var q = ["Select concat(PBidItems, PBItemsRubro, PBItemsSubRubro) as id, PBItemsFecha, PBItemsTipoComp, PBItemsNroComp, PBItemsProv, " +
+    var q = ["Select concat(PBidItems, PBItemsRubro, PBItemsSubRubro) as id, concat(  PBItemsSubRubro, PBidItems)  as codsubrubro, PBidItems, PBItemsRubro,  PBItemsSubRubro, PBItemsFecha, PBItemsTipoComp, PBItemsNroComp, PBItemsProv, " +
         " PBItemsImp, PBItemsPorcIVA, PBItemsIVA, PBItemsIIBB, PBItemsOtros, PBItemsOtros1, PBItemsOtros2, PBItemsOtros3, PBItemsOtros4 " +
         "from BasePreBalance.PBItems"].join(" ");
-
+    console.log('q en pbitemsleer', q);
     conexion.query(q, function (err, result) {
         if (err) {
             console.log(err);

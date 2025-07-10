@@ -5,6 +5,7 @@ import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 import { StkItemsAgregar } from "./StkItemsAgregar";
 
 export function stkItemsBuscaCod(props) {
+	console.log('props stkItemsBuscaCod', props);
 	return new Promise(function () {
 		setTimeout(() => {
 			const { StkItemsRubroAbr } = props;
@@ -16,6 +17,7 @@ export function stkItemsBuscaCod(props) {
 				.set("Content-Type", "application/json")
 				.then((datosenv) => {
 					const codigoitems = JSON.parse(datosenv.text);
+					console.log('codigoitems', codigoitems);
 					StkItemsAgregar(props, codigoitems);
 				})
 				.catch((err) => {

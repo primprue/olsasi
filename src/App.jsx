@@ -41,6 +41,7 @@ const Inventario = lazy(() => import("./pages/Stock/MovStock/Inventario/index.js
 const Reparacion = lazy(() => import("./pages/Reparacion/index.jsx"));
 const CtasCtes = lazy(() => import("./pages/CtasCtes/index.jsx"));
 const ParamComp = lazy(() => import("./pages/CtasCtes/Tablas/ParamComp/index.jsx"));
+const CajaIE = lazy(() => import("./pages/CajaIE/index.jsx"));
 // const location = useLocation();
 function App() {
     const { valor } = use(StaticContext);
@@ -49,7 +50,7 @@ function App() {
 
             <AppBar position="fixed" sx={{ borderRadius: 1 }}>
                 <Toolbar>
-                    <Typography variant="h8" sx={{ flexGrow: 2, ml: 8 }}>
+                    <Typography variant="h6" sx={{ flexGrow: 2, ml: 8 }}>
                         Sistema Integrado
                     </Typography>
                     <Typography variant="h6" sx={{ flexGrow: 2, ml: 5 }}>
@@ -103,6 +104,7 @@ function App() {
                                         <Route path="/tablas/PresupConfTipo" element={<PresupConfTipo />} />
                                         <Route path="/tablas/OTCondPago" element={<OTCondPago />} />
                                         <Route path="/tablas/OTDatos" element={<OTDatos />} />
+                                        <Route path="/CajaIE" element={<CajaIE />} />
                                         <Route path="/MovStock" element={<MovStockPant />} />
                                         <Route path="/Inventario" element={<Inventario />} />
                                         <Route path="/Reparacion" element={<Reparacion />} />

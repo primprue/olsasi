@@ -20,6 +20,7 @@ export default function PBItems() {
 	}
 	async function dataFetch() {
 		const data = await PBItemsLeer();
+		console.log('data en pbitems', data);
 		setRows(data);
 	}
 	async function initialFetch() {

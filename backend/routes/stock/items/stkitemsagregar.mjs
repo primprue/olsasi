@@ -28,13 +28,13 @@ router.post("/", async function (req, res) {
     StkItemsRubroAbr: req.body.StkItemsRubroAbr,
     StkItemsDesc: ItemDescripcion,
     StkItemsOTD: req.body.StkItemsOTD,
-    StkItemsCantidad: 0,
-    StkItemsCantDisp: 0,
+    StkItemsCantidad: req.body.StkItemsCantidad,
+    StkItemsCantDisp: req.body.StkItemsCantDisp,
     StkItemsFAct: finalDate,
     StkItemsMin: req.body.StkItemsMin,
     StkItemsMax: req.body.StkItemsMax
   };
-
+  console.log('registro StkItems ', registro)
   conexion.query("INSERT INTO StkItems SET ?", registro, function (
     err,
     result

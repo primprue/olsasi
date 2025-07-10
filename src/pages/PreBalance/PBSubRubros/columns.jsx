@@ -1,8 +1,10 @@
 
 import estilotabla from "../../../Styles/Tabla.module.css";
 import { PBRubrosValueLeer } from "../PBRubros/PBRubrosValueLeer";
+
 export async function llenarcolumns() {
 	const pbrubro = await PBRubrosValueLeer();
+
 	return columnsFill(pbrubro);
 }
 
@@ -18,13 +20,12 @@ function columnsFill(pbrubro) {
 			// 	headerClassName: "encabcolumns",
 			// },
 			{
-				headerName: "SubRubros(ID)",
+				headerName: "id",
 				field: "PBidSubRubro",
 				editable: false,
 				required: false,
 				order: true,
 				autoFocus: false,
-
 				headerClassName: estilotabla.encabcolumns,
 			},
 			{

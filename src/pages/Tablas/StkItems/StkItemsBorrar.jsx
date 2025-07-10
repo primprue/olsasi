@@ -4,7 +4,7 @@ import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 
 export function StkItemsBorrar(props) {
   return new Promise(function () {
-    const { idStkItems, StkItemsGrupo, StkItemsRubro } = props;
+    const { idStkItems, StkItemsGrupo, StkItemsRubroAbr } = props;
 
     // //Delete
     var url =
@@ -13,8 +13,8 @@ export function StkItemsBorrar(props) {
       idStkItems +
       "&StkItemsGrupo=" +
       StkItemsGrupo +
-      "&StkItemsRubro=" +
-      StkItemsRubro;
+      "&StkItemsRubroAbr=" +
+      StkItemsRubroAbr;
     request
       .delete(url)
       .set("Content-Type", "application/json")

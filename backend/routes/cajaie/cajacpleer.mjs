@@ -1,29 +1,33 @@
 import express from 'express';
-var router = express.Router();
 
+var router = express.Router();
+// var path = require('path');
 import conexion from '../conexion.mjs';
 
+//var param = require('../parametros')
 
 conexion.connect(function (err) {
     if (!err) {
-        console.log("base de datos conectada en stkbgsubrubroleer");
+        console.log("base de datos conectada en cajacpleer");
     } else {
-        console.log("no se conecto en stkbgsubrubroleer");
+        console.log("no se conecto en cajacpleer");
     }
 });
 
 
+
 router.get('/', function (req, res, next) {
-    conexion.query('Select idSubRubro as value, SubRubroDetalle as label from BasesGenerales.SubRubros ',
+    let q1
+    q1 = ['SELECT idCajaCP as value, CajaCPDesc as label  FROM BaseCaja.CajaCP'].join(' ')
+    conexion.query(q1,
         function (err, result) {
             if (err) {
                 console.log(err);
+
             } else {
                 res.json(result);
             }
         });
-
-
 });
 
 export default router;

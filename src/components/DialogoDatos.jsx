@@ -1,124 +1,148 @@
-import { useState, useRef } from "react";
-import { Button, Dialog, DialogContent, DialogTitle, Select } from "@mui/material";
-import { ValidatedTextField } from "../hooks/useValidTextField";
-import estilo from "../Styles/TextFieldSelect.module.css";
-// import { Grid } from "@mui/material";
+import { useState, useRef, useEffect } from "react";
+import { Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import MuestraMensaje from "./lib/MuestraMensaje";
+import TablasContexto from "../context/TablasContext";
 import { use } from "react";
+import MuestraMensaje from "./lib/MuestraMensaje";
 import { onRowAdd } from "./onRowAdd";
 import { onRowDelete } from "./onRowDelete";
-import TablasContexto from "../context/TablasContext";
+import estilo from "../Styles/TextFieldSelect.module.css";
 import estilos from "../Styles/Boton.module.css";
-export function DialogoDatos(props) {
-	const { formdatos, setFormdatos } = use(TablasContexto);
-	const submitButtonRef = useRef(null);
-	const { datoborrado, setDatoborrado } = use(TablasContexto);
-	const [selectedOption, setSelectedOption] = useState("");
-	const { open, handleClose, columns, nombrebtn, paramsbor, titulodial } = props;
-	const [error, setError] = useState({
-		error: false,
-		message: "",
-	});
+import { ValidatedTextField } from "../hooks/useValidTextField";
 
-	const handleSelectChange = (event) => {
-		setSelectedOption(event.target.value);
-		setFormdatos({
-			...formdatos,
-			[event.target.id]: event.target.value,
+export function DialogoDatos(props) {
+	const { formdatos, setFormdatos, datoborrado, setDatoborrado } = use(TablasContexto);
+	const { open, handleClose, columns, nombrebtn, paramsbor, titulodial } = props;
+	// 🔧 Generar una fila vacía según las columnas
+	const generarFilaVacia = () => {
+		const fila = {};
+
+		columns.forEach((col) => {
+			if (col.type === "Date") {
+				const fecha = new Date();
+				const day = String(fecha.getDate()).padStart(2, '0');
+				const month = String(fecha.getMonth() + 1).padStart(2, '0');
+				const year = fecha.getFullYear();
+				fila[col.field] = `${day}/${month}/${year}`; // Mostrar bien en tabla
+
+			} else {
+				fila[col.field] = "";
+			}
 		});
+		return fila;
 	};
 
+	// 🔧 Convertir "true"/"false" string a booleano real
+	const normalizeBool = (val) => {
+		if (typeof val === "string") return val.toLowerCase() === "true";
+		return !!val;
+	};
+
+	// 🧾 Estado inicial
+	const [formState, setFormState] = useState(() =>
+		paramsbor ? { ...paramsbor } : generarFilaVacia()
+	);
+
+	const [error, setError] = useState({ error: false, message: "" });
+
+	// ♻️ Actualizar formState si cambia la fila o columnas
+	useEffect(() => {
+		if (paramsbor) {
+			setFormState({ ...paramsbor });
+		} else {
+			setFormState(generarFilaVacia());
+		}
+	}, [paramsbor, columns]);
+
+	// 🖋 Cambios en inputs
+	const manejarCambio = (e) => {
+		const { id, value } = e.target;
+		setFormState((prev) => ({ ...prev, [id]: value }));
+	};
+
+	// ✅ Enviar formulario
 	const handleSubmit = (event) => {
-		event.preventDefault(); // Evita la recarga de la página al enviar el formulario
+		event.preventDefault();
 		setTimeout(() => {
 			if (nombrebtn === "Enviar") {
-				if (formdatos.datoserroneos === false) {
-					onRowAdd(formdatos);
-				} else {
-					MuestraMensaje(415);
+				const tieneErrores = Object.values(formState).some((v) => v === "");
 
+				if (!tieneErrores) {
+					onRowAdd(formState, formdatos);
+				} else {
+					MuestraMensaje(415); // campos vacíos
 				}
 			} else {
-				let valorresuelto = onRowDelete(paramsbor.id, formdatos);
+				let valorresuelto = onRowDelete(paramsbor.id, formdatos, paramsbor);
 				setDatoborrado(valorresuelto);
 			}
 		}, 300);
 	};
 
-	const manejarCambio = (e) => {
-		e.stopPropagation()
-		formdatos[e.target.id] = e.target.value;
-	};
 	return (
 		<Dialog open={open} onClose={handleClose}>
 			<DialogTitle>{titulodial}</DialogTitle>
-			<b></b>
 			<DialogContent>
 				<form onSubmit={handleSubmit}>
 					<Grid container spacing={2} alignItems="center">
-						{columns &&
+						{columns.map((col, index) => {
+							const isAlta = !paramsbor;
+							const isEditable =
+								typeof col.editable === "function"
+									? col.editable({ row: paramsbor || {} })
+									: normalizeBool(col.editable);
 
-							// , -1
-							columns.slice(length).map(
-								(campo, index) => (
-									// (!columns[index].editable && <label></label>) || (
-									(columns[index].type !== "singleSelect" && (
-										<ValidatedTextField
-											key={index}
-											id={columns[index].field}
-											label={columns[index].headerName}
-											color={columns[index].color}
-											autoFocus={columns[index].autoFocus}
-											readOnly={columns[index].readOnly}
-											editable={columns[index].editable}
-											value={paramsbor[columns[index].field]}
-											required={columns[index].required}
-											type={columns[index].type}
-											margin="dense"
-											variant="outlined"
-											error={error.error}
-											maxLength={columns[index].maxLength}
-											placeholder={columns[index].placeholder}
-											campo={columns[index].field}
-											pattern={columns[index].pattern}
-											alignitems={columns[index].alignItems}
-											onChange={manejarCambio}
-											className={formdatos.datoserroneos ? 'error' : ''}
-											onKeyDown={
-												!index === columns.slice(length) && { handleSubmit }
-											}
-										/>
-									)) || (
-										<select
-											className={estilo.selectFieldDialogDatos}
-											key={index}
-											id={columns[index].field}
-											label={columns[index].headerName}
-											// variant = "outlined"
-											defaultValue={paramsbor[columns[index].field]}
-											required={columns[index].required}
-											onChange={handleSelectChange}
-										>
-											<option key="" value="">
-												{columns[index].headerName}
+							const isRequired =
+								typeof col.required === "function"
+									? (!isAlta ? col.required({ row: paramsbor }) : normalizeBool(col.required))
+									: normalizeBool(col.required);
+
+							const commonProps = {
+								key: col.field,
+								id: col.field,
+								label: col.headerName,
+								value: formState[col.field] || "",
+								required: isRequired,
+								readOnly: !isEditable,
+								onChange: manejarCambio,
+								error: error.error,
+								margin: "dense",
+								variant: "outlined",
+								type: col.type === "date" ? "date" : "text", // si querés campos tipo fecha
+							};
+
+
+							if (col.type === "singleSelect") {
+								return (
+									<select
+										className={estilo.selectFieldDialogDatos}
+										key={col.field}
+										id={col.field}
+										value={formState[col.field] || ""}
+										required={isRequired}
+										onChange={manejarCambio}
+										disabled={!isEditable}
+									>
+										<option value="">{col.headerName}</option>
+										{col.valueOptions?.map((option) => (
+											<option key={option.value} value={option.value}>
+												{option.label}
 											</option>
-											{columns[index].valueOptions.map((option) => (
-												<option key={option.value} value={option.value}>
-													{option.label}
-												</option>
-											))}
-										</select>
-									))
-								// )
-							)}
+										))}
+									</select>
+								);
+							}
 
-						<Button
-							type="submit"
-							className={estilos.botonfincargadatos}
-						>
+							// return <ValidatedTextField {...commonProps} />;
+
+
+							return <ValidatedTextField  {...commonProps} />;
+						})}
+
+						<Button type="submit" className={estilos.botonfincargadatos}>
 							{nombrebtn}
 						</Button>
+
 						<Button
 							onClick={handleClose}
 							variant="outlined"
@@ -132,5 +156,3 @@ export function DialogoDatos(props) {
 		</Dialog>
 	);
 }
-
-

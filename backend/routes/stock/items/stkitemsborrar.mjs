@@ -14,18 +14,21 @@ conexion.connect(function (err) {
 });
 
 router.delete("/", async function (req, res, next) {
+
   var idStkItems = req.query.idStkItems;
   var StkItemsGrupo = req.query.StkItemsGrupo;
-  var StkItemsRubro = req.query.StkItemsRubro;
+  var StkItemsRubroAbr = req.query.StkItemsRubroAbr;
 
   var q = [
     "delete from StkItems where idStkItems = ",
     idStkItems,
     " and StkItemsGrupo = ",
     StkItemsGrupo,
-    " and StkItemsRubro = ",
-    StkItemsRubro
-  ].join(" ");
+    " and StkItemsRubroAbr = '",
+    StkItemsRubroAbr,
+    "'"
+  ].join("");
+  console.log('q', q);
   conexion.query(q, function (err, result) {
     if (err) {
       if (err.errno == 1451) {

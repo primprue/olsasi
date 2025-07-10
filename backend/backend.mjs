@@ -19,7 +19,12 @@ import proveedoresagregar from "./routes/proveedores/proveedoresagregar.mjs";
 import proveedoresborrar from "./routes/proveedores/proveedoresborrar.mjs";
 import proveedoresmodificar from "./routes/proveedores/proveedoresmodificar.mjs";
 import proveedoresleertipo26 from "./routes/proveedores/proveedoresleertipo26.mjs";
+import proveedoresvalueleer from "./routes/proveedores/proveedoresvalueleer.mjs";
 
+import cajaieleer from "./routes/cajaie/cajaieleer.mjs";
+import cajaipleer from "./routes/cajaie/cajaipleer.mjs";
+import cajacpleer from "./routes/cajaie/cajacpleer.mjs";
+import cajaieagregar from "./routes/cajaie/cajaieagregar.mjs";
 
 import stkbgsubrubroleer from "./routes/proveedores/stkbgsubrubroleer.mjs";
 import clientesleer from "./routes/clientes/clientesleer.mjs";
@@ -260,6 +265,7 @@ import pbrubrosvalueleer from "./routes/prebalance/pbrubros/pbrubrosvalueleer.mj
 import pbsubrubrosmodificar from "./routes/prebalance/subrubros/pbsubrubrosmodificar.mjs";
 import pbsubrubrosagregar from "./routes/prebalance/subrubros/pbsubrubrosagregar.mjs";
 import pbsubrubrosborrar from "./routes/prebalance/subrubros/pbsubrubrosborrar.mjs";
+import pbsubrubrosvalueleer from "./routes/prebalance/subrubros/pbsubrubrosvalueleer.mjs";
 import pbitemsleer from "./routes/prebalance/items/pbitemsleer.mjs";
 import pbitemsagregar from "./routes/prebalance/items/pbitemsagregar.mjs";
 
@@ -341,9 +347,13 @@ app.use("/proveedoresleercod", proveedoresleercod);
 app.use("/proveedoresagregar", proveedoresagregar);
 app.use("/proveedoresmodificar", proveedoresmodificar);
 app.use("/proveedoresleertipo26", proveedoresleertipo26);
-
+app.use("/proveedoresvalueleer", proveedoresvalueleer);
 app.use("/proveedoresborrar", proveedoresborrar);
 
+app.use("/cajaieleer", cajaieleer);
+app.use("/cajaipleer", cajaipleer);
+app.use("/cajacpleer", cajacpleer);
+app.use("/cajaieagregar", cajaieagregar);
 
 app.use("/clientesleer", clientesleer);
 app.use("/clientesleercod", clientesleercod);
@@ -593,6 +603,7 @@ app.use("/pbrubrosvalueleer", pbrubrosvalueleer);
 app.use("/pbsubrubrosmodificar", pbsubrubrosmodificar);
 app.use("/pbsubrubrosagregar", pbsubrubrosagregar);
 app.use("/pbsubrubrosborrar", pbsubrubrosborrar);
+app.use("/pbsubrubrosvalueleer", pbsubrubrosvalueleer);
 app.use("/pbitemsleer", pbitemsleer);
 app.use("/pbitemsagregar", pbitemsagregar);
 

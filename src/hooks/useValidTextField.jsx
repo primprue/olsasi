@@ -6,6 +6,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import TablasContexto from "../context/TablasContext";
 export function ValidatedTextField(props) {
 	const { formdatos, setFormdatos } = useContext(TablasContexto);
+
 	const [isValid, setIsValid] = useState(true);
 	const label = props.label;
 	const { editable, ...restProps } = props;
@@ -31,7 +32,6 @@ export function ValidatedTextField(props) {
 		var error = 0
 		if (value.length > props.maxLength) error++
 		if (props.required && value.length === 0) error++
-
 		if (error > 0) setIsValid(false); else setIsValid(true)
 		if (error === 0) {
 			setFormdatos({
