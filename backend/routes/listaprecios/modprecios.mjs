@@ -15,7 +15,6 @@ conexion.connect(function (err) {
 
 
 router.post('/', async function (req, res, next) {
-    console.log('esta en modprecios ', req.body);
     var compbody, compmysql
     var d = new Date();
     var finalDate = d.toISOString().split("T")[0];

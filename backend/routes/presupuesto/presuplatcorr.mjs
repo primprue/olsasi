@@ -59,7 +59,7 @@ router.get('/', (req, res, next) => {
         valorMOTmin = result[0].costoMOT * coefMOT / 60
         let minutosarmado = 0
         //se calculan 50 minutos por metro de largo para hacer la lona, y 60 minutos para colocacion
-        minutosarmado = colocacion ? (ancho * 90) + 60 : (ancho * 90)
+        minutosarmado = colocacion ? (largo * 40) + 60 : (largo * 40)
 
         MOTarmado = minutosarmado * valorMOTmin
 

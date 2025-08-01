@@ -2,17 +2,14 @@ import React, { use, useEffect, useRef, useState } from "react";
 import PantallaIngreso from "./LayoutMovStock/Ingreso/PantallaIngreso.jsx";
 // import SalidaDisponible from "./LayoutMovStock/SalidaDisp/SalidaDisponible";
 import { MovStockPantContext } from "./MovStockPant.jsx";
-import Grid from "@mui/material/Grid";
 import { columnasdi } from "./columnasdi.jsx";
 import { stkrubrolee } from "./LeeRubro.jsx";
 import { stkgrupoleer } from "./LeeGrupos.jsx";
 import { datosingreso } from "./LayoutMovStock/Ingreso/DatosIngreso.js";
-import Estilos from "./LayoutMovStock/Ingreso/Ingreso.module.css";
 import { Button, TextField } from "@mui/material";
 import { DataGrid, renderActionsCell } from "@mui/x-data-grid";
 import { esES } from '@mui/material/locale';
-import { blue, green, red, yellow, } from "@mui/material/colors";
-import ExpandTwoToneIcon from '@mui/icons-material/ExpandTwoTone';
+import { blue, green, red, yellow, orange } from "@mui/material/colors";
 import FileDownloadTwoToneIcon from '@mui/icons-material/FileDownloadTwoTone';
 import FileUploadTwoToneIcon from '@mui/icons-material/FileUploadTwoTone';
 import StormTwoToneIcon from '@mui/icons-material/StormTwoTone';
@@ -22,14 +19,10 @@ import { sumaingreso } from "./LayoutMovStock/Ingreso/SumaIngreso.jsx";
 import TextFieldSelect from "../../../components/comppropios/TextFieldSelect.jsx";
 import SalidaDisponible from "./LayoutMovStock/SalidaDisp/SalidaDisponible.jsx";
 import SalidaStock from "./LayoutMovStock/SalidaStock/SalidaStock.jsx";
-import { comma } from "postcss/lib/list";
 import { RealizaCambioStock } from "./LayoutMovStock/SalidaStock/RealizaCambioStock.jsx";
 import ImpStockReal from "./LayoutMovStock/ImpMueMovStock/ImpStockReal.jsx";
 import { MovStockAgregar } from "./LayoutMovStock/RegistraMovStock/MovStockAgregar.jsx";
 import MueMovStock from "./LayoutMovStock/ImpMueMovStock/MueMovStock.jsx";
-//import leePresupConfTipoLeeAnexo from "../Presupuesto/leePresupConfTipoLeeAnexo";
-// import { useContext } from "react";
-// import { MovStockPantContext } from './MovStockPant'
 
 export default function PantallaInicial() {
 	const { state, setState } = use(MovStockPantContext);
@@ -311,7 +304,7 @@ export default function PantallaInicial() {
 					<AutoAwesomeMotionIcon
 						style={{ color: red[300] }}
 						fontSize="large"
-						titleAccess="Imprimr Stock Real"
+						titleAccess="Imprimr Movimientos"
 					/>
 				</Button>
 			</div>

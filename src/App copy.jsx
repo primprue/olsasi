@@ -43,13 +43,11 @@ const CtasCtes = lazy(() => import("./pages/CtasCtes/index.jsx"));
 const ParamComp = lazy(() => import("./pages/CtasCtes/Tablas/ParamComp/index.jsx"));
 const CajaIE = lazy(() => import("./pages/CajaIE/index.jsx"));
 // const location = useLocation();
-
-
-
 function App() {
     const { valor } = use(StaticContext);
     return (
         <>
+
             <AppBar position="fixed" sx={{ borderRadius: 1 }}>
                 <Toolbar>
                     <Typography variant="h6" sx={{ flexGrow: 2, ml: 8 }}>
@@ -110,6 +108,7 @@ function App() {
                                         <Route path="/Reparacion" element={<Reparacion />} />
                                         <Route path="/CtasCtes" element={<CtasCtes />} />
                                         <Route path="/CtasCtes/ParamComp" element={<ParamComp />} />
+
                                     </Routes>
                                 </Suspense>
                             </Box>

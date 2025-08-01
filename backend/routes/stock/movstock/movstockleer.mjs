@@ -13,10 +13,12 @@ conexion.connect(function (err) {
 
 
 router.get("/", function (req, res, next) {
+
     var q1 = ['SELECT idStkMov as id,  date_format(StkMovFecha, "%d-%m-%Y") as StkMovFecha,   StkMovLargo, StkMovAncho, StkMovTotal, StkMovRubroAbr, StkMovItemDesc, ',
         'StkMovCliente, BasesGenerales.Proveedores.ProveedoresDesc as Proveedor, StkMovNroRef ',
         'from BaseStock.StkMov LEFT JOIN  BasesGenerales.Proveedores ',
-        'on StkMovProv = idProveedores '
+        'on StkMovProv = idProveedores ',
+        'where StkMovFecha >= \'' + req.query.FechaDesde + '\' and StkMovFecha <= \'' + req.query.FechaHasta + '\''
     ].join(" ");
     conexion.query(q1, function (err, result) {
         if (err) {

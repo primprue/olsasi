@@ -20,7 +20,8 @@ router.get('/', function (req, res, next) {
     let q1
     let fechahoy = new Date().toISOString().split("T")[0]
 
-    q1 = ['SELECT idCajaIE as id, CajaIEFecha, CajaIECliente, CajaIEConcepto, CajaIEPunto, CajaIEImporte, CajaIECodIP, CajaIEImpIP  FROM BaseCaja.CajaIE'].join(' ')
+    // q1 = ['SELECT idCajaIE as id, CajaIEFecha, CajaIECliente, CajaIEConcepto, CajaIEPunto, CajaIEImporte, CajaIECodIP, CajaIEImpIP  FROM BaseCaja.CajaIE'].join(' ')
+    q1 = ['SELECT idCajaIE as id, CajaIEFecha, CajaIECliente, CajaIEConcepto, CajaCPDesc, CajaIEPunto, CajaIEImporte, CajaIECodIP, CajaIEImpIP, CajaIEGrabado  FROM BaseCaja.CajaIE join BaseCaja.CajaCP where  BaseCaja.CajaIE.CajaIEConcepto = BaseCaja.CajaCP.idCajaCP'].join(' ')
     conexion.query(q1,
         function (err, result) {
             if (err) {

@@ -45,13 +45,22 @@ function columnsFill(puntosn, instrumpago, conceptopago) {
 				headerName: "Concepto",
 				field: "CajaIEConcepto",
 				type: "singleSelect",
-				// required: true,
+				required: true,
 				valueOptions: conceptopago,
-				// editable: true,
+				editable: true,
 				xs: 4,
 				headerClassName: estilotabla.encabcolumns,
 			},
-
+			// {
+			// 	headerName: "Concepto",
+			// 	field: "CajaCPDesc",
+			// 	type: "singleSelect",
+			// 	// required: true,
+			// 	valueOptions: conceptopago,
+			// 	editable: true,
+			// 	xs: 4,
+			// 	headerClassName: estilotabla.encabcolumns,
+			// },
 			{
 				headerName: "Punto S/N",
 				field: "CajaIEPunto",
@@ -70,7 +79,6 @@ function columnsFill(puntosn, instrumpago, conceptopago) {
 				width: 150,
 				editable: true,
 				type: "text",
-				//header ClassName: "encabcolumns",
 				maxLength: 9,
 				align: "right", //alinea el contenido
 				headerAlign: "center", //alinea el encabezado
@@ -82,11 +90,7 @@ function columnsFill(puntosn, instrumpago, conceptopago) {
 					const formatted = !isNaN(value)
 						? value.toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 						: "";
-
-					//const color = value > 0 ? "green" : value < 0 ? "red" : "inherit";
 					const fontWeight = value > 0 ? "bold" : "inherit";
-					// fontWeight: "bold",      // ✅ negrita
-					// fontStyle: "italic",
 					return (
 						<div style={{ textAlign: "right", width: "100%", fontWeight }}>
 							{formatted ? `$ ${formatted}` : ""}
@@ -99,7 +103,6 @@ function columnsFill(puntosn, instrumpago, conceptopago) {
 				field: "CajaIECodIP",
 				type: "singleSelect",
 				valueOptions: instrumpago,
-				//require: (params) => params.row.CajaIEPunto !== "S",
 				xs: 4,
 				headerClassName: estilotabla.encabcolumns,
 			},
@@ -107,7 +110,6 @@ function columnsFill(puntosn, instrumpago, conceptopago) {
 				headerName: "Imp.Ins.de Pago",
 				field: "CajaIEImpIP",
 				width: 150,
-				//editable: (params) => params.row.CajaIEPunto !== "S",
 				type: "text",
 				maxLength: 9,
 				align: "right",
@@ -153,6 +155,16 @@ function columnsFill(puntosn, instrumpago, conceptopago) {
 					);
 				},
 			},
+			{
+				headerName: "Grabado",
+				field: "CajaIEGrabado",
+				width: 150,
+				editable: true,
+				align: "right",
+				headerAlign: "center",
+				headerClassName: estilotabla.encabcolumns,
+
+			}
 			// {
 			// 	headerName: "parentId",
 			// 	field: "parentId",

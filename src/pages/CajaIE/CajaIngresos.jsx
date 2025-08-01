@@ -5,8 +5,11 @@ import { llenarcolumns } from "./columns.jsx";
 import { Box } from "@mui/material";
 import { CajaIEAgregar } from "./CajaIEAgregar.jsx";
 import AddToPhotosTwoToneIcon from "@mui/icons-material/AddToPhotosTwoTone";
+import RedeemTwoToneIcon from '@mui/icons-material/RedeemTwoTone';
+import CajaCierre from "./CajaCierre.jsx";
 export default function CajaIngresos() {
     const [rows, setRows] = useState([]);
+    const [openCierre, setOpenCierre] = useState(false);
     const [columns, setColumns] = useState([]);
     const apiRef = useGridApiRef(); // <- referencia para manejar foco
     const [totalInstrumentos, setTotalInstrumentos] = useState(0);
@@ -24,27 +27,34 @@ export default function CajaIngresos() {
         }
     }
 
-    const handleAlta = () => {
+    async function handleAlta() {
         CajaIEAgregar({
             rows
         })
+        const data = await CajaIELeer();
+        setRows(data);
     };
+
+    const handleCierre = () => {
+        setOpenCierre(true);
+    };
+
     function CustomToolbar() {
         return (
             <GridToolbarContainer sx={estiloBoton}
 
-            // className={estilotabla.tablasgenerales}
             >
+                <label>F4 - Agregar   F2 - Agrega instrumento de pago</label>
                 <AddToPhotosTwoToneIcon
-                    // className={estilotabla.iconoagregar}
                     size="large"
-                    titleAccess="Agregar"
+                    titleAccess="Grabar"
                     onClick={() => handleAlta()}
                 />
-                {/* <Box sx={{ mt: 2, ml: 1 }}>
-                    <div><strong>Total instrumentos:</strong> ${totalInstrumentos.toFixed(2)}</div>
-                </Box> */}
-
+                <RedeemTwoToneIcon
+                    size="large"
+                    titleAccess="Cierre"
+                    onClick={() => handleCierre()}
+                />
             </GridToolbarContainer>
         );
     }
@@ -73,6 +83,7 @@ export default function CajaIngresos() {
                 CajaIEImporte: "",
                 CajaIECodIP: "",
                 CajaIEImpIP: "",
+                CajaIEGrabado: "N",
                 parentId: nuevoId,
             };
 
@@ -148,6 +159,7 @@ export default function CajaIngresos() {
                 CajaIECodIP: "",
                 CajaIEImpIP: "",
                 CajaIEDiferencia: 0,
+                CajaIEGrabado: "N",
                 // Si querés, podés agregar un parentId para relacionar filas:
                 parentId: ultimaPrincipal.id,
                 esSubfila: true,
@@ -280,27 +292,9 @@ export default function CajaIngresos() {
             />
 
 
+            {openCierre && <CajaCierre rows={rows} onClose={() => setOpenCierre(false)} />}
         </Box>
-
     );
 }
-
-
-{/* <GridToolbarColumnsButton />
-                <GridToolbarFilterButton />
-                <GridToolbarDensitySelector />
-                <GridToolbarExport />
-
-                <LocalPrintshopRoundedIcon
-                    onClick={() => setImprimirTF(true)}
-                    className={estilotabla.iconoimpresora}
-                    titleAccess="Imprimir"
-                />
-                <DeleteSharpIcon
-                    variant="contained"
-                    titleAccess="Borrar"
-                    className={estilotabla.iconoborrar}
-                    onClick={() => handleDelete(rowsel)}
-                /> */}
 
 

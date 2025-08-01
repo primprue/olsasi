@@ -2,7 +2,7 @@ import request from "superagent";
 import IpServidor from "../VariablesDeEntorno";
 import MuestraMensaje from "../../components/lib/MuestraMensaje";
 
-export function CajaIEAgregar(props) {
+export function CajaSaldoEfAgregar(props) {
 	return new Promise(function () {
 		setTimeout(() => {
 			const { rows } = props;

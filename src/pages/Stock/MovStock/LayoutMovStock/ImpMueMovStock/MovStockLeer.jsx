@@ -3,11 +3,12 @@ import IpServidor from "../../../../VariablesDeEntorno";
 
 import request from "superagent";
 
-export function MovStockLeer() {
-
+export function MovStockLeer(props) {
+	const { FechaDesde, FechaHasta } = props;
 	return new Promise((resolve) => {
 		setTimeout(() => {
-			const url = IpServidor + "/movstockleer";
+			const url = IpServidor + "/movstockleer/?FechaDesde=" + FechaDesde + "&FechaHasta=" + FechaHasta;
+
 			request
 				.get(url)
 				.set("Content-Type", "application/json")
@@ -18,4 +19,5 @@ export function MovStockLeer() {
 				.catch((err) => MuestraMensaje(err));
 		});
 	}, 300);
+
 }
