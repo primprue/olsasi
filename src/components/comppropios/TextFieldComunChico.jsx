@@ -4,7 +4,6 @@ import { FormControl, FormLabel, TextField, Tooltip } from "@mui/material";
 const TextFieldComunChico = ({ id, type, label, value, onChange, tooltip, width = "80%", ...other }) => {
     return (
         <FormControl fullWidth margin="dense">
-            {/* <Tooltip title={tooltip} arrow sx={{ "& .MuiTooltip-tooltip": { backgroundColor: 'green', color: "white" } }}> */}
             <FormLabel sx={{ color: "green", fontWeight: "bold", fontSize: "12px" }}>{label}</FormLabel>
             <TextField
                 {...other}
@@ -21,7 +20,7 @@ const TextFieldComunChico = ({ id, type, label, value, onChange, tooltip, width 
                 sx={{
                     width,
                     '& .MuiInputBase-root': {
-                        height: '35px', // altura total
+                        height: '20px', // altura total
                     },
                     '& input': {
                         padding: '8px 10px', // padding del campo de texto

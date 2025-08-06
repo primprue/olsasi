@@ -3,7 +3,6 @@ import IpServidor from "../../../../VariablesDeEntorno.js";
 import MuestraMensaje from "../../../../../components/lib/MuestraMensaje.js";
 // Lee Grupo
 export const RealizaCambioStock = (infingreso) => {
-	console.log('RealizaCambioStock ', infingreso)
 	return new Promise((resolve) => {
 		const url1 = IpServidor + "/realizacambiostock";
 		request

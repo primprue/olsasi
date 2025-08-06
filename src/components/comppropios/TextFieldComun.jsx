@@ -22,7 +22,7 @@ const TextFieldComun = ({ id, type, label, value, onChange, tooltip, width = "10
                 sx={{
                     width,
                     '& .MuiInputBase-root': {
-                        height: '35px', // altura total
+                        height: '30px', // altura total
                     },
                     '& input': {
                         padding: '8px 10px', // padding del campo de texto

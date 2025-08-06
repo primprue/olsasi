@@ -18,7 +18,7 @@ conexion.connect(function (err) {
 
 router.get('/', function (req, res, next) {
     let q1
-    q1 = ['SELECT idBilletes as value, BilletesValor as label  FROM BaseCaja.Billetes'].join(' ')
+    q1 = ['SELECT idBilletes as value, BilletesValor as label  FROM BaseCaja.Billetes order by BilletesValor desc'].join(' ')
     conexion.query(q1,
         function (err, result) {
             if (err) {

@@ -24,7 +24,7 @@ function columnsFill() {
 			{
 				headerName: "Cant.",
 				field: "PresupCantidad",
-				width: 10,
+				width: 14,
 				headerAlign: "center",
 			},
 			{
@@ -38,13 +38,13 @@ function columnsFill() {
 			{
 				headerName: "Largo",
 				field: "PresupLargo",
-				width: 150,
+				width: 80,
 				headerAlign: "center",
 			},
 			{
 				headerName: "Ancho",
 				field: "PresupAncho",
-				width: 150,
+				width: 80,
 				headerAlign: "center",
 			},
 			{
@@ -71,7 +71,7 @@ function columnsFill() {
 				// 	</div>
 				// ),
 				alignItems: "right",
-				width: 220,
+				width: 180,
 				headerAlign: "center",
 			},
 			{
@@ -81,7 +81,7 @@ function columnsFill() {
 				// format: (field) => field.valor.toLocaleString('USD'),
 				pattern: /^[0-9]{0,10}.[0-9]{0,2}$/,
 				alignItems: "right",
-				width: 220,
+				width: 180,
 				headerAlign: "center",
 			},
 			{

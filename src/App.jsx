@@ -49,6 +49,7 @@ const CajaIE = lazy(() => import("./pages/CajaIE/index.jsx"));
 function App() {
     const { valor } = use(StaticContext);
     return (
+        // <Box sx={{ height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
         <>
             <AppBar position="fixed" sx={{ borderRadius: 1 }}>
                 <Toolbar>
@@ -117,6 +118,7 @@ function App() {
                     </OrdenTrabajo>
                 </DatosTablas>
             </PresupPant>
+            {/* // </Box> */}
         </>
     );
 }

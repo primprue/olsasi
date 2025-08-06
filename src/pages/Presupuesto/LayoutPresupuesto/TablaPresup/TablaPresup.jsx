@@ -61,7 +61,7 @@ export default function TablaPresup(props) {
 						display: 'static',
 						justifyContent: 'center',
 						alignItems: 'left',
-						padding: '4px 0px 4px 0px'
+						padding: '2px 0px 2px 0px'
 					}}
 				>
 					<Typography
@@ -72,11 +72,11 @@ export default function TablaPresup(props) {
 
 					<Box
 						sx={{
-							width: "80%",
+							width: "95%",
 							display: 'flex',
 							justifyContent: 'right',
 							alignItems: 'right',
-							gap: 2,
+							gap: 4,
 						}}
 					>
 						{state.renglonanexo.length !== 0 && <h3>Tiene Anexos</h3>}
@@ -155,7 +155,7 @@ export default function TablaPresup(props) {
 	const [rowSelectionModel, setRowSelectionModel] = React.useState([]);
 	return (
 		<div>
-			<div style={{ margin: 80, height: 600, width: "100%" }}>
+			<div style={{ margin: 20, height: 600, width: "90%" }}>
 				{datosrenglon !== undefined ? (
 					<DataGrid
 						className={estilotabla.tablapresupuesto}

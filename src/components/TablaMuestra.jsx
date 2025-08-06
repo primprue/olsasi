@@ -74,6 +74,7 @@ import { DialogoDatos } from "./DialogoDatos.jsx";
 import { use } from "react";
 import TablasContexto from "../context/TablasContext.jsx";
 import SelecCampos from "../pages/Impresion/SelecCampos.jsx";
+import { Box } from "@mui/material";
 
 
 
@@ -344,7 +345,7 @@ export default function TablaMuestra(props) {
 	}
 	return (
 		// <div style={{ margin: 6, height: 600, width: "85%" }}>
-		<div >
+		<>
 			<DataGrid
 				rows={rows}
 				columns={columns}
@@ -353,7 +354,6 @@ export default function TablaMuestra(props) {
 				className={estilotabla.tablasgenerales}
 				onRowClick={handleRowSelect}
 				onProcessRowUpdateError={handleProcessRowUpdateError}
-				showCellVerticalBorder={true}
 				columnHeaderHeight={35}
 				sx={{
 					'& .MuiDataGrid-row:hover': {
@@ -367,20 +367,24 @@ export default function TablaMuestra(props) {
 					'& .MuiDataGrid-row.Mui-selected:hover': {
 						backgroundColor: '#2fd3a25c', // rojo más oscuro al hover si está seleccionada
 					},
+
 				}}
 				slots={{
 					toolbar: CustomToolbar,
+
 				}}
 
 				initialState={{
 					...rows.initialState,
 					pagination: {
-						...rows.initialState?.pagination,
 						paginationModel: {
 							pageSize: 25,
 						},
 					},
+
 				}}
+				pageSizeOptions={[25]}
+
 			/>
 
 			<DialogoDatos
@@ -409,6 +413,6 @@ export default function TablaMuestra(props) {
 				</Snackbar>
 			)}
 
-		</div>
+		</>
 	);
 }

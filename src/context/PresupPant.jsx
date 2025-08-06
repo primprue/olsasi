@@ -28,7 +28,7 @@ export function PresupPant({ children }) {
 
 	return (
 		<PresupPantContext.Provider value={contextValue}>
-			<Grid container rowSpacing={-15} spacing={2} alignItems="center">
+			<Grid container rowSpacing={1} spacing={1} alignItems="center">
 				{children}
 			</Grid>
 		</PresupPantContext.Provider>

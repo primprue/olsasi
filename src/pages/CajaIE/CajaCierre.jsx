@@ -200,7 +200,7 @@ export default function CajaCierre({ rows, onClose }) {
                 <Box
                     mt={2}
                     display="grid"
-                    gridTemplateColumns="repeat(4, 1fr)" // 4 columnas iguales
+                    gridTemplateColumns="repeat(5, 1fr)" // 4 columnas iguales
                     gap={2}
                 >
                     {billetes.map(({ label }) => (

@@ -98,7 +98,7 @@ export function DialogoDatos(props) {
 									: normalizeBool(col.required);
 
 							const commonProps = {
-								key: col.field,
+								// key: index,
 								id: col.field,
 								label: col.headerName,
 								value: formState[col.field] || "",
@@ -133,10 +133,7 @@ export function DialogoDatos(props) {
 								);
 							}
 
-							// return <ValidatedTextField {...commonProps} />;
-
-
-							return <ValidatedTextField  {...commonProps} />;
+							return <ValidatedTextField key={index} {...commonProps} />;
 						})}
 
 						<Button type="submit" className={estilos.botonfincargadatos}>

@@ -238,7 +238,7 @@ export default function FilaDos() {
 								value={selectedValues[id] ?? value ?? ''}
 								onChange={handleSelectChange}
 								options={options}
-								width="400px"
+								width="350px"
 							/>
 						))) : ('')}
 

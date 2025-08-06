@@ -20,9 +20,12 @@ router.post("/", function (req, res, next) {
 
     var q = ''
     var q1 = ''
+    var cambioconf = ''
+    datosmodstock[0].cambiatela === 'S' ?
+        cambioconf = ' Cambio ' : cambioconf = 'Confirma';
+
     if (datosmodstock[0].cambiatela === 'S') {
         //modifica disponible y stock de la nueva tela y agrega en el disponible de la anterior
-
         var q = [" UPDATE BaseStock.StkItems SET ",
             "StkItemsCantidad = StkItemsCantidad - ", datosmodstock[0].tingreso,
             ", StkItemsCantDisp = StkItemsCantDisp - ", datosmodstock[0].tingreso,
@@ -36,6 +39,17 @@ router.post("/", function (req, res, next) {
             ", StkItemsFAct = '", finalDate,
             "' WHERE (idStkItems = ", datosmodstock[0].indiceitemo, ") and  (StkItemsRubroAbr = '", datosmodstock[0].abrevrubroo, "')"
         ].join("");
+
+        var q2 = [" INSERT INTO BaseStock.StkMov SET ",
+            "StkMovFecha = '", finalDate, "', StkMovTotal = ", datosmodstock[0].tingreso,
+            ", StkMovRubroAbr = '", datosmodstock[0].abrevrubroo, "', StkMovItemDesc = '",
+            datosmodstock[0].indiceitemo, "', StkMovCliente = '", datosmodstock[0].abrevrubrocambio + " " + cambioconf, "'"
+        ].join("");
+
+
+
+
+
     }
     else {
         var q1 = [" UPDATE BaseStock.StkItems SET ",
@@ -44,6 +58,11 @@ router.post("/", function (req, res, next) {
             "' WHERE (idStkItems = ", datosmodstock[0].indiceitemo, ") and  (StkItemsRubroAbr = '", datosmodstock[0].abrevrubroo, "')"
         ].join("");
     }
+    var q3 = [" INSERT INTO BaseStock.StkMov SET ",
+        "StkMovFecha = '", finalDate, "', StkMovTotal = ", datosmodstock[0].tingreso,
+        ", StkMovRubroAbr = '", datosmodstock[0].abrevrubrocambio, "', StkMovItemDesc = '",
+        datosmodstock[0].indiceitemo, "', StkMovCliente = '", datosmodstock[0].abrevrubrocambio + " " + cambioconf, "'"
+    ].join("");
 
     if (q !== '') {
         conexion.query(q, function (err, result) {
@@ -60,9 +79,22 @@ router.post("/", function (req, res, next) {
                 } else {
                     datosenvio.push(result);
                 }
-
-                res.json(datosenvio);
-                datosenvio = [];
+                conexion.query(q2, function (err, result) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        datosenvio.push(result);
+                    }
+                    conexion.query(q3, function (err, result) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            datosenvio.push(result);
+                        }
+                        res.json(datosenvio);
+                        datosenvio = [];
+                    });
+                });
             });
         });
     } else {
@@ -73,9 +105,15 @@ router.post("/", function (req, res, next) {
             } else {
                 datosenvio.push(result);
             }
-
-            res.json(datosenvio);
-            datosenvio = [];
+            conexion.query(q3, function (err, result) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    datosenvio.push(result);
+                }
+                res.json(datosenvio);
+                datosenvio = [];
+            });
         });
     }
 

@@ -20,6 +20,7 @@ router.get("/", function (req, res, next) {
         'on StkMovProv = idProveedores ',
         'where StkMovFecha >= \'' + req.query.FechaDesde + '\' and StkMovFecha <= \'' + req.query.FechaHasta + '\''
     ].join(" ");
+
     conexion.query(q1, function (err, result) {
         if (err) {
             console.log(err);
