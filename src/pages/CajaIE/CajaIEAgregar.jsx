@@ -3,7 +3,8 @@ import IpServidor from "../VariablesDeEntorno";
 import MuestraMensaje from "../../components/lib/MuestraMensaje";
 
 export function CajaIEAgregar(props) {
-	return new Promise(function () {
+	// return new Promise(function () {
+	return new Promise(function (resolve, reject) {
 		setTimeout(() => {
 			const { rows } = props;
 
@@ -15,9 +16,11 @@ export function CajaIEAgregar(props) {
 				.set("X-API-Key", "foobar")
 				.then((res) => {
 					MuestraMensaje(res);
+					resolve(res); // avisamos que terminó
 				})
 				.catch((err) => {
 					MuestraMensaje(err);
+					reject(err); // avisamos que falló
 				});
 		}, 300);
 	});

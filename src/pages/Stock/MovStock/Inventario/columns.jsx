@@ -59,22 +59,22 @@ function columnsFill() {
 				field: "StkRubroCosto",
 				width: 150,
 				editable: false,
-				type: "text",
+				type: "numeric",
 				//header ClassName: "encabcolumns",
 				maxLength: 9,
 				align: "right", //alinea el contenido
 				headerAlign: "center", //alinea el encabezado
 				xs: 4,
-				pattern: /^[0-9]{0,6}.[0-9]{0,2}$/,
-				renderCell: (params) => (
-					<div>{params.value && `$ ${params.value}`} </div>
-				),
+				// pattern: /^[0-9]{0,6}.[0-9]{0,2}$/,
+				// renderCell: (params) => (
+				// 	<div>{params.value && `$ ${params.value}`} </div>
+				// ),
 				headerClassName: estilotabla.encabcolumns,
 			},
 
 			{
-				headerName: "StkRubroTM",
-				field: "Moneda",
+				headerName: "Moneda",
+				field: "StkRubroTM",
 				width: 150,
 				editable: false,
 				type: "text",
@@ -94,10 +94,10 @@ function columnsFill() {
 				align: "right", //alinea el contenido
 				headerAlign: "center", //alinea el encabezado
 				xs: 4,
-				pattern: /^[0-9]{0,6}.[0-9]{0,2}$/,
-				renderCell: (params) => (
-					<div>{params.value && `$ ${params.value}`} </div>
-				),
+				// pattern: /^[0-9]{0,6}.[0-9]{0,2}$/,
+				// renderCell: (params) => (
+				// 	<div>{params.value && `$ ${params.value}`} </div>
+				// ),
 				headerClassName: estilotabla.encabcolumns,
 			},
 		]);

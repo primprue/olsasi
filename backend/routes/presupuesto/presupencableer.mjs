@@ -13,9 +13,10 @@ conexion.connect(function (err) {
 
 
 router.get("/", function (req, res, next) {
-
   var fecharecibida = req.query.id;
   var day = dateFormat(new Date(fecharecibida), "yyyy-mm-dd");
+  console.log('fecharecibida', fecharecibida)
+  console.log('day', day)
   var q = ["SELECT p.idPresupEncab as id,  ",
     ' date_format( p.PresupEncabFecha, "%d-%m-%Y") as PresupEncabFecha, ',
     " CASE WHEN(PresupEncabCliente > 0 and PresupEncabCliente < 99999) = 1 THEN c.ClientesDesc ",

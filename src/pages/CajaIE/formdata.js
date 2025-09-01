@@ -5,6 +5,7 @@ export const formdata = {
   CajaIECliente: '',
   CajaIEConcepto: '',
   CajaIEPunto: '',
+  CajaIEMoneda: '',
   CajaIEImporte: 0.00,
   CajaIECodIP: '',
   CajaIEImpIP: 0.00,

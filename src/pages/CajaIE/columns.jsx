@@ -1,6 +1,7 @@
 import estilotabla from "../../Styles/Tabla.module.css";
 import { CajaIPLeer } from "./CajaIPLeer";
 import { CajaCPLeer } from "./CajacPLeer";
+import { leerStkMonedas } from "../Tablas/Monedas/StkMonedasLeerP.jsx";
 export async function llenarcolumns() {
 	const puntosn = [
 		{ value: "S", label: "S" },
@@ -8,10 +9,10 @@ export async function llenarcolumns() {
 	];
 	const instrumpago = await CajaIPLeer();
 	const conceptopago = await CajaCPLeer();
-
-	return columnsFill(puntosn, instrumpago, conceptopago);
+	const monedas = await leerStkMonedas();
+	return columnsFill(puntosn, instrumpago, conceptopago, monedas);
 }
-function columnsFill(puntosn, instrumpago, conceptopago) {
+function columnsFill(puntosn, instrumpago, conceptopago, monedas) {
 	return new Promise(function (resolve) {
 		resolve([
 			// {
@@ -25,11 +26,16 @@ function columnsFill(puntosn, instrumpago, conceptopago) {
 			{
 				headerName: "Fecha",
 				field: "CajaIEFecha",
-				editable: true,
+				type: "Date",
 				width: 150,
-				align: "right", //alinea el contenido
-				headerAlign: "center",
+				editable: false,
+				required: false,
+				maxLength: 10,
+				pattern: /^/,
+				xs: 8,
+				placeholder: "_____",
 				headerClassName: estilotabla.encabcolumns,
+
 			},
 			{
 				headerName: "Cliente",
@@ -71,7 +77,15 @@ function columnsFill(puntosn, instrumpago, conceptopago) {
 				xs: 4,
 				headerClassName: estilotabla.encabcolumns,
 			},
-
+			{
+				headerName: "Moneda",
+				field: "CajaIEMoneda",
+				type: "singleSelect",
+				valueOptions: monedas,
+				editable: true,
+				xs: 4,
+				headerClassName: estilotabla.encabcolumns,
+			},
 
 			{
 				headerName: "Importe",
@@ -156,11 +170,11 @@ function columnsFill(puntosn, instrumpago, conceptopago) {
 				},
 			},
 			{
-				headerName: "Grabado",
+				headerName: "Grab",
 				field: "CajaIEGrabado",
 				width: 150,
 				editable: true,
-				align: "right",
+				align: "center",
 				headerAlign: "center",
 				headerClassName: estilotabla.encabcolumns,
 

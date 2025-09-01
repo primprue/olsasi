@@ -54,7 +54,7 @@ export default function FilaDos() {
 	renderCount.current += 1;
 	const [stkrubrosleidos, setStkRubrosleidos] = useState([]);
 	const [otramoneda, setOtraMoneda] = useState(false);
-	const [cotidivisa, setCotidivisa] = useState(0.0);
+	const [cotidivisa, setCotidivisa] = useState(1.0);
 
 
 	if (state.DatosPresupEleg.length !== 0) {

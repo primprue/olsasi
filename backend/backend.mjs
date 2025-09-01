@@ -29,6 +29,8 @@ import cajacierre from "./routes/cajaie/cajacierre.mjs";
 import billetesleer from "./routes/cajaie/billetesleer.mjs";
 import cajasaldoefleer from "./routes/cajaie/cajasaldoefleer.mjs";
 import cajasaldoefagregar from "./routes/cajaie/cajasaldoefagregar.mjs";
+import cajaiesumamov from "./routes/cajaie/cajaiesumamov.mjs";
+
 
 import stkbgsubrubroleer from "./routes/proveedores/stkbgsubrubroleer.mjs";
 import clientesleer from "./routes/clientes/clientesleer.mjs";
@@ -362,7 +364,7 @@ app.use("/cajacierre", cajacierre);
 app.use("/billetesleer", billetesleer);
 app.use("/cajasaldoefleer", cajasaldoefleer);
 app.use("/cajasaldoefagregar", cajasaldoefagregar);
-
+app.use("/cajaiesumamov", cajaiesumamov);
 
 app.use("/clientesleer", clientesleer);
 app.use("/clientesleercod", clientesleercod);

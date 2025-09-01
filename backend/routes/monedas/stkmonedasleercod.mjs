@@ -14,7 +14,8 @@ conexion.connect(function (err) {
 
 
 router.get('/', function (req, res) {
-    var q = ['Select StkMonedasCotizacion / 1.13 as DolDiv from StkMonedas where idStkMonedas = "DLS"'].join(' ')
+    // var q = ['Select StkMonedasCotizacion / 1.13 as DolDiv from StkMonedas where idStkMonedas = "DLS"'].join(' ')
+    var q = ['Select StkMonedasCotizacion / 1.13 as DolDiv from StkMonedas where idStkMonedas = "USD"'].join(' ')
     conexion.query(q,
         function (err, result) {
             if (err) {

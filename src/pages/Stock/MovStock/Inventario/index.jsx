@@ -22,6 +22,7 @@ export default function Inventario() {
 	}
 	async function dataFetch() {
 		const data = await LeeInventario();
+
 		setRows(data);
 	}
 	async function initialFetch() {
@@ -36,6 +37,7 @@ export default function Inventario() {
 
 	return (
 		<>
+			<h1>Cuando se exporta, en LibreCalc, las columnas, cantidad, costo y costo total, en Campos Tipo de Columna, elegir Inglés (US)</h1>
 			<TablaMuestra
 				rows1={rows}
 				columns1={columns}

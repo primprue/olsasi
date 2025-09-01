@@ -4,6 +4,7 @@ import { CajaIELeer } from "./CajaIELeer.jsx";
 import { llenarcolumns } from "./columns.jsx";
 import { Box } from "@mui/material";
 import { CajaIEAgregar } from "./CajaIEAgregar.jsx";
+
 import AddToPhotosTwoToneIcon from "@mui/icons-material/AddToPhotosTwoTone";
 import RedeemTwoToneIcon from '@mui/icons-material/RedeemTwoTone';
 import CajaCierre from "./CajaCierre.jsx";
@@ -11,6 +12,7 @@ export default function CajaIngresos() {
     const [rows, setRows] = useState([]);
     const [openCierre, setOpenCierre] = useState(false);
     const [columns, setColumns] = useState([]);
+    const [dolar, setDolar] = useState(0);
     const apiRef = useGridApiRef(); // <- referencia para manejar foco
     const [totalInstrumentos, setTotalInstrumentos] = useState(0);
     const estiloBoton = {
@@ -28,9 +30,7 @@ export default function CajaIngresos() {
     }
 
     async function handleAlta() {
-        CajaIEAgregar({
-            rows
-        })
+        await CajaIEAgregar({ rows })
         const data = await CajaIELeer();
         setRows(data);
     };
@@ -45,6 +45,7 @@ export default function CajaIngresos() {
 
             >
                 <label>F4 - Agregar   F2 - Agrega instrumento de pago</label>
+
                 <AddToPhotosTwoToneIcon
                     size="large"
                     titleAccess="Grabar"
@@ -55,9 +56,19 @@ export default function CajaIngresos() {
                     titleAccess="Cierre"
                     onClick={() => handleCierre()}
                 />
+                <label>Dólar: {dolar}</label>
             </GridToolbarContainer>
         );
     }
+
+    useEffect(() => {
+        fetch('https://dolarapi.com/v1/dolares/oficial')
+            .then(res => res.json())
+            .then(data => {
+                setDolar((data.venta + data.compra) / 2);
+            });
+    }, []);
+
     useEffect(() => {
         const fetch = async () => {
             const cols = await llenarcolumns();
@@ -66,12 +77,14 @@ export default function CajaIngresos() {
             setRows(data);
         };
         fetch();
+
     }, []);
 
     const agregarFilaVacia = () => {
         setRows((prevRows) => {
             const usados = new Set(prevRows.map((r) => r.id));
-            let nuevoId = 1;
+            // let nuevoId = usados;
+            let nuevoId = prevRows.length > 0 ? Math.max(...usados) + 1 : 1;
             while (usados.has(nuevoId)) nuevoId++;
 
             const nuevaFila = {
@@ -80,6 +93,7 @@ export default function CajaIngresos() {
                 CajaIECliente: "",
                 CajaIEConcepto: "",
                 CajaIEPunto: "",
+                CajaIEMoneda: "",
                 CajaIEImporte: "",
                 CajaIECodIP: "",
                 CajaIEImpIP: "",
@@ -104,11 +118,6 @@ export default function CajaIngresos() {
     };
 
 
-    // const handleCellEditCommit = (params) => {
-    //     const { id, field, value } = params;
-    //     console.log('params', params);
-
-    // }
 
     const agregarFilaInstrumentoPago = () => {
         setRows((prevRows) => {
@@ -155,6 +164,7 @@ export default function CajaIngresos() {
                 CajaIECliente: ultimaPrincipal.CajaIECliente,
                 CajaIEConcepto: ultimaPrincipal.CajaIEConcepto,
                 CajaIEPunto: "N",
+                CajaIEMoneda: ultimaPrincipal.CajaIEMoneda,
                 CajaIEImporte: "",
                 CajaIECodIP: "",
                 CajaIEImpIP: "",

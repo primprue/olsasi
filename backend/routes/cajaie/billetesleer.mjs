@@ -18,7 +18,9 @@ conexion.connect(function (err) {
 
 router.get('/', function (req, res, next) {
     let q1
-    q1 = ['SELECT idBilletes as value, BilletesValor as label  FROM BaseCaja.Billetes order by BilletesValor desc'].join(' ')
+    q1 = ['SELECT idBilletes as value, BilletesValor as label, BilletesMoneda  FROM BaseCaja.Billetes order by BilletesValor desc'].join(' ')
+    // q1 = ['SELECT idBilletes as value, BilletesValor as label,  BilletesMoneda, StkMonedasSigno   ' +
+    //     'FROM BaseCaja.Billetes join BaseStock.StkMonedas where BilletesMoneda = idStkMonedas order by BilletesValor desc'].join(' ')
     conexion.query(q1,
         function (err, result) {
             if (err) {

@@ -8,7 +8,8 @@ var conexion = mysql.createConnection({
   password: "drasan141",
   host: "localhost",
   database: "BaseStock",
-  port: 3306
+  port: 3306,
+  multipleStatements: true,
 });
 
 export default conexion;

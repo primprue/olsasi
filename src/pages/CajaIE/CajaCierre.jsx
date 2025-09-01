@@ -1,230 +1,255 @@
-import React, { useEffect, useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, Typography, Box, TextField } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
+import { Dialog, DialogTitle, DialogContent, Typography, Box, TextField, Stack, IconButton, Grid } from '@mui/material';
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-import TextFieldComunChico from '../../components/comppropios/TextFieldComunChico';
 import TextoPesos from '../../components/comppropios/TextoPesos';
 import moment from "moment";
 import { BilletesLeer } from './BilletesLeer';
 import { CajaSaldoEfLeer } from './CajaSaldoEfLeer';
+import { CajaIESumaMov } from './CajaIESumaMov';
+import BilletesPorMoneda from './BilletesPorMoneda';
+import ArchiveIcon from "@mui/icons-material/Archive";
+import { leerStkMonedas } from '../Tablas/Monedas/StkMonedasLeer';
 
+import { red, green } from "@mui/material/colors";
+import { set } from 'react-hook-form';
 export default function CajaCierre({ rows, onClose }) {
     const [snackbar, setSnackbar] = useState(null);
     const [valoresCalculados, setValoresCalculados] = useState(null);
-    const [fechaHoy, setFechaHoy] = useState(moment().format("DD/MM/YYYY"));
+    const [fechaHoy] = useState(moment().format("DD/MM/YYYY"));
     const [totalConSaldo, setTotalConSaldo] = useState(0);
-
     const [billetes, setBilletes] = useState([]);
     const [saldoEf, setSaldoEf] = useState([]);
+    const [cantidades, setCantidades] = useState({});
+    const [diferencia, setDiferencia] = useState(0);
+    const [sumademov, setSumademov] = useState([]);
+    const [monedas, setMonedas] = useState([]);
+    const [totales, setTotales] = useState({});
+    const [valorEsperado, setValorEsperado] = useState({});
 
     async function buscaBilletes() {
         const data = await BilletesLeer();
         setBilletes(data);
-    };
+    }
 
     async function buscaSaldoEf() {
         const data = await CajaSaldoEfLeer();
         setSaldoEf(data);
-    };
+    }
+    async function cajaiesumamov() {
+        const data = await CajaIESumaMov();
+
+        const jsonString = data[0].TotalesPorMoneda;
+
+        // Lo parseo a objeto
+        const totales = JSON.parse(jsonString);
+        // setSumademov(data);
+        setTotales(totales);
+    }
+    /*este es para agregar el saldo anterior al total*/
+    async function leemonedas() {
+        const data = await leerStkMonedas();
+        setMonedas(data);
+    }
+
+
 
     useEffect(() => {
-        if (valoresCalculados && saldoEf.length > 0) {
-            const total =
-                valoresCalculados.EfectivoConPunto +
-                valoresCalculados.EfectivoSinPunto +
-                Number(saldoEf[0]?.CajaSaldoEfImporte || 0);
-            setTotalConSaldo(total);
-        }
-    }, [valoresCalculados, saldoEf]);
-
-    useEffect(() => {
+        leemonedas()
         buscaBilletes();
         buscaSaldoEf();
+        cajaiesumamov()
     }, []);
 
-    useEffect(() => {
-        const buscanograbados = rows.filter(r => r.CajaIEGrabado === "N");
-        if (buscanograbados.length > 0) {
-            setSnackbar({
-                children: "Hay movimientos sin grabar",
-                severity: "error",
-            });
-
-            setTimeout(() => {
-                onClose(); // Cierra el diálogo después de mostrar el error
-            }, 3000);
-        } else {
-            let totalConPunto = 0;
-            let totalSinPunto = 0;
-            let totalInstrumentos = 0;
-            let totalSalidaConPunto = 0;
-            let totalSalidaSinPunto = 0;
-
-            rows.forEach((row) => {
-                const importe = parseFloat(row.CajaIEImporte) || 0;
-                const importeI = parseFloat(row.CajaIEImpIP) || 0;
-
-                // Total con/sin punto
-                if (row.CajaIEPunto === "S") {
-                    if (importe > 0) {
-                        totalConPunto += importe;
-                    } else {
-                        totalSalidaConPunto += importe;
-                    }
-                } else {
-                    if (importe > 0) {
-                        totalSinPunto += importe;
-                        totalInstrumentos += importeI;
-                    } else {
-                        totalSalidaSinPunto += importe;
-                    }
-                }
-            });
-            let EfectivoSinPunto = totalSinPunto - totalInstrumentos + totalSalidaSinPunto;
-            let EfectivoConPunto = totalConPunto + totalSalidaConPunto;
-
-            setValoresCalculados({
-                totalConPunto,
-                totalSinPunto,
-                totalInstrumentos,
-                EfectivoSinPunto,
-                EfectivoConPunto,
-                totalSalidaConPunto,
-                totalSalidaSinPunto,
-                cantidad: rows.length
-            });
-        }
-    }, [rows, onClose]);
-
-    const [cantidades, setCantidades] = useState({});
 
     const handleCloseSnackbar = () => setSnackbar(null);
-
-    const handleChange = (label, e) => {
-        console.log('handleChange', label, e.target.value);
-        const cantidad = e.target.value;
-        setCantidades((prev) => ({
+    const handleGrabar = () => {
+        console.log('Grabar')
+        console.log('cantidades', cantidades)
+        console.log('valorEsperado', valorEsperado)
+    }
+    const handleChangeBilletes = (moneda, label, e) => {
+        const valor = e.target.value;
+        setCantidades(prev => ({
             ...prev,
-            [label]: cantidad,
+            [moneda]: {
+                ...prev[moneda],
+                [label]: valor
+            }
         }));
+
+
     };
-    const totalEfectivoEnCaja = Object.entries(cantidades).reduce(
-        (acc, [label, cantidad]) => acc + Number(label) * Number(cantidad || 0),
-        0
-    );
+    const calculavaloresperado = (moneda) => {
+        if (moneda === "ARS") {
+            setValorEsperado(prev => ({
+                ...prev,
+                [moneda]:
+                    (valoresCalculados.totalesPorMoneda[moneda].EfectivoSinPunto ?? 0) +
+                    (valoresCalculados.totalesPorMoneda[moneda].EfectivoConPunto ?? 0) +
+                    (saldoEf[0]?.CajaSaldoEfImporte ?? 0),
+
+            }));
+        } else {
+            setValorEsperado(prev => ({
+                ...prev,
+                [moneda]:
+                    (valoresCalculados.totalesPorMoneda[moneda].EfectivoSinPunto ?? 0) +
+                    (valoresCalculados.totalesPorMoneda[moneda].EfectivoConPunto ?? 0)
+            }));
+        }
+    }
+    function formatDate(fechaISO) {
+        if (!fechaISO) return "";
+        const fecha = new Date(fechaISO);
+        return fecha.toLocaleDateString("es-AR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+        });
+    }
+
+    // función que calcula el total de billetes para una moneda
+    const calcularTotalBilletes = (monedaId) => {
+        if (!cantidades[monedaId]) return 0;
+
+        return Object.entries(cantidades[monedaId]).reduce((acum, [denominacion, cant]) => {
+            return acum + parseInt(denominacion, 10) * cant; // denominación * cantidad
+        }, 0);
+    };
+    // if (sumademov[0]?.TotalesPorMoneda) {
+    //Obtengo el string JSON
+    // if (totales) {
+
+    //     console.log('monedas', monedas)
+    //     monedas.forEach((moneda) => {
+    //         console.log(
+    //             `ID: ${moneda.id}, Descripción: ${moneda.StkMonedasDescripcion}, Cotización: ${moneda.StkMonedasCotizacion}, Signo: ${moneda.StkMonedasSigno}`
+    //         );
+    //         console.log('totales[moneda.id]', totales[moneda.id])
+    //     });
+
+
+
+    // }
+
+
+
+    // {
+    //   ARS: { totalInstr: 158000, totalConPunto: 758000, totalSinPunto: 308000 },
+    //   USD: { totalInstr: 0, totalConPunto: 0, totalSinPunto: 25 }
+    // }
 
     return (
-        <Dialog open={true}
-            onClose={onClose}
-            maxWidth="lg" // o "lg" si no querés tan grande
-            fullWidth >
-            <DialogTitle>Cierre de Caja</DialogTitle>
+        <Dialog open={true} onClose={onClose} maxWidth="xl" fullWidth>
+
             <DialogContent>
-                {valoresCalculados && (
-                    <Box display="flex" gap={4}>
-                        {/* Columna: Con punto */}
-                        <Box display="flex" flexDirection="column" gap={1}>
-                            <Typography
-                                variant="body1"
-                                component="div"
-                                style={{
-                                    color: '#f00928',
-                                    fontFamily: 'Georgia, serif',
-                                    fontWeight: 500,
-                                    fontStyle: 'bold',
-                                    fontSize: '1.2rem',
-                                }}
-                            >
-                                Con punto
+                {(totales) && (
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                        <DialogTitle>Cierre de Caja  </DialogTitle>
+                        <Stack direction="row" spacing={2} alignItems="center" padding={5}>
+                            <Typography color="#0502ac" fontSize={18} >
+                                Saldo al  {formatDate(saldoEf[0]?.idCajaSaldoEfFecha)}
                             </Typography>
-                            <TextoPesos label="Total" value={valoresCalculados.totalConPunto} color="#ff5722" />
-                            <TextoPesos label="Salida" value={valoresCalculados.totalSalidaConPunto} color="#ff5722" />
-                            <TextoPesos label="Efectivo" value={valoresCalculados.EfectivoConPunto} color="#ff5722" />
-                        </Box>
+                            <TextoPesos value={saldoEf[0]?.CajaSaldoEfImporte} color="#0502ac" fontSize={18} />
+                        </Stack>
 
-                        {/* Columna: Sin punto */}
-                        <Box display="flex" flexDirection="column" gap={1}>
-                            <Typography
-                                variant="body1"
-                                component="div"
-                                style={{
-                                    color: "#085c05",
-                                    fontFamily: 'Georgia, serif',
-                                    fontWeight: 500,
-                                    fontStyle: 'bold',
-                                    fontSize: '1.2rem',
-                                }}
-                            >
-                                Sin punto
-                            </Typography>
-                            <TextoPesos label="Total" value={valoresCalculados.totalSinPunto} color="#085c05" />
-                            <TextoPesos label="Salida" value={valoresCalculados.totalSalidaSinPunto} color="#085c05" />
-                            <TextoPesos label="Instrumentos" value={valoresCalculados.totalInstrumentos} color="#085c05" />
-                            <TextoPesos label="Efectivo" value={valoresCalculados.EfectivoSinPunto} color="#085c05" />
-                        </Box>
+                        {Array.isArray(monedas) && (
+                            <Grid container spacing={2}>
+                                {monedas.map((moneda) => {
+                                    const valores = totales[moneda.id] || {};
 
-                        {/* Saldo anterior */}
-                        {saldoEf.length > 0 && (
-                            <Box display="flex" flexDirection="column" gap={1}>
-                                <TextoPesos label="Saldo anterior:" value={saldoEf[0].CajaSaldoEfImporte} color="#0611a7" />
-                                <TextoPesos label="Total efectivo con saldo:" value={totalConSaldo} color="#0611a7" fontSize='1.25rem' />
-                            </Box>
+                                    return (
+                                        <Grid item xs={6} key={moneda.id}>
+                                            <Typography variant="h6" color="primary">
+                                                {moneda.StkMonedasDescripcion} ({moneda.StkMonedasSigno})
+                                            </Typography>
+
+                                            {/* Totales */}
+                                            <Stack spacing={1} mt={2}>
+                                                <Typography>Total Instr: {valores.totalInstr ?? 0}</Typography>
+                                                <Typography>Total con Punto: {valores.totalConPunto ?? 0}</Typography>
+                                                <Typography>Total sin Punto: {valores.totalSinPunto ?? 0}</Typography>
+                                            </Stack>
+
+                                            {/* Denominaciones de billetes */}
+                                            <Box mt={2} display="grid" gridTemplateColumns="repeat(5, 1fr)" gap={2}>
+                                                {billetes
+                                                    .filter((b) => b.BilletesMoneda === moneda.id) // 👈 ojo: acá usás moneda.id
+                                                    .map(({ label }) => (
+                                                        <TextField
+                                                            key={`${moneda.id}-${label}`}
+                                                            label={`${label} ${moneda.StkMonedasSigno}`}
+                                                            type="number"
+                                                            value={cantidades[moneda.id]?.[label] || ""}
+                                                            onChange={(e) => handleChangeBilletes(moneda.id, label, e)}
+                                                        />
+                                                    ))}
+                                            </Box>
+                                            {/* Total de billetes para esa moneda */}
+                                            <Stack mt={2} direction="row" spacing={2}>
+                                                <Typography fontWeight="bold">Total billetes:</Typography>
+                                                <Typography color="green">
+                                                    {calcularTotalBilletes(moneda.id).toLocaleString("es-AR", {
+                                                        style: "currency",
+                                                        currency: moneda.id,
+                                                    })}
+                                                </Typography>
+                                                <Typography fontWeight="bold">Total esperado:</Typography>
+                                                <Typography color="green">
+                                                    {totales[moneda.id]?.totalConPuntoEsp.toLocaleString("es-AR", {
+                                                        style: "currency",
+                                                        currency: moneda.id,
+                                                    })}
+                                                </Typography>
+                                            </Stack>
+                                        </Grid>
+                                    );
+                                })}
+                            </Grid>
                         )}
+
+                        {/* 
+                        {Array.isArray(monedas) && (
+                            <Grid container spacing={2}>
+                                {monedas.map((moneda) => {
+                                    const valores = totales[moneda.id] || {};
+
+                                    return (
+                                        <Grid item xs={6} key={moneda.id}>
+                                            <Typography variant="h6" color="primary">
+                                                {moneda.StkMonedasDescripcion} ({moneda.StkMonedasSigno})
+                                            </Typography>
+
+                                            <Stack spacing={1} mt={2}>
+                                                <Typography>Total Instr: {valores.totalInstr ?? 0}</Typography>
+                                                <Typography>Total con Punto: {valores.totalConPunto ?? 0}</Typography>
+                                                <Typography>Total sin Punto: {valores.totalSinPunto ?? 0}</Typography>
+                                            </Stack>
+                                        </Grid>
+                                    );
+                                })}
+                            </Grid>
+                            
+                        )} */}
                     </Box>
+
+                    // })
                 )}
 
-                {/* Total efectivo en caja y diferencia */}
-                {totalEfectivoEnCaja > 0 && (
-                    <Box mt={2} display="flex" flexDirection="column" gap={1}>
-                        <TextoPesos label="Total efectivo en caja:" value={totalEfectivoEnCaja} color="#8a079b" />
-                        <TextoPesos
-                            label={
-                                totalEfectivoEnCaja - totalConSaldo < 0
-                                    ? "Falta efectivo en caja:"
-                                    : "Sobra efectivo en caja:"
-                            }
-                            value={totalEfectivoEnCaja - totalConSaldo}
-                            color={
-                                totalEfectivoEnCaja - totalConSaldo < 0
-                                    ? "#ee0b0b"
-                                    : "#04990b"
-                            }
+                {/* {Object.entries(totales).forEach(([moneda, valores]) => {
+                    console.log(moneda, valores.totalConPunto, valores.totalSinPunto, valores.totalInstr);
+                })} */}
 
-                            fontSize='1.25rem'
-                        />
 
-                    </Box>
-                )}
 
-                {/* Campos de billetes */}
-                <Box
-                    mt={2}
-                    display="grid"
-                    gridTemplateColumns="repeat(5, 1fr)" // 4 columnas iguales
-                    gap={2}
-                >
-                    {billetes.map(({ label }) => (
-                        <TextField
-                            key={label}
-                            label={`Cantidad de ${label}`}
-                            type="number"
-                            value={cantidades[label] || ""}
-                            onChange={(e) => handleChange(label, e)}
-                        // sx={{ width: "30%" }}
-                        />
-                    ))}
-                </Box>
-
-                {/* Campo de Total Efectivo */}
-                {false && (
-                    <Box mt={2}>
-                        <TextFieldComunChico
-                            label="Total efectivo en caja:"
-                            type="number"
-                            value={totalEfectivoEnCaja}
-                            onChange={(e) => handleChange("TotalEfectivo", e)}
-                        />
-                    </Box>)}
+                <IconButton onClick={() => handleGrabar()} >
+                    <ArchiveIcon
+                        style={{ color: green[500] }}
+                    // fontSize="large"
+                    // titleAccess="Grabar"
+                    />
+                </IconButton>
             </DialogContent>
 
             {snackbar && (
@@ -238,6 +263,5 @@ export default function CajaCierre({ rows, onClose }) {
                 </Snackbar>
             )}
         </Dialog>
-
     );
 }

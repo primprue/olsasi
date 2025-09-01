@@ -11,8 +11,8 @@ conexion.connect(function (err) {
   }
 });
 
-var datosenvio = [];
 
+var datosenvio = [];
 
 router.get("/", (req, res, next) => {
 
@@ -147,7 +147,6 @@ router.get("/", (req, res, next) => {
           codmoneda,
           "'"
         ].join("");
-
 
         conexion.query(mcuadcob, function (err, result) {
           if (err) {
