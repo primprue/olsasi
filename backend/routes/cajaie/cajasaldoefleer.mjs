@@ -19,15 +19,18 @@ conexion.connect(function (err) {
 router.get('/', function (req, res, next) {
     let q1
 
-    q1 = ['SELECT *  FROM BaseCaja.CajaSaldoEf ORDER BY idCajaSaldoEfFecha DESC LIMIT 1'].join(' ')
+    // q1 = ['SELECT idCajaSaldoEfFecha  FROM BaseCaja.CajaSaldoEf ORDER BY idCajaSaldoEfFecha DESC LIMIT 1'].join(' ')
+
+    q1 = ['SELECT  idCajaSaldoEfFecha, CajaSaldoEfImporte, CajaSaldoMoneda FROM BaseCaja.CajaSaldoEf WHERE idCajaSaldoEfFecha = (SELECT MAX(idCajaSaldoEfFecha) ',
+        'FROM BaseCaja.CajaSaldoEf)'].join(' ')
     conexion.query(q1,
         function (err, result) {
             if (err) {
                 console.log(err);
 
-            } else {
-                res.json(result);
             }
+            console.log('result', result);
+            res.json(result);
         });
 });
 

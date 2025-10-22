@@ -16,29 +16,45 @@ conexion.connect(function (err) {
 
 
 
-router.get('/', function (req, res, next) {
+router.post("/", async function (req, res) {
     var d = new Date();
     var finalDate = d.toISOString().split("T")[0];
-    var registro = {
-        idCajaSaldoEfFecha: finalDate,
-        CajaSaldoEfImporte: req.body.CajaSaldoEfImporte,
-    }
-    conexion.query('INSERT INTO CajaSaldoEf SET ?', registro,
-        function (err, result) {
+
+    const datos = req.body.datoagrabar;
+    let resultados = [];
+    let errores = [];
+    console.log('datos', datos);
+
+    datos.forEach((dato, i) => {
+        const registro = {
+            idCajaSaldoEfFecha: finalDate,
+            CajaSaldoEfImporte: dato.saldoqueda,
+            CajaSaldoMoneda: dato.monedaId,
+            CajaSaldoEfRetiroTotal: dato.retiroManiana + dato.retiroTarde,
+            CajaSaldoEfRetiroT: dato.retiroTarde,
+            CajaSaldoEfRetiroM: dato.retiroManiana,
+            CajaSaldoEfTotalInstr: dato.totalInstrumentos
+        };
+
+        conexion.query('INSERT INTO BaseCaja.CajaSaldoEf SET ?', registro, function (err, result) {
             if (err) {
-                if (err.errno == 1062) {
-                    return res.status(409).send({ message: "error clave duplicada" });
-                }
-                else {
-                    console.log(err.errno);
-                }
+                console.error("Error al insertar fila", i, err); // Log completo
+                errores.push({ fila: i, error: err.message });
+            } else {
+                resultados.push(result);
             }
 
 
-            else {
-                res.json(result.rows);
+            // Cuando termina la última query, devolvemos la respuesta
+            if (resultados.length + errores.length === datos.length) {
+                return res.json({ resultados, errores });
             }
+
         });
+    });
 });
 
 export default router;
+
+
+

@@ -1,0 +1,72 @@
+create extension if not exists "pgcrypto";
+
+create table clientes (
+  id uuid default gen_random_uuid() primary key,
+  nombre text not null,
+  razon_social text,
+  documento_identidad text,
+  telefono text,
+  email text,
+  direccion text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+create type tipo_documento as enum ('remito','factura','recibo');
+
+create table documentos (
+  id int8 generated always as identity primary key,
+  cliente_id uuid not null references clientes(id),
+  tipo tipo_documento not null,
+  numero_serie text, -- serie / punto de venta
+  numero text not null, -- número del documento
+  fecha_emision timestamptz not null default now(),
+  fecha_vencimiento timestamptz, -- aplicable a facturas
+  total numeric(18,2) not null default 0, -- importe bruto del documento
+  estado text default 'emitido', -- emitido, anulado, pagado, parcial
+  descripcion text,
+  datos_json jsonb, -- metadatos flexibles (ej: impuestos)
+  created_at timestamptz default now(),
+  updated_at timestamptz default now(),
+  constraint documentos_unicidad unique (tipo, numero_serie, numero)
+);
+
+create table items_documento (
+  id int8 generated always as identity primary key,
+  documento_id int8 not null references documentos(id) on delete cascade,
+  linea int4 not null,
+  producto text,
+  cantidad numeric(18,4) default 1,
+  precio_unitario numeric(18,4) default 0,
+  subtotal numeric(18,4) generated always as (cantidad * precio_unitario) stored
+);
+
+-- pagos (recibos). Un recibo puede ser pago en efectivo o transferencias y aplicarse a varias facturas
+create table pagos (
+  id int8 generated always as identity primary key,
+  cliente_id uuid not null references clientes(id),
+  fecha_pago timestamptz not null default now(),
+  medio_pago text, -- efectivo, transferencia, cheque, tarjeta
+  referencia text, -- nro transferencia / cheque
+  monto numeric(18,2) not null,
+  descripcion text,
+  datos_json jsonb,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- aplicación: cuánto de un pago se aplicó a una factura/remito
+create table aplicacion_pago (
+  id int8 generated always as identity primary key,
+  pago_id int8 not null references pagos(id) on delete cascade,
+  documento_id int8 not null references documentos(id) on delete cascade,
+  monto_aplicado numeric(18,2) not null,
+  created_at timestamptz default now()
+);
+
+-- tabla opcional de saldos cacheados por cliente (puede recalcularse)
+create table saldos_cliente (
+  cliente_id uuid primary key references clientes(id),
+  saldo numeric(18,2) not null default 0,
+  updated_at timestamptz default now()
+);

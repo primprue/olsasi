@@ -30,7 +30,7 @@ export default function CajaIngresos() {
                 CajaIEFecha: new Date().toISOString().split("T")[0],
                 CajaIECliente: "",
                 CajaIEConcepto: "",
-                CajaIEPunto: "",
+                CajaIEMT: "",
                 CajaIEImporte: "",
                 CajaIECodIP: "",
                 CajaIEImpIP: ""
@@ -65,7 +65,7 @@ export default function CajaIngresos() {
                 CajaIEFecha: ultima.CajaIEFecha,
                 CajaIECliente: ultima.CajaIECliente,
                 CajaIEConcepto: ultima.CajaIEConcepto,
-                CajaIEPunto: "N",
+                CajaIEMT: "N",
                 CajaIEImporte: "",
                 CajaIECodIP: "",
                 CajaIEImpIP: ""
@@ -111,7 +111,7 @@ export default function CajaIngresos() {
             prev.map((r) => (r.id === newRow.id ? newRow : r))
         );
 
-        if (newRow.CajaIEPunto === "S") {
+        if (newRow.CajaIEMT === "S") {
             setColumns((prev) =>
                 prev.map((col) =>
                     camposObjetivo.includes(col.field)
@@ -135,8 +135,8 @@ export default function CajaIngresos() {
     const [diferencia, setDiferencia] = useState(0);
 
     useEffect(() => {
-        const instrumentos = rows.filter(r => r.CajaIEPunto === 'N');
-        const principal = [...rows].reverse().find(r => r.CajaIEPunto !== 'N'); // última fila con importe
+        const instrumentos = rows.filter(r => r.CajaIEMT === 'N');
+        const principal = [...rows].reverse().find(r => r.CajaIEMT !== 'N'); // última fila con importe
 
         const total = instrumentos.reduce((acc, r) => acc + parseFloat(r.CajaIEImpIP || 0), 0);
         const importePrincipal = parseFloat(principal?.CajaIEImporte || 0);
@@ -162,7 +162,7 @@ export default function CajaIngresos() {
                 experimentalFeatures={{ newEditingApi: true }}
                 // isCellEditable={(params) => {
                 //     if (["CajaIECodIP", "CajaIEImpIP"].includes(params.field)) {
-                //         return params.row.CajaIEPunto !== "S";
+                //         return params.row.CajaIEMT !== "S";
                 //     }
                 //     return true;
                 // }}

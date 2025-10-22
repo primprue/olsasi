@@ -2,31 +2,25 @@ import request from "superagent";
 import IpServidor from "../VariablesDeEntorno";
 import MuestraMensaje from "../../components/lib/MuestraMensaje";
 
-export function CajaSaldoEfAgregar(props) {
-	return new Promise(function () {
-		setTimeout(() => {
-			const { rows } = props;
+export function CajaSaldoEfAgregar(datoagrabar) {
 
-			const url = IpServidor + "/cajaieagregar";
+	return new Promise(function (resolve, reject) {
+		setTimeout(() => {
+			const url = IpServidor + "/cajasaldoefagregar";
 			request
 				.post(url)
 				.set("Content-Type", "application/json")
-				.send({ rows: rows })
+				.send({ datoagrabar: datoagrabar })
 				.set("X-API-Key", "foobar")
 				.then((res) => {
 					MuestraMensaje(res);
+					resolve(res); // avisamos que terminó
 				})
 				.catch((err) => {
 					MuestraMensaje(err);
+					reject(err); // avisamos que falló
 				});
 		}, 300);
 	});
 }
 
-/*	.then(function (res) {
-			const respuesta = JSON.parse(res.text);
-			if (respuesta.affectedRows !== 0)
-				Mensaje("error", "Grupo agregado correctamente");
-			else Mensaje("error", "No se pudo modificar");
-		})
-		.catch((err) => CodigoError(err));*/

@@ -3,35 +3,38 @@ import { Dialog, DialogTitle, DialogContent, Typography, Box, TextField, Stack, 
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import TextoPesos from '../../components/comppropios/TextoPesos';
-import moment from "moment";
 import { BilletesLeer } from './BilletesLeer';
 import { CajaSaldoEfLeer } from './CajaSaldoEfLeer';
 import { CajaIESumaMov } from './CajaIESumaMov';
-import BilletesPorMoneda from './BilletesPorMoneda';
 import ArchiveIcon from "@mui/icons-material/Archive";
 import { leerStkMonedas } from '../Tablas/Monedas/StkMonedasLeer';
+import { green } from "@mui/material/colors";
+import CloseIcon from '@mui/icons-material/Close';
+import BilletesQuedan from './BilletesQuedan';
+import { CajaCierreParamLee } from './CajaCierreParamLee';
 
-import { red, green } from "@mui/material/colors";
-import { set } from 'react-hook-form';
 export default function CajaCierre({ rows, onClose }) {
     const [snackbar, setSnackbar] = useState(null);
-    const [valoresCalculados, setValoresCalculados] = useState(null);
-    const [fechaHoy] = useState(moment().format("DD/MM/YYYY"));
-    const [totalConSaldo, setTotalConSaldo] = useState(0);
     const [billetes, setBilletes] = useState([]);
+    const [cierreparam, setCierreparam] = useState([]);
     const [saldoEf, setSaldoEf] = useState([]);
     const [cantidades, setCantidades] = useState({});
-    const [diferencia, setDiferencia] = useState(0);
-    const [sumademov, setSumademov] = useState([]);
     const [monedas, setMonedas] = useState([]);
     const [totales, setTotales] = useState({});
-    const [valorEsperado, setValorEsperado] = useState({});
+    const [bilquedan, setBilquedan] = useState(false);
+    const [cantidadesBilquedan, setCantidadesBilquedan] = useState({});
+    const [totalqueda, setTotalqueda] = useState(0);
+    const [resultados, setResultados] = useState({});
+
 
     async function buscaBilletes() {
         const data = await BilletesLeer();
         setBilletes(data);
     }
-
+    async function buscaCajaCierreParam() {
+        const data = await CajaCierreParamLee();
+        setCierreparam(data);
+    }
     async function buscaSaldoEf() {
         const data = await CajaSaldoEfLeer();
         setSaldoEf(data);
@@ -52,22 +55,43 @@ export default function CajaCierre({ rows, onClose }) {
         setMonedas(data);
     }
 
-
-
     useEffect(() => {
         leemonedas()
         buscaBilletes();
+        buscaCajaCierreParam();
         buscaSaldoEf();
         cajaiesumamov()
     }, []);
 
 
+
     const handleCloseSnackbar = () => setSnackbar(null);
-    const handleGrabar = () => {
-        console.log('Grabar')
-        console.log('cantidades', cantidades)
-        console.log('valorEsperado', valorEsperado)
-    }
+    const Billetesquequedan = () => {
+        let diferenciaNum = 0;
+        let tolerancia = 0
+        let moneda = '' // 👈 para mostrar en el snackbar
+        let hayDiferencia = Object.keys(totales).some((monedaId) => {
+            diferenciaNum = resultados[monedaId]?.diferenciaNum ?? 100; // si no existe, se asume 0
+            tolerancia = cierreparam.find(p => p.CajaCierreParamMon === monedaId)?.CajaCierreParamTolerancia ?? 0;
+            moneda = monedaId
+            return diferenciaNum !== 0;
+        });
+        setBilquedan(true);
+        if (!hayDiferencia) {
+            setSnackbar(null);
+            setBilquedan(true);
+        } else {
+            console.log('diferencia', diferenciaNum)
+            console.log('tolerancia', tolerancia)
+            if ((diferenciaNum > tolerancia) || (diferenciaNum < -tolerancia)) {
+                setSnackbar({ children: `HAY DIFERENCIA!!!!! La tolerancia de ${moneda} es ${tolerancia}`, severity: "error" });
+                setBilquedan(false);
+            }
+
+        }
+
+    };
+
     const handleChangeBilletes = (moneda, label, e) => {
         const valor = e.target.value;
         setCantidades(prev => ({
@@ -77,28 +101,9 @@ export default function CajaCierre({ rows, onClose }) {
                 [label]: valor
             }
         }));
-
-
     };
-    const calculavaloresperado = (moneda) => {
-        if (moneda === "ARS") {
-            setValorEsperado(prev => ({
-                ...prev,
-                [moneda]:
-                    (valoresCalculados.totalesPorMoneda[moneda].EfectivoSinPunto ?? 0) +
-                    (valoresCalculados.totalesPorMoneda[moneda].EfectivoConPunto ?? 0) +
-                    (saldoEf[0]?.CajaSaldoEfImporte ?? 0),
 
-            }));
-        } else {
-            setValorEsperado(prev => ({
-                ...prev,
-                [moneda]:
-                    (valoresCalculados.totalesPorMoneda[moneda].EfectivoSinPunto ?? 0) +
-                    (valoresCalculados.totalesPorMoneda[moneda].EfectivoConPunto ?? 0)
-            }));
-        }
-    }
+
     function formatDate(fechaISO) {
         if (!fechaISO) return "";
         const fecha = new Date(fechaISO);
@@ -109,159 +114,354 @@ export default function CajaCierre({ rows, onClose }) {
         });
     }
 
-    // función que calcula el total de billetes para una moneda
-    const calcularTotalBilletes = (monedaId) => {
-        if (!cantidades[monedaId]) return 0;
-
-        return Object.entries(cantidades[monedaId]).reduce((acum, [denominacion, cant]) => {
-            return acum + parseInt(denominacion, 10) * cant; // denominación * cantidad
-        }, 0);
-    };
-    // if (sumademov[0]?.TotalesPorMoneda) {
-    //Obtengo el string JSON
-    // if (totales) {
-
-    //     console.log('monedas', monedas)
-    //     monedas.forEach((moneda) => {
-    //         console.log(
-    //             `ID: ${moneda.id}, Descripción: ${moneda.StkMonedasDescripcion}, Cotización: ${moneda.StkMonedasCotizacion}, Signo: ${moneda.StkMonedasSigno}`
-    //         );
-    //         console.log('totales[moneda.id]', totales[moneda.id])
-    //     });
 
 
 
-    // }
+    // recalcular cada vez que cambian cantidades o totales
+    useEffect(() => {
+        Object.keys(cantidades).forEach((monedaId) => {
+            const totalNum = Object.entries(cantidades[monedaId]).reduce(
+                (acum, [denominacion, cant]) =>
+                    acum + parseInt(denominacion, 10) * cant,
+                0
+            );
 
+            const total = totalNum.toLocaleString("es-AR", {
+                style: "currency",
+                currency: monedaId,
+            });
 
+            const diferenciaNum = (totales[monedaId]?.totalMEsp ?? 0) - totalNum;
 
-    // {
-    //   ARS: { totalInstr: 158000, totalConPunto: 758000, totalSinPunto: 308000 },
-    //   USD: { totalInstr: 0, totalConPunto: 0, totalSinPunto: 25 }
-    // }
+            const diferencia = diferenciaNum.toLocaleString("es-AR", {
+                style: "currency",
+                currency: monedaId,
+            });
+
+            setResultados((prev) => ({
+                ...prev,
+                [monedaId]: { total, diferencia, totalNum, diferenciaNum },
+            }));
+        });
+    }, [cantidades, totales]); // 👈 recalcula solo cuando cambian
+
 
     return (
-        <Dialog open={true} onClose={onClose} maxWidth="xl" fullWidth>
-
-            <DialogContent>
-                {(totales) && (
-                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                        <DialogTitle>Cierre de Caja  </DialogTitle>
-                        <Stack direction="row" spacing={2} alignItems="center" padding={5}>
-                            <Typography color="#0502ac" fontSize={18} >
-                                Saldo al  {formatDate(saldoEf[0]?.idCajaSaldoEfFecha)}
-                            </Typography>
-                            <TextoPesos value={saldoEf[0]?.CajaSaldoEfImporte} color="#0502ac" fontSize={18} />
-                        </Stack>
-
-                        {Array.isArray(monedas) && (
-                            <Grid container spacing={2}>
-                                {monedas.map((moneda) => {
-                                    const valores = totales[moneda.id] || {};
-
-                                    return (
-                                        <Grid item xs={6} key={moneda.id}>
-                                            <Typography variant="h6" color="primary">
-                                                {moneda.StkMonedasDescripcion} ({moneda.StkMonedasSigno})
-                                            </Typography>
-
-                                            {/* Totales */}
-                                            <Stack spacing={1} mt={2}>
-                                                <Typography>Total Instr: {valores.totalInstr ?? 0}</Typography>
-                                                <Typography>Total con Punto: {valores.totalConPunto ?? 0}</Typography>
-                                                <Typography>Total sin Punto: {valores.totalSinPunto ?? 0}</Typography>
-                                            </Stack>
-
-                                            {/* Denominaciones de billetes */}
-                                            <Box mt={2} display="grid" gridTemplateColumns="repeat(5, 1fr)" gap={2}>
-                                                {billetes
-                                                    .filter((b) => b.BilletesMoneda === moneda.id) // 👈 ojo: acá usás moneda.id
-                                                    .map(({ label }) => (
-                                                        <TextField
-                                                            key={`${moneda.id}-${label}`}
-                                                            label={`${label} ${moneda.StkMonedasSigno}`}
-                                                            type="number"
-                                                            value={cantidades[moneda.id]?.[label] || ""}
-                                                            onChange={(e) => handleChangeBilletes(moneda.id, label, e)}
-                                                        />
-                                                    ))}
-                                            </Box>
-                                            {/* Total de billetes para esa moneda */}
-                                            <Stack mt={2} direction="row" spacing={2}>
-                                                <Typography fontWeight="bold">Total billetes:</Typography>
-                                                <Typography color="green">
-                                                    {calcularTotalBilletes(moneda.id).toLocaleString("es-AR", {
-                                                        style: "currency",
-                                                        currency: moneda.id,
-                                                    })}
-                                                </Typography>
-                                                <Typography fontWeight="bold">Total esperado:</Typography>
-                                                <Typography color="green">
-                                                    {totales[moneda.id]?.totalConPuntoEsp.toLocaleString("es-AR", {
-                                                        style: "currency",
-                                                        currency: moneda.id,
-                                                    })}
-                                                </Typography>
-                                            </Stack>
-                                        </Grid>
-                                    );
-                                })}
-                            </Grid>
-                        )}
-
-                        {/* 
-                        {Array.isArray(monedas) && (
-                            <Grid container spacing={2}>
-                                {monedas.map((moneda) => {
-                                    const valores = totales[moneda.id] || {};
-
-                                    return (
-                                        <Grid item xs={6} key={moneda.id}>
-                                            <Typography variant="h6" color="primary">
-                                                {moneda.StkMonedasDescripcion} ({moneda.StkMonedasSigno})
-                                            </Typography>
-
-                                            <Stack spacing={1} mt={2}>
-                                                <Typography>Total Instr: {valores.totalInstr ?? 0}</Typography>
-                                                <Typography>Total con Punto: {valores.totalConPunto ?? 0}</Typography>
-                                                <Typography>Total sin Punto: {valores.totalSinPunto ?? 0}</Typography>
-                                            </Stack>
-                                        </Grid>
-                                    );
-                                })}
-                            </Grid>
-                            
-                        )} */}
+        <>
+            <Dialog open={true} onClose={onClose} maxWidth="xl" fullWidth>
+                {/* 🔹 El título va directo acá, no dentro del Content */}
+                <DialogTitle sx={{ textAlign: "center" }}>
+                    <Box display="inline-flex" justifyContent="center" alignItems="center" gap={2}>
+                        <Typography variant="h6" component="span">
+                            Cierre de Caja
+                        </Typography>
                     </Box>
+                </DialogTitle>
 
-                    // })
+                {/* 🔹 Ahora sí el contenido del diálogo */}
+                <DialogContent>
+                    {Object.keys(totales).length !== 0 && (
+                        <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                            {Array.isArray(monedas) && (
+                                <Grid container spacing={2}>
+                                    {monedas.map((moneda) => {
+                                        const valores = totales[moneda.id] || {};
+
+                                        const encontrado = saldoEf.find(
+                                            (d) => d.CajaSaldoMoneda === moneda.id
+                                        );
+                                        return (
+
+                                            <Grid item xs={6} key={moneda.id}>
+                                                <Typography variant="h6" color="primary">
+                                                    {moneda.StkMonedasDescripcion} ({moneda.StkMonedasSigno})
+                                                </Typography>
+
+                                                <TextoPesos
+                                                    label={`Saldo al ${formatDate(saldoEf[0]?.idCajaSaldoEfFecha)}`}
+                                                    value={encontrado ? encontrado.CajaSaldoEfImporte : 0}
+                                                    color="#0221ac"
+                                                    fontSize={20}
+                                                />
+
+                                                {/* Totales */}
+                                                <Stack direction="row" spacing={4} mt={2}>
+                                                    <Typography color="#43829b">
+                                                        Instr:{" "}
+                                                        {(valores.totalInstr || 0).toLocaleString("es-AR", {
+                                                            style: "currency",
+                                                            currency: moneda.id,
+                                                        })}
+                                                    </Typography>
+
+
+                                                    <Typography color="#43829b">
+                                                        menos la Tarde :{" "}
+                                                        {(valores.totalT || 0).toLocaleString("es-AR", {
+                                                            style: "currency",
+                                                            currency: moneda.id,
+                                                        }) ?? 0}
+                                                    </Typography>
+                                                    <Typography color="#43829b" fontWeight="bold" fontSize="1.2rem">
+                                                        = {" "}
+                                                        {(valores.totalTSinInstr || 0).toLocaleString("es-AR", {
+                                                            style: "currency",
+                                                            currency: moneda.id,
+                                                        }) ?? 0}
+                                                    </Typography>
+
+                                                    <Typography color="#5c9b43f6" fontWeight="bold" fontSize="1.2rem">
+                                                        La Man. :{" "}
+                                                        {(valores.totalM || 0).toLocaleString("es-AR", {
+                                                            style: "currency",
+                                                            currency: moneda.id,
+                                                        }) ?? 0}
+                                                    </Typography>
+                                                </Stack>
+
+                                                {/* Denominaciones de billetes */}
+                                                <Box
+                                                    mt={2}
+                                                    display="grid"
+                                                    gridTemplateColumns="repeat(10, 1fr)"
+                                                    gap={2}
+                                                >
+                                                    {billetes
+                                                        .filter((b) => b.BilletesMoneda === moneda.id)
+                                                        .map(({ label }) => (
+                                                            <TextField
+                                                                key={`${moneda.id}-${label}`}
+                                                                label={`${label} ${moneda.StkMonedasSigno}`}
+                                                                type="number"
+                                                                value={cantidades[moneda.id]?.[label] || ""}
+                                                                onChange={(e) =>
+                                                                    handleChangeBilletes(moneda.id, label, e)
+                                                                }
+                                                            />
+                                                        ))}
+                                                </Box>
+
+                                                {/* Total de billetes */}
+
+                                                <Stack mt={2} direction="row" spacing={2}>
+                                                    <>
+                                                        <Typography fontWeight="bold">Total billetes:</Typography>
+                                                        <Typography color="green">{resultados[moneda.id]?.total}</Typography>
+
+                                                        <Typography fontWeight="bold">Total esperado:</Typography>
+                                                        <Typography color="green">
+                                                            {totales[moneda.id]?.totalMEsp.toLocaleString("es-AR", {
+                                                                style: "currency",
+                                                                currency: moneda.id,
+                                                            })}
+                                                        </Typography>
+
+                                                        <Typography fontWeight="bold">Diferencia :</Typography>
+                                                        <Typography
+                                                            color={
+                                                                resultados[moneda.id]?.diferenciaNum === 0 ? "green" : "red"
+                                                            }
+                                                        >
+                                                            {resultados[moneda.id]?.diferencia}
+                                                        </Typography>
+                                                    </>
+                                                </Stack>
+
+
+                                            </Grid>
+                                        );
+                                    })}
+                                </Grid>
+                            )}
+                        </Box>
+                    )}
+                    <IconButton onClick={() => Billetesquequedan()}>
+                        <ArchiveIcon style={{ color: green[500] }} />
+                    </IconButton>
+
+                </DialogContent>
+
+                {snackbar && (
+                    <Snackbar
+                        open
+                        autoHideDuration={3000}
+                        anchorOrigin={{ vertical: "center", horizontal: "center" }}
+                        onClose={handleCloseSnackbar}
+                    >
+                        <Alert
+                            {...snackbar}
+                            variant="filled"
+                            onClose={handleCloseSnackbar}
+                        />
+                    </Snackbar>
                 )}
+            </Dialog >
+            <BilletesQuedan
+                open={bilquedan}
+                handleClose={() => setBilquedan(false)}
+                monedas={monedas}
+                billetes={billetes}
+                totales={totales}
 
-                {/* {Object.entries(totales).forEach(([moneda, valores]) => {
-                    console.log(moneda, valores.totalConPunto, valores.totalSinPunto, valores.totalInstr);
-                })} */}
+            />
 
 
-
-                <IconButton onClick={() => handleGrabar()} >
-                    <ArchiveIcon
-                        style={{ color: green[500] }}
-                    // fontSize="large"
-                    // titleAccess="Grabar"
-                    />
-                </IconButton>
-            </DialogContent>
-
-            {snackbar && (
-                <Snackbar
-                    open
-                    autoHideDuration={3000}
-                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                    onClose={handleCloseSnackbar}
-                >
-                    <Alert {...snackbar} variant="filled" onClose={handleCloseSnackbar} />
-                </Snackbar>
-            )}
-        </Dialog>
+        </>
     );
+
 }
+
+{/* <Stack mt={2} direction="row" spacing={2}>
+                                                    {(() => {
+                                                        const { total, diferencia } =
+                                                            calcularTotalBilletes(moneda.id);
+
+                                                        return (
+                                                            <>
+                                                                <Typography fontWeight="bold">
+                                                                    Total billetes:
+                                                                </Typography>
+                                                                <Typography color="green">{total}</Typography>
+
+                                                                <Typography fontWeight="bold">
+                                                                    Total esperado:
+                                                                </Typography>
+                                                                <Typography color="green">
+                                                                    {totales[moneda.id]?.totalMEsp.toLocaleString(
+                                                                        "es-AR",
+                                                                        {
+                                                                            style: "currency",
+                                                                            currency: moneda.id,
+                                                                        }
+                                                                    )}
+                                                                </Typography>
+
+                                                                <Typography fontWeight="bold">
+                                                                    Diferencia :
+                                                                </Typography>
+                                                                <Typography
+                                                                    color={diferencia === 0 ? "green" : "red"}
+                                                                >
+                                                                    {diferencia}
+                                                                </Typography>
+                                                            </>
+                                                        );
+                                                    })()}
+                                                </Stack> */}
+
+// función que calcula el total de billetes para una moneda
+// const calcularTotalBilletes = (monedaId) => {
+//     if (!cantidades[monedaId]) return 0;
+
+//     const total1 = Object.entries(cantidades[monedaId]).reduce(
+//         (acum, [denominacion, cant]) =>
+//             acum + parseInt(denominacion, 10) * cant,
+//         0
+//     )
+
+//     const total = total1.toLocaleString("es-AR", {
+//         style: "currency",
+//         currency: monedaId,
+//     })
+
+//     const diferencia = (totales[monedaId]?.totalMEsp - total1)
+//         .toLocaleString("es-AR", {
+//             style: "currency",
+//             currency: monedaId,
+//         })
+
+
+//     return { total, diferencia };
+// };
+// const GrabCierraLimpia = () => {
+//     console.log('totalqueda', totalqueda)
+// }
+
+{/* <Dialog open={bilquedan} onClose={() => setBilquedan(false)} maxWidth="lg" >
+                <DialogTitle
+                    sx={{ textAlign: "center", position: "relative", cursor: "move" }}
+                >
+                    Billetes que quedan en caja
+                    <IconButton
+                        aria-label="close"
+                        onClick={() => setBilquedan(false)}
+                        sx={(theme) => ({
+                            position: "absolute",
+                            right: 8,
+                            top: 8,
+                            color: theme.palette.grey[500],
+                        })}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
+
+
+                {monedas.map((moneda) => (
+                    <Box
+                        key={moneda.id}
+                        mt={2}
+                        display="grid"
+                        gridTemplateColumns="repeat(10, 1fr)"
+                        gap={2}
+                        borderRadius="10px"
+
+                        margin={2}
+
+                    >
+                        {billetes
+                            .filter((b) => b.BilletesMoneda === moneda.id)
+                            .map(({ label }) => (
+                                <TextField
+                                    key={`${moneda.id}-${label}`}
+                                    label={`${label} ${moneda.StkMonedasSigno}`}
+                                    type="number"
+                                    value={cantidadesBilquedan[moneda.id]?.[label] || ""}
+                                    onChange={(e) =>
+                                        handleChangeBilquedan(moneda.id, label, e)
+                                    }
+                                />
+                            ))}
+
+
+                        <Box gridColumn="1 / -1">
+                            {(() => {
+                                const { total } = calcularTotalBilletesQ(moneda.id);
+                                return (
+                                    <Stack direction="row" spacing={2} alignItems="center">
+                                        <Typography fontWeight="bold">Total dinero en Caja:</Typography>
+                                        <Typography color="green">{total}</Typography>
+                                    </Stack>
+                                );
+                            })()}
+                        </Box>
+                    </Box>))}
+
+                <IconButton onClick={() => GrabCierraLimpia()}>
+                    <ArchiveIcon style={{ color: green[500] }} />
+                </IconButton>
+
+            </Dialog> */}
+
+// // función que calcula el total de billetes para una moneda
+// const calcularTotalBilletesQ = (monedaId) => {
+//     if (!cantidadesBilquedan[monedaId]) return 0;
+
+//     const total1 = Object.entries(cantidadesBilquedan[monedaId]).reduce(
+//         (acum, [denominacion, cant]) =>
+//             acum + parseInt(denominacion, 10) * cant,
+//         0
+//     )
+
+//     const total = total1.toLocaleString("es-AR", {
+//         style: "currency",
+//         currency: monedaId,
+//     })
+
+//     setTotalqueda((prev) => ({
+//         ...prev,
+//         [monedaId]: total, // 👈 valor numérico crudo
+//     }));
+//     return { total };
+
+// };

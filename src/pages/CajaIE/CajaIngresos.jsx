@@ -1,18 +1,28 @@
 import React, { useEffect, useRef, useState } from "react";
 import { DataGrid, GridToolbarContainer, useGridApiRef } from "@mui/x-data-grid";
+import Grid from "@mui/material/Grid";
 import { CajaIELeer } from "./CajaIELeer.jsx";
 import { llenarcolumns } from "./columns.jsx";
-import { Box } from "@mui/material";
+import { Box, Button, Dialog, DialogTitle, TextField, Typography } from "@mui/material";
 import { CajaIEAgregar } from "./CajaIEAgregar.jsx";
-
+import { esES } from '@mui/material/locale';
 import AddToPhotosTwoToneIcon from "@mui/icons-material/AddToPhotosTwoTone";
 import RedeemTwoToneIcon from '@mui/icons-material/RedeemTwoTone';
+import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
 import CajaCierre from "./CajaCierre.jsx";
+import estilotabla from "../../Styles/Tabla.module.css";
+import estiloboton from "../../Styles/Boton.module.css";
+import { BuscaIE } from "./BuscaIE.jsx";
+import PreviewSharpIcon from '@mui/icons-material/PreviewSharp';
+import TextFieldComunChico from "../../components/comppropios/TextFieldComunChico.jsx";
 export default function CajaIngresos() {
     const [rows, setRows] = useState([]);
     const [openCierre, setOpenCierre] = useState(false);
+    const [openBuscaIE, setOpenBuscaIE] = useState(false);
     const [columns, setColumns] = useState([]);
     const [dolar, setDolar] = useState(0);
+    const [fechaDesde, setFechaDesde] = useState(new Date().toISOString().split("T")[0]);
+    const [fechaHasta, setFechaHasta] = useState(new Date().toISOString().split("T")[0]);
     const apiRef = useGridApiRef(); // <- referencia para manejar foco
     const [totalInstrumentos, setTotalInstrumentos] = useState(0);
     const estiloBoton = {
@@ -38,12 +48,22 @@ export default function CajaIngresos() {
     const handleCierre = () => {
         setOpenCierre(true);
     };
+    const abreBuscaIE = () => {
+        setOpenBuscaIE(true);
+    };
+    const cierraBuscaIE = () => {
+        setOpenBuscaIE(false);
+    };
+    async function vaBuscarIE() {
+        const data = await BuscaIE(fechaDesde, fechaHasta);
+        setRows(data);
+    }
+
 
     function CustomToolbar() {
         return (
-            <GridToolbarContainer sx={estiloBoton}
+            <GridToolbarContainer sx={{ ...estiloBoton, display: "flex", alignItems: "center", gap: 1 }}>
 
-            >
                 <label>F4 - Agregar   F2 - Agrega instrumento de pago</label>
 
                 <AddToPhotosTwoToneIcon
@@ -57,6 +77,20 @@ export default function CajaIngresos() {
                     onClick={() => handleCierre()}
                 />
                 <label>Dólar: {dolar}</label>
+                <PreviewSharpIcon
+                    size="large"
+                    titleAccess="BuscaIE"
+                    onClick={() => abreBuscaIE()}
+                />
+                {/* separador flexible */}
+                <Box sx={{ flexGrow: 1 }} />
+
+                {/* icono alineado a la derecha */}
+                <MoreVertTwoToneIcon
+                    size="large"
+                    titleAccess="Más"
+                    onClick={() => abreBuscaIE()}
+                />
             </GridToolbarContainer>
         );
     }
@@ -92,7 +126,7 @@ export default function CajaIngresos() {
                 CajaIEFecha: new Date().toISOString().split("T")[0],
                 CajaIECliente: "",
                 CajaIEConcepto: "",
-                CajaIEPunto: "",
+                CajaIEMT: "",
                 CajaIEMoneda: "",
                 CajaIEImporte: "",
                 CajaIECodIP: "",
@@ -163,7 +197,7 @@ export default function CajaIngresos() {
                 CajaIEFecha: ultimaPrincipal.CajaIEFecha,
                 CajaIECliente: ultimaPrincipal.CajaIECliente,
                 CajaIEConcepto: ultimaPrincipal.CajaIEConcepto,
-                CajaIEPunto: "N",
+                CajaIEMT: "T",
                 CajaIEMoneda: ultimaPrincipal.CajaIEMoneda,
                 CajaIEImporte: "",
                 CajaIECodIP: "",
@@ -202,6 +236,7 @@ export default function CajaIngresos() {
                 e.preventDefault();
                 agregarFilaInstrumentoPago();
             }
+
         };
 
         window.addEventListener("keydown", handleKeyDown);
@@ -235,7 +270,7 @@ export default function CajaIngresos() {
         }
 
         // Activar o desactivar edición según Punto S/N
-        if (newRow.CajaIEPunto === "S") {
+        if (newRow.CajaIEMT === "S") {
             setColumns((prev) =>
                 prev.map((col) =>
                     camposObjetivo.includes(col.field)
@@ -264,6 +299,12 @@ export default function CajaIngresos() {
             setTotalInstrumentos(totalimpinst)
         }
     }, [rows]);
+    const handleChangefechaDesde = (value, id) => {
+        setFechaDesde(value)
+    }
+    const handleChangefechaHasta = (value, id) => {
+        setFechaHasta(value)
+    }
 
     return (
         <Box sx={{ height: 500, width: "100%", minWidth: 600 }}>
@@ -272,15 +313,14 @@ export default function CajaIngresos() {
                 columns={columns}
                 apiRef={apiRef}
                 getRowId={(row) => row.id}
-                // disableRowSelectionOnClick
                 hideFooter
                 localeText={{
                     noRowsLabel: "Presione F4 para agregar una fila"
                 }}
+                className={estilotabla.tablasgenerales}
                 slots={{
                     toolbar: CustomToolbar,
                 }}
-                // onCellEditCommit={handleCellEditCommit}
                 checkboxSelection={false}
                 editMode="cell"
                 processRowUpdate={processRowUpdate}
@@ -288,21 +328,58 @@ export default function CajaIngresos() {
                     console.error("Error actualizando fila:", error);
                 }}
                 experimentalFeatures={{ newEditingApi: true }}
-                // isCellEditable={(params) => {
-                //     if (["CajaIECodIP", "CajaIEImpIP"].includes(params.field)) {
-                //         return params.row.CajaIEPunto !== "S";
-                //     }
-                //     return true;
-                // }}
+
                 sx={{
-                    "& .MuiDataGrid-cell:focus": {
-                        outline: "none"
-                    }
+                    '& .MuiDataGrid-row:hover': {
+                        backgroundColor: '#1976d2a4', // azul fuerte
+                        color: '#fff',              // texto blanco
+                    },
+                    '& .MuiDataGrid-row.Mui-selected': {
+                        backgroundColor: '#2fd3a25c', // rojo fuerte
+                        color: '#0a0000',
+                    },
+                    '& .MuiDataGrid-row.Mui-selected:hover': {
+                        backgroundColor: '#2fd3a25c', // rojo más oscuro al hover si está seleccionada
+                    },
+
                 }}
+
             />
 
 
             {openCierre && <CajaCierre rows={rows} onClose={() => setOpenCierre(false)} />}
+
+            <Dialog open={openBuscaIE} onClose={cierraBuscaIE} maxWidth="lg" >
+                <DialogTitle
+                    sx={{ textAlign: "center", position: "relative", cursor: "move" }}
+                >
+                    Busca movimiento entre fechas
+                </DialogTitle>
+                <Grid span={{ xs: 3 }}>
+                    <TextFieldComunChico
+                        id="fechaDesde"
+                        label="Fecha desde "
+                        value={fechaDesde}
+                        type="date"
+                        onChange={handleChangefechaDesde}
+                        width="200px"
+                    />
+                </Grid>
+                <Grid span={{ xs: 3 }}>
+                    <TextFieldComunChico
+                        id="fechaHasta"
+                        label="Fecha hasta "
+                        value={fechaHasta}
+                        type="date"
+                        onChange={handleChangefechaHasta}
+                        width="200px"
+                    />
+                </Grid>
+                <Button className={estiloboton.botonfincargadatos} variant="contained" onClick={vaBuscarIE}>
+                    Buscar
+                </Button>
+            </Dialog>
+
         </Box>
     );
 }

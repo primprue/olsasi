@@ -4,8 +4,8 @@ import { CajaCPLeer } from "./CajacPLeer";
 import { leerStkMonedas } from "../Tablas/Monedas/StkMonedasLeerP.jsx";
 export async function llenarcolumns() {
 	const puntosn = [
-		{ value: "S", label: "S" },
-		{ value: "N", label: "N" },
+		{ value: "M", label: "M" },
+		{ value: "T", label: "T" },
 	];
 	const instrumpago = await CajaIPLeer();
 	const conceptopago = await CajaCPLeer();
@@ -68,8 +68,8 @@ function columnsFill(puntosn, instrumpago, conceptopago, monedas) {
 			// 	headerClassName: estilotabla.encabcolumns,
 			// },
 			{
-				headerName: "Punto S/N",
-				field: "CajaIEPunto",
+				headerName: "Man-Tar",
+				field: "CajaIEMT",
 				type: "singleSelect",
 				required: true,
 				valueOptions: puntosn,

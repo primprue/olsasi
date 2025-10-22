@@ -183,6 +183,9 @@ export default function FilaDos() {
 		if (id === "idStkMonedas") {
 			const monedaEncontrada = state.monedasleidas.find(m => m.idStkMonedas === value);
 			setCotidivisa(monedaEncontrada.StkMonedasCotizacion);
+			setState({
+				...state, signomoneda: monedaEncontrada.StkMonedasSigno
+			});
 		}
 	};
 	const textdata = useMemo(() => {

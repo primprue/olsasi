@@ -4,7 +4,7 @@ export const formdata = {
   // CajaIEFecha: '',
   CajaIECliente: '',
   CajaIEConcepto: '',
-  CajaIEPunto: '',
+  CajaIEMT: '',
   CajaIEMoneda: '',
   CajaIEImporte: 0.00,
   CajaIECodIP: '',

@@ -54,7 +54,7 @@ export default function FilaCuatro(props) {
 			explicacionPresup
 		);
 		setState({ ...state, NroPresupuesto: nroPresupuesto1 });
-
+		console.log('filacuatro props.datos', props.datos)
 		PresupImprime(
 			props.datos,
 			nomClienteElegE,

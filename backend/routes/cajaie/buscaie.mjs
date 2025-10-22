@@ -8,9 +8,9 @@ import conexion from '../conexion.mjs';
 
 conexion.connect(function (err) {
     if (!err) {
-        console.log("base de datos conectada en cajaieleer");
+        console.log("base de datos conectada en buscaie");
     } else {
-        console.log("no se conecto en cajaieleer");
+        console.log("no se conecto en buscaie");
     }
 });
 
@@ -18,12 +18,12 @@ conexion.connect(function (err) {
 
 router.get('/', function (req, res, next) {
     let q1
-    let fechahoy = new Date().toISOString().split("T")[0]
 
     q1 = ['SELECT idCajaIE as id, date_format(CajaIEFecha, "%d-%m-%Y") as CajaIEFecha,  CajaIECliente, CajaIEConcepto, CajaCPDesc, CajaIEMT, ',
         ' CajaIEMoneda, CajaIEImporte, CajaIECodIP, CajaIEImpIP, CajaIEGrabado  FROM BaseCaja.CajaIE join BaseCaja.CajaCP  ',
         ' where  BaseCaja.CajaIE.CajaIEConcepto = BaseCaja.CajaCP.idCajaCP and ',
-        ' CajaIEFecha > (SELECT MAX(idCajaSaldoEfFecha) FROM BaseCaja.CajaSaldoEf)'].join(' ')
+        ' CajaIEFecha >= "' + req.query.fechaDesde + '" and CajaIEFecha <= "' + req.query.fechaHasta + '"'].join(' ')
+
     conexion.query(q1,
         function (err, result) {
             if (err) {

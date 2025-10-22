@@ -4,11 +4,11 @@ SET @sql = NULL;
 SELECT 
   GROUP_CONCAT(
     DISTINCT CONCAT(
-      'SUM(CASE WHEN CajaIE.CajaIEPunto = ''S'' AND CajaIE.CajaIEMoneda = ''', CajaIEMoneda,
-      ''' THEN CajaIE.CajaIEImporte ELSE 0 END) AS TotalConPunto_', CajaIEMoneda,
-      ', SUM(CASE WHEN CajaIE.CajaIEPunto = ''N'' AND CajaIE.CajaIEMoneda = ''', CajaIEMoneda,
-      ''' THEN CajaIE.CajaIEImporte ELSE 0 END) AS TotalSinPunto_', CajaIEMoneda,
-      ', SUM(CASE WHEN CajaIE.CajaIEPunto = ''N'' AND CajaIE.CajaIEMoneda = ''', CajaIEMoneda,
+      'SUM(CASE WHEN CajaIE.CajaIEMT = ''S'' AND CajaIE.CajaIEMoneda = ''', CajaIEMoneda,
+      ''' THEN CajaIE.CajaIEImporte ELSE 0 END) AS TotalM_', CajaIEMoneda,
+      ', SUM(CASE WHEN CajaIE.CajaIEMT = ''N'' AND CajaIE.CajaIEMoneda = ''', CajaIEMoneda,
+      ''' THEN CajaIE.CajaIEImporte ELSE 0 END) AS TotalT_', CajaIEMoneda,
+      ', SUM(CASE WHEN CajaIE.CajaIEMT = ''N'' AND CajaIE.CajaIEMoneda = ''', CajaIEMoneda,
       ''' AND CajaIE.CajaIEImpIP <> 0 THEN CajaIE.CajaIEImporte ELSE 0 END) AS TotalInstr_', CajaIEMoneda
     )
     SEPARATOR ', '

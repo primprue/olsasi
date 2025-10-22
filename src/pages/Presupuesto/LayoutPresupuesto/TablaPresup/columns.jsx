@@ -78,12 +78,15 @@ function columnsFill() {
 				headerName: "Imp. Item.",
 				field: "ImpItemf",
 				type: "number",
-				// format: (field) => field.valor.toLocaleString('USD'),
-				pattern: /^[0-9]{0,10}.[0-9]{0,2}$/,
+				format: (field) => field.valor.toLocaleString("es-AR", {
+					style: "currency",
+					currency: moneda.id,
+				}),
 				alignItems: "right",
 				width: 180,
 				headerAlign: "center",
 			},
+			// pattern: /^[0-9]{0,10}.[0-9]{0,2}$/,
 			{
 				headerName: "datospresup",
 				field: "datoscalculos",

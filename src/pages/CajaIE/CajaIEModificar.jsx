@@ -6,7 +6,7 @@ import MuestraMensaje from "../../components/lib/MuestraMensaje";
 export function ProveedoresModificar(props) {
 	return new Promise(function () {
 		const {
-			idCajaIE, CajaIEFecha, CajaIECliente, CajaIEConcepto, CajaIEPunto, CajaIEImporte
+			idCajaIE, CajaIEFecha, CajaIECliente, CajaIEConcepto, CajaIEMT, CajaIEImporte
 
 		} = props;
 		//const url = IpServidor + "/proveedoresmodificar/?id=" + id;
@@ -17,7 +17,7 @@ export function ProveedoresModificar(props) {
 			.send({ CajaIEFecha: CajaIEFecha })
 			.send({ CajaIECliente: CajaIECliente })
 			.send({ CajaIEConcepto: CajaIEConcepto })
-			.send({ CajaIEPunto: CajaIEPunto })
+			.send({ CajaIEMT: CajaIEMT })
 			.send({ CajaIEImporte: CajaIEImporte })
 			.then(function (res) {
 				MuestraMensaje(res);

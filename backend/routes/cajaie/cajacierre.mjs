@@ -20,9 +20,9 @@ router.get('/', function (req, res, next) {
     let q1
     let fechahoy = new Date().toISOString().split("T")[0]
 
-    // q1 = ['SELECT idCajaIE as id, CajaIEFecha, CajaIECliente, CajaIEConcepto, CajaIEPunto, CajaIEImporte, CajaIECodIP, CajaIEImpIP  FROM BaseCaja.CajaIE'].join(' ')
-    // q1 = ['SELECT idCajaIE as id, CajaIEFecha, CajaIECliente, CajaIEConcepto, CajaCPDesc, CajaIEPunto, CajaIEImporte, CajaIECodIP, CajaIEImpIP, CajaIEGrabado  FROM BaseCaja.CajaIE join BaseCaja.CajaCP where  BaseCaja.CajaIE.CajaIEConcepto = BaseCaja.CajaCP.idCajaCP'].join(' ')
-    q1 = ['SELECT  CajaIEFecha, CajaIEPunto, sum(CajaIEImporte) as CajaIEImporte,  CajaIEGrabado  FROM BaseCaja.CajaIE where  BaseCaja.CajaIE.CajaIEFecha = ' + fechahoy + 'group by CajaIEPunto'].join(' ')
+    // q1 = ['SELECT idCajaIE as id, CajaIEFecha, CajaIECliente, CajaIEConcepto, CajaIEMT, CajaIEImporte, CajaIECodIP, CajaIEImpIP  FROM BaseCaja.CajaIE'].join(' ')
+    // q1 = ['SELECT idCajaIE as id, CajaIEFecha, CajaIECliente, CajaIEConcepto, CajaCPDesc, CajaIEMT, CajaIEImporte, CajaIECodIP, CajaIEImpIP, CajaIEGrabado  FROM BaseCaja.CajaIE join BaseCaja.CajaCP where  BaseCaja.CajaIE.CajaIEConcepto = BaseCaja.CajaCP.idCajaCP'].join(' ')
+    q1 = ['SELECT  CajaIEFecha, CajaIEMT, sum(CajaIEImporte) as CajaIEImporte,  CajaIEGrabado  FROM BaseCaja.CajaIE where  BaseCaja.CajaIE.CajaIEFecha = ' + fechahoy + 'group by CajaIEMT'].join(' ')
     console.log('q1 cajacierre', q1)
     conexion.query(q1,
         function (err, result) {

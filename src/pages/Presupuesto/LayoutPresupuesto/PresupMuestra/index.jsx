@@ -108,24 +108,6 @@ export default function PresupMuestra() {
 		return (
 			<>
 				<GridToolbarContainer className={estilotabla.tablasgenerales}>
-					{/* <Box
-						sx={{
-							width: "100%",
-							display: 'flex',
-							justifyContent: 'center',
-							alignItems: 'left',
-							padding: '8px 0px 8px 0px'
-						}}
-					> */}
-					{/* <Box
-							sx={{
-								width: "80%",
-								display: 'flex',
-								justifyContent: 'right',
-								alignItems: 'right',
-								gap: 3,
-							}}
-						> */}
 					<GridToolbarColumnsButton className={estilotabla.coloropcioncol} />
 					<GridToolbarFilterButton className={estilotabla.coloropcioncol} />
 					<GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
@@ -146,8 +128,6 @@ export default function PresupMuestra() {
 						className={estilotabla.iconoborrar}
 						onClick={() => handleDelete(rowsel)}
 					/>
-					{/* </Box> */}
-					{/* </Box> */}
 				</GridToolbarContainer>
 			</>
 		);

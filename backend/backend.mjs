@@ -26,10 +26,12 @@ import cajaipleer from "./routes/cajaie/cajaipleer.mjs";
 import cajacpleer from "./routes/cajaie/cajacpleer.mjs";
 import cajaieagregar from "./routes/cajaie/cajaieagregar.mjs";
 import cajacierre from "./routes/cajaie/cajacierre.mjs";
+import cajacierreparamlee from "./routes/cajaie/cajacierreparamlee.mjs";
 import billetesleer from "./routes/cajaie/billetesleer.mjs";
 import cajasaldoefleer from "./routes/cajaie/cajasaldoefleer.mjs";
 import cajasaldoefagregar from "./routes/cajaie/cajasaldoefagregar.mjs";
 import cajaiesumamov from "./routes/cajaie/cajaiesumamov.mjs";
+import buscaie from "./routes/cajaie/buscaie.mjs";
 
 
 import stkbgsubrubroleer from "./routes/proveedores/stkbgsubrubroleer.mjs";
@@ -361,10 +363,13 @@ app.use("/cajaipleer", cajaipleer);
 app.use("/cajacpleer", cajacpleer);
 app.use("/cajaieagregar", cajaieagregar);
 app.use("/cajacierre", cajacierre);
+app.use("/cajacierreparamlee", cajacierreparamlee);
 app.use("/billetesleer", billetesleer);
 app.use("/cajasaldoefleer", cajasaldoefleer);
 app.use("/cajasaldoefagregar", cajasaldoefagregar);
 app.use("/cajaiesumamov", cajaiesumamov);
+app.use("/buscaie", buscaie);
+
 
 app.use("/clientesleer", clientesleer);
 app.use("/clientesleercod", clientesleercod);
