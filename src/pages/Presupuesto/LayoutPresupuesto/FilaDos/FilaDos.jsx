@@ -46,7 +46,6 @@ export default function FilaDos() {
 	const { datosrenglon, setDatosRenglon } = use(PresupPant);
 
 
-
 	let labellargo = "Largo";
 	let labelancho = "Ancho";
 	const { inicializaPresup } = use(PresupPant);
@@ -137,7 +136,6 @@ export default function FilaDos() {
 
 		var statepasante = state;
 		var dcalculo1 = await GeneraDCalculo(statepasante, presuptipo, cotidivisa);
-
 		if (dcalculo1.faltadato === true) {
 			setSnackbar({
 				children: "Faltan datos para el presupuesto",

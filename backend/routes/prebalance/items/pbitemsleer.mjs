@@ -3,15 +3,6 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en pbitemsleer");
-    } else {
-        console.log("no se conecto en pbitemsleer");
-    }
-});
-
-
 router.get("/", function (req, res, next) {
     var q = ["Select concat(PBidItems, PBItemsRubro, PBItemsSubRubro) as id, concat(  PBItemsSubRubro, PBidItems)  as codsubrubro, PBidItems, PBItemsRubro,  PBItemsSubRubro, PBItemsFecha, PBItemsTipoComp, PBItemsNroComp, PBItemsProv, " +
         " PBItemsImp, PBItemsPorcIVA, PBItemsIVA, PBItemsIIBB, PBItemsOtros, PBItemsOtros1, PBItemsOtros2, PBItemsOtros3, PBItemsOtros4 " +

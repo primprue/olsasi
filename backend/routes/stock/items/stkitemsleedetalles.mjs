@@ -2,17 +2,8 @@ import express from "express";
 var router = express.Router();
 
 import conexion from "../../conexion.mjs";
-import dateFormat from 'dateformat';
 import moment from "moment";
 moment.locale("es");
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en stkitemsleedetalles");
-  } else {
-    console.log("no se conecto en stkitemsleedetalles");
-  }
-});
-
 
 
 router.get("/", async function (req, res, next) {

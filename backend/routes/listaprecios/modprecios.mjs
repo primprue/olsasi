@@ -4,15 +4,6 @@ var router = express.Router();
 import conexion from '../conexion.mjs';
 
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en modprecios");
-    } else {
-        console.log("no se conecto en modprecios");
-    }
-});
-
-
 
 router.post('/', async function (req, res, next) {
     var compbody, compmysql
@@ -40,7 +31,6 @@ router.post('/', async function (req, res, next) {
             '", StkRubroCosto = StkRubroCosto + ' + importemod,
             ' WHERE ' + compmysql + ' = ' + compbody,
         ].join('')
-        console.log('q importemod ', q);
     }
 
     else {
@@ -52,7 +42,6 @@ router.post('/', async function (req, res, next) {
             '(StkRubroCosto * ' + porcentmod / 100 + ')',
             ' WHERE ' + compmysql + ' = ' + compbody,
         ].join('')
-        console.log('q porcentmod ', q);
     }
     conexion.query(q,
         function (err, result) {

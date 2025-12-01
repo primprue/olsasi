@@ -3,14 +3,6 @@ var router = express.Router();
 import conexion from "../../conexion.mjs";
 
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en stkubfisicaborrar");
-  } else {
-    console.log("no se conecto en stkubfisicaborrar");
-  }
-});
-
 router.all("/", async function (req, res, next) {
 
   var idStkUbFisica1 = req.query.idStkUbFisica;

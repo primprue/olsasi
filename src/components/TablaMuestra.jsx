@@ -1,5 +1,4 @@
 import React, { Component, useEffect } from "react";
-import Typography from "@mui/material/Typography";
 import { TransporteModificar } from "../pages/Tablas/Transporte/TransporteModificar.jsx";
 import { leerTransporte } from "../pages/Tablas/Transporte/TransporteLeer.jsx";
 
@@ -47,6 +46,11 @@ import { PBSubRubrosModificar } from "../pages/PreBalance/PBSubRubros/PBSubRubro
 import { PBComprobantesLeer } from "../pages/PreBalance/PBComprobantes/PBComprobantesLeer.jsx";
 import { PBComprobantesModificar } from "../pages/PreBalance/PBComprobantes/PBComprobantesModificar.jsx";
 
+import { CajaInternaLeer } from "../pages/CajaIE/CajaInterna/CajaInternaLeer.jsx";
+
+import { CajaInternaModificar } from "../pages/CajaIE/CajaInterna/CajaInternaModificar.jsx";
+
+
 // import { TablaMuestraRenglon } from "../pages/Presupuesto/LayoutPresupuesto/PresupMuestra/TablaMuestraRenglon/index.jsx";
 // import { presupDatos } from "../pages/Presupuesto/LayoutPresupuesto/PresupMuestra/presupDatos.jsx";
 import { useState } from "react";
@@ -66,6 +70,7 @@ import {
 	GridToolbarFilterButton,
 	GridToolbarExport,
 	GridToolbarDensitySelector,
+	GridToolbar,
 } from "@mui/x-data-grid";
 import { esES } from '@mui/material/locale';
 import Snackbar from "@mui/material/Snackbar";
@@ -74,7 +79,6 @@ import { DialogoDatos } from "./DialogoDatos.jsx";
 import { use } from "react";
 import TablasContexto from "../context/TablasContext.jsx";
 import SelecCampos from "../pages/Impresion/SelecCampos.jsx";
-import { Box } from "@mui/material";
 
 
 
@@ -196,7 +200,10 @@ export default function TablaMuestra(props) {
 			const data = await PBComprobantesLeer();
 			setRows(data);
 		}
-
+		if (formdatos.tablabase === "CajaInterna") {
+			const data = await CajaInternaLeer();
+			setRows(data);
+		}
 
 	}
 	const handleClose = () => {
@@ -222,6 +229,7 @@ export default function TablaMuestra(props) {
 	};
 
 	const handleModifica = (params) => {
+		console.log('handlemodifica  ', params)
 		// setTimeout(() => {
 		if (formdatos.tablabase === "Transportes") TransporteModificar(params);
 		if (formdatos.tablabase === "Clientes") ClientesModificar(params);
@@ -239,6 +247,7 @@ export default function TablaMuestra(props) {
 		if (formdatos.tablabase === "PBRubros") PBRubrosModificar(params);
 		if (formdatos.tablabase === "PBSubRubros") PBSubRubrosModificar(params);
 		if (formdatos.tablabase === "PBComprobantes") PBComprobantesModificar(params);
+		if (formdatos.tablabase === "CajaInterna") CajaInternaModificar(params);
 
 		relee();
 		// }, 50);

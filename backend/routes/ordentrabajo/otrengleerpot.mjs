@@ -2,13 +2,6 @@ import express from "express";
 var router = express.Router();
 
 import conexion from "../conexion.mjs";
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en otrengleerpot");
-  } else {
-    console.log("no se conecto en otrengleerpot");
-  }
-});
 
 
 router.get("/", function (req, res, next) {

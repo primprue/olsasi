@@ -4,15 +4,6 @@ var router = express.Router();
 import conexion from "../../conexion.mjs";
 
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en pbsubrubrosborrar");
-  } else {
-    console.log("no se conecto en pbsubrubrosborrar");
-  }
-});
-
-
 router.delete('/', async function (req, res) {
   var indice = req.query.id;
   var q = ["delete", ' from BasePreBalance.PBSubRubros where concat(PBidSubRubro, PBSubRubroIdRubro) = "', indice, '"'].join(

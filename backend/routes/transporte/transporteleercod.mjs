@@ -4,17 +4,6 @@ var router = express.Router();
 import conexion from '../conexion.mjs';
 
 
-
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en transporteleercod");
-    } else {
-        console.log("no se conecto en transporteleercod");
-    }
-});
-
-
-
 router.get('/', async function (req, res) {
     var indice = req.query.id;
     var q = ['SELECT * FROM BasesGenerales.Transporte where idTransporte = ' + indice].join(' ')

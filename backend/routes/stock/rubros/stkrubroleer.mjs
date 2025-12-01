@@ -3,15 +3,6 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en stkrubroleer");
-  } else {
-    console.log("no se conecto en stkrubroleer ");
-  }
-});
-
-
 
 router.get("/", function (req, res, next) {
   var q = ['Select idStkRubro as id, StkRubroCodGrp, StkRubroDesc, StkRubroAbr, StkRubroProv, StkRubroAncho, StkRubroPres, StkRubroPresDes, StkRubroUM, ',

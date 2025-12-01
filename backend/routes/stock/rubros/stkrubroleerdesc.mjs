@@ -3,15 +3,6 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en stkrubroleerdesc");
-  } else {
-    console.log("no se conecto en stkrubroleerdesc ");
-  }
-});
-
-
 
 router.get("/?:codgrupo", function (req, res, next) {
   var codgrupo = req.params.codgrupo;

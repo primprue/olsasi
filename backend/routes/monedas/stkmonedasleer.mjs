@@ -3,15 +3,6 @@ var router = express.Router();
 
 import conexion from '../conexion.mjs';
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en stkmonedasleer");
-    } else {
-        console.log("no se conecto en stkmonedasleer");
-    }
-});
-
-
 
 
 router.get('/', function (req, res, next) {

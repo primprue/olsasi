@@ -6,13 +6,6 @@ import conexion from "../../conexion.mjs";
 
 moment.locale("es");
 //cambié en la tabla de rubros de PreBalance el indice autoincremental 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en pbrubrosagregar");
-  } else {
-    console.log("no se conecto en pbrubrosagregar");
-  }
-});
 
 router.post("/", function (req, res, next) {
   var registro = {

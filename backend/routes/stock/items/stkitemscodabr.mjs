@@ -4,17 +4,10 @@ var router = express.Router();
 import moment from "moment";
 import conexion from "../../conexion.mjs";
 
-var nroitem = 0;
 
 moment.locale("es");
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en stkitemscodabr");
-  } else {
-    console.log("no se conecto en stkitemscodabr");
-  }
-});
+
 
 var datosenv = [];
 router.get("/", async function (req, res) {

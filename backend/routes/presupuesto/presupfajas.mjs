@@ -3,13 +3,6 @@ var router = express.Router();
 
 import conexion from '../conexion.mjs';
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en presupfajas");
-  } else {
-    console.log("no se conecto en presupfajas");
-  }
-});
 
 var datosenvio = []
 
@@ -98,10 +91,10 @@ router.get('/', (req, res, next) => {
               result[0].Ancho = (datos.ancho * 1).toFixed(2)
 
               if (ivasn == 'CIVA') {
-                result[0].ImpUnitario = Math.ceil(result[0].ImpUnitario.toFixed(0) / 10) * 10
+                result[0].ImpUnitario = Math.ceil(Number(result[0].ImpUnitario).toFixed(0) / 10) * 10
               }
               else {
-                result[0].ImpUnitario = Math.ceil(result[0].ImpUnitario.toFixed(0) / 1.21 / 10) * 10
+                result[0].ImpUnitario = Math.ceil(Number(result[0].ImpUnitario).toFixed(0) / 1.21 / 10) * 10
               }
               result[0].MDesc = 'S'
               datosenvio.push(result)

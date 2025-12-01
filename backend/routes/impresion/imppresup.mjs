@@ -2,19 +2,10 @@ import express from "express";
 var router = express.Router();
 import path from "path";
 import variables from '../../public/variables.mjs';
-import conexion from '../conexion.mjs';
 import PdfPrinter from 'pdfmake';
 import dateFormat from 'dateformat';
-import url from 'url';
 import fs from 'fs';
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en imppresup");
-    } else {
-        console.log("no se conecto en imppresup");
-    }
-});
 
 
 var TotalPresup = 0
@@ -24,21 +15,7 @@ const formatter = new Intl.NumberFormat('es-AR', {
     minimumFractionDigits: 2
 })
 
-// const formatter = new Intl.NumberFormat('en-US', {
-//     style: 'currency',
-//     currency: 'USD',
-//     minimumFractionDigits: 2
-// })
 
-// /SistOLSA/OlsaSG/backend/node_modules/pdfmake/examples
-// var fonts = {
-//     Roboto: {
-//         normal: '/home/sandra/SistOLSA/olsasi/backend/node_modules/pdfmake/examples/fonts/Roboto-Regular.ttf',
-//         bold: '/home/sandra/SistOLSA/olsasi/backend/node_modules/pdfmake/examples/fonts/Roboto-Medium.ttf',
-//         italics: '/home/sandra/SistOLSA/olsasi/backend/node_modules/pdfmake/examples/fonts/Roboto-Italic.ttf',
-//         bolditalics: '/home/sandra/SistOLSA/olsasi/backend/node_modules/pdfmake/examples/fonts/Roboto-MediumItalic.ttf'
-//     }
-// };
 var fonts = {
     Roboto: {
         normal: '/usr/share/fonts/truetype/ubuntu/Ubuntu-B.ttf',
@@ -80,20 +57,7 @@ router.post("/", function (req, res, next) {
             tipoleygral = tipoleygral + element[0].PresupDetPieLeyenda.search('seña')
         }
     });
-    // req.body.condpagoeleg.map(() => {
-    //     // console.log('req.body.condpagoeleg[i].tableData.checked  ', req.body.condpagoeleg[i].tableData.checked)
-    //     // if (req.body.condpagoeleg[i].tableData.checked == true) {
-    //     if (req.body.condpagoeleg[i].PresupDetPieLeyenda.search('Operador') === 0) {
-    //         operador = req.body.condpagoeleg[i].PresupDetPieLeyenda
-    //     }
-    //     else {
-    //         condicionpago1.push(req.body.condpagoeleg[i].PresupDetPieLeyenda)
-    //         tipoleygral = tipoleygral + req.body.condpagoeleg[i].PresupDetPieLeyenda.search('seña')
-    //     }
-    //     // }
-    //     i++
-    // }
-    // )
+
     condicionpago1.push(req.body.otraCondicion)
     TotalPresup = req.body.suma
 
@@ -451,11 +415,7 @@ router.post("/", function (req, res, next) {
     };
 
     var pdfDoc = printer.createPdfKitDocument(docDefinition);
-    // pdfDoc.pipe(fs.createWriteStream('/home/sandra/SistOLSA/olsasi/public/basics.pdf'));
-    // pdfDoc.pipe(fs.createWriteStream('/home/sandra/SistOLSA/OlsaSG/src/components/Main/pages/Presupuesto/static/media/basics.pdf'));
-    // pdfDoc.pipe(fs.createWriteStream(('/home/sandra/Documentos/OLSAFrecuentes/PresupSistema/' + nombrepresup)));
     pdfDoc.pipe(fs.createWriteStream((variables.caminoynombrearch + '/basics.pdf')));
-    // pdfDoc.pipe(fs.createWriteStream(('/home/sandra/SistOLSA/olsasi/dist/basics.pdf')));
     pdfDoc.pipe(fs.createWriteStream((variables.dirpresupdocumento + nombrepresup)));
 
     pdfDoc.end();

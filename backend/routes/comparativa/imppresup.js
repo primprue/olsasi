@@ -1,14 +1,10 @@
 var express = require("express");
 var router = express.Router();
-var path = require("path");
-var moment = require("moment");
 var conexion = require('../conexion');
 
 var PdfPrinter = require('/home/sandra/SIOLSA/OlsaSG/node_modules/pdfmake/src/printer');
 var pdfmake = require('/home/sandra/SIOLSA/OlsaSG/node_modules/pdfmake')
 
-//var PdfPrinter = require('../../node_modules/pdfmake/src/printer');
-//var pdfmake = require('../../node_modules/pdfmake')
 var dateFormat = require('dateformat');
 
 
@@ -34,17 +30,19 @@ router.post("/", function (req, res, next) {
 
     if (!dolaressn) {
         formato = new Intl.NumberFormat('es-AR', {
-        style: 'currency',
-        currency: 'ARS',
-        minimumFractionDigits: 2
-      
-    })}
+            style: 'currency',
+            currency: 'ARS',
+            minimumFractionDigits: 2
+
+        })
+    }
     else {
-        formato =  new Intl.NumberFormat(undefined, {
-        style: 'currency',
-        currency: 'USD',
-        currencyDisplay: 'code'
-    })}
+        formato = new Intl.NumberFormat(undefined, {
+            style: 'currency',
+            currency: 'USD',
+            currencyDisplay: 'code'
+        })
+    }
 
 
 
@@ -55,7 +53,7 @@ router.post("/", function (req, res, next) {
     var tipoleygral = 0
     var operador = ''
     var i = 0
-     req.body.condpagoeleg.map(() => {
+    req.body.condpagoeleg.map(() => {
         if (req.body.condpagoeleg[i].tableData.checked == true) {
             if (req.body.condpagoeleg[i].PresupDetPieLeyenda.search('Operador') === 0) {
                 operador = req.body.condpagoeleg[i].PresupDetPieLeyenda
@@ -69,24 +67,22 @@ router.post("/", function (req, res, next) {
     }
     )
 
- condicionpago1.push(req.body.otraCondicion)
-  TotalPresup = req.body.suma
+    condicionpago1.push(req.body.otraCondicion)
+    TotalPresup = req.body.suma
 
     var Cliente = req.body.nomCliente
- //   var Telefono = req.body.telCliente
     var largocli = Cliente.length
-   
+
     while ((Cliente.substr(largocli, 1) == ' ' || Cliente.substr(largocli, 1) == '') && largocli >= 0) {
         largocli--
     }
 
     Cliente = Cliente.substr(0, largocli + 1)
- 
+
     var nombrepresup = 'Presupuesto nro ' + Presupuestonro + ' ' + Cliente + ' ' + Fecha + '.pdf'
     var rows = [];
     var condpag = [];
     var condpaggral = [];
-    var encabcolum = [];
     var ac1 = 0, ac2 = 0, ac3 = 0, ac4 = 0, ac5 = 0, ac6 = 0, ac7 = 0
     var opciones = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
     var i = 0;
@@ -161,22 +157,22 @@ router.post("/", function (req, res, next) {
     }
 
 
-if (condicionpago1.length > 0) {
-    condpag.push([{ text: 'Condiciones de presupuesto', style: 'resaltado' }])
-    condpag.push(condicionpago1)
-    if (maymin === 'mn') {
-   if (tipoleygral < -0) {
-        condpaggral.push([{ text: 'El precio acordado, se mantiene, hasta 5 días posteriores a la fecha de entrega establecida.', style: 'resaltado' }])
-        condpaggral.push([{ text: 'Pasados los 5 días SE ACTUALIZARÁ A LA FECHA DE RETIRO', style: 'resaltado' }])
-        condpaggral.push([{ text: 'Si la mercadería no se retira dentro de los 60 días posteriores a la fecha establecida para la entrega, se considerará  abandonada y nuestra empresa dispondrá de ella, incluso para su destrucción', style: 'resaltado' }])
+    if (condicionpago1.length > 0) {
+        condpag.push([{ text: 'Condiciones de presupuesto', style: 'resaltado' }])
+        condpag.push(condicionpago1)
+        if (maymin === 'mn') {
+            if (tipoleygral < -0) {
+                condpaggral.push([{ text: 'El precio acordado, se mantiene, hasta 5 días posteriores a la fecha de entrega establecida.', style: 'resaltado' }])
+                condpaggral.push([{ text: 'Pasados los 5 días SE ACTUALIZARÁ A LA FECHA DE RETIRO', style: 'resaltado' }])
+                condpaggral.push([{ text: 'Si la mercadería no se retira dentro de los 60 días posteriores a la fecha establecida para la entrega, se considerará  abandonada y nuestra empresa dispondrá de ella, incluso para su destrucción', style: 'resaltado' }])
+            }
+            else {
+                condpaggral.push([{ text: 'La seña, confirma el precio acordado hasta 5 días posteriores a la fecha de entrega establecida', style: 'resaltado' }])
+                condpaggral.push([{ text: 'Pasados los 5 días el SALDO SE ACTUALIZARÁ A LA FECHA DE RETIRO', style: 'resaltado' }])
+                condpaggral.push([{ text: 'Si la mercadería no se retira dentro de los 60 días posteriores a la fecha establecida para la entrega, se considerará abandonada y nuestra empresa dispondrá de ella, incluso para su destrucción, tomando la seña como indemnización del trabajo realizado', style: 'resaltado' }])
+            }
+        }
     }
-    else {
-        condpaggral.push([{ text: 'La seña, confirma el precio acordado hasta 5 días posteriores a la fecha de entrega establecida', style: 'resaltado' }])
-        condpaggral.push([{ text: 'Pasados los 5 días el SALDO SE ACTUALIZARÁ A LA FECHA DE RETIRO', style: 'resaltado' }])
-        condpaggral.push([{ text: 'Si la mercadería no se retira dentro de los 60 días posteriores a la fecha establecida para la entrega, se considerará abandonada y nuestra empresa dispondrá de ella, incluso para su destrucción, tomando la seña como indemnización del trabajo realizado', style: 'resaltado' }])
-    }
-}
-}
 
     pdfmake.addFonts
     var chartLines = [];
@@ -196,11 +192,7 @@ if (condicionpago1.length > 0) {
             italics: '/home/sandra/SIOLSA/OlsaSG/node_modules/pdfmake/fonts/Roboto-Italic.ttf',
             bolditalics: '/home/sandra/SIOLSA/OlsaSG/node_modules/pdfmake/fonts/Roboto-MediumItalic.ttf'
         }
-        //    normal: '../backend/node_modules/pdfmake/fonts/Roboto/Roboto-Regular.ttf',
-       //     bold: '../backend/node_modules/pdfmake/fonts/Roboto/Roboto-Medium.ttf',
-       //     italics: '../backend/node_modules/pdfmake/fonts/Roboto/Roboto-Italic.ttf',
-        //    bolditalics: '../backend/node_modules/pdfmake/fonts/Roboto/Roboto-MediumItalic.ttf'
-       // }
+
     };
 
     var printer = new PdfPrinter(fonts);
@@ -214,8 +206,8 @@ if (condicionpago1.length > 0) {
             margin: 20,
             columns: [
                 {
-                //    image: path.resolve('.') + '/routes/impresion/encabpresup.png',
-                    image:  '/home/sandra/SIOLSA/OlsaSG/routes/impresion/encabpresup.png',
+                    //    image: path.resolve('.') + '/routes/impresion/encabpresup.png',
+                    image: '/home/sandra/SIOLSA/OlsaSG/routes/impresion/encabpresup.png',
                     width: 520,
                     width: 550,
                     height: 100,
@@ -251,10 +243,10 @@ if (condicionpago1.length > 0) {
                 style: 'textoI',
             },
 
-           // {
-           //     text: Telefono,
-           //     style: 'textoI',
-           // },
+            // {
+            //     text: Telefono,
+            //     style: 'textoI',
+            // },
 
             {
                 text: ' ',
@@ -270,7 +262,7 @@ if (condicionpago1.length > 0) {
                 style: 'textoD',
             },
             {
-              //  style: 'tableDatos',
+                //  style: 'tableDatos',
                 table: {
                     headerRows: 1,
                     widths: [ac1, ac2, ac3, ac4, ac5, ac6, ac7],
@@ -307,26 +299,26 @@ if (condicionpago1.length > 0) {
                     body: [
                         [
                             {
-                              //  stack: [
-                                 //   {
-                                        ul: [
-                                            condpaggral[0],
-                                            condpaggral[1],
-                                            condpaggral[2],
-                                        ]
-                                   // }
+                                //  stack: [
+                                //   {
+                                ul: [
+                                    condpaggral[0],
+                                    condpaggral[1],
+                                    condpaggral[2],
+                                ]
+                                // }
                                 //]
                             }],
                     ]
                 }
             },
- {
+            {
                 text: operador,
                 style: 'textoOperador',
             },
- 
+
         ],
- 
+
         styles: {
             header: {
                 fontSize: 12,
@@ -394,7 +386,7 @@ if (condicionpago1.length > 0) {
                 bold: true
             },
             textoDTot: {
-                fontSize:8,
+                fontSize: 8,
                 alignment: 'right',
                 bold: true
             },
@@ -427,21 +419,21 @@ if (condicionpago1.length > 0) {
     };
     //esto funciona
 
-   
+
 
     var pdfDoc = printer.createPdfKitDocument(docDefinition);
 
-  
+
     pdfDoc.pipe(fs.createWriteStream('/home/sandra/SIOLSA/OlsaSG/build/static/media/basics.01550a8f.pdf'));
-  //pdfDoc.pipe(fs.createWriteStream('/home/sandra/SIOLSA/OlsaSG/build/static/media/basics.88886c01.pdf'));
+    //pdfDoc.pipe(fs.createWriteStream('/home/sandra/SIOLSA/OlsaSG/build/static/media/basics.88886c01.pdf'));
 
     //pdfDoc.pipe(fs.createWriteStream('/home/sandra/SIOLSA/OlsaSG/build/static/media/basics.aa263810.pdf'));
     //     pdfDoc.pipe(fs.createWriteStream('/home/sandra/SIOLSA/OlsaSG/build/static/media/basics.913d0af0.pdf'));                                     
-   // pdfDoc.pipe(fs.createWriteStream('/home/sandra/SIOLSA/OlsaSG/build/static/media/basics.pdf'));
+    // pdfDoc.pipe(fs.createWriteStream('/home/sandra/SIOLSA/OlsaSG/build/static/media/basics.pdf'));
 
     pdfDoc.pipe(fs.createWriteStream(('/home/sandra/Documentos/OLSAFrecuentes/PresupSistema/' + nombrepresup)));
     pdfDoc.end();
- 
+
 
 });
 
@@ -449,11 +441,4 @@ conexion.end;
 module.exports = router;
 
 
-// function horizontalLine(x, y, length) {
-//     return { type: 'line', x1: x, y1: y, x2: x + length, y2: y };
-// }
-
-// function verticalLine(x, y, height) {
-//     return { type: 'line', x1: x, y1: y, x2: x, y2: y + height };
-// }
 

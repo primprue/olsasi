@@ -3,16 +3,6 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos en stkitemsleecodgr");
-  } else {
-    console.log("no se conecto en stkitemsleecodgr");
-  }
-});
-
-
-
 router.get("/", async function (req, res, next) {
 
   var StkItemsGrupo = req.query.idStkGrupo;

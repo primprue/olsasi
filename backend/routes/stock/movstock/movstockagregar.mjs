@@ -5,13 +5,6 @@ import conexion from "../../conexion.mjs";
 
 moment.locale("es");
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en movstockagregar");
-    } else {
-        console.log("no se conecto en movstockagregar");
-    }
-});
 
 router.all("/", async function (req, res) {
     var movareg = req.body.movareg

@@ -4,15 +4,6 @@ var router = express.Router();
 import conexion from '../conexion.mjs';
 
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en stkbgsubrubroleer");
-    } else {
-        console.log("no se conecto en stkbgsubrubroleer");
-    }
-});
-
-
 router.get('/', function (req, res, next) {
     conexion.query('Select idSubRubro as value, SubRubroDetalle as label from BasesGenerales.SubRubros ',
         function (err, result) {

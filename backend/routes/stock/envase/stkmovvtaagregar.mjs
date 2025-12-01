@@ -8,13 +8,7 @@ var nrovta = 1;
 
 moment.locale("es");
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en stkmovvtaagregar");
-  } else {
-    console.log("no se conecto en stkmovvtaagregar");
-  }
-});
+
 
 router.post("/", async function (req, res) {
   var d = new Date();

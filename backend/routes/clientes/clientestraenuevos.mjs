@@ -2,35 +2,12 @@ import express from 'express';
 var router = express.Router();
 
 import conexion from '../conexion.mjs';
-import { exec } from 'child_process';
-var child;
-
-
-
-
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en clientestraenuevos");
-    } else {
-        console.log("no se conecto en clientestraenuevos");
-    }
-});
-
-
-
-
 
 
 router.get('/', function (req, res, next) {
-
-
-
-    //as StkTipoProveedDesc
-    // en el mysql tuve que cambiar la clave foránea porque no me permitía cambiar el tipodeproveedor en la tabla proveedores
     const q = [
         'load data  infile ' + '"' + '/var/lib/mysql-files/clientes.csv' + '"  into table BasesGenerales.Clientes  FIELDS TERMINATED BY ' + '";"' + '',
     ].join(' ');
-    console.log('q en trae clientes  ', q)
     conexion.query(
         q,
         function (err, result) {
@@ -47,8 +24,6 @@ router.get('/', function (req, res, next) {
 
             }
         });
-
-
 });
 conexion.end;
 

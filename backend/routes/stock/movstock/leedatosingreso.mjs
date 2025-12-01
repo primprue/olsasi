@@ -3,24 +3,16 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos en leedatosingreso");
-    } else {
-        console.log("no se conecto en leedatosingreso");
-    }
-});
-
-
 router.get("/", function (req, res, next) {
-    var q = ["SET @numero=0 "].join(" ");
-    conexion.query(q, function (err, result) {
-        if (err) {
-            console.log(err);
-        }
-    });
+    // var q = ["SET @numero=0 "].join(" ");
+    // conexion.query(q, function (err, result) {
+    //     if (err) {
+    //         console.log(err);
+    //     }
+    // });
     var StkRubroAbr = req.query.abr;
     var q1 = [
+        'SET @numero=0; ',
         'Select  @numero:=@numero+1 as id, idStkRubro, StkRubroCodGrp, StkRubroDesc, StkItems.idStkItems,  StkGrupo.StkGrupoDesc as GrupoDesc, ',
         'StkItemsDesc, BasesGenerales.Proveedores.ProveedoresDesc, StkRubroPresDes, StkRubroAncho, StkRubroPres, StkRubroProv, ',
         'StkItemsMin, StkItemsMax, StkItemsCantidad, StkItemsCantDisp, StkRubroUM, ',
@@ -39,7 +31,7 @@ router.get("/", function (req, res, next) {
         if (err) {
             console.log(err);
         } else {
-            res.json(result);
+            res.json(result[1]);
         }
     });
 });

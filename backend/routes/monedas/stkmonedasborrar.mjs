@@ -4,14 +4,6 @@ var router = express.Router();
 import conexion from '../conexion.mjs';
 
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en stkmonedasborrar");
-    } else {
-        console.log("no se conecto en stkmonedasborrar");
-    }
-});
-
 router.delete('/', async function (req, res) {
     var indice = req.query.id;
     var q = ['delete from StkMonedas where idStkMonedas = "' + indice + '"'].join(' ')

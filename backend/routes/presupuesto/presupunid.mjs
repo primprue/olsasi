@@ -3,14 +3,6 @@ var router = express.Router();
 
 import conexion from '../conexion.mjs';
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en presupunid");
-  } else {
-    console.log("no se conecto en presupunid");
-  }
-});
-
 var datosenvio = []
 
 router.get('/', (req, res, next) => {
@@ -59,12 +51,13 @@ router.get('/', (req, res, next) => {
             }
             else {
               if (ivasn == 'CIVA') {
-                result[0].ImpItem = result[0].ImpItem.toFixed(0)
-                result[0].ImpUnitario = result[0].ImpUnitario.toFixed(0)
+
+                result[0].ImpItem = Number(result[0].ImpItem).toFixed(0)
+                result[0].ImpUnitario = Number(result[0].ImpUnitario).toFixed(0)
               }
               else {
-                result[0].ImpItem = result[0].ImpItem.toFixed(0) / 1.21
-                result[0].ImpUnitario = result[0].ImpUnitario.toFixed(0) / 1.21
+                result[0].ImpItem = Number(result[0].ImpItem).toFixed(0) / 1.21
+                result[0].ImpUnitario = Number(result[0].ImpUnitario).toFixed(0) / 1.21
               }
 
               result[0].Detalle = ""

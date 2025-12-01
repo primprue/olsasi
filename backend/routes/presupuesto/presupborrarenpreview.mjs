@@ -7,17 +7,9 @@ import variables from '../../public/variables.mjs';
 import { exec } from 'child_process';
 moment.locale("es");
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en presupborrarenpreview");
-  } else {
-    console.log("no se conecto en presupborrarenpreview");
-  }
-});
 
 
 router.delete("/", function (req, res, next) {
-  var errores = []
   var respuesta = []
   // var nombrepresup = req.query.nombrepresup;
   // var comando = 'rm ' + variables.caminoynombrearch + nombrepresup

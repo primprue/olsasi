@@ -1,13 +1,6 @@
 import express from "express";
 var router = express.Router();
 import conexion from "../conexion.mjs";
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en proveedoresmodificar");
-  } else {
-    console.log("no se conecto en proveedoresmodificar");
-  }
-});
 
 router.use(express.json()); // Asegúrate de que esto está habilitado para que `req.body` no sea vacío
 router.post("/", async function (req, res, next) {

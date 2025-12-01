@@ -3,14 +3,6 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en stkitemsmodstock");
-  } else {
-    console.log("no se conecto en stkitemsmodstock");
-  }
-});
-
 
 
 router.post("/", async function (req, res, next) {

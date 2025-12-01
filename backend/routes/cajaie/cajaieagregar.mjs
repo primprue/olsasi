@@ -6,13 +6,6 @@ moment.locale("es");
 
 const router = express.Router();
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("Base de datos conectada en cajaieagregar");
-    } else {
-        console.log("No se conectó en cajaieagregar");
-    }
-});
 
 router.post("/", async function (req, res) {
 

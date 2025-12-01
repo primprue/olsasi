@@ -3,14 +3,6 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos en stkitemsleecodgrrbit");
-  } else {
-    console.log("no se conecto en stkitemsleecodgrrbit");
-  }
-});
-
 
 
 router.get("/", async function (req, res, next) {

@@ -2,16 +2,6 @@ import express from 'express';
 var router = express.Router();
 
 import conexion from '../conexion.mjs';
-import mysql from 'mysql';
-
-
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en transporteborrar");
-    } else {
-        console.log("no se conecto en transporteborrar");
-    }
-});
 
 
 router.delete('/', async function (req, res) {

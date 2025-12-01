@@ -3,20 +3,12 @@ var router = express.Router();
 
 import conexion from "../conexion.mjs";
 import dateFormat from 'dateformat';
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en presupencableer");
-  } else {
-    console.log("no se conecto en presupencableer");
-  }
-});
+
 
 
 router.get("/", function (req, res, next) {
   var fecharecibida = req.query.id;
   var day = dateFormat(new Date(fecharecibida), "yyyy-mm-dd");
-  console.log('fecharecibida', fecharecibida)
-  console.log('day', day)
   var q = ["SELECT p.idPresupEncab as id,  ",
     ' date_format( p.PresupEncabFecha, "%d-%m-%Y") as PresupEncabFecha, ',
     " CASE WHEN(PresupEncabCliente > 0 and PresupEncabCliente < 99999) = 1 THEN c.ClientesDesc ",

@@ -3,17 +3,7 @@ var router = express.Router();
 
 import conexion from '../../conexion.mjs';
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en presupparcalclee");
-    } else {
-        console.log("no se conecto en presupparcalclee");
-    }
-});
 
-
-
-// idPresupParCalc, PresupParCalDesc, PresupParCalTit, PresupParCalOpcion
 router.get('/', function (req, res, next) {
     var paracalculo = req.query.id;
     var q = ['Select PresupParCalTit as value, PresupParCalOpcion as label from BasePresup.PresupParCalc where PresupParCalDesc = "' + paracalculo + '" order by PresupParCalDesc, PresupParCalTit'].join(' ')

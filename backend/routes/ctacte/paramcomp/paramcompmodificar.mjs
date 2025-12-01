@@ -4,17 +4,6 @@ var router = express.Router();
 import conexion from '../../conexion.mjs';
 
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en paramcompmodificar");
-    } else {
-        console.log("no se conecto en paramcompmodificar");
-    }
-});
-
-
-
-
 router.post('/?:id', function (req, res, next) {
     var indice = req.params.id;
 

@@ -2,13 +2,6 @@ import express from 'express';
 var router = express.Router();
 import conexion from '../conexion.mjs';
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en transporteleer");
-    } else {
-        console.log("no se conecto en transporteleer");
-    }
-});
 
 router.get('/', function (req, res, next) {
     const q = ['Select idTransporte as id, TransporteDesc,  TransporteTel1,',

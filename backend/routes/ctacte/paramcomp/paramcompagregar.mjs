@@ -7,13 +7,7 @@ import conexion from '../../conexion.mjs';
 
 moment.locale('es');
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en paramcompagregar");
-    } else {
-        console.log("no se conecto en paramcompagregar");
-    }
-});
+
 
 
 
@@ -29,7 +23,6 @@ router.post('/', function (req, res, next) {
         ParamCompIVAAsoc: req.body.ParamCompIVAAsoc
     }
 
-    console.log('registro en alta  ', registro)
     conexion.query('INSERT INTO CtaCte.ParamComp SET ?', registro,
 
         function (err, result) {
@@ -52,9 +45,5 @@ router.post('/', function (req, res, next) {
             }
         });
 });
-
-
-
-
 
 export default router;

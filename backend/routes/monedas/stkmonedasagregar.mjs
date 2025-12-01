@@ -7,15 +7,6 @@ import conexion from '../conexion.mjs';
 
 moment.locale('es');
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en stkmonedasagregar");
-    } else {
-        console.log("no se conecto en stkmonedasagregar");
-    }
-});
-
-
 
 router.post('/', function (req, res, next) {
     var registro = {

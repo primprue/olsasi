@@ -3,16 +3,6 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en stkgrabamovsalfinal");
-  } else {
-    console.log("no se conecto en stkgrabamovsalfinal");
-  }
-});
-
-
-
 router.post("/", async function (req, res, next) {
   var StkItemsGrupo = req.body.StkItemsGrupo;
   var StkItemsRubro = req.body.StkItemsRubro;

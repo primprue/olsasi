@@ -3,13 +3,7 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos en sumaingreso");
-    } else {
-        console.log("no se conecto en sumaingreso");
-    }
-});
+
 var datosenvio = [];
 
 router.post("/", function (req, res, next) {

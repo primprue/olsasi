@@ -6,13 +6,7 @@ import { buscacodigo } from './stkgennrorubro.mjs';
 
 moment.locale("es");
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en stkrubroagregar");
-  } else {
-    console.log("no se conecto en stkrubroagregar");
-  }
-});
+
 
 router.all("/", async function (req, res) {
   // let codgrupo

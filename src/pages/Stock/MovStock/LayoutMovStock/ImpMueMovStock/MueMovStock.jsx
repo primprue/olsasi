@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 import { use } from "react";
-// import StaticContexto from "../../../context/StaticContext.jsx";
 import TablasContexto from "../../../../../context/TablasContext.jsx";
 import { formdata } from "./formdata.js";
 
@@ -13,7 +12,6 @@ import { Button, Dialog, DialogContent } from "@mui/material";
 import { Row } from "antd";
 import { format } from "date-fns";
 import TextFieldComun from "../../../../../components/comppropios/TextFieldComun.jsx";
-import Column from "antd/es/table/Column.js";
 export default function MueMovStock({ open, handleClose }) {
 
     const { formdatos, setFormdatos } = use(TablasContexto);
@@ -29,8 +27,8 @@ export default function MueMovStock({ open, handleClose }) {
         var col = await llenarcolumns();
         setColumns(() => col);
     }
-    async function dataFetch() {
-        const data = await MovStockLeer({ FechaDesde, FechaHasta });
+    async function dataFetch(tipolist) {
+        const data = await MovStockLeer({ FechaDesde, FechaHasta, tipolist });
         setRows(data);
     }
     async function initialFetch() {
@@ -83,7 +81,8 @@ export default function MueMovStock({ open, handleClose }) {
                     {/* </DialogContent>
 
                 <DialogContent> */}
-                    <Button onClick={dataFetch}>OK</Button>
+                    <Button onClick={() => dataFetch('C')}>Completo</Button>
+                    <Button onClick={() => dataFetch('R')}>Resumido</Button>
                     <Button onClick={handleClose}>Cierra</Button>
                     <TablaMuestra
                         rows1={rows}

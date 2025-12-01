@@ -3,14 +3,6 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en pbsubrubrosmodificar");
-  } else {
-    console.log("no se conecto en pbsubrubrosmodificar");
-  }
-});
-
 router.post("/", async function (req, res, next) {
   var indice = req.query.id;
   var descr = String(req.body.PBSubRubroDetalle).toUpperCase();

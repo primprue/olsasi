@@ -16,9 +16,8 @@ import { PBItemsAgregar } from "../pages/PreBalance/PBItems/PBItemsAgregar";
 import { PBPorIVAAgregar } from "../pages/PreBalance/PBPorIVA/PBPorIVAAgregar";
 import { OTDatosAgregar } from "../pages/OrdenTrabajo/OTTablas/OTDatos/OTDatosAgregar";
 import { CajaIEAgregar } from "../pages/CajaIE/CajaIEAgregar";
+import { CajaInternaAgregar } from "../pages/CajaIE/CajaInterna/CajaInternaAgregar";
 export function onRowAdd(newData, formdatos) {
-  console.log('newData onRowAdd ', newData);
-  console.log('formdatos onRowAdd', formdatos);
   return new Promise((resolve) => {
     setTimeout(() => {
       if (formdatos.tablabase === 'Clientes') {
@@ -45,8 +44,6 @@ export function onRowAdd(newData, formdatos) {
 
       }
       if (formdatos.tablabase === 'StkItems') {
-        // StkItemsAgregar(newData);
-        console.log('stkitems', newData);
         stkItemsBuscaCod(newData)
       }
       // if (formdatos.tablabase === 'StkItemsAgregar') {
@@ -79,6 +76,9 @@ export function onRowAdd(newData, formdatos) {
       }
       if (formdatos.tablabase === 'CajaIE') {
         CajaIEAgregar(newData);
+      }
+      if (formdatos.tablabase === 'CajaInterna') {
+        CajaInternaAgregar(newData);
       }
       resolve(50);
     }, 100);

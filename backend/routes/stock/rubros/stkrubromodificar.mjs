@@ -3,15 +3,6 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en stkrubromodificar");
-  } else {
-    console.log("no se conecto en stkrubromodificar");
-  }
-});
-
-
 
 router.post("/", async function (req, res, next) {
   var idStkRubro = req.query.idStkRubro;

@@ -3,16 +3,7 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en porivamodificar");
-    } else {
-        console.log("no se conecto en porivamodificar");
-    }
-});
-
 router.use(express.json()); // Asegúrate de que esto está habilitado para que `req.body` no sea vacío
-// router.post('/?:id', function (req, res, next) {
 router.post("/", async function (req, res, next) {
 
     var indice = req.query.id;

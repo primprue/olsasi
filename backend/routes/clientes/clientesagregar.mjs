@@ -4,13 +4,6 @@ import moment from 'moment';
 import conexion from '../conexion.mjs';
 
 moment.locale('es');
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en clientesagregar");
-    } else {
-        console.log("no se conecto en clientesagregar");
-    }
-});
 
 
 router.post('/', function (req, res) {

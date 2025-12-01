@@ -3,15 +3,6 @@ var router = express.Router();
 import conexion from "../../conexion.mjs";
 
 
-
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en sktrubroborrar");
-  } else {
-    console.log("no se conecto en sktrubroborrar");
-  }
-});
-
 router.delete("/", async function (req, res, next) {
   var idStkRubro = req.query.idStkRubro;
   var StkRubroCodGrp = req.query.StkRubroCodGrp;

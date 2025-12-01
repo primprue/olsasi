@@ -33,8 +33,10 @@ export default function BilletesQuedan(props) {
             const saldoqueda = parseFloat(conPunto);
             retiroManiana = 0
             retiroTarde = 0
+            totales[monedaId]?.totalT > 0 ?
+                retiroTarde = totales[monedaId]?.totalTSinInstr : 0
             totales[monedaId]?.totalM > 0 ?
-                retiroManiana = totales[monedaId]?.totalMEsp - saldoqueda : 0
+                retiroManiana = totales[monedaId]?.totalMEsp - saldoqueda - retiroTarde : 0
 
             totalInstrumentos = totales[monedaId]?.totalInstr
 

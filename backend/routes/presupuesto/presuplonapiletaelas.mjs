@@ -3,13 +3,6 @@ var router = express.Router();
 
 import conexion from "../conexion.mjs";
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en presuplonapiletaelas");
-  } else {
-    console.log("no se conecto en presuplonapiletaelas");
-  }
-});
 
 var datosenvio = [];
 
@@ -271,10 +264,10 @@ router.get("/", (req, res, next) => {
               costooriginal = costooriginal + costoMOTDren
               Math.fround(costooriginal)
               if (ivasn == 'CIVA') {
-                costooriginal = Math.ceil(costooriginal.toFixed(2) / 10) * 10
+                costooriginal = Math.ceil(Number(costooriginal).toFixed(2) / 10) * 10
               }
               else {
-                costooriginal = Math.ceil(costooriginal.toFixed(2) / 1.21 / 10) * 10
+                costooriginal = Math.ceil(Number(costooriginal).toFixed(2) / 1.21 / 10) * 10
               }
               datosenvio[0][0]['ImpUnitario'] = costooriginal
               datosenvio[0][0]['Detalle'] = detalle

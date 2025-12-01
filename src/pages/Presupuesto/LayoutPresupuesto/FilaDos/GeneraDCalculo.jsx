@@ -62,6 +62,7 @@ export const GeneraDCalculo = (props, presuptipo, cotidivisa) => {
 	}
 
 	if (presuptipo === "ABOLINADA") {
+
 		if (props.PresupOjalesC === '') faltadato = true
 		if (props.PresupAncho === 0) faltadato = true
 		if (props.PresupLargo === 0) faltadato = true

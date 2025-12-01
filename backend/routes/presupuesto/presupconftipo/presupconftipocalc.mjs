@@ -3,13 +3,6 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en presupconftipocalc");
-  } else {
-    console.log("no se conecto en presupconftipocalc");
-  }
-});
 
 var datosenvio = [];
 router.get("/", function (req, res, next) {
@@ -76,7 +69,7 @@ router.get("/", function (req, res, next) {
               console.log(err);
             } else {
 
-              vlrMAT = result[0].ImpUnitario
+              vlrMAT = Number(result[0].ImpUnitario)
 
               if (vlrMOT === 0) {
                 ImpUnitario = parseInt(vlrMAT)
@@ -91,7 +84,7 @@ router.get("/", function (req, res, next) {
               else {
                 ImpUnitario = Math.ceil(((ImpUnitario / 1.21) / 10) * 10)
               }
-
+              console.log('ImpUnitario  ', ImpUnitario)
 
               datosenvio.push(ImpUnitario)
               datosenvio.push(ImprimeSN)

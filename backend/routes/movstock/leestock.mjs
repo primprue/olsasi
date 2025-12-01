@@ -3,13 +3,6 @@ var router = express.Router();
 
 import conexion from '../conexion.mjs';
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en leestock");
-    } else {
-        console.log("no se conecto en leestock");
-    }
-});
 
 router.get('/', function (req, res, next) {
     let q1

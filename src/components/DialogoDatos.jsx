@@ -12,6 +12,7 @@ import { ValidatedTextField } from "../hooks/useValidTextField";
 
 export function DialogoDatos(props) {
 	const { formdatos, setFormdatos, datoborrado, setDatoborrado } = use(TablasContexto);
+
 	const { open, handleClose, columns, nombrebtn, paramsbor, titulodial } = props;
 	// 🔧 Generar una fila vacía según las columnas
 	const generarFilaVacia = () => {
@@ -66,7 +67,6 @@ export function DialogoDatos(props) {
 		setTimeout(() => {
 			if (nombrebtn === "Enviar") {
 				const tieneErrores = Object.values(formState).some((v) => v === "");
-
 				if (!tieneErrores) {
 					onRowAdd(formState, formdatos);
 				} else {

@@ -3,24 +3,16 @@ var router = express.Router();
 
 import conexion from "../conexion.mjs";
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en presupbolsontanque");
-  } else {
-    console.log("no se conecto en presupbolsontanque");
-  }
-});
-
 var datosenvio = [];
 
 
 router.get("/", (req, res) => {
-  var q, anchotela, cantpaños, soga, cantsoga, criquet, cantcriquet, detallep, ivasn, detalle, cancriquet, valorMOT, codmoneda, coefimpuesto, valorflete
-  var datosrec, totalreg, buscaancho, cantidad, segsoldarfaldon, mgancho, coefMOT, termbordeeleg, MOTarmado, minutosunion, valorMOTseg, valorsogacriq
+  var q, anchotela, cantpaños, soga, cantsoga, criquet, cantcriquet, detallep, ivasn, detalle, cancriquet
+  var datosrec, buscaancho, segsoldarfaldon, coefMOT, termbordeeleg, valorMOTseg, valorsogacriq
   var medida, alto, altodesc, altocalculo, altoconpared, perimetro, diametro, diametroI, segcortarpf, segunirpf, segunirpp
-  var segcortarpp, segspisofondo, segunirpp2, segunirpp3, segunirpp4, segunirpp5, segunirpp6, segunirpp7, segunirpp8, segunirpp9
-  var segpisofondo, segcortefondo, seghacercortes, mcuadradosfaldon, calpaños, canttelapiso
-  var importesogaper, importecriquetper, valormcuad, costooriginal
+  var segcortarpp, segspisofondo, totalreg, cantidad, costooriginal, segcortefondo, seghacercortes, mcuadradosfaldon, calpaños, canttelapiso
+  var segcortefondo, seghacercortes, mcuadradosfaldon, calpaños, canttelapiso
+  var importesogaper, importecriquetper, valormcuad
   var SegundosMOT
   q = ['select * from BasePresup.PresupParam'].join(' ')
   conexion.query(q,
@@ -119,18 +111,7 @@ router.get("/", (req, res) => {
 
           altoconpared = alto + anchopared
           detalle = detalle + ' con pared de ' + anchopared + ' mts. y un alto de ' + (altodesc * 1).toFixed(2) + ' mts. (incluye sobrante para doblar), '
-          // console.log('termbordeeleg  ', termbordeeleg)
-          // console.log('alto  ', alto)
-          // if (termbordeeleg === 'SF') {
-          //   alto = alto + anchopared + 0.3
-          //   if (alto <= 1.50) {
-          //     alto = 1.50
-          //   }
-          // }
-          // else {
-          //   alto = alto + anchopared
-          // }
-          // console.log('alto  ', alto)
+
 
           if (StkRubroAbrP === 'POL19') {
             if (altoconpared > 1.50 && altoconpared <= 2) {
@@ -170,6 +151,7 @@ router.get("/", (req, res) => {
           //hasta acá excepto porque falta calcular el diametro interno en DE y en PE, todo está bien para pol19
 
           else {
+            SegundosMOT = perimetro * 600
             // calculo de los paños del piso
             calpaños = (diametroI % anchotela)
 
@@ -210,14 +192,14 @@ router.get("/", (req, res) => {
             }
 
 
-
             metroscuadtotal = canttelapiso * 1 + metroscuadper * 1
             // 240 segundos para soldar los paños del perímetro al fondo
 
             segspisofondo = perimetro * 240
             segcortefondo = perimetro * 120
 
-            SegundosMOT = segcortarpf + segunirpf + segcortarpp + segunirpp + segspisofondo + segcortefondo
+
+            SegundosMOT = SegundosMOT + segcortarpf + segunirpf + segcortarpp + segunirpp + segspisofondo + segcortefondo
 
             switch (termbordeeleg) {
               case "SF":
@@ -238,6 +220,7 @@ router.get("/", (req, res) => {
                 metroscuadtotal = metroscuadtotal + mcuadradosfaldon
                 segsoldarfaldon = (diametro * 3.1416 * 240)
                 SegundosMOT = SegundosMOT + seghacercortes + segsoldarfaldon
+
                 break
             }
             if (termbordeeleg == "CFS") {
@@ -294,8 +277,10 @@ router.get("/", (req, res) => {
           valorMOTseg = result[0].costoMOT * coefMOT / 60 / 60
 
 
+
           MOTarmado = valorMOTseg * SegundosMOT
           MOTarmadoAd = valorMOTseg * SegundosMOTAd
+
 
           valorsogacriq = ['Select ',
             '(StkRubroCosto * StkMonedasCotizacion * ', coeficiente,

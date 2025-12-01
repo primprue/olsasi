@@ -4,14 +4,6 @@ var router = express.Router();
 import conexion from '../conexion.mjs';
 //var param = require('../parametros')
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en presupcargadesc");
-  } else {
-    console.log("no se conecto en presupcargadesc");
-  }
-});
-
 var datosenvio = []
 
 router.get('/', (req, res, next) => {

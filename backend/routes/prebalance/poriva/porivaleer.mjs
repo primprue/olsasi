@@ -3,15 +3,6 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en pbcomprobantesleer");
-    } else {
-        console.log("no se conecto en pbcomprobantesleer");
-    }
-});
-
-
 router.get("/", function (req, res, next) {
     var q = ["Select PBPorcIVA as id, PBPorcIVA  from BasePreBalance.PBPorIVA"].join(" ");
     conexion.query(q, function (err, result) {

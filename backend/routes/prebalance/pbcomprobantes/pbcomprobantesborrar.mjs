@@ -4,14 +4,6 @@ var router = express.Router();
 import conexion from "../../conexion.mjs";
 
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en pbcomprobantesborrar");
-  } else {
-    console.log("no se conecto en pbcomprobantesborrar");
-  }
-});
-
 router.delete("/", function (req, res, next) {
   var indice = req.query.id;
   var q = ["delete", ' from BasePreBalance.PBComprobantes where PBCompAbre = "', indice, '"'].join(

@@ -7,14 +7,7 @@ import moment from 'moment';
 
 moment.locale('es');
 
-//   
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en clientesmodificar");
-  } else {
-    console.log("no se conecto en clientesmodificar");
-  }
-});
+
 
 router.post("/?:id", function (req, res) {
   var d = new Date();

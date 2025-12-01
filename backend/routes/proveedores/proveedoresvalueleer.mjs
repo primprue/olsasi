@@ -6,18 +6,6 @@ import conexion from '../conexion.mjs';
 
 var router = express.Router();
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en proveedoresvalueleer");
-    } else {
-        console.log("no se conecto en proveedoresvalueleer");
-    }
-});
-
-
-
-
-
 
 router.get('/', function (req, res, next) {
     //as StkTipoProveedDesc

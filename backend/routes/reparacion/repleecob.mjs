@@ -2,14 +2,6 @@ import express from 'express';
 import conexion from '../conexion.mjs';
 
 var router = express.Router();
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en repleecob");
-    } else {
-        console.log("no se conecto en repleecob");
-    }
-});
-
 
 
 router.get('/', function (req, res, next) {

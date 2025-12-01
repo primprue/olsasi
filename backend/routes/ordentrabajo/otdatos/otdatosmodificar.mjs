@@ -8,13 +8,6 @@ import moment from 'moment';
 moment.locale('es');
 
 //   
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en otdatosmodificar");
-  } else {
-    console.log("no se conecto en otdatosmodificar");
-  }
-});
 
 router.post("/", async function (req, res, next) {
   var q = [

@@ -3,14 +3,6 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en stkrubroleerprov");
-  } else {
-    console.log("no se conecto en stkrubroleerprov ");
-  }
-});
-
 
 router.get("/", function (req, res, next) {
   var indice = req.query.idStkGrupo;

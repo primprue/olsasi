@@ -3,13 +3,7 @@ import express from 'express';
 var router = express.Router();
 import conexion from '../conexion.mjs';
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en otestadoleer");
-    } else {
-        console.log("no se conecto en otestadoleer");
-    }
-});
+
 
 router.get('/', async function (req, res) {
     var q = ['SELECT idOTEstado as value, OTEstadoDesc as label  FROM BasesOrdenes.OTEstado'].join(' ')

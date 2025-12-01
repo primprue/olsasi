@@ -3,14 +3,6 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en stkunmedleer");
-  } else {
-    console.log("no se conecto en stkunmedleer");
-  }
-});
-
 
 router.get("/", function (req, res, next) {
   conexion.query("Select idStkUnMed as id, StkUnMedDesc from StkUnMed ", function (err, result) {

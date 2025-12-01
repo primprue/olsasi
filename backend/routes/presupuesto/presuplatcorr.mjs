@@ -1,15 +1,6 @@
 import express from 'express';
 var router = express.Router();
 import conexion from '../conexion.mjs';
-import e from 'express';
-
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en presuplatcorr");
-  } else {
-    console.log("no se conecto en presuplatcorr");
-  }
-});
 
 var datosenvio = []
 
@@ -247,10 +238,10 @@ router.get('/', (req, res, next) => {
 
 
             if (ivasn == 'CIVA') {
-              costooriginal = Math.ceil(costooriginal.toFixed(0) / 10) * 10
+              costooriginal = Math.ceil(Number(costooriginal).toFixed(0) / 10) * 10
             }
             else {
-              costooriginal = Math.ceil(costooriginal.toFixed(0) / 1.21 / 10) * 10
+              costooriginal = Math.ceil(Number(costooriginal).toFixed(0) / 1.21 / 10) * 10
             }
             datosenvio[0][0]['ImpUnitario'] = costooriginal
             datosenvio[0][0]['Detalle'] = detalle

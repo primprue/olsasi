@@ -5,14 +5,6 @@ import conexion from '../conexion.mjs';
 
 moment.locale('es');
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en otorigenpresupagregar");
-    } else {
-        console.log("no se conecto en otorigenpresupagregar");
-    }
-});
-
 router.post('/', function (req, res) {
 
 

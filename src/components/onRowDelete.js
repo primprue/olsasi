@@ -12,6 +12,7 @@ import { PBRubrosBorrar } from "../pages/PreBalance/PBRubros/PBRubrosBorrar";
 import { PBSubRubrosBorrar } from "../pages/PreBalance/PBSubRubros/PBSubRubrosBorrar";
 import { PBComprobantesBorrar } from "../pages/PreBalance/PBComprobantes/PBComprobantesBorrar";
 import { PBPorIVABorrar } from "../pages/PreBalance/PBPorIVA/PBPorIVABorrar";
+import { CajaInternaBorrar } from "../pages/CajaIE/CajaInterna/CajaInternaBorrar";
 // import { PresupBorrar } from "../pages/Presupuesto/LayoutPresupuesto/PrespuConMod/PresupBorrar";
 export function onRowDelete(paramsid, newData, paramsbor) {
 
@@ -58,6 +59,9 @@ export function onRowDelete(paramsid, newData, paramsbor) {
       }
       if (newData.tablabase === 'PBPorIVA') {
         PBPorIVABorrar(paramsid)
+      }
+      if (newData.tablabase === 'CajaInterna') {
+        CajaInternaBorrar(paramsid)
       }
       resolve(50);
     }, 100);

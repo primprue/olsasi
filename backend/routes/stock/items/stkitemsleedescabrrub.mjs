@@ -3,14 +3,6 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos en stkitemsleedescabrrub");
-  } else {
-    console.log("no se conecto en stkitemsleedescabrrub");
-  }
-});
-
 
 
 router.get("/?:StkItemsRubroAbr", function (req, res, next) {

@@ -4,18 +4,6 @@ var router = express.Router();
 import conexion from '../conexion.mjs';
 
 
-
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en clientesleerdescod");
-    } else {
-        console.log("no se conecto en clientesleerdescod");
-    }
-});
-
-
-
-
 router.get('/', async function (req, res) {
     var indice = req.query.id;
     console.log('indice clientesleerdescod  ', indice)

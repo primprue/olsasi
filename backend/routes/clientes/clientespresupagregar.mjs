@@ -4,9 +4,6 @@ var router = express.Router();
 import moment from 'moment';
 import conexion from '../conexion.mjs';
 
-
-
-
 moment.locale('es');
 conexion.connect(function (err) {
     if (!err) {

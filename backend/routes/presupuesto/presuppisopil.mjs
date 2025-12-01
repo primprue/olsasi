@@ -3,13 +3,7 @@ var router = express.Router();
 
 import conexion from '../conexion.mjs';
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en presuppisopil");
-    } else {
-        console.log("no se conecto en presuppisopil");
-    }
-});
+
 
 var datosenvio = []
 
@@ -129,10 +123,10 @@ router.get('/', (req, res, next) => {
                                 else {
 
                                     if (ivasn == 'CIVA') {
-                                        result[0].ImpUnitario = Math.ceil(result[0].ImpUnitario.toFixed(0) / 10) * 10
+                                        result[0].ImpUnitario = Math.ceil(Number(result[0].ImpUnitario).toFixed(0) / 10) * 10
                                     }
                                     else {
-                                        result[0].ImpUnitario = Math.ceil(result[0].ImpUnitario.toFixed(0) / 1.21 / 10) * 10
+                                        result[0].ImpUnitario = Math.ceil(Number(result[0].ImpUnitario).toFixed(0) / 1.21 / 10) * 10
                                     }
                                     callargo = cantidad * result[0].Ancho
                                     anchoreal = (largo * 1).toFixed(2)

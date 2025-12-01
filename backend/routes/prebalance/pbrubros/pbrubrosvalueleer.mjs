@@ -3,16 +3,6 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en pbrubrosvalueleer");
-  } else {
-    console.log("no se conecto en pbrubrosvalueleer");
-  }
-});
-
-
-
 router.get("/", function (req, res, next) {
   var q = ["Select idPBRubros as value,  PBRubrosDetalle as label from BasePreBalance.PBRubros"].join(" ");
   console.log('q en pbrubrosvalueleer', q);

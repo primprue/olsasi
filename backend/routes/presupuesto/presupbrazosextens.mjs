@@ -4,241 +4,213 @@ var router = express.Router();
 
 import conexion from '../conexion.mjs';
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en presupbrazosextens");
-  } else {
+
+
+conexion.connect(err => {
+  if (err) {
     console.log("no se conecto en presupbrazosextens");
+  } else {
+    console.log("base de datos conectada en presupbrazosextens");
   }
 });
 
-var datosenvio = []
-router.get('/', (req, res, next) => {
+// ------------------------------------------------------------------
+// FUNCIÓN: ejecuta una consulta MySQL en modo async
+// ------------------------------------------------------------------
+function queryAsync(sql) {
+  return new Promise((resolve, reject) => {
+    conexion.query(sql, (err, result) => {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
+}
 
-  var q, i = 0
-  var coeficiente = 0, StkRubroAbrP = '', largo = 0.00, ancho = 0.00
-  var enteropanios = 0, decimalpanios = 0.00, altovolado = 0.00, abrevmotor = '', detallemotor = ''
-  var stkrubroabrtbr = '', tipomecanismo, detallep, ivasn, coefMOT, MOTarmado, valorMOTmin, panios, importetbr, valormotor
-  var importemecanismo, detalle
-  q = ['select * from BasePresup.PresupParam'].join(' ')
+router.get('/', async (req, res, next) => {
 
-  conexion.query(q,
-    function (err, result) {
-      if (err) {
-        console.log(err);
+  try {
+    const datosrec = JSON.parse(req.query.datoscalculo);
+    const parametros = await queryAsync(`SELECT * FROM BasePresup.PresupParam`);
+    const p = parametros[0];
+
+    const resultados = [];
+
+
+    for (const item of datosrec) {
+      const {
+        tipomecanismo,
+        stkrubroabrtbr,
+        StkRubroAbr,
+        detallep,
+        ivasn,
+        largo,
+        ancho,
+        altovolado,
+        minmay,
+      } = item;
+
+
+      let anchocal = ancho + 0.08
+      let enteropanios = Math.trunc(anchocal / 1.50)
+
+      // coeficientes
+      const coeficiente =
+        minmay === "my" ? p.coeficientemay : p.coeficientemin;
+      const coefMOT =
+        minmay === "my" ? p.coefMOTmay : p.coefMOTmin;
+      let ivasncal = minmay === "my" ? "CIVA" : ivasn;
+      let MOTarmado = 0;
+
+      if (Number(largo) <= 1.60) {
+        MOTarmado = 44 * ancho
+
+      }
+      else if (Number(largo) > 1.60 && Number(largo) <= 2.60) {
+        MOTarmado = 55 * ancho
+      }
+      else {
+        MOTarmado = 65 * ancho
+      }
+      let largocal = 0
+      if (altovolado === 0) {
+        largocal = Number(largo) + 0.5
+      }
+      else {
+        largocal = Number(largo) + 0.70 + (altovolado / 100) //agrego .5 del toldo + .2 del volado para doblar
+        MOTarmado = MOTarmado + (17 * ancho)
       }
 
-      let datosrec = JSON.parse(req.query.datoscalculo)
-      let totalreg = datosrec.length
-
-      datosrec.map(datos => {
-        tipomecanismo = datos.tipomecanismo;
-        stkrubroabrtbr = datos.stkrubroabrtbr;
-        StkRubroAbrP = datos.StkRubroAbr;
-        detallep = datos.detallep;
-        ivasn = datos.ivasn;
-        largo = datos.largo * 1
-        ancho = datos.ancho * 1 + 0.08
-        altovolado = datos.altovolado * 1
-        enteropanios = Math.trunc(ancho / 1.50)
+      let valorMOTmin = p.costoMOT * coefMOT / 60
 
 
-        if (datos.minmay == 'my') {
-          coeficiente = result[0].coeficientemay
-          coefMOT = result[0].coefMOTmay
-          ivasn = 'CIVA'
+
+      const decimalpanios = (anchocal / 1.5) - enteropanios;
+      const panios = decimalpanios > 0 ? enteropanios + 1 : enteropanios;
+
+
+
+
+      /*El valor de los brazos y caños correspondientes, por abreviatura  */
+      /*decidir si tiene compensador o no, como es*/
+      /*decidir cantidad de brazos */
+      /*
+              MOTOR 30 NW S/AYUDA MANUAL		AT047		
+              MOTOR 50 NW S/AYUDA MANUAL		AT048		
+              MOTOR 30 NW C/AYUDA MANUAL		AT049		
+              MOTOR 50 NW C/AYUDA MANUAL		AT050		
+              MOTOR 30 NW C/CONTROL REMOTO		AT051	
+              MOTOR 50 NW C/CONTROL REMOTO		AT052
+      */
+      const q1 = `
+          SELECT
+            StkRubroAbr,
+            (StkRubroCosto * StkMonedasCotizacion * ${coeficiente}) AS ValorToldoBarrac,
+            StkRubroCosto,
+            StkMonedasCotizacion
+          FROM BaseStock.StkRubro
+          JOIN BaseStock.StkMonedas
+            ON StkRubro.StkRubroTM = idStkMonedas
+          WHERE StkRubro.StkRubroAbr = "${stkrubroabrtbr}"
+        `;
+      const q2 = `
+        SELECT
+          StkRubroDesc,
+          StkRubroAbr,
+          (StkRubroCosto * StkMonedasCotizacion * ${coeficiente}  * ${panios} 
+            * ${largocal}) AS ImpUnitario,
+          StkRubroCosto,
+          StkMonedasCotizacion
+        FROM BaseStock.StkRubro
+        JOIN BaseStock.StkMonedas
+          ON StkRubro.StkRubroTM = idStkMonedas
+        WHERE StkRubro.StkRubroAbr = "${StkRubroAbr}"
+      `;
+      console.log('q2  ', q2)
+      const datos1 = await queryAsync(q1);
+      const datos2 = await queryAsync(q2);
+
+
+
+
+
+      // Diccionario en lugar de switch
+      const motores = {
+        MotorCT: { abreviatura: "AT048", detalle: "con tecla" },
+        MotorCC: { abreviatura: "AT052", detalle: "con control remoto" },
+      };
+
+      // Obtener datos del mecanismo
+      const motor = motores[tipomecanismo] || { abreviatura: "", detalle: "" };
+
+      const abrevmotor = motor.abreviatura;
+      const detallemotor = motor.detalle;
+      let valormotor = null;
+
+
+      if (abrevmotor !== "") {
+        valormotor = `
+          SELECT 
+            StkRubroAbr,
+            (StkRubroCosto * StkMonedasCotizacion * ${coeficiente} * 1) AS ValorMotor,
+            StkRubroCosto,
+            StkMonedasCotizacion
+          FROM BaseStock.StkRubro 
+          JOIN BaseStock.StkMonedas 
+            ON StkRubro.StkRubroTM = idStkMonedas
+          WHERE StkRubro.StkRubroAbr = "${abrevmotor}"
+        `;
+
+        const importemotor = await queryAsync(valormotor);
+      }
+      /* busca valor de toldo barracuadra */
+
+
+
+      let detalle = ""
+
+      if (detallep == '') {
+        detalle = "Toldo Barracuadra "
+      }
+      else {
+        detalle = detallep + ''
+      }
+
+
+
+      let importe1 = datos2[0].ImpUnitario + datos1[0].ValorToldoBarrac + importemotor[0].ValorMotor
+      importe1 = importe1 + (valorMOTmin * MOTarmado)
+
+
+
+      if (tipomecanismo != 'Manual') {
+        Detalle = detalle + " con Motor  " + detallemotor + "  y volado de " + altovolado + " cm. en : "
+
+      }
+      else {
+        if (altovolado != 0) {
+          Detalle = detalle + " con volado de " + altovolado + " cm. en : "
         }
-        else {
-          coeficiente = result[0].coeficientemin
-          coefMOT = result[0].coefMOTmin
-        }
+        else { Detalle = detalle + " en : " }
+      }
+      if (ivasn === "CIVA") {
+        importe1 = Math.ceil(importe1 / 10) * 10;
+      } else {
+        importe1 = Math.ceil(importe1 / 1.21 / 10) * 10;
+      }
 
-        if (largo <= 1.60) {
-          MOTarmado = 44 * ancho
+      resultados.push({
+        ImpUnitario: importe1,
+        Detalle: Detalle,
+        Largo: largo.toFixed(2),
+        Ancho: ancho.toFixed(2),
+        MDesc: "S",
+      });
+    }
+    res.json(resultados);
 
-        }
-        else if (largo > 1.60 && largo <= 2.60) {
-          MOTarmado = 55 * ancho
-        }
-        else {
-          MOTarmado = 65 * ancho
-        }
-
-        if (altovolado === 0) {
-          //   MOTarmado = MOTarmado - 15
-          largo = largo + 0.5
-        }
-        else {
-          largo = largo + 0.70 + (altovolado / 100) //agrego .5 del toldo + .2 del volado para doblar
-          MOTarmado = MOTarmado + (17 * ancho)
-        }
-
-        valorMOTmin = result[0].costoMOT * coefMOT / 60
-
-
-        decimalpanios = (ancho / 1.5) - enteropanios
-        if (decimalpanios > 0) {
-
-          panios = enteropanios + 1
-        }
-
-
-
-        /*El valor de los brazos y caños correspondientes, por abreviatura  */
-        /*decidir si tiene compensador o no, como es*/
-        /*decidir cantidad de brazos */
-        /*
-                MOTOR 30 NW S/AYUDA MANUAL		AT047		
-                MOTOR 50 NW S/AYUDA MANUAL		AT048		
-                MOTOR 30 NW C/AYUDA MANUAL		AT049		
-                MOTOR 50 NW C/AYUDA MANUAL		AT050		
-                MOTOR 30 NW C/CONTROL REMOTO		AT051	
-                MOTOR 50 NW C/CONTROL REMOTO		AT052
-        */
-
-
-        let valortoldobarrac = ['Select ',
-          ' StkRubroAbr,  ',
-          '(StkRubroCosto * StkMonedasCotizacion * ', coeficiente,
-          ' * 1 )',
-          ' as ValorToldoBarrac, ',
-          'StkRubroCosto, ',
-          'StkMonedasCotizacion ',
-          'from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ',
-          'where StkRubro.StkRubroAbr = "', stkrubroabrtbr, '" ',
-          'and StkRubro.StkRubroTM = idStkMonedas '
-        ].join('')
-
-
-        conexion.query(
-          valortoldobarrac,
-          function (err, resulttbr) {
-            if (err) {
-              console.log('error en mysql')
-              console.log(err)
-            }
-            else {
-              // datosenvio.push(resulttbr);
-              importetbr = resulttbr[0].ValorToldoBarrac
-            }
-
-            switch (tipomecanismo) {
-              case "MotorCT":
-                abrevmotor = 'AT048'
-                detallemotor = 'con tecla'
-                break;
-              case "MotorCC":
-                abrevmotor = 'AT052'
-                detallemotor = 'con control remoto'
-                break;
-              default:
-                abrevmotor = ''
-            }
-
-
-
-            if (abrevmotor != '') {
-
-              valormotor = ['Select ',
-                ' StkRubroAbr,  ',
-                '(StkRubroCosto * StkMonedasCotizacion * ', coeficiente,
-                ' * 1 )',
-                ' as ValorMotor, ',
-                'StkRubroCosto, ',
-                'StkMonedasCotizacion ',
-                'from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ',
-                'where StkRubro.StkRubroAbr = "', abrevmotor, '" ',
-                'and StkRubro.StkRubroTM = idStkMonedas '
-              ].join('')
-
-
-              conexion.query(
-                valormotor,
-                function (err, resultmecanismo) {
-                  if (err) {
-                    console.log('error en mysql')
-                    console.log(err)
-                  }
-                  else {
-                    importemecanismo = resultmecanismo[0].ValorMotor
-                  }
-                });
-            }
-
-            /* busca valor de toldo barracuadra */
-
-
-
-            q = ['Select ',
-              'StkRubroDesc, StkRubroAbr, ',
-              '(StkRubroCosto * StkMonedasCotizacion * ', coeficiente,
-              ' * ', panios,
-              ' * ', largo, ')',
-              // '+ ', MOTarmado, ')',
-              ' as ImpUnitario, ',
-              'StkRubroCosto, ',
-              'StkMonedasCotizacion ',
-              'from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ',
-              'where StkRubro.StkRubroAbr = "', StkRubroAbrP, '" ',
-              'and StkRubro.StkRubroTM = idStkMonedas '
-            ].join('')
-
-
-
-            if (detallep == '') {
-              detalle = "Toldo Barracuadra "
-            }
-            else {
-              detalle = detallep + ''
-            }
-            conexion.query(
-              q,
-              function (err, result) {
-                if (err) {
-                  console.log('error en mysql')
-                  console.log(err)
-                }
-                else {
-
-
-                  result[0].ImpUnitario = result[0].ImpUnitario + importetbr
-                  result[0].ImpUnitario = result[0].ImpUnitario + (valorMOTmin * MOTarmado)
-
-
-
-                  if (tipomecanismo != 'Manual') {
-                    result[0].Detalle = detalle + " con Motor  " + detallemotor + "  y volado de " + altovolado + " cm. en : "
-                    result[0].ImpUnitario = result[0].ImpUnitario + importemecanismo
-                  }
-                  else {
-                    if (altovolado != 0) {
-                      result[0].Detalle = detalle + " con volado de " + altovolado + " cm. en : "
-                    }
-                    else { result[0].Detalle = detalle + " en : " }
-                  }
-                  if (ivasn == 'CIVA') {
-                    result[0].ImpUnitario = Math.ceil(result[0].ImpUnitario.toFixed(0) / 10) * 10
-                  }
-                  else {
-                    result[0].ImpUnitario = Math.ceil(result[0].ImpUnitario.toFixed(0) / 1.21 / 10) * 10
-                  }
-                  result[0].Largo = (datos.largo * 1).toFixed(2)
-                  result[0].Ancho = (datos.ancho * 1).toFixed(2)
-                  datosenvio = []
-                  datosenvio.push(result)
-
-                  i++
-                  if (i === totalreg) {
-                    res.json(datosenvio)
-                    datosenvio = []
-                  }
-                }
-              })
-          })
-      })
-    })
+  } catch (err) {
+    console.log("Error en /presupbrazosextens", err);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
 });
-
-
-conexion.end
 export default router;

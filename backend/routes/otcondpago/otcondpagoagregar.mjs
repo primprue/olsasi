@@ -5,20 +5,13 @@ import conexion from '../conexion.mjs';
 
 moment.locale('es');
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en otcondpagoagregar");
-    } else {
-        console.log("no se conecto en otcondpagoagregar");
-    }
-});
+
 
 router.post('/', function (req, res) {
     var registro = {
         OTCondPagoDesc: req.body.otcondpagodesc,
 
     }
-    console.log('registro en otcondpagoagre  ', registro)
 
     conexion.query('INSERT INTO  BasesOrdenes.OTCondPago SET ?', registro,
         function (err, result) {

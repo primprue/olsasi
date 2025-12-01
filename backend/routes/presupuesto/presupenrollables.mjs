@@ -3,13 +3,7 @@ var router = express.Router();
 
 import conexion from '../conexion.mjs';
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en presupenrollables");
-  } else {
-    console.log("no se conecto en presupenrollables");
-  }
-});
+
 
 var datosenvio = []
 router.get('/', (req, res, next) => {
@@ -165,10 +159,10 @@ router.get('/', (req, res, next) => {
                     else { result[0].Detalle = detalle + " en : " }
                   }
                   if (ivasn == 'CIVA') {
-                    result[0].ImpUnitario = Math.ceil(result[0].ImpUnitario.toFixed(0) / 10) * 10
+                    result[0].ImpUnitario = Math.ceil(Number(result[0].ImpUnitario).toFixed(0) / 10) * 10
                   }
                   else {
-                    result[0].ImpUnitario = Math.ceil(result[0].ImpUnitario.toFixed(0) / 1.21 / 10) * 10
+                    result[0].ImpUnitario = Math.ceil(Number(result[0].ImpUnitario).toFixed(0) / 1.21 / 10) * 10
                   }
                   result[0].Largo = (datos.largo * 1).toFixed(2)
                   result[0].Ancho = (datos.ancho * 1).toFixed(2)

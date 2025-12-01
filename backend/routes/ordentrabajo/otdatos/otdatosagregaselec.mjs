@@ -3,15 +3,8 @@ var router = express.Router();
 import moment from 'moment';
 import conexion from '../../conexion.mjs';
 moment.locale('es');
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en otdatosagregaselec");
-    } else {
-        console.log("no se conecto en otdatosagregaselec");
-    }
-});
 
-const rows = []
+
 router.post('/', function (req, res) {
     const { OTDatosDesc, Vpdef, nroid } = req.body.newDatosSelect;
 

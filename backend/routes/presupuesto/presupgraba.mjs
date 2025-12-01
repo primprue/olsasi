@@ -7,13 +7,7 @@ import conexion from '../conexion.mjs';
 nropresup = 0;
 moment.locale("es");
 var nropresup = 0;
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en presupgraba");
-  } else {
-    console.log("no se conecto en presupgraba");
-  }
-});
+
 
 router.use(express.json()); // Asegúrate de que esto está habilitado para que `req.body` no sea vacío
 

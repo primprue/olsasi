@@ -3,14 +3,6 @@ var router = express.Router();
 
 import conexion from '../conexion.mjs';
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en clientesborrar");
-    } else {
-        console.log("no se conecto en clientesborrar");
-    }
-});
-
 
 router.delete('/', async function (req, res) {
     var indice = req.query.id;

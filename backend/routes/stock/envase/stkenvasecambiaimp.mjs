@@ -2,15 +2,6 @@ import express from "express";
 var router = express.Router();
 
 import conexion from "../../conexion.mjs";
-import http from "http";
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en stkenvasecambiaimp");
-  } else {
-    console.log("no se conecto en stkenvasecambiaimp");
-  }
-});
-
 
 
 router.post("/", async function (req, res, next) {

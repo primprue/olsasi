@@ -2,34 +2,10 @@ import express from 'express';
 var router = express.Router();
 
 import conexion from '../conexion.mjs';
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en clientesleer");
-    } else {
-        console.log("no se conecto en clientesleer");
-    }
-});
-
 
 router.get('/', function (req, res, next) {
 
 
-
-    //as StkTipoProveedDesc
-    // en el mysql tuve que cambiar la clave foránea porque no me permitía cambiar el tipodeproveedor en la tabla proveedores
-    // const q = [
-    //     'SELECT',
-    //     ' idClientes, ClientesDesc, ',
-    //     ' ClientesCalle, ClientesNroCalle, ',
-    //     'ClientesPiso, ClientesDto, ClientesCodPos, ',
-    //     'ClientesLoc, ClientesPcia, ClientesTel, ',
-    //     'ClientesMail, ',
-    //     'ClientesIVA, ClientesCUIT, ClientesTipo ',
-    //     '  FROM BasesGenerales.Clientes ',
-    //     // ' where BasesGenerales.Clientes.ClientesTipo = BasesGenerales.SubRubros.idSubRubro ',
-    //     ' order by ClientesDesc',
-
-    // ].join(' ');
     const q = [
         'SELECT  idClientes as id, ClientesDesc, ClientesDomicilio, ClientesCodPos, ',
         'ClientesLoc, ClientesPcia, ClientesTel, ClientesMail, ClientesIVA, ClientesCUIT, ',
@@ -38,10 +14,7 @@ router.get('/', function (req, res, next) {
         ' order by ClientesDesc',
     ].join(' ');
 
-    // const q = [
-    //     'SELECT idClientes as id, * FROM BasesGenerales.Clientes ',
-    //     ' order by ClientesDesc',
-    // ].join(' ');
+
     conexion.query(
         q,
         function (err, result) {

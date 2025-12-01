@@ -4,20 +4,8 @@ var router = express.Router();
 import conexion from '../conexion.mjs';
 
 
-
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en clientesleercod");
-    } else {
-        console.log("no se conecto en clientesleercod");
-    }
-});
-
-
-
 router.get('/', async function (req, res) {
     var indice = req.query.id;
-    console.log('indice clientesleercod  ', indice)
     var q = ['SELECT * FROM BasesGenerales.Clientes where idClientes = ' + indice].join(' ')
     conexion.query(q,
         function (err, result) {

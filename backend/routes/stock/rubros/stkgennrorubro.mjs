@@ -7,13 +7,7 @@ import conexion from "../../conexion.mjs";
 var codrubro = 0;
 moment.locale("es");
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en stkgennrorubro ");
-  } else {
-    console.log("no se conecto en stkgennrorubro");
-  }
-});
+
 
 function buscacodigo(codgrupo) {
   var q = [

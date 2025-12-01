@@ -3,14 +3,6 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en stkrubroleeselec");
-  } else {
-    console.log("no se conecto en stkrubroleeselec ");
-  }
-});
-
 
 
 router.get("/", function (req, res, next) {

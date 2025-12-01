@@ -2,18 +2,10 @@ import express from "express";
 var router = express.Router();
 
 import conexion from "../../conexion.mjs";
-import http from "http";
 import fs from "fs";
 import { exec } from "child_process";
 
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en stkenvaseleeimp");
-  } else {
-    console.log("no se conecto en stkenvaseleeimp");
-  }
-});
 
 
 

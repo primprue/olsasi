@@ -2,13 +2,7 @@ import express from 'express';
 var router = express.Router();
 import conexion from '../conexion.mjs';
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en otcondpagoleer");
-    } else {
-        console.log("no se conecto en otcondpagoleer");
-    }
-});
+
 
 router.get('/', function (req, res, next) {
     const q = ['Select idOTCondPago as id, OTCondPagoDesc from BasesOrdenes.OTCondPago '].join(' ');

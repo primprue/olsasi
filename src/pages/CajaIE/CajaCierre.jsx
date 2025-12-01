@@ -41,13 +41,8 @@ export default function CajaCierre({ rows, onClose }) {
     }
     async function cajaiesumamov() {
         const data = await CajaIESumaMov();
-
-        const jsonString = data[0].TotalesPorMoneda;
-
-        // Lo parseo a objeto
-        const totales = JSON.parse(jsonString);
-        // setSumademov(data);
-        setTotales(totales);
+        setTotales((Array.isArray(data[0]) ? data[0][0] : data[0]).TotalesPorMoneda);
+        // setTotales(data[0][0].TotalesPorMoneda);
     }
     /*este es para agregar el saldo anterior al total*/
     async function leemonedas() {
@@ -81,8 +76,6 @@ export default function CajaCierre({ rows, onClose }) {
             setSnackbar(null);
             setBilquedan(true);
         } else {
-            console.log('diferencia', diferenciaNum)
-            console.log('tolerancia', tolerancia)
             if ((diferenciaNum > tolerancia) || (diferenciaNum < -tolerancia)) {
                 setSnackbar({ children: `HAY DIFERENCIA!!!!! La tolerancia de ${moneda} es ${tolerancia}`, severity: "error" });
                 setBilquedan(false);
@@ -144,6 +137,7 @@ export default function CajaCierre({ rows, onClose }) {
             }));
         });
     }, [cantidades, totales]); // 👈 recalcula solo cuando cambian
+    // }, []); // 👈 recalcula solo cuando cambian
 
 
     return (
@@ -160,7 +154,7 @@ export default function CajaCierre({ rows, onClose }) {
 
                 {/* 🔹 Ahora sí el contenido del diálogo */}
                 <DialogContent>
-                    {Object.keys(totales).length !== 0 && (
+                    {totales && Object.keys(totales).length !== 0 && (
                         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                             {Array.isArray(monedas) && (
                                 <Grid container spacing={2}>
@@ -274,7 +268,8 @@ export default function CajaCierre({ rows, onClose }) {
                                 </Grid>
                             )}
                         </Box>
-                    )}
+                    )
+                    }
                     <IconButton onClick={() => Billetesquequedan()}>
                         <ArchiveIcon style={{ color: green[500] }} />
                     </IconButton>

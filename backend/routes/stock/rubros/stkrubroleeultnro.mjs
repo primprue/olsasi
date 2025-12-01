@@ -6,14 +6,6 @@ import conexion from "../../conexion.mjs";
 
 moment.locale("es");
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en stkleeultnrorubro");
-  } else {
-    console.log("no se conecto en stkleeultnrorubro");
-  }
-});
-
 
 router.get("/", function (req, res) {
   var codgrupo = req.query.id;

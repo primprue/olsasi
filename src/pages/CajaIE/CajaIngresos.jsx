@@ -1,43 +1,43 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { DataGrid, GridToolbarContainer, useGridApiRef } from "@mui/x-data-grid";
-import Grid from "@mui/material/Grid";
 import { CajaIELeer } from "./CajaIELeer.jsx";
 import { llenarcolumns } from "./columns.jsx";
-import { Box, Button, Dialog, DialogTitle, TextField, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { CajaIEAgregar } from "./CajaIEAgregar.jsx";
-import { esES } from '@mui/material/locale';
 import AddToPhotosTwoToneIcon from "@mui/icons-material/AddToPhotosTwoTone";
-import RedeemTwoToneIcon from '@mui/icons-material/RedeemTwoTone';
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
+import BrowserUpdatedRoundedIcon from '@mui/icons-material/BrowserUpdatedRounded';
+import Filter9PlusRoundedIcon from '@mui/icons-material/Filter9PlusRounded';
+import GppBadRoundedIcon from '@mui/icons-material/GppBadRounded';
+import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
 import CajaCierre from "./CajaCierre.jsx";
 import estilotabla from "../../Styles/Tabla.module.css";
-import estiloboton from "../../Styles/Boton.module.css";
-import { BuscaIE } from "./BuscaIE.jsx";
-import PreviewSharpIcon from '@mui/icons-material/PreviewSharp';
-import TextFieldComunChico from "../../components/comppropios/TextFieldComunChico.jsx";
+import MueMovCIE from "./CajaIEConsultas/MueMovCIE.jsx";
+import CajaInterna from "./CajaInterna/CajaInterna.jsx";
 export default function CajaIngresos() {
     const [rows, setRows] = useState([]);
     const [openCierre, setOpenCierre] = useState(false);
-    const [openBuscaIE, setOpenBuscaIE] = useState(false);
     const [columns, setColumns] = useState([]);
     const [dolar, setDolar] = useState(0);
-    const [fechaDesde, setFechaDesde] = useState(new Date().toISOString().split("T")[0]);
-    const [fechaHasta, setFechaHasta] = useState(new Date().toISOString().split("T")[0]);
     const apiRef = useGridApiRef(); // <- referencia para manejar foco
     const [totalInstrumentos, setTotalInstrumentos] = useState(0);
-    const estiloBoton = {
-        backgroundColor: '#fc00fc68',
-        '& .MuiButton-root': {
-            color: 'rgb(10, 0, 0)',
-            transition: 'all 0.2s ease-in-out', // hace que el agrandamiento sea suave
-            fontSize: '0.9rem', // tamaño base
-            '&:hover': {
-                fontStyle: 'italic',
-                fontSize: '1.05rem', // más grande al pasar el mouse
-                backgroundColor: '#fc00fc68',
-            },
-        }
-    }
+    const [LlamaMueMovCIE, setLlamaMueMovCIE] = useState(false);
+    const [LlamaCajaInterna, setLlamaCajaInterna] = useState(false);
+    const AbreMueMovCIE = () => {
+        setLlamaMueMovCIE(true);
+    };
+
+    const CierraMueMovCIE = () => {
+        setLlamaMueMovCIE(false);
+    };
+
+    const AbreCajaInterna = () => {
+        setLlamaCajaInterna(true);
+    };
+
+    const CierraCajaInterna = () => {
+        setLlamaCajaInterna(false);
+    };
 
     async function handleAlta() {
         await CajaIEAgregar({ rows })
@@ -48,48 +48,100 @@ export default function CajaIngresos() {
     const handleCierre = () => {
         setOpenCierre(true);
     };
-    const abreBuscaIE = () => {
-        setOpenBuscaIE(true);
-    };
-    const cierraBuscaIE = () => {
-        setOpenBuscaIE(false);
-    };
-    async function vaBuscarIE() {
-        const data = await BuscaIE(fechaDesde, fechaHasta);
-        setRows(data);
-    }
+    // const abreBuscaIE = () => {
+    //     setOpenBuscaIE(true);
+    // };
+    // const cierraBuscaIE = () => {
+    //     setOpenBuscaIE(false);
+    // };
+    // async function vaBuscarIE() {
+    //     const data = await BuscaIE(fechaDesde, fechaHasta);
+    //     console.log(data);
+    //     setRows(data);
+    // }
 
 
     function CustomToolbar() {
         return (
-            <GridToolbarContainer sx={{ ...estiloBoton, display: "flex", alignItems: "center", gap: 1 }}>
+            // <GridToolbarContainer sx={{ ...estiloBoton, display: "flex", alignItems: "center", gap: 5 }}>
+            <GridToolbarContainer
+                sx={{
+                    color: '#141412f0',
+                    backgroundColor: '#3206f528',
+                    display: "flex",
+                    alignItems: "center",
+                    height: '40px',
+                    gap: 5
+                }}>
 
-                <label>F4 - Agregar   F2 - Agrega instrumento de pago</label>
-
+                {/* <label>F4 - Agregar   F2 - Agrega instrumento de pago</label> */}
                 <AddToPhotosTwoToneIcon
-                    size="large"
+                    label="Agregar"
+                    titleAccess="Agregar"
+                    sx={{
+                        fontSize: '35px',
+                        color: '#0f7905f6',
+                        cursor: 'pointer',
+                        '&:hover': { color: '#0a7e02' } // color al pasar el mouse
+                    }}
+                    onClick={() => agregarFilaVacia()}
+                />
+                <Filter9PlusRoundedIcon
+                    label="Agrega instrumento de pago"
+                    sx={{
+                        fontSize: '35px',
+                        color: '#039ef8e6',
+                        cursor: 'pointer',
+                        '&:hover': { color: '#039ef8e6' } // color al pasar el mouse
+                    }}
+                    titleAccess="Agrega instrumento de pago"
+                    onClick={() => agregarFilaInstrumentoPago()}
+                />
+                <BrowserUpdatedRoundedIcon
                     titleAccess="Grabar"
+                    sx={{
+                        fontSize: '35px',
+                        color: '#790566fb',
+                        cursor: 'pointer',
+                        '&:hover': { color: '#790566fb' } // color al pasar el mouse
+                    }}
                     onClick={() => handleAlta()}
                 />
-                <RedeemTwoToneIcon
-                    size="large"
+                <GppBadRoundedIcon
                     titleAccess="Cierre"
+                    sx={{
+                        fontSize: '35px',
+                        color: '#f50404fa',
+                        cursor: 'pointer',
+                        '&:hover': { color: '#f50404fa' } // color al pasar el mouse
+                    }}
                     onClick={() => handleCierre()}
                 />
                 <label>Dólar: {dolar}</label>
-                <PreviewSharpIcon
-                    size="large"
-                    titleAccess="BuscaIE"
-                    onClick={() => abreBuscaIE()}
+                <HistoryEduIcon
+                    titleAccess="Movimientos Históricos"
+                    sx={{
+                        fontSize: '35px',
+                        color: '#bdc009f9',
+                        cursor: 'pointer',
+                        '&:hover': { color: '#bdc009f9' } // color al pasar el mouse
+                    }}
+                    onClick={() => AbreMueMovCIE()}
                 />
                 {/* separador flexible */}
                 <Box sx={{ flexGrow: 1 }} />
 
                 {/* icono alineado a la derecha */}
                 <MoreVertTwoToneIcon
-                    size="large"
-                    titleAccess="Más"
-                    onClick={() => abreBuscaIE()}
+                    fontSize='medium'
+                    titleAccess="Caja Interna"
+                    sx={{
+                        fontSize: '35px',
+                        color: '#0a0000',
+                        cursor: 'pointer',
+                        '&:hover': { color: '#0a0000' }
+                    }}
+                    onClick={() => AbreCajaInterna()}
                 />
             </GridToolbarContainer>
         );
@@ -225,23 +277,6 @@ export default function CajaIngresos() {
     };
 
 
-    // Agregar fila con F4
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === "F4") {
-                e.preventDefault();
-                agregarFilaVacia();
-            }
-            if (e.key === "F2") {
-                e.preventDefault();
-                agregarFilaInstrumentoPago();
-            }
-
-        };
-
-        window.addEventListener("keydown", handleKeyDown);
-        return () => window.removeEventListener("keydown", handleKeyDown);
-    }, []);
 
     const camposObjetivo = ["CajaIECodIP", "CajaIEImpIP"];
     const processRowUpdate = (newRow) => {
@@ -299,12 +334,6 @@ export default function CajaIngresos() {
             setTotalInstrumentos(totalimpinst)
         }
     }, [rows]);
-    const handleChangefechaDesde = (value, id) => {
-        setFechaDesde(value)
-    }
-    const handleChangefechaHasta = (value, id) => {
-        setFechaHasta(value)
-    }
 
     return (
         <Box sx={{ height: 500, width: "100%", minWidth: 600 }}>
@@ -348,37 +377,8 @@ export default function CajaIngresos() {
 
 
             {openCierre && <CajaCierre rows={rows} onClose={() => setOpenCierre(false)} />}
-
-            <Dialog open={openBuscaIE} onClose={cierraBuscaIE} maxWidth="lg" >
-                <DialogTitle
-                    sx={{ textAlign: "center", position: "relative", cursor: "move" }}
-                >
-                    Busca movimiento entre fechas
-                </DialogTitle>
-                <Grid span={{ xs: 3 }}>
-                    <TextFieldComunChico
-                        id="fechaDesde"
-                        label="Fecha desde "
-                        value={fechaDesde}
-                        type="date"
-                        onChange={handleChangefechaDesde}
-                        width="200px"
-                    />
-                </Grid>
-                <Grid span={{ xs: 3 }}>
-                    <TextFieldComunChico
-                        id="fechaHasta"
-                        label="Fecha hasta "
-                        value={fechaHasta}
-                        type="date"
-                        onChange={handleChangefechaHasta}
-                        width="200px"
-                    />
-                </Grid>
-                <Button className={estiloboton.botonfincargadatos} variant="contained" onClick={vaBuscarIE}>
-                    Buscar
-                </Button>
-            </Dialog>
+            {LlamaMueMovCIE && <MueMovCIE open={LlamaMueMovCIE} handleClose={CierraMueMovCIE} />}
+            {LlamaCajaInterna && <CajaInterna open={LlamaCajaInterna} handleClose={CierraCajaInterna} />}
 
         </Box>
     );

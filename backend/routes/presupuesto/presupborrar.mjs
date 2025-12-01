@@ -7,13 +7,7 @@ import variables from '../../public/variables.mjs';
 import { exec } from 'child_process';
 moment.locale("es");
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en presupborrar");
-  } else {
-    console.log("no se conecto en presupborrar");
-  }
-});
+
 
 
 router.delete("/", function (req, res, next) {

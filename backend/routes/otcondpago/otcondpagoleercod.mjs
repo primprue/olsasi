@@ -4,14 +4,6 @@ import conexion from '../conexion.mjs';
 
 
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en otcondpagoleercod");
-    } else {
-        console.log("no se conecto en otcondpagoleercod");
-    }
-});
-
 router.get('/', async function (req, res) {
     let indice = req.query.id;
 

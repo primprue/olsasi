@@ -17,18 +17,30 @@ const Agregar = async (
 		var ImpUnitario = 0.0;
 		var importeanexo = 0.0;
 		var ImpItem = 0.0;
-
 		var datoimpunitario = 0.0;
+		if (datosrenglon1.length === 1) {
+			const array2D = datosrenglon1.map(x => [x]);
 
+			datosrenglon1 = array2D;
+		}
 		if (rubrosn === "S") {
 			var unidmed = "";
+			// if (datosrenglon1.length === 1)
+			// 	unidmed = datosrenglon1[0].StkRubroUM + " "
+			// else
+			// 	unidmed = datosrenglon1[0][0].StkRubroUM + " ";
+
+
 			if (datosrenglon1[0][0].StkRubroUM) {
 				unidmed = datosrenglon1[0][0].StkRubroUM + " ";
 			}
+			// StkRubroDesc =
+			// 	unidmed +
+			// 	datosrenglon1[0][0].Detalle +
+			// 	datosrenglon1[0][0].StkRubroDesc;
 			StkRubroDesc =
 				unidmed +
-				datosrenglon1[0][0].Detalle +
-				datosrenglon1[0][0].StkRubroDesc;
+				datosrenglon1[0][0].Detalle;
 
 			if (datosrenglon1[0][0].MDesc === "S") {
 				StkRubroDesc =

@@ -4,13 +4,6 @@ var router = express.Router();
 import conexion from "../../conexion.mjs";
 
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en stkgrupoborrar");
-  } else {
-    console.log("no se conecto en stkgrupoborrar");
-  }
-});
 
 router.delete("/?:id", function (req, res, next) {
   var indice = req.params.id;

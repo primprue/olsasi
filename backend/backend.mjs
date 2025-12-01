@@ -12,6 +12,8 @@ import { fileURLToPath } from 'url';
 //el mensaje que larga al ejecutarse el backend es el de la pimer linea del requiere en este caso proveedoresleer
 // import importacsv from "./routes/prebalance/importacsv.mjs";
 
+import verificaclave from "./routes/controlusuarios/verificaclave.mjs";
+
 import proveedoresleer from "./routes/proveedores/proveedoresleer.mjs";
 
 import proveedoresleercod from "./routes/proveedores/proveedoresleercod.mjs";
@@ -33,6 +35,13 @@ import cajasaldoefagregar from "./routes/cajaie/cajasaldoefagregar.mjs";
 import cajaiesumamov from "./routes/cajaie/cajaiesumamov.mjs";
 import buscaie from "./routes/cajaie/buscaie.mjs";
 
+
+import cajainternaleer from "./routes/cajaie/cajainterna/cajainternaleer.mjs";
+import cajainternaagregar from "./routes/cajaie/cajainterna/cajainternaagregar.mjs";
+import cajainternaborrar from "./routes/cajaie/cajainterna/cajainternaborrar.mjs";
+import cajainternamodificar from "./routes/cajaie/cajainterna/cajainternamodificar.mjs";
+import cajainternasileer from "./routes/cajaie/cajainterna/cajainternasileer.mjs";
+import cajainternasumatot from "./routes/cajaie/cajainterna/cajainternasumatot.mjs";
 
 import stkbgsubrubroleer from "./routes/proveedores/stkbgsubrubroleer.mjs";
 import clientesleer from "./routes/clientes/clientesleer.mjs";
@@ -314,19 +323,7 @@ function perimitirCrossDomain(req, res, next) {
 
 
 
-// //traido del viejo backend
 
-// // const { RouterSharp } = require("@material-ui/icons");
-
-// // function agregada por el error CORS
-// function perimitirCrossDomain(req, res, next) {
-//   //en vez de * se puede definir SÓLO los orígenes que permitimos
-//   res.header("Access-Control-Allow-Origin", "*");
-//   //metodos http permitidos para CORS
-//   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-//   res.header("Access-Control-Allow-Headers", "Content-Type");
-//   next();
-// }
 
 var app = express();
 app.use(cors()); //esto estaba antes de que se colgara
@@ -346,7 +343,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(perimitirCrossDomain);
 
 
-
+app.use("/verificaclave", verificaclave);
 
 // app.use("/importacsv", importacsv);
 
@@ -369,6 +366,14 @@ app.use("/cajasaldoefleer", cajasaldoefleer);
 app.use("/cajasaldoefagregar", cajasaldoefagregar);
 app.use("/cajaiesumamov", cajaiesumamov);
 app.use("/buscaie", buscaie);
+
+
+app.use("/cajainternaleer", cajainternaleer);
+app.use("/cajainternaagregar", cajainternaagregar);
+app.use("/cajainternaborrar", cajainternaborrar);
+app.use("/cajainternamodificar", cajainternamodificar);
+app.use("/cajainternasileer", cajainternasileer);
+app.use("/cajainternasumatot", cajainternasumatot);
 
 
 app.use("/clientesleer", clientesleer);

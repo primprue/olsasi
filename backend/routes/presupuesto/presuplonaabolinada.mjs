@@ -1,264 +1,180 @@
 import express from "express";
-var router = express.Router();
-
 import conexion from "../conexion.mjs";
 
-conexion.connect(function (err) {
-  if (!err) {
-    console.log("base de datos conectada en presuplonaabolinada");
-  } else {
+const router = express.Router();
+
+conexion.connect(err => {
+  if (err) {
     console.log("no se conecto en presuplonaabolinada");
+  } else {
+    console.log("base de datos conectada en presuplonaabolinada");
   }
 });
 
+// ------------------------------------------------------------------
+// FUNCIÓN: ejecuta una consulta MySQL en modo async
+// ------------------------------------------------------------------
+function queryAsync(sql) {
+  return new Promise((resolve, reject) => {
+    conexion.query(sql, (err, result) => {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
+}
 
-var datosenvio = [];
+// ------------------------------------------------------------------
+// ENDPOINT
+// ------------------------------------------------------------------
+router.get("/", async (req, res) => {
+  try {
+    const datosRec = JSON.parse(req.query.datoscalculo);
+    // 1) Cargo parámetros una sola vez
+    const parametros = await queryAsync(`SELECT * FROM BasePresup.PresupParam`);
+    const p = parametros[0];
 
-router.get("/", (req, res, next) => {
+    const resultados = [];
 
-  var q, i = 0;
+    for (const item of datosRec) {
 
-  var datosrec, ojalescada, tipoojale, detallep, ivasn, j, ciclo, ganancia, coefimpuesto, valorflete, valorMOT, codmoneda, mcuadcob, msogachicote, msogadobladillo, ojales, cotizacion
-  var largoreal, anchoreal, tipoojal, sogachicote, sogadobladillo, valorojales, mgancho, detalle
-  var costoMinMOT, perimetro, totalojales, valorsogaabol, costoojales
-  q = ['select * from BasePresup.PresupParam'].join(' ')
+      // ------------------------------------------------------------------
+      // 2) PREPARO LOS VALORES DEL ITEM
+      // ------------------------------------------------------------------
+      const cantidad = item.cantidad;
+      const tipoojale = item.tipoojale;
+      const detallep = item.detallep;
+      const ojalescada = item.presupojalesc;
+      const StkRubroAbrP = item.StkRubroAbr;
+      const largoreal = parseFloat(item.largo);
+      const anchoreal = parseFloat(item.ancho);
+      const perimetro = largoreal * 2 + anchoreal * 2;
 
-  conexion.query(q,
-    function (err, result) {
-      if (err) {
-        console.log('error  BasePresup.PresupParam', err);
+      const largo = largoreal + 0.08;
+      const ancho = anchoreal + 0.08;
+
+      // coeficientes
+      let coef = p.coeficientemin;
+      let sogachicote = p.sogachicotemin;
+      let ganancia = p.coefgancsoga;
+      let ivasn = item.ivasn;
+
+      if (item.minmay == "my") {
+        coef = p.coeficientemay;
+        sogachicote = p.sogachicotemay;
+        ganancia = p.coefganmay;
+        ivasn = "CIVA";
       }
 
-      var costooriginal = 0;
-      var coeficiente = 0,
-        cantidad = 0,
-        metroscuad = 0,
-        StkRubroAbrP = "",
-        largo = 0,
-        ancho = 0.0;
-      // var enteroancho = 0,
-      //   decimancho = 0.0;
-      datosrec = JSON.parse(req.query.datoscalculo);
+      const tipoojal = (tipoojale === "hz") ? "OHCOL" : "OBCOL";
+      const detojal = (tipoojale === "hz") ? " de hierro " : " de bronce ";
+      // descripción
+      let detalle = detallep
+        ? `${detallep} en : ${StkRubroAbrP} `
+        : `Lona con soga en dobladillo, c/ojales ${detojal} cada ${ojalescada} cm. en :  ${StkRubroAbrP}`;
 
-      // totalreg = datosrec.length;
-      datosrec.map(datos => {
-        cantidad = datos.cantidad;
-        // tipoconf = datos.tipoconf;
-        tipoojale = datos.tipoojale;
-        detallep = datos.detallep;
-        ojalescada = datos.presupojalesc;
-        StkRubroAbrP = datos.StkRubroAbr;
-        ivasn = datos.ivasn;
-        largoreal = (datos.largo * 1)
-        anchoreal = (datos.ancho * 1)
-        perimetro = (largoreal * 2) + (anchoreal * 2)
-        largo = (datos.largo * 1) + 0.08;
-        ancho = (datos.ancho * 1) + 0.08;
-        valorsogaabol = 0;
+      // ------------------------------------------------------------------
+      // 3) QUERY PRINCIPAL COMPLETA (todo junto)
+      // ------------------------------------------------------------------
+      const sql = `
+        SELECT
+          -- costo lona
+          (r1.StkRubroCosto * m1.StkMonedasCotizacion / r1.StkRubroAncho * 1.02)  AS CostoCobMC,
 
-        if (detallep == '') {
-          detalle = "Lona con soga en dobladillo,  "
-        }
-        else {
-          detalle = detallep + ''
-        }
-        ganancia = result[0].coefgancsoga
-        if (datos.minmay == 'my') {
-          coeficiente = result[0].coeficientemay;
-          tipoojal = result[0].abrojales28;
-          sogachicote = result[0].sogachicotemay;
-          ganancia = result[0].coefganmay
-          ivasn = 'CIVA'
-        }
-        else {
-          coeficiente = result[0].coeficientemin;
-          sogachicote = result[0].sogachicotemin;
+          -- costo soga chicote
+          (r2.StkRubroCosto * m2.StkMonedasCotizacion * 3)   AS CostoMSChicote,
 
-        }
+          -- soga dobladillo
+          (r3.StkRubroCosto * m3.StkMonedasCotizacion)    AS CostoMSDobladillo,
 
-        if (tipoojale == 'hz') {
-          tipoojal = 'OHCOL'
-          detalle = detalle + ' c/ojales de hierro cada ' + ojalescada + ' cm. en : '
-        }
-        else {
-          tipoojal = 'OBCOL'
-          detalle = detalle + ' c/ojales de bronce cada ' + ojalescada + ' cm. en : '
-        }
-        if (detallep != '') {
-          detalle = ''
-          detalle = detallep + ' en : '
-        }
+          -- cotización
+          m4.StkMonedasCotizacion      AS Cotizacion,
 
+          -- costo del ojal
+          (SELECT SUM(r5.StkRubroCosto * m5.StkMonedasCotizacion)
+            FROM BasePresup.PresupConfTipo t
+                JOIN BaseStock.StkRubro r5 ON t.PresupConfTipoRubro = r5.StkRubroAbr
+                JOIN BaseStock.StkMonedas m5 ON r5.StkRubroTM = m5.idStkMonedas
+            WHERE r5.StkRubroAbr = '${tipoojal}'
+          )  AS CostoOjalM2
 
-        // minutosunion = (datos.ancho * 1 + 0.08) * largo * 5;
-        sogadobladillo = result[0].sogadobladillo;
-        valorflete = result[0].flete;
-        valorMOT = result[0].MOTpM2;
-        codmoneda = result[0].codmoneda;
-        coefimpuesto = result[0].coefimpuestos
+        FROM BaseStock.StkRubro r1
+            JOIN BaseStock.StkMonedas m1 ON r1.StkRubroTM = m1.idStkMonedas,
+            BaseStock.StkRubro r2
+            JOIN BaseStock.StkMonedas m2 ON r2.StkRubroTM = m2.idStkMonedas,
+            BaseStock.StkRubro r3
+            JOIN BaseStock.StkMonedas m3 ON r3.StkRubroTM = m3.idStkMonedas,
+            BaseStock.StkMonedas m4
 
+        WHERE r1.StkRubroAbr = '${StkRubroAbrP}'
+          AND r2.StkRubroAbr = '${sogachicote}'
+          AND r3.StkRubroAbr = '${p.sogadobladillo}'
+          AND m4.idStkMonedas = '${p.codmoneda}'
+      `;
+      const datos = await queryAsync(sql);
+      const d = datos[0];
 
-        mcuadcob = [
-          "Select ",
-          "StkRubroDesc, StkRubroAbr, ",
-          "(StkRubroCosto * StkMonedasCotizacion / StkRubroAncho * 1.02 ) as CostoCobMC ",
-          "from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ",
-          'where StkRubro.StkRubroAbr = "',
-          StkRubroAbrP,
-          '" ',
-          "and StkRubro.StkRubroTM = idStkMonedas"
-        ].join("");
+      // ------------------------------------------------------------------
+      // 4) CALCULO COMPLETO
+      // ------------------------------------------------------------------
+      const flete = Number(p.flete) || 0;
+      const MOT = Number(p.MOTpM2) || 0;
+      const Cotizacion = Number(d.Cotizacion) || 0;
+      const CostoCobMC = Number(d.CostoCobMC) || 0;
+      const CostoMSChicote = Number(d.CostoMSChicote) || 0;
+      const CostoMSDobladillo = Number(d.CostoMSDobladillo) || 0;
+      const costoFleteMot = Cotizacion * (flete + MOT);
+      let costo =
+        CostoCobMC +
+        CostoMSChicote +
+        CostoMSDobladillo +
+        costoFleteMot;
 
+      const metrosCuad = largoreal * anchoreal;
 
-        msogachicote = [
-          "Select ",
-          //lo saque para que me lleve solamente el costo por metro para calcular los metros de soga
-          "(StkRubroCosto * StkMonedasCotizacion  * 3) as CostoMSChicote ",
-          // "(StkRubroCosto * StkMonedasCotizacion ) as CostoMSChicote ",
-          "from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ",
-          "where StkRubro.StkRubroAbr = '",
-          sogachicote,
-          "'",
-          "and StkRubro.StkRubroTM = idStkMonedas"
-        ].join("");
+      let costoOjalUnit = d.CostoOjalM2;
 
-        msogadobladillo = [
-          "Select ",
-          "(StkRubroCosto * StkMonedasCotizacion) as CostoMSDobladillo ",
-          "from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ",
-          "where StkRubro.StkRubroAbr = '",
-          sogadobladillo,
-          "'",
-          "and StkRubro.StkRubroTM = idStkMonedas"
-        ].join("");
+      costo = costo * ganancia * p.coefimpuestos;
+      costo = costo * metrosCuad;
 
-        ojales = ['select sum(BaseStock.StkRubro.StkRubroCosto * BaseStock.StkMonedas.StkMonedasCotizacion) ' +
-          'as CostoOjalM2 from BasePresup.PresupConfTipo, BaseStock.StkRubro, BaseStock.StkMonedas ' +
-          'where  PresupConfTipoRubro = BaseStock.StkRubro.StkRubroAbr and ' +
-          'BaseStock.StkRubro.StkRubroTM = BaseStock.StkMonedas.idStkMonedas and ' +
-          'BaseStock.StkRubro.StkRubroAbr = "' + tipoojal + '"'].join("");
+      // soga para abolinar (ciclos)
+      let ciclo = 0;
+      if (metrosCuad < 12) ciclo = 3;
+      else if (metrosCuad < 16) ciclo = 2;
+      else if (metrosCuad < 22) ciclo = 1;
 
+      for (let i = 0; i < ciclo; i++) {
+        costo *= 1.0325;
+      }
 
-        cotizacion = [
-          "Select ",
-          "StkMonedasCotizacion ",
-          "from   BaseStock.StkMonedas ",
-          "where  StkMonedas.idStkMonedas = '",
-          codmoneda,
-          "'"
-        ].join("");
+      // costo ojales
+      const totalOjales = perimetro / (ojalescada / 100);
+      const costoOjales = totalOjales * costoOjalUnit;
+      costo += costoOjales;
 
-        conexion.query(mcuadcob, function (err, result) {
-          if (err) {
-            console.log("error en mysql mcuadcob");
-            console.log(err);
-          } else {
-            datosenvio.push(result);
-          }
-        });
+      // IVA / redondeo
+      if (ivasn === "CIVA") {
+        costo = Math.ceil(costo / 10) * 10;
+      } else {
+        costo = Math.ceil(costo / 1.21 / 10) * 10;
+      }
 
-        conexion.query(msogachicote, function (err, result) {
-          if (err) {
-            console.log("error en mysql msogachicote");
-            console.log(err);
-          } else {
-            datosenvio.push(result);
-          }
-        });
-
-        // if (tipoconf === 'cs') {
-        conexion.query(msogadobladillo, function (err, result) {
-          if (err) {
-            console.log("error en mysql msogadobladillo");
-            console.log(err);
-          } else {
-            datosenvio.push(result);
-          }
-        });
-        // }
-
-        conexion.query(cotizacion, function (err, result) {
-          if (err) {
-            console.log("error en mysql cotizacion");
-            console.log(err);
-          } else {
-            datosenvio.push(result);
-          }
-        });
-
-        conexion.query(ojales, function (err, result) {
-          if (err) {
-            console.log("error en mysql ojales");
-            console.log(err);
-          } else {
-            datosenvio.push(result);
-            j = 0;
-            while (j < 4) {
-              // costooriginal =
-              //   datosenvio[j][0].CostoCobMC + datosenvio[j][0].CostoRefuerzo;
-              costooriginal = datosenvio[j][0].CostoCobMC
-              j++;
-              //traía el valor del chicote de 1,50 que se calcula 1 por m2
-              //estoy calculando por m2 4 mts.de soga más el 25% para abolinar
-              //guarda el valor de la soga para después calcular la soga para abolinar
-              costooriginal = costooriginal + (datosenvio[j][0].CostoMSChicote);
-              j++;
-              // costooriginal = costooriginal + datosenvio[j][0].CostoMSDobladillo;
-              costooriginal = costooriginal + datosenvio[j][0].CostoMSDobladillo;
-              j++;
-              costooriginal =
-                costooriginal +
-                datosenvio[j][0].StkMonedasCotizacion * valorflete +
-                +(datosenvio[j][0].StkMonedasCotizacion * valorMOT);
-              j++;
-
-
-              metroscuad = anchoreal * largoreal
-              //estaba así como se calcula la lona tipo
-              //   costooriginal = costooriginal + datosenvio[j][0].CostoOjalM2;
-              //le agregué la cantidad de ojales por metro cuadrado
-              valorojales = datosenvio[j][0].CostoOjalM2
-              j++;
-              costooriginal = costooriginal * ganancia * coefimpuesto;
-              costooriginal = costooriginal * metroscuad
-              //suma la soga para abolinar
-              ciclo = (metroscuad < 12) ? 3 : 0
-              ciclo = (metroscuad < 16 && metroscuad >= 12) ? 2 : 0
-              ciclo = (metroscuad < 22 && metroscuad >= 16) ? 1 : ciclo = 0
-              i = 0
-              while (i < ciclo) {
-                costooriginal = costooriginal * 1.0325
-                i++
-              }
-
-
-              totalojales = (perimetro / (ojalescada / 100));
-              costoojales = totalojales * valorojales
-              costooriginal = costooriginal + costoojales
-
-              if (ivasn == 'CIVA') {
-                costooriginal = Math.ceil(costooriginal.toFixed(0) / 10) * 10
-              }
-              else {
-                costooriginal = Math.ceil(costooriginal.toFixed(0) / 1.21 / 10) * 10
-              }
-
-              datosenvio[0][0]['ImpUnitario'] = costooriginal
-              datosenvio[0][0]['Detalle'] = detalle
-              datosenvio[0][0]['Largo'] = (largoreal * 1).toFixed(2)
-              datosenvio[0][0]['Ancho'] = (anchoreal * 1).toFixed(2)
-
-              //esto es para que imprima o no la descripción que se pide
-              datosenvio[0][0]['MDesc'] = 'S'
-              costooriginal = 0;
-            }
-            res.json(datosenvio);
-            datosenvio = [];
-          }
-          // }
-        });
+      // ------------------------------------------------------------------
+      // 5) ARMO RESULTADO DEL ÍTEM
+      // ------------------------------------------------------------------
+      resultados.push({
+        ImpUnitario: costo,
+        Detalle: detalle,
+        Largo: largoreal.toFixed(2),
+        Ancho: anchoreal.toFixed(2),
+        MDesc: "S",
       });
-    })
+    }
+    res.json(resultados);
+
+  } catch (err) {
+    console.log("Error en /presuplonaabolinada", err);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
 });
-conexion.end;
+
 export default router;

@@ -3,13 +3,6 @@ var router = express.Router();
 
 import conexion from "../../conexion.mjs";
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos en realizacambiostock");
-    } else {
-        console.log("no se conecto en realizacambiostock");
-    }
-});
 var datosenvio = [];
 
 router.post("/", function (req, res, next) {
