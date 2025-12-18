@@ -50,7 +50,7 @@ router.get('/', async (req, res, next) => {
       } = item;
 
 
-      let anchocal = ancho + 0.08
+      let anchocal = Number(ancho) + 0.08
       let enteropanios = Math.trunc(anchocal / 1.50)
 
       // coeficientes
@@ -62,14 +62,14 @@ router.get('/', async (req, res, next) => {
       let MOTarmado = 0;
 
       if (Number(largo) <= 1.60) {
-        MOTarmado = 44 * ancho
+        MOTarmado = 44 * anchocal
 
       }
       else if (Number(largo) > 1.60 && Number(largo) <= 2.60) {
-        MOTarmado = 55 * ancho
+        MOTarmado = 55 * anchocal
       }
       else {
-        MOTarmado = 65 * ancho
+        MOTarmado = 65 * anchocal
       }
       let largocal = 0
       if (altovolado === 0) {
@@ -77,16 +77,15 @@ router.get('/', async (req, res, next) => {
       }
       else {
         largocal = Number(largo) + 0.70 + (altovolado / 100) //agrego .5 del toldo + .2 del volado para doblar
-        MOTarmado = MOTarmado + (17 * ancho)
+        MOTarmado = MOTarmado + (17 * anchocal)
       }
-
       let valorMOTmin = p.costoMOT * coefMOT / 60
 
 
 
       const decimalpanios = (anchocal / 1.5) - enteropanios;
-      const panios = decimalpanios > 0 ? enteropanios + 1 : enteropanios;
 
+      const panios = decimalpanios > 0 ? enteropanios + 1 : enteropanios;
 
 
 
@@ -125,9 +124,10 @@ router.get('/', async (req, res, next) => {
           ON StkRubro.StkRubroTM = idStkMonedas
         WHERE StkRubro.StkRubroAbr = "${StkRubroAbr}"
       `;
-      console.log('q2  ', q2)
       const datos1 = await queryAsync(q1);
+      const valtoldbarrac = Number(datos1[0].ValorToldoBarrac)
       const datos2 = await queryAsync(q2);
+      const valimpuntil = Number(datos2[0].ImpUnitario)
 
 
 
@@ -141,12 +141,11 @@ router.get('/', async (req, res, next) => {
 
       // Obtener datos del mecanismo
       const motor = motores[tipomecanismo] || { abreviatura: "", detalle: "" };
-
       const abrevmotor = motor.abreviatura;
       const detallemotor = motor.detalle;
       let valormotor = null;
 
-
+      let importemotor = [0];
       if (abrevmotor !== "") {
         valormotor = `
           SELECT 
@@ -160,7 +159,7 @@ router.get('/', async (req, res, next) => {
           WHERE StkRubro.StkRubroAbr = "${abrevmotor}"
         `;
 
-        const importemotor = await queryAsync(valormotor);
+        importemotor = await queryAsync(valormotor);
       }
       /* busca valor de toldo barracuadra */
 
@@ -175,34 +174,26 @@ router.get('/', async (req, res, next) => {
         detalle = detallep + ''
       }
 
+      let impmotor = importemotor[0].ValorMotor != undefined ? importemotor[0].ValorMotor : 0
 
-
-      let importe1 = datos2[0].ImpUnitario + datos1[0].ValorToldoBarrac + importemotor[0].ValorMotor
+      let importe1 = Number(valimpuntil) + Number(valtoldbarrac) + Number(impmotor)
       importe1 = importe1 + (valorMOTmin * MOTarmado)
+      altovolado != 0 ? detalle = `${detalle} con volado de ${altovolado} cm. ` : detalle = `${detalle}`
 
+      tipomecanismo != 'Manual' ? detalle = `${detalle} con Motor ${detallemotor} ` : detalle = `${detalle} `
 
+      detalle = `${detalle} en :  ${StkRubroAbr}`
 
-      if (tipomecanismo != 'Manual') {
-        Detalle = detalle + " con Motor  " + detallemotor + "  y volado de " + altovolado + " cm. en : "
-
-      }
-      else {
-        if (altovolado != 0) {
-          Detalle = detalle + " con volado de " + altovolado + " cm. en : "
-        }
-        else { Detalle = detalle + " en : " }
-      }
       if (ivasn === "CIVA") {
         importe1 = Math.ceil(importe1 / 10) * 10;
       } else {
         importe1 = Math.ceil(importe1 / 1.21 / 10) * 10;
       }
-
       resultados.push({
         ImpUnitario: importe1,
-        Detalle: Detalle,
-        Largo: largo.toFixed(2),
-        Ancho: ancho.toFixed(2),
+        Detalle: detalle,
+        Largo: Number(largo).toFixed(2),
+        Ancho: Number(ancho).toFixed(2),
         MDesc: "S",
       });
     }

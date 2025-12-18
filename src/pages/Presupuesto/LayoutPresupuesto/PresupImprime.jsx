@@ -2,8 +2,6 @@ import request from "superagent";
 import IpServidor from "../../VariablesDeEntorno";
 import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 import "react-toastify/dist/ReactToastify.css";
-// import { PresupPreview } from './PresupPreview'
-// Lee Rubro por codigo de gupo
 export const PresupImprime = (
 	props,
 	nomCliente,
@@ -17,7 +15,9 @@ export const PresupImprime = (
 	Tancho,
 	dolaressn
 ) => {
+	console.log('nroPResup PresupImprime ', nroPresupuesto)
 	const url1 = IpServidor + "/imppresup";
+	console.log('url1  ', url1)
 	request
 		.post(url1)
 		.set("Content-Type", "application/json")
@@ -34,11 +34,9 @@ export const PresupImprime = (
 		.send({ dolaressn: dolaressn })
 		.set("X-API-Key", "foobar")
 		.then((res) => {
-			// datoserroneos = false;
 			MuestraMensaje(res);
 		})
 		.catch((err) => {
-			// datoserroneos = true;
 			MuestraMensaje(err);
 		});
 };

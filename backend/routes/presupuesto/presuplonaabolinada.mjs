@@ -67,10 +67,6 @@ router.get("/", async (req, res) => {
 
       const tipoojal = (tipoojale === "hz") ? "OHCOL" : "OBCOL";
       const detojal = (tipoojale === "hz") ? " de hierro " : " de bronce ";
-      // descripción
-      let detalle = detallep
-        ? `${detallep} en : ${StkRubroAbrP} `
-        : `Lona con soga en dobladillo, c/ojales ${detojal} cada ${ojalescada} cm. en :  ${StkRubroAbrP}`;
 
       // ------------------------------------------------------------------
       // 3) QUERY PRINCIPAL COMPLETA (todo junto)
@@ -82,13 +78,12 @@ router.get("/", async (req, res) => {
 
           -- costo soga chicote
           (r2.StkRubroCosto * m2.StkMonedasCotizacion * 3)   AS CostoMSChicote,
-
           -- soga dobladillo
           (r3.StkRubroCosto * m3.StkMonedasCotizacion)    AS CostoMSDobladillo,
-
           -- cotización
           m4.StkMonedasCotizacion      AS Cotizacion,
-
+          -- detalle de material
+          (r7.StkRubroDesc) AS StkRubroDesc,
           -- costo del ojal
           (SELECT SUM(r5.StkRubroCosto * m5.StkMonedasCotizacion)
             FROM BasePresup.PresupConfTipo t
@@ -103,15 +98,21 @@ router.get("/", async (req, res) => {
             JOIN BaseStock.StkMonedas m2 ON r2.StkRubroTM = m2.idStkMonedas,
             BaseStock.StkRubro r3
             JOIN BaseStock.StkMonedas m3 ON r3.StkRubroTM = m3.idStkMonedas,
-            BaseStock.StkMonedas m4
+            BaseStock.StkMonedas m4,
+            BaseStock.StkRubro r7
 
         WHERE r1.StkRubroAbr = '${StkRubroAbrP}'
           AND r2.StkRubroAbr = '${sogachicote}'
           AND r3.StkRubroAbr = '${p.sogadobladillo}'
           AND m4.idStkMonedas = '${p.codmoneda}'
+          AND r7.StkRubroAbr = '${StkRubroAbrP}'
       `;
       const datos = await queryAsync(sql);
       const d = datos[0];
+      // descripción
+      let detalle = detallep
+        ? `${detallep} en : ${d.StkRubroDesc} `
+        : `Lona con soga en dobladillo, c/ojales ${detojal} cada ${ojalescada} cm. en :  ${d.StkRubroDesc}`;
 
       // ------------------------------------------------------------------
       // 4) CALCULO COMPLETO

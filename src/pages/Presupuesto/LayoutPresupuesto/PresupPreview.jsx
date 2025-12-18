@@ -4,7 +4,6 @@ import React from "react";
 import { Dialog, DialogTitle } from "@mui/material";
 import BCierraDialogo from "../../../Styles/Boton.module.css";
 import CloseIcon from "@mui/icons-material/Close";
-import { PresupBorradespPreview } from "./TablaPresup/PresupBorradespPreview";
 
 export const PresupPreview = (props) => {
 	var datos = props.rowsel;
@@ -20,14 +19,13 @@ export const PresupPreview = (props) => {
 		nombrepresupueb = `/Presupuesto\\ nro\\ ${datos.id}\\ ${Clienteb}\\ ${fecha}.pdf`;
 	}
 	else {
-		nombrepresupue = `/basics.pdf`;
+		nombrepresupue = `basics.pdf`;
 	}
 	async function cierradialogo() {
 		// if (nombrepresupue !== "/basics.pdf") {
 		// 	await PresupBorradespPreview(nombrepresupue);
 		// }
 		// props.setOpen({ preview: false });
-		console.log('cierradialogo', nombrepresupue)
 		props.setOpen(false);
 	}
 

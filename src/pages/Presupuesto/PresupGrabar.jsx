@@ -23,11 +23,10 @@ export const PresupGrabar = (
 			.set("X-API-Key", "foobar")
 			.then((res) => {
 				const respuesta = JSON.parse(res.text);
-				nroPresupuesto = respuesta.insertId;
+				nroPresupuesto = respuesta.nropresup;
 				resolve(nroPresupuesto);
 			});
 	}).catch(
 		(err) => console.log("codigo de error presupgrabar que no es error", err)
-		// CodigoError(err)
 	);
 };

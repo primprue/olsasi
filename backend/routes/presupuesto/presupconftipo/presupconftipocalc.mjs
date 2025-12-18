@@ -2,99 +2,78 @@ import express from "express";
 var router = express.Router();
 
 import conexion from "../../conexion.mjs";
-
-
-var datosenvio = [];
-router.get("/", function (req, res, next) {
-  let tipo = req.query.tipo;
-
-  var minmay = '', coefgcia = 0, vlrMOT = 0, vlrMAT = 0, TotalValor = 0, ImpUnitario = 0, ivasn = ''
-  var ImprimeSN = ''
-  let datosrec = JSON.parse(req.query.datoscalculo);
-  datosrec.map(datos => {
-    minmay = datos.minmay
-    ivasn = datos.ivasn
-  })
-
-  let q2 = ['select * from BasePresup.PresupParam'].join(' ')
-  conexion.query(q2,
-    function (err, result2) {
-      if (err) {
-        console.log(err);
-      }
-      else {
-        if (minmay == 'my') {
-          coefgcia = result2[0].coefMOTmay
-          ivasn = 'CIVA'
-        }
-        else {
-          coefgcia = result2[0].coefMOTmin
-        }
-      }
-
-      var q1 = ['SELECT (PresupConfTipoMinMOT * costoMOT / 60) as CostoMotCon FROM BasePresup.PresupConfTipo, BasePresup.PresupParam where PresupConfTipoDesc = "' + tipo + '" and PresupConfTipoMinMOT <> 0'].join("");
-
-      conexion.query(q1, function (err, result1) {
-        var CostoMotCon = 0
-        if (err) {
-          console.log(err);
-
-        } else {
-          if (result1 == '') {
-            vlrMOT = 0
-          }
-          else {
-            vlrMOT = result1[0].CostoMotCon
-          }
-        }
-
-        var q2 = ['SELECT PresupConfTipoImprime as PresupConfTipoImprime FROM BasePresup.PresupConfTipo where PresupConfTipoDesc = "' + tipo + '"'].join("");
-
-        conexion.query(q2, function (err, result1) {
-
-          if (err) {
-            console.log(err);
-          } else {
-            ImprimeSN = result1[0].PresupConfTipoImprime
-          }
-
-          var q = ['select sum(BaseStock.StkRubro.StkRubroCosto * BaseStock.StkMonedas.StkMonedasCotizacion * BasePresup.PresupConfTipo.PresupConfTipoCant) ' +
-            'as ImpUnitario from BasePresup.PresupConfTipo, BaseStock.StkRubro, BaseStock.StkMonedas ' +
-            'where  PresupConfTipoRubro = BaseStock.StkRubro.StkRubroAbr and ' +
-            'BaseStock.StkRubro.StkRubroTM = BaseStock.StkMonedas.idStkMonedas and ' +
-            'PresupConfTipoDesc = "' + tipo + '"'].join("");
-
-          conexion.query(q, function (err, result) {
-            if (err) {
-              console.log(err);
-            } else {
-
-              vlrMAT = Number(result[0].ImpUnitario)
-
-              if (vlrMOT === 0) {
-                ImpUnitario = parseInt(vlrMAT)
-              }
-              else {
-                ImpUnitario = parseInt((vlrMOT + vlrMAT) * coefgcia)
-              }
-
-              if (ivasn == 'CIVA') {
-                ImpUnitario = Math.ceil((ImpUnitario / 10) * 10)
-              }
-              else {
-                ImpUnitario = Math.ceil(((ImpUnitario / 1.21) / 10) * 10)
-              }
-              console.log('ImpUnitario  ', ImpUnitario)
-
-              datosenvio.push(ImpUnitario)
-              datosenvio.push(ImprimeSN)
-              res.json(datosenvio)
-              datosenvio = []
-            }
-          });
-        });
-      });
+// Helper para usar MySQL en modo promesa
+function queryAsync(sql) {
+  return new Promise((resolve, reject) => {
+    conexion.query(sql, (err, result) => {
+      if (err) reject(err);
+      else resolve(result);
     });
-})
-conexion.end;
+  });
+}
+
+router.get("/", async (req, res) => {
+  let tipo = req.query.tipo;
+  try {
+    const datosrec = JSON.parse(req.query.datoscalculo);
+    const parametros = await queryAsync(`SELECT * FROM BasePresup.PresupParam`);
+    const p = parametros[0];
+
+    const resultados = [];
+
+    for (const item of datosrec) {
+      const {
+        minmay,
+        ivasn
+      } = item;
+
+
+      const coefgcia =
+        minmay === "my" ? p.coefMOTmay : p.coefMOTmin;
+      let ivasncal = minmay === "my" ? "CIVA" : ivasn;
+
+      const q1 = await queryAsync(`SELECT (PresupConfTipoMinMOT * costoMOT / 60) as CostoMotCon
+        FROM BasePresup.PresupConfTipo, BasePresup.PresupParam
+        where PresupConfTipoDesc = "${tipo}" and PresupConfTipoMinMOT <> 0`);
+
+
+      let vlrMOT = 0
+      q1.length === 0 ? vlrMOT = 0 : vlrMOT = Number(q1[0].CostoMotCon);
+
+      const q2 = await queryAsync(
+        `SELECT PresupConfTipoImprime as PresupConfTipoImprime
+        FROM BasePresup.PresupConfTipo
+        where PresupConfTipoDesc = "${tipo}"`);
+      const ImprimeSN = q2[0].PresupConfTipoImprime;
+
+
+      const q = await queryAsync(
+        `select sum(BaseStock.StkRubro.StkRubroCosto * BaseStock.StkMonedas.StkMonedasCotizacion * BasePresup.PresupConfTipo.PresupConfTipoCant)
+          as ImpUnitario from BasePresup.PresupConfTipo, BaseStock.StkRubro, BaseStock.StkMonedas
+          where  PresupConfTipoRubro = BaseStock.StkRubro.StkRubroAbr and
+          BaseStock.StkRubro.StkRubroTM = BaseStock.StkMonedas.idStkMonedas and
+          PresupConfTipoDesc = "${tipo}"`);
+      const vlrMAT = Number(q[0].ImpUnitario);
+      let ImpUnitario = 0
+      vlrMAT === 0 ? ImpUnitario = vlrMAT : ImpUnitario = (vlrMOT + vlrMAT) * coefgcia;
+
+      let impu = Number(ImpUnitario);
+      ivasncal == 'CIVA' ? impu = impu : impu = impu / 1.21;
+
+      resultados.push({
+        ImpUnitario: impu.toFixed(2),
+        ImprimeSN: ImprimeSN,
+
+      });
+
+    }
+
+    res.json(resultados);
+
+  } catch (error) {
+    console.log("Error en /presupconftipocalc", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
+
 export default router;

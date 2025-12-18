@@ -49,7 +49,6 @@ router.get("/", async (req, res) => {
             } else {
                 ganancia = p.coefganssoga;
             }
-            detalle = detallep !== '' ? `${detallep} en :  ${StkRubroAbrP}` : `Lona con ojales de ${detojal} reforzados, chicotes, ${detconf} soga en dobladillo en :  ${StkRubroAbrP}`;
 
             if (minmay === "my") {
                 tipoojal = p.abrojales28;
@@ -68,13 +67,15 @@ router.get("/", async (req, res) => {
                     -- costo refuerzo
                     (r2.StkRubroCosto * m2.StkMonedasCotizacion * 0.20 / 11) AS CostoRefuerzo,
                     -- costo chicote
-                    (r3.StkRubroCosto * m3.StkMonedasCotizacion)    AS CostoMSChicote,
+                    (r3.StkRubroCosto * m3.StkMonedasCotizacion * 1.65)    AS CostoMSChicote,
                     -- costo dobladillo
                     (r4.StkRubroCosto * m4.StkMonedasCotizacion)    AS CostoMSDobladillo,
                     -- cotización
                     m5.StkMonedasCotizacion      AS Cotizacion,
                     -- costo del ojal
-                    (r6.StkRubroCosto * m6.StkMonedasCotizacion / 144) AS CostoOjalM2
+                    (r6.StkRubroCosto * m6.StkMonedasCotizacion / 144) AS CostoOjalM2,
+                    -- detalle de material
+                    (r7.StkRubroDesc) AS StkRubroDesc
                 FROM BaseStock.StkRubro r1
                     JOIN BaseStock.StkMonedas m1 ON r1.StkRubroTM = m1.idStkMonedas,
                     BaseStock.StkRubro r2
@@ -85,7 +86,8 @@ router.get("/", async (req, res) => {
                     JOIN BaseStock.StkMonedas m4 ON r4.StkRubroTM = m4.idStkMonedas,
                     BaseStock.StkMonedas m5,
                     BaseStock.StkRubro r6
-                    JOIN BaseStock.StkMonedas m6 ON r6.StkRubroTM = m6.idStkMonedas
+                    JOIN BaseStock.StkMonedas m6 ON r6.StkRubroTM = m6.idStkMonedas,
+                     BaseStock.StkRubro r7
 
                 WHERE r1.StkRubroAbr = '${StkRubroAbrP}'
                     AND r2.StkRubroAbr = '${StkRubroAbrP}'
@@ -93,9 +95,11 @@ router.get("/", async (req, res) => {
                     AND r4.StkRubroAbr = '${p.sogadobladillo}'
                     AND m5.idStkMonedas = '${p.codmoneda}'
                     AND r6.StkRubroAbr = '${tipoojal}'
+                    AND r7.StkRubroAbr = '${StkRubroAbrP}'
                 `;
             const datos1 = await queryAsync(sql);
             const d = datos1[0];
+            detalle = detallep !== '' ? `${detallep} en :  ${d.StkRubroDesc}` : `Lona con ojales de ${detojal} reforzados, chicotes, ${detconf} soga en dobladillo en :  ${d.StkRubroDesc}`;
 
             const flete = Number(p.flete) || 0;
             const MOT = Number(p.MOTpM2) || 0;

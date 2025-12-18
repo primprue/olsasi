@@ -2,13 +2,13 @@ import React from "react";
 export async function filaanexosColumns() {
 	return new Promise(function (resolve) {
 		resolve([
-			// {
-			//     headerName: "id",
-			//     field: "id",
-			//     editable: false,
-			//     width: 22,
+			{
+				headerName: "id",
+				field: "id",
+				editable: false,
+				width: 22,
 
-			// },
+			},
 
 			{
 				headerName: "Descripción",

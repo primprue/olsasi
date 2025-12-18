@@ -8,17 +8,16 @@ export default function FilaCargaDesc() {
 
 	const handleChange = (value, id) => {
 		setState({ ...state, [id]: value });
-
 	};
 	return (
 		<>
 			<Grid container span={{ xs: 8 }}>
 				<Grid span={{ xs: 1 }}>
 					<TextFieldComun
-						id="DetalleRenglon"
+						id="DetallePresup"
 						type="number"
 						label="Descripción "
-						value={state.DetalleRenglon}
+						value={state.DetallePresup}
 						onChange={handleChange}
 						width="500px"
 						multiline={true}

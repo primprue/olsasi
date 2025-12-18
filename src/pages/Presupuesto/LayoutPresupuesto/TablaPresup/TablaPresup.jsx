@@ -131,6 +131,7 @@ export default function TablaPresup(props) {
 							fontSize="medium"
 							titleAccess="Imprimir"
 						/>
+
 					</Box></Box>
 				{/* <Button onClick={handleClose}>Cierra</Button> */}
 			</GridToolbarContainer>
@@ -152,6 +153,7 @@ export default function TablaPresup(props) {
 	const handleClose = () => {
 		setFilacuatro(false);
 	};
+
 	const [rowSelectionModel, setRowSelectionModel] = React.useState([]);
 	return (
 		<div>
@@ -187,11 +189,12 @@ export default function TablaPresup(props) {
 					""
 				)}
 			</div>
-			<FilaAnexo open={anexos.anexos} setOpen={setAnexos} />;
+			<FilaAnexo open={anexos.anexos} setOpen={setAnexos} />
 			<PresupPreview
 				open={ppreview.ppreview}
 				setOpen={setPPreview}
 			></PresupPreview>
+
 			<FilaCuatro
 				open={filacuatro.filacuatro}
 				datos={datosrenglon}

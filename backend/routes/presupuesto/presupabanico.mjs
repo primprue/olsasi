@@ -35,7 +35,7 @@ router.get("/", async (req, res) => {
         ancho,
       } = item;
 
-      const enteropanios = Math.trunc(ancho / 1.50)
+      //  const enteropanios = Math.trunc(ancho / 1.50)
 
       // coeficientes
       const coeficiente =
@@ -43,37 +43,35 @@ router.get("/", async (req, res) => {
       const coefMOT =
         minmay === "my" ? p.coefMOTmay : p.coefMOTmin;
       let ivasncal = minmay === "my" ? "CIVA" : ivasn;
-
-
+      const anchocal = Number(ancho)
       const valorMOTmin = p.costoMOT * coefMOT / 60
 
       //calculo del largo del abanico
 
-      let largoabanico1 = (largobrazo * 2 * 3.1416) / 4
-      let telacubrecaños = ((((fajabrazo / 10 * 4) + 2) * (cantbrazos + 1)) / 100)
-      let telavolado = (altovolado / 100) + 0.15
+      let largoabanico1 = (Number(largobrazo) * 2 * 3.1416) / 4
+      let telacubrecaños = ((((Number(fajabrazo) / 10 * 4) + 2) * (Number(cantbrazos) + 1)) / 100)
+      let telavolado = (Number(altovolado) / 100) + 0.15
       let largoabanico = largoabanico1 + telacubrecaños + telavolado
-      let telatapas = (largobrazo + 0.07)
+      let telatapas = (Number(largobrazo) + 0.07)
       // + (altovolado / 100)
       let paniostapas
       telatapas < 1.50 ? paniostapas = 1 : paniostapas = 2
-      let paniosfrente = Math.ceil(ancho / 1.5)
+      let paniosfrente = Math.ceil(anchocal / 1.5)
       telatapas = paniostapas * telatapas * 2
       let telatotal = telatapas + (paniosfrente * largoabanico)
-
 
       // tiempo de cortar paños (2 min / paño)
       let minMOT1 = (paniostapas * 2 + paniosfrente) * 2
       //tiempo soldar paños frente (2.5 min / metro)
       let minMOT2 = ((paniosfrente - 1) * largoabanico * 2.5)
       // tiempo cortar, marcar y soldar fajas (8 min / metro faja)
-      let minMOT3 = ((cantbrazos + 1) * ancho) * 8
+      let minMOT3 = ((Number(cantbrazos) + 1) * anchocal) * 8
       // tiempo marcar jas (10 min / metro frente)
-      let minMOT4 = ancho * 10
+      let minMOT4 = anchocal * 10
       // tiempo hacer tapas marcar sobre el frente y soldar tapas
       let minMOT5 = 120
       // tiempo volado soldar y recortar (6 min / metro)
-      let minMOT6 = (largobrazo * 2 + ancho) * 6
+      let minMOT6 = (largobrazo * 2 + anchocal) * 6
       if (voladosd === 'D') {
         (minMOT6 = minMOT6 * 2)
       }

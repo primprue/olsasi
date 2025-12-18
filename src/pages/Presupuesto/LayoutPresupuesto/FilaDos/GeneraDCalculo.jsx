@@ -79,6 +79,7 @@ export const GeneraDCalculo = (props, presuptipo, cotidivisa) => {
 		if (props.PresupAncho === 0) faltadato = true
 		if (props.PresupLargo === 0) faltadato = true
 
+		objetoModificado.tamfaja = props.TamFaja;
 		objetoModificado.tamcristal = props.TamCristal;
 		objetoModificado.altovolado = props.AltoVolado;
 		objetoModificado.sobrantemarco = props.SobranteMarco;

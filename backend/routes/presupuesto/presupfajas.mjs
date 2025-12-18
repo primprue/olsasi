@@ -4,111 +4,101 @@ var router = express.Router();
 import conexion from '../conexion.mjs';
 
 
-var datosenvio = []
-
-router.get('/', (req, res, next) => {
-
-  var q, i = 0
-  var coeficiente = 0, cantidad = 0, StkRubroAbrP = '', largo = 0.00, ancho = 0.00
-  var enteroancho = 0, decimancho = 0.00
-  var datosrec, totalreg, detallep, ivasn, detalle, coefMOT, valorMOTmin, MOTarmado, minutosunion
-  q = ['select * from BasePresup.PresupParam'].join(' ')
-  conexion.query(q,
-    function (err, result) {
-      if (err) {
-        console.log(err);
-      }
-
-      datosrec = JSON.parse(req.query.datoscalculo)
-      totalreg = datosrec.length
-
-      datosrec.map(datos => {
-        StkRubroAbrP = datos.StkRubroAbr;
-        detallep = datos.detallep
-        ivasn = datos.ivasn;
-        largo = datos.largo * 1 + 0.12
-        ancho = datos.ancho * 1 + 0.12
-        minutosunion = ancho * largo * 5
-        enteroancho = Math.trunc(ancho / 1.50)
-        decimancho = (ancho / 1.5) - enteroancho
-        if (decimancho < 0.50) {
-          ancho = enteroancho + 0.50
-        }
-        else {
-          ancho = enteroancho + 1
-        }
-        if (datos.minmay == 'my') {
-          coeficiente = result[0].coeficientemay
-        }
-        else {
-          coeficiente = result[0].coeficientemin
-        }
-
-
-        if (datos.minmay == 'my') {
-          coeficiente = result[0].coeficientemay
-          coefMOT = result[0].coefMOTmay
-          ivasn = 'CIVA'
-        }
-        else {
-          coeficiente = result[0].coeficientemin
-          coefMOT = result[0].coefMOTmin
-        }
-
-        valorMOTmin = result[0].costoMOT * coefMOT / 60
-        MOTarmado = valorMOTmin * minutosunion
-
-        q = ['Select ',
-          'StkRubroDesc, StkRubroAbr, ',
-          '((StkRubroCosto * StkMonedasCotizacion * ', coeficiente,
-          ' * ', ancho,
-          ' * ', largo, ')',
-          ' + ', MOTarmado,
-          ' ) as ImpUnitario, ',
-          'StkRubroCosto, ',
-          'StkMonedasCotizacion ',
-          'from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ',
-          'where StkRubro.StkRubroAbr = "', StkRubroAbrP, '" ',
-          'and StkRubro.StkRubroTM = idStkMonedas '
-        ].join('')
-
-        if (detallep == '') {
-          detalle = "Lona con fajas en el perímetro en : "
-        }
-        else {
-          detalle = detallep + ' '
-        }
-        conexion.query(
-          q,
-          function (err, result) {
-            if (err) {
-              console.log('error en mysql')
-              console.log(err)
-            }
-            else {
-              result[0].Detalle = detalle
-              result[0].Largo = (datos.largo * 1).toFixed(2)
-              result[0].Ancho = (datos.ancho * 1).toFixed(2)
-
-              if (ivasn == 'CIVA') {
-                result[0].ImpUnitario = Math.ceil(Number(result[0].ImpUnitario).toFixed(0) / 10) * 10
-              }
-              else {
-                result[0].ImpUnitario = Math.ceil(Number(result[0].ImpUnitario).toFixed(0) / 1.21 / 10) * 10
-              }
-              result[0].MDesc = 'S'
-              datosenvio.push(result)
-              i++
-              if (i === totalreg) {
-                res.json(datosenvio)
-                datosenvio = []
-              }
-            }
-          })
-      })
-    })
+conexion.connect(err => {
+  if (err) {
+    console.log("no se conecto en presupfajas");
+  } else {
+    console.log("base de datos conectada en presupfajas");
+  }
 });
 
+// ------------------------------------------------------------------
+// FUNCIÓN: ejecuta una consulta MySQL en modo async
+// ------------------------------------------------------------------
+function queryAsync(sql) {
+  return new Promise((resolve, reject) => {
+    conexion.query(sql, (err, result) => {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
+}
 
-conexion.end
+router.get('/', async (req, res, next) => {
+
+  try {
+    const datosrec = JSON.parse(req.query.datoscalculo);
+    const parametros = await queryAsync(`SELECT * FROM BasePresup.PresupParam`);
+    const p = parametros[0];
+
+    const resultados = [];
+
+    for (const item of datosrec) {
+      const {
+        StkRubroAbr,
+        largo,
+        detallep,
+        ancho,
+        ivasn,
+        minmay,
+      } = item;
+
+      const coeficiente =
+        minmay === "my" ? p.coeficientemay : p.coeficientemin;
+      const coefMOT =
+        minmay === "my" ? p.coefMOTmay : p.coefMOTmin;
+      let ivasncal = minmay === "my" ? "CIVA" : ivasn;
+
+      let largocal = Number(largo) + 0.12
+      let anchocal = Number(ancho) + 0.12
+      let minutosunion = anchocal * largocal * 5
+
+
+      const enteroancho = Math.trunc(anchocal / 1.50)
+      const decimancho = (anchocal / 1.5) - enteroancho;
+      const anchotot = decimancho > 0 ? enteroancho + 1 : enteroancho;
+
+
+
+      const valorMOTmin = p.costoMOT * coefMOT / 60
+      const MOTarmado = valorMOTmin * minutosunion
+      const q = `Select
+        StkRubroDesc, StkRubroAbr,
+        (((StkRubroCosto * StkMonedasCotizacion * ${coeficiente}) * ${anchotot} * ${largocal}) + ${MOTarmado} ) as ImpUnitario,
+        StkRubroCosto,
+        StkMonedasCotizacion
+        from BaseStock.StkRubro JOIN  BaseStock.StkMonedas
+        where StkRubro.StkRubroAbr = "${StkRubroAbr}"
+        and StkRubro.StkRubroTM = idStkMonedas`
+
+      const datos = await queryAsync(q);
+      const d = datos[0]
+      let detalle = ""
+
+      detalle = detallep !== '' ? `${detallep} en :  ${d.StkRubroDesc}` : `Lona con fajas en el perímetro en :  ${d.StkRubroDesc}`;
+      let impunitario = Number(d.ImpUnitario)
+
+      if (ivasncal === "CIVA") {
+        impunitario = Math.ceil(impunitario / 10) * 10;
+      } else {
+        impunitario = Math.ceil(impunitario / 1.21 / 10) * 10;
+      }
+      // ------------------------------------------------------------------
+      // 5) ARMO RESULTADO DEL ÍTEM
+      // ------------------------------------------------------------------
+      resultados.push({
+        ImpUnitario: impunitario,
+        Detalle: detalle,
+        Largo: Number(largo).toFixed(2),
+        Ancho: Number(ancho).toFixed(2),
+        MDesc: "S",
+      });
+    }
+    res.json(resultados);
+
+  } catch (err) {
+    console.log("Error en /presupfajas", err);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
 export default router;

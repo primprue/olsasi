@@ -25,7 +25,6 @@ var fonts = {
     }
 };
 router.post("/", function (req, res, next) {
-
     var datospresup = req.body.datospresup
     var descrip = req.body.descrip
     var Presupuestonro = req.body.nroPresupuesto
@@ -80,10 +79,9 @@ router.post("/", function (req, res, next) {
     var opciones = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
 
     var a = 'N'
-
     if (TotalPresup === 0) {
         if (descrip === '') {
-            rows.push([{ text: 'Opc.', style: 'header' }, { text: 'Cant', style: 'header' }, { text: 'Descripción', style: 'header' }, { text: 'Largo', style: 'header' }, { text: 'Ancho', style: 'header' }, { text: 'Imp. Unit.', style: 'header' }, { text: 'Imp. Item.', style: 'header' }]);
+            rows.push([{ text: 'Op', style: 'header' }, { text: 'Cant', style: 'header' }, { text: 'Descripción', style: 'header' }, { text: 'Largo', style: 'header' }, { text: 'Ancho', style: 'header' }, { text: 'Imp. Unit.', style: 'header' }, { text: 'Imp. Item.', style: 'header' }]);
             datospresup.map(reng => {
                 var Opcion = { text: opciones[i], style: 'tableDatosD' }
                 var Cantidad = { text: reng.PresupCantidad.toString(), style: 'tableDatosD' }
@@ -96,14 +94,10 @@ router.post("/", function (req, res, next) {
                 rows.push([Opcion, Cantidad, Descripcion, Largo, Ancho, ImpUnit, ImpItem])
                 i++
             })
-            ac1 = 25, ac2 = 25, ac3 = 200, ac4 = '*', ac5 = '*', ac6 = 70, ac7 = 70
-
+            ac1 = 22, ac2 = 25, ac3 = 200, ac4 = '*', ac5 = '*', ac6 = 70, ac7 = 73
         }
-
-
-
         else {
-            rows.push([{ text: 'Opc.', style: 'header' }, { text: 'Cant', style: 'header' }, { text: 'Descripción', style: 'header' }, { text: 'Imp. Unit.', style: 'header' }, { text: 'Imp. Item.', style: 'header' }]);
+            rows.push([{ text: 'Op', style: 'header' }, { text: 'Cant', style: 'header' }, { text: 'Descripción', style: 'header' }, { text: 'Imp. Unit.', style: 'header' }, { text: 'Imp. Item.', style: 'header' }]);
             datospresup.map(reng => {
                 var Opcion = { text: opciones[i], style: 'tableDatosD' }
                 var Cantidad = { text: reng.PresupCantidad.toString(), style: 'tableDatosD' }
@@ -113,7 +107,7 @@ router.post("/", function (req, res, next) {
                 rows.push([Opcion, Cantidad, Descripcion, ImpUnit, ImpItem])
                 i++
             })
-            ac1 = 25, ac2 = 25, ac3 = 200, ac4 = '*', ac5 = '*', ac6 = 70, ac7 = 70
+            ac1 = 22, ac2 = 25, ac3 = 200, ac4 = '*', ac5 = '*', ac6 = 70, ac7 = 73
         }
     }
     else {
@@ -177,6 +171,9 @@ router.post("/", function (req, res, next) {
                 'los kilos de presión hacia la parte superior.', style: 'resaltado'
         }])
 
+    } else {
+        notatanque.push([{ text: '' }])
+        notatanque.push([{ text: '' }])
     }
 
 
@@ -216,11 +213,6 @@ router.post("/", function (req, res, next) {
                 text: Cliente,
                 style: 'textoI',
             },
-            // {
-            //     text: Telefono,
-            //     style: 'textoI',
-            // },
-
             {
                 text: ' ',
                 style: 'textoD',
@@ -290,7 +282,6 @@ router.post("/", function (req, res, next) {
                 style: 'NotaAcTanque',
                 table: {
                     body: [
-
                         notatanque[0],
                         notatanque[1],
                     ]
@@ -304,7 +295,7 @@ router.post("/", function (req, res, next) {
 
         styles: {
             header: {
-                fontSize: 12,
+                fontSize: 11,
                 italics: true,
                 alignment: 'center',
                 bold: true
@@ -329,7 +320,7 @@ router.post("/", function (req, res, next) {
                 fontSize: 8
             },
             textoCI: {
-                fontSize: 12,
+                fontSize: 10,
                 alignment: 'center',
                 color: 'red',
                 bold: true,
@@ -355,7 +346,7 @@ router.post("/", function (req, res, next) {
                 bold: true
             },
             tableDatos: {
-                fontSize: 11,
+                fontSize: 8,
                 margin: [0, 0, 30, 0],
                 alignment: 'center',
             },
@@ -368,14 +359,15 @@ router.post("/", function (req, res, next) {
                 alignment: 'right',
             },
             tableDatosTot: {
+                fontSize: 10,
                 margin: [0, 0, 0, 15],
                 alignment: 'right',
-                bold: true
+                // bold: true
             },
             textoDTot: {
-                fontSize: 9,
+                fontSize: 8,
                 alignment: 'right',
-                bold: true
+                // bold: true
             },
             tableCond: {
                 fontSize: 11,
@@ -396,7 +388,6 @@ router.post("/", function (req, res, next) {
                 margin: [0, 0, 30, 0],
                 bold: true,
                 color: 'black',
-                // markerColor: 'red',
                 alignment: 'left',
                 fillColor: '#38ff8b',
             },
@@ -414,11 +405,14 @@ router.post("/", function (req, res, next) {
 
     };
 
-    var pdfDoc = printer.createPdfKitDocument(docDefinition);
-    pdfDoc.pipe(fs.createWriteStream((variables.caminoynombrearch + '/basics.pdf')));
-    pdfDoc.pipe(fs.createWriteStream((variables.dirpresupdocumento + nombrepresup)));
+    var pdfDoc1 = printer.createPdfKitDocument(docDefinition);
+    pdfDoc1.pipe(fs.createWriteStream(variables.caminoynombrearch + '/basics.pdf'));
+    pdfDoc1.end();
 
-    pdfDoc.end();
+    var pdfDoc2 = printer.createPdfKitDocument(docDefinition);
+    pdfDoc2.pipe(fs.createWriteStream(variables.dirpresupdocumento + nombrepresup));
+    pdfDoc2.end();
+
 
 
 });

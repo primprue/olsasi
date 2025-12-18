@@ -161,6 +161,7 @@ export default function FilaDos() {
 				state.renglonanexo,
 				dcalculo
 			);
+
 			if (state.renglonanexo.length !== 0) {
 				setDatosRenglon([...datosrenglon, state.renglonanexo]);
 				setDatosRenglon([...datosrenglon, datospresup[0]]);
@@ -384,79 +385,3 @@ export default function FilaDos() {
 	);
 }
 
-
-// eligemoneda.current = true;
-// monedaelegida.current = value;
-// const monedaEncontrada = stkmonedasleidos.current.find(m => m.idStkMonedas === value);
-// cotidivisa.current = monedaEncontrada.StkMonedasCotizacion;
-// const monedaEncontrada = state.stkmonedasleidos.find(m => m.idStkMonedas === value);
-// setCotidivisa(monedaEncontrada.StkMonedasCotizacion);
-
-// let textdatam = [];
-
-// if (stkmonedasleidos.current !== undefined) {
-// 	if (stkmonedasleidos.current.length > 0) {
-// 		monedasleidos.current = true;
-// 		textdatam = [{
-// 			id: "idStkMonedas",
-// 			label: "Moneda",
-// 			value: stkmonedasleidos.current[0].idStkMonedas,
-// 			options: stkmonedasleidos.current.map((option) => ({
-// 				value: option.idStkMonedas,
-// 				label: option.StkMonedasDescripcion
-// 			}))
-// 		}];
-
-// 	}
-// }
-// const textdatam = useMemo(() => {
-
-// 	if (state.monedasleidas.length === 0) return [];
-// 	return [{
-// 		id: "idStkMonedas",
-// 		label: "Moneda",
-// 		value: state.monedasleidas[0].idStkMonedas,
-// 		options: state.monedasleidas.map((option) => ({
-// 			value: option.idStkMonedas,
-// 			label: option.StkMonedasDescripcion
-// 		}))
-// 	}];
-
-// }, [state.monedasleidas]);
-
-// useEffect(() => {
-// 	sacadatosmonedas();
-// }, [eligemoneda]); // eslint-disable-line react-hooks/exhaustive-deps
-
-// useEffect(() => {
-// 	leermonedas();
-// 	sacadatosmonedas();
-// }, [state.monedasleidas.length <= 0]); // eslint-disable-line react-hooks/exhaustive-deps
-
-//const [eligemoneda, setEligeMoneda] = useState(true);
-// const otramoneda = useRef(false);
-// const eligemoneda = useRef(false);
-// const monedaelegida = useRef('');
-// const monedasleidos = useRef(false);
-// const stkmonedasleidos = useRef();
-// const cotidivisa = useRef(0.0);
-// const presuptipo = state.DatosPresupEleg?.[0]?.PresupConfTipoDesc || "";
-
-
-// const sacadatosmonedas = () => {
-// 	console.log('sacadatosmonedas', state.monedasleidas)
-// 	const objetosFiltrados = state.monedasleidas.filter(
-// 		(objeto) => objeto.idStkMonedas === state.idStkMonedas
-// 	);
-// 	console.log('sacadatosmonedas objetosFiltrados ', objetosFiltrados)
-// 	if (objetosFiltrados.length > 0) {
-// 		setCotidivisa(objetosFiltrados[0].StkMonedasCotizacion);
-// 		setState({ ...state, signomoneda: objetosFiltrados[0].StkMonedasSigno });
-// 		setOtraMoneda(true);
-// 		setEligeMoneda(false);
-// 	}
-// };
-// async function leermonedas() {
-// 	const result = await stkmonedasleerorig();
-// 	stkmonedasleidos.current = result
-// }

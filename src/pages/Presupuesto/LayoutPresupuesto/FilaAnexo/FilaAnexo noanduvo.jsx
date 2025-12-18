@@ -31,7 +31,7 @@ export default function FilaAnexo(props) {
 	const [datosanexo, setDatosAnexo] = useState([]);
 	const [sumaanexo, setSumaAnexo] = React.useState(0.0);
 	const [infoanexo, setInfoAnexo] = React.useState();
-	const [rows, setRows] = useState([]);
+	// const [rowsanexo, setRowsanexo] = useState([]);
 	async function columnsFetch() {
 		const col = await filaanexosColumns();
 		setColumns(() => col);
@@ -40,6 +40,7 @@ export default function FilaAnexo(props) {
 	async function cargaAnexos() {
 		const tipoanexo = await leePresupConfTipoLeeAnexo("S", "");
 		setDatosAnexo(tipoanexo);
+
 	}
 
 	var dcalculo = [
@@ -58,15 +59,15 @@ export default function FilaAnexo(props) {
 		var nombre = "";
 		var importetotal = 0.0;
 		var i = 0;
-		while (i < rows.length) {
-			importetotal = importetotal + rows[i].importet;
-			if (rows[i].PresupConfTipoImprime === "S") {
+		while (i < state.rowsanexo.length) {
+			importetotal = importetotal + state.rowsanexo[i].importet;
+			if (state.rowsanexo[i].PresupConfTipoImprime === "S") {
 				nombre =
 					nombre +
 					" c/" +
-					rows[i].AnexoMedida +
+					state.rowsanexo[i].AnexoMedida +
 					" " +
-					rows[i].PresupConfTipoDesc;
+					state.rowsanexo[i].PresupConfTipoDesc;
 			}
 			i++;
 		}
@@ -89,18 +90,19 @@ export default function FilaAnexo(props) {
 	}
 	function cierraanexos1() {
 		setState({ ...state, renglonanexo: [] });
-		setRows([]); //esto limpia el datagrid cuando se hace click sobre la cruz
+		setRowsanexo([]); //esto limpia el datagrid cuando se hace click sobre la cruz
 		props.setOpen({ anexos: false });
 	}
 
 	async function initialFetch() {
 		columnsFetch();
 		cargaAnexos();
+
 	}
 
 	const BorraFila = () => {
-		const updatedRows = rows.filter((row) => row.id !== selectedRow.id);
-		setRows(updatedRows);
+		const updatedRows = state.rowsanexo.filter((row) => row.id !== selectedRow.id);
+		setRowsanexo(updatedRows);
 		setSelectedRow("");
 	};
 
@@ -181,11 +183,11 @@ export default function FilaAnexo(props) {
 			// PresupConfTipoImprime: datosrenglon1[1],
 			// importet: datosrenglon1[0],
 		};
-		setRows([...rows, datoincial]);
+		setRowsanexo([...state.rowsanexo, datoincial]);
 	}
 
 	const handleCellEditCommit = (params) => {
-		const updatedRows = rows.map((row) =>
+		const updatedRows = state.rowsanexo.map((row) =>
 			row.id === params.id
 				? {
 					...row,
@@ -194,7 +196,7 @@ export default function FilaAnexo(props) {
 				}
 				: row
 		);
-		setRows(updatedRows);
+		setRowsanexo(updatedRows);
 	};
 
 	const [selectedRow, setSelectedRow] = useState(null);
@@ -251,7 +253,7 @@ export default function FilaAnexo(props) {
 						</h4>
 						<DataGrid
 							disableColumnMenu={true}
-							rows={rows}
+							rows={state.rowsanexo}
 							columns={columns}
 							autoHeight={true}
 							localeText={esES}

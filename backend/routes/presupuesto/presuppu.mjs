@@ -78,7 +78,7 @@ router.get("/", async (req, res) => {
           ) AS ImpUnitario,
           StkRubroAncho AS Ancho,
           StkRubroCosto,
-          StkMonedasCotizacion
+          StkMonedasCotizacion,
         FROM BaseStock.StkRubro
         JOIN BaseStock.StkMonedas
           ON StkRubro.StkRubroTM = idStkMonedas
@@ -96,13 +96,13 @@ router.get("/", async (req, res) => {
       const anchoreal = Number(largo).toFixed(2);
       const callargo = cantidad * data.Ancho;
 
-      const vecestxt = veces > 1 ? " veces) en : " : " vez) en : ";
+      const vecestxt = veces > 1 ? " veces  " : " vez  ";
       const detalleArmado =
         detallep !== ""
           ? detallep
           : `Paños Unidos de ${anchoreal} ( ${callargo.toFixed(
             2
-          )} x ${anchoreal} ) ( ${veces}${vecestxt} ${StkRubroAbr}`;
+          )} x ${anchoreal} )  (${veces}${vecestxt})  en : ${data.StkRubroDesc}`;
 
       resultados.push({
         ImpUnitario: impu,

@@ -98,13 +98,12 @@ router.get("/", async (req, res) => {
       const anchoreal = Number(largo).toFixed(2);
       const callargo = cantidad * data.Ancho;
 
-      const vecestxt = veces > 1 ? " veces) en : " : " vez) en : ";
       const detalleArmado =
         detallep !== ""
           ? detallep
           : `Paños Unidos de ${anchoreal} ( ${callargo.toFixed(
             2
-          )} x ${anchoreal} ) (recortados a la medida solicitada) en : ${StkRubroAbr}`;
+          )} x ${anchoreal} ) (recortados a la medida solicitada) en : ${data.StkRubroDesc}`;
 
       resultados.push({
         ImpUnitario: impu,

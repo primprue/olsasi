@@ -3,108 +3,106 @@ var router = express.Router();
 
 import conexion from '../conexion.mjs';
 
-var datosenvio = []
 
-router.get('/', (req, res, next) => {
-  var q, i = 0
-  var coeficiente = 0, cantidad = 0.00, StkRubroAbrP = '', largo = 0, valorMOTmup = 0.00, impunion = 0.00, imprecorte = 0.00, importeMOTtotal = 0.00, coefMOT = 0.00
-  var datosrec, totalreg, detallep, ivasn, detalle
-  var cantpanos, ancho, anchoenv, impsolfaja, valorMOTfajas, valorMOTrecorte
-  q = ['select * from BasePresup.PresupParam'].join(' ')
-  conexion.query(q,
-    function (err, result) {
-      if (err) {
-        console.log(err);
-      }
-
-
-      datosrec = JSON.parse(req.query.datoscalculo)
-      totalreg = datosrec.length
-
-      datosrec.map(datos => {
-        cantidad = datos.cantidad;
-        StkRubroAbrP = datos.StkRubroAbr;
-        largo = datos.largo
-        detallep = datos.detallep
-        anchoenv = datos.ancho
-        ivasn = datos.ivasn;
-        cantpanos = (datos.largo / 1.5)
-        ancho = (datos.ancho * 1) + 0.28
-        if (datos.minmay == 'my') {
-          coeficiente = result[0].coeficientemay
-          coefMOT = result[0].coefMOTmay
-          ivasn = 'CIVA'
-        }
-        else {
-          coeficiente = result[0].coeficientemin
-          coefMOT = result[0].coefMOTmin
-        }
-
-        valorMOTmup = result[0].costoMOT * coefMOT / 60 / 60 * result[0].segsolpu
-        valorMOTrecorte = result[0].costoMOT * coefMOT / 60 / 60 * result[0].segpurecorte
-        valorMOTfajas = result[0].costoMOT * coefMOT / 60 / 60 * result[0].segsolfaja
-        if ((cantpanos - Math.trunc(cantpanos)) > 0) {
-          impunion = ((((Math.trunc(cantpanos))) * ancho + 0.75)) * valorMOTmup
-          cantpanos = Math.trunc(cantpanos) + 1
-        }
-        else {
-          impunion = ((cantpanos - 1) * ancho) * valorMOTmup
-        }
-
-        imprecorte = ancho * valorMOTrecorte
-        impsolfaja = largo * valorMOTfajas * 2
-        importeMOTtotal = impunion + imprecorte + impsolfaja
-        if (detallep == '') {
-          detalle = "Lona enrollable para destape fácil : "
-        }
-        else {
-          detalle = detallep + ' '
-        }
-        q = ['Select',
-          'StkRubroDesc, StkRubroAbr, ',
-          '(((StkRubroCosto * StkMonedasCotizacion * ', coeficiente, ')',
-          ' * ', cantpanos,
-          ' * ', ancho, ' ) + ' + importeMOTtotal + ') as ImpUnitario, ',
-          // ' * ', largo, ' ) + ' + importeMOTtotal + ') as ImpItem, ',
-
-          'StkRubroCosto,',
-          'StkMonedasCotizacion ',
-          'from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ',
-          'where StkRubro.StkRubroAbr = "' + StkRubroAbrP + '" ',
-          'and StkRubro.StkRubroTM = idStkMonedas '
-        ].join(' ')
-        conexion.query(
-          q,
-          function (err, result) {
-            if (err) {
-              console.log('error en mysql')
-              console.log(err)
-            }
-            else {
-              result[0].Detalle = detalle
-              result[0].Largo = largo
-              result[0].Ancho = anchoenv
-              result[0].MDesc = 'S'
-
-              if (ivasn == 'CIVA') {
-                result[0].ImpUnitario = Math.ceil(Number(result[0].ImpUnitario).toFixed(0) / 10) * 10
-              }
-              else {
-                result[0].ImpUnitario = Math.ceil(Number(result[0].ImpUnitario).toFixed(0) / 1.21 / 10) * 10
-              }
-
-              datosenvio.push(result)
-              i++
-              if (i === totalreg) {
-                res.json(datosenvio)
-                datosenvio = []
-              }
-            }
-          })
-      })
-    });
+conexion.connect(err => {
+  if (err) {
+    console.log("no se conecto en presupdesfac");
+  } else {
+    console.log("base de datos conectada en presupdesfac");
+  }
 });
 
+// ------------------------------------------------------------------
+// FUNCIÓN: ejecuta una consulta MySQL en modo async
+// ------------------------------------------------------------------
+function queryAsync(sql) {
+  return new Promise((resolve, reject) => {
+    conexion.query(sql, (err, result) => {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
+}
 
-conexion.end
+router.get('/', async (req, res, next) => {
+
+  try {
+    const datosrec = JSON.parse(req.query.datoscalculo);
+    const parametros = await queryAsync(`SELECT * FROM BasePresup.PresupParam`);
+    const p = parametros[0];
+
+    const resultados = [];
+
+    for (const item of datosrec) {
+      const {
+        StkRubroAbr,
+        largo,
+        detallep,
+        ancho,
+        ivasn,
+        minmay,
+      } = item;
+
+      const coeficiente =
+        minmay === "my" ? p.coeficientemay : p.coeficientemin;
+      const coefMOT =
+        minmay === "my" ? p.coefMOTmay : p.coefMOTmin;
+      let ivasncal = minmay === "my" ? "CIVA" : ivasn;
+
+      const segcoefMOT = coefMOT / 60 / 60
+      const valorMOTmup = p.costoMOT * segcoefMOT * p.segsolpu
+      const valorMOTrecorte = p.costoMOT * segcoefMOT * p.segpurecorte
+      const valorMOTfajas = p.costoMOT * segcoefMOT * p.segsolfaja
+
+      let anchocal = ancho + 0.28
+      let enteropanios = Math.trunc(anchocal / 1.50)
+
+      const decimalpanios = (anchocal / 1.5) - enteropanios;
+      const cantpanos = decimalpanios > 0 ? enteropanios + 1 : enteropanios;
+      const impunion = decimalpanios > 0 ? ((cantpanos * ancho) + 0.75) * valorMOTmup : ancho * valorMOTmup
+
+      const imprecorte = anchocal * valorMOTrecorte
+      const impsolfaja = largo * valorMOTfajas * 2
+      let importeMOTtotal = impunion + imprecorte + impsolfaja
+
+      const q = `Select
+        StkRubroDesc, StkRubroAbr,
+        (((StkRubroCosto * StkMonedasCotizacion * ${coeficiente}) * ${cantpanos} * ${ancho}) + ${importeMOTtotal}) as ImpUnitario,
+        StkRubroCosto,
+        StkMonedasCotizacion
+        from BaseStock.StkRubro JOIN  BaseStock.StkMonedas
+        where StkRubro.StkRubroAbr = "${StkRubroAbr}"
+        and StkRubro.StkRubroTM = idStkMonedas`
+
+      const datos = await queryAsync(q);
+      const d = datos[0]
+
+      let detalle = ""
+
+      detalle = detallep !== '' ? `${detallep} en :  ${d.StkRubroDesc}` : `Lona enrollable para destape fácil en :  ${d.StkRubroDesc}`;
+
+      let impunitario = Number(d.ImpUnitario)
+      if (ivasncal === "CIVA") {
+        impunitario = Math.ceil(impunitario / 10) * 10;
+      } else {
+        impunitario = Math.ceil(impunitario / 1.21 / 10) * 10;
+      }
+      // ------------------------------------------------------------------
+      // 5) ARMO RESULTADO DEL ÍTEM
+      // ------------------------------------------------------------------
+      resultados.push({
+        ImpUnitario: impunitario,
+        Detalle: detalle,
+        Largo: Number(largo).toFixed(2),
+        Ancho: Number(ancho).toFixed(2),
+        MDesc: "S",
+      });
+    }
+    res.json(resultados);
+
+  } catch (err) {
+    console.log("Error en /presupdesfac", err);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
 export default router;

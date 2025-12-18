@@ -7,12 +7,7 @@ import conexion from "../../conexion.mjs";
 router.get("/", function (req, res, next) {
   let PresupConfTipoAnexoSN = req.query.anexo;
   let PresupConfTipoProdelab = req.query.prodelab;
-  // var q = ["SET @numero=0;"].join(" ");
-  // conexion.query(q, function (err, result) {
-  //   if (err) {
-  //     console.log(err);
-  //   }
-  // });
+
 
   if (PresupConfTipoProdelab === 'PAE') {
     var q = ["SET @numero=0;", " SELECT @numero:=@numero+1 as NroConfTipo , PresupConfTipoDesc, PresupConfTipoImprime  from BasePresup.PresupConfTipo where PresupConfTipoAnexo = '" + PresupConfTipoAnexoSN + "' and PresupConfTipoPElab = 'N' and PresupConfTipoBack <> '/presupunid'  group by PresupConfTipoDesc, PresupConfTipoImprime  order by PresupConfTipoDesc "].join(" ");

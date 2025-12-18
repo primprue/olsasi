@@ -1,82 +1,72 @@
 import express from "express";
-var router = express.Router();
-
 import moment from "moment";
-import conexion from '../conexion.mjs';
+import conexion from "../conexion.mjs";
 
-nropresup = 0;
+const router = express.Router();
 moment.locale("es");
-var nropresup = 0;
 
-
-router.use(express.json()); // Asegúrate de que esto está habilitado para que `req.body` no sea vacío
+router.use(express.json());
 
 router.all("/", async function (req, res) {
-  var d = new Date();
-  var finalDate = d.toISOString().split("T")[0];
-  var cliente = ''
-  var i = 0;
+  try {
+    const d = new Date();
+    const finalDate = d.toISOString().split("T")[0];
 
-  if (req.body.idClientes != 0) {
-    cliente = req.body.idClientes
-  }
-  else {
-    cliente = req.body.nomCliente
-  }
-  var registro = {
-    PresupEncabFecha: finalDate,
-    PresupEncabCliente: cliente,
-    PresupEncabTotal: req.body.DatosPresup.suma,
-    PresupEncabMayMin: req.body.maymin,
-    PresupEncabExplic: req.body.explicacionPresup
-  }
-  conexion.query("INSERT INTO BasePresup.PresupEncab SET ?", registro, function (err, result) {
-    if (err) {
-      if (err.errno == 1062) {
-        return res.status(409).send({ message: "error clave duplicada" });
-      } else {
-        console.log("ERROR en INSERT INTO BasePresup.PresupEncab");
-        console.log(err.errno);
-      }
-    } else {
-      console.log('insertó todo bien en BasePresup.PresupEncab')
-      res.json(result);
-      nropresup = result.insertId
-    }
-    req.body.DatosPresup.datos.map(renglon => {
-      var registro1 = {
+    const cliente =
+      req.body.idClientes != 0
+        ? req.body.idClientes
+        : req.body.nomCliente;
+
+    const registroEncab = {
+      PresupEncabFecha: finalDate,
+      PresupEncabCliente: cliente,
+      PresupEncabTotal: req.body.DatosPresup.suma,
+      PresupEncabMayMin: req.body.maymin,
+      PresupEncabExplic: req.body.explicacionPresup,
+    };
+
+    // ⭐ INSERT ENCABEZADO (async/await)
+    const [resEncab] = await conexion
+      .promise()
+      .query("INSERT INTO BasePresup.PresupEncab SET ?", registroEncab);
+
+    const nropresup = resEncab.insertId;
+
+    // ⭐ PREPARAR ARRAY DE PROMESAS PARA TODOS LOS RENGLONES
+    const promesasRenglones = req.body.DatosPresup.datos.map((renglon, i) => {
+      const registroReng = {
         idPresupRenglon: i + 1,
         PresupRenglonNroPresup: nropresup,
         PresupRenglonCant: renglon.PresupCantidad,
         PresupRenglonDesc: renglon.StkRubroDesc,
         PresupRenglonLargo: renglon.PresupLargo,
         PresupRenglonAncho: renglon.PresupAncho,
-        PresupRenglonImpUnit: renglon.ImpUnitario,
-        PresupRenglonImpItem: renglon.ImpItem,
+        PresupRenglonImpUnit: Number(renglon.ImpUnitario).toFixed(2),
+        PresupRenglonImpItem: Number(renglon.ImpItem).toFixed(2),
         PresupRenglonParamInt: JSON.stringify(renglon.dcalculo[0])
-      }
-      conexion.query("INSERT INTO BasePresup.PresupRenglon SET ?", registro1,
-        function (err, result) {
-          if (err) {
-            console.log('err en back de presupgraba ', err)
-            if (err.errno == 1265) {
-              return res.status(413).send({ message: "Faltan datos para leer información en tabl" });
-            }
-            else {
-              console.log("ERROR en INSERT INTO BasePresup.PresupRenglon ");
-              console.log(err.errno);
-            }
-          }
-          else {
-            console.log('insertó todo bien en el renglon de presupuesto')
-            //   res.json('');
-          }
-        });
-      i++
-    })
-    // })
+      };
+      return conexion
+        .promise()
+        .query("INSERT INTO BasePresup.PresupRenglon SET ?", registroReng);
+    });
 
-  });
+    // ⭐ ESPERAR A QUE SE INSERTE TODO
+    await Promise.all(promesasRenglones);
+    console.log('nropresup ', nropresup)
+    // ⭐ RESPUESTA ÚNICA CUANDO TODO TERMINÓ
+    res.json({
+      ok: true,
+      message: "Presupuesto grabado correctamente",
+      nropresup,
+    });
+
+  } catch (err) {
+    console.error("Error al grabar el presupuesto:", err);
+    res.status(500).json({
+      ok: false,
+      error: err.message,
+    });
+  }
 });
-conexion.end;
+
 export default router;
