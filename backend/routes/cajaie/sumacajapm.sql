@@ -1,14 +1,14 @@
 SELECT JSON_OBJECTAGG(
-           moneda,
-           JSON_OBJECT(
-               'totalM', totalM,
-               'totalT', totalT,
-               'totalInstr', totalInstr,
-               'totalTSinInstr', totalT - totalInstr,
-               'saldoEf', saldoEf,
-               'totalMEsp', totalM + totalT - totalInstr + saldoEf
-           )
-       ) AS TotalesPorMoneda
+        moneda,
+        JSON_OBJECT(
+            'totalM', totalM,
+            'totalT', totalT,
+            'totalInstr', totalInstr,
+            'totalTSinInstr', totalT - totalInstr,
+            'saldoEf', saldoEf,
+            'totalMEsp', totalM + totalT - totalInstr + saldoEf
+        )
+    ) AS TotalesPorMoneda
 FROM (
     SELECT 
         c.CajaIEMoneda AS moneda,
@@ -26,7 +26,7 @@ FROM (
             GROUP BY CajaSaldoEfMoneda
         ) y
         ON x.CajaSaldoEfMoneda = y.CajaSaldoEfMoneda
-       AND x.idCajaSaldoEfFecha = y.ultFecha
+        AND x.idCajaSaldoEfFecha = y.ultFecha
     ) s ON s.CajaSaldoEfMoneda = c.CajaIEMoneda
     GROUP BY c.CajaIEMoneda, s.CajaSaldoEfImporte
 ) t;

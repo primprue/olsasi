@@ -156,7 +156,7 @@ router.get("/", (req, res) => {
           if (StkRubroAbrP == 'POL19') {
             SegundosMOT = perimetro * 600
             if (anchopared > 0.10) {
-                SegundosMOT = SegundosMOT + perimetro * 600
+              SegundosMOT = SegundosMOT + perimetro * 600
             }
 
           }
@@ -231,7 +231,7 @@ router.get("/", (req, res) => {
                 metroscuadtotal = metroscuadtotal + mcuadradosfaldon
                 segsoldarfaldon = (diametro * 3.1416 * 240)
                 SegundosMOT = SegundosMOT + seghacercortes + segsoldarfaldon
-                
+
               default:
                 console.log('vino al default')
 
@@ -292,7 +292,7 @@ router.get("/", (req, res) => {
 
           MOTarmado = valorMOTseg * SegundosMOT
           MOTarmadoAd = valorMOTseg * SegundosMOTAd
-            console.log('SegundosMOT  ', SegundosMOT)
+          console.log('SegundosMOT  ', SegundosMOT)
 
           valorsogacriq = ['Select ',
             '(StkRubroCosto * StkMonedasCotizacion * ', coeficiente,

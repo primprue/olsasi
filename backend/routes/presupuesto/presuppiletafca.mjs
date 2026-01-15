@@ -1,175 +1,132 @@
 import express from "express";
 var router = express.Router();
-
 import conexion from "../conexion.mjs";
 
-var datosenvio = [];
 
 
-router.get("/", (req, res, next) => {
-  var q, i = 0;
-  var cantidadojales = 0, mcuadcob = 0.00, ojales = '', valorMOT = 0.00, coefMOT = 0.00
-  var detallep = '', ivasn = '', datosrec, tipoojal, callargo, anchoreal, detalle
-  var minutosdren, drenajesn, tipoojale, largoreal, buscaancho, calpaños, cantpaños
-  q = ['select * from BasePresup.PresupParam'].join(' ')
-  conexion.query(q,
-    function (err, result) {
-      if (err) {
-        console.log(err);
+// ------------------------------------------------------------------
+// FUNCIÓN: ejecuta una consulta MySQL en modo async
+// ------------------------------------------------------------------
+
+async function queryAsync(sql, params = []) {
+  const [rows] = await conexion.promise().query(sql, params);
+  return rows;
+}
+
+router.get("/", async (req, res) => {
+  try {
+    const datosrec = JSON.parse(req.query.datoscalculo);
+    const parametros = await queryAsync(`SELECT * FROM BasePresup.PresupParam`);
+    const p = parametros[0];
+
+    const resultados = [];
+
+    for (const item of datosrec) {
+      const {
+        cantidad,
+        drenajesn,
+        tipoojale,
+        detallep,
+        StkRubroAbr,
+        ivasn,
+        largo,
+        ancho,
+        minmay
+      } = item;
+
+
+      let largocal = Number(largo) + 0.3;
+      let anchocal = Number(ancho) + 0.08;
+      let param = [StkRubroAbr];
+      const buscaancho = await queryAsync(
+        `Select StkRubroAncho  as AnchoTela  from BaseStock.StkRubro where StkRubro.StkRubroAbr = ?`,
+        param
+      );
+      const rbuscaancho = buscaancho[0];
+      const anchoTela = rbuscaancho.AnchoTela;
+
+      const division = largocal / anchoTela;
+      const entero = Math.trunc(division);
+      const decimal = division - entero;
+
+      const cantpaños = entero + (decimal < 0.5 ? 0.5 : 1);
+
+      const metroscuad = cantpaños * anchoTela * anchocal;
+      const detdrenaje = (drenajesn === 'cd') ? " con drenaje " : " sin drenaje ";
+      const minutosdren = (drenajesn === 'cd') ? ((largocal / 1.50) + 2) * 12 : 0;
+
+
+
+      let coefmaymin = 0;
+      let ivareal = ''
+      let coefMOT = 0;
+      let minutospmc = 10;
+      const detojal = (tipoojale === "hz") ? " de hierro " : " de bronce ";
+      let tipoojal = (tipoojale === "hz") ? p.abrojales3hz : p.abrojales3b;
+      if (minmay == 'my') {
+        coefmaymin = Number(p.coeficientemay) || 0;
+        tipoojal = p.abrojales28;
+        coefMOT = Number(p.coefMOTmay) || 0;
+        ivareal = 'CIVA'
+      }
+      else {
+        coefmaymin = Number(p.coeficientemin) || 0;
+        coefMOT = Number(p.coefMOTmin) || 0;
+        ivareal = ivasn
       }
 
-      var costooriginal = 0;
-      var coeficiente = 0,
-        cantidad = 0,
-        metroscuad = 0,
-        StkRubroAbrP = "",
-        largo = 0,
-        //cantidad de minutos a cambiar hasta llegar al importe correcto de mano de obra
-        minutospmc = 10,
-        ancho = 0.0;
-      minutosdren = 0.0;
-      datosrec = JSON.parse(req.query.datoscalculo);
+      let cantidadojales = largo * 2
 
-      datosrec.map(datos => {
-        cantidad = datos.cantidad;
-        drenajesn = datos.drenajesn;
-        tipoojale = datos.tipoojale;
-        detallep = datos.detallep
-        StkRubroAbrP = datos.StkRubroAbr;
-        ivasn = datos.ivasn;
-        largoreal = (datos.largo * 1)
-        anchoreal = (datos.ancho * 1)
-        largo = (datos.largo * 1) + 0.3;
-        ancho = (datos.ancho * 1) + 0.08;
+      let valorMOT = p.costoMOT * coefMOT / 60 * ((metroscuad * minutospmc) + minutosdren)
 
-        buscaancho = ['Select StkRubroAncho  as AnchoTela  from BaseStock.StkRubro where StkRubro.StkRubroAbr = "', StkRubroAbrP, '" '].join('')
-        conexion.query(buscaancho,
-          function (err, rbuscaancho) {
-            if (err) {
-              console.log(err);
-            }
+      const q = `Select
+        StkRubroDesc, StkRubroAbr,
+        (StkRubroCosto / StkRubroAncho * StkMonedasCotizacion * ? *?) as ImpUnitario,
+        StkRubroCosto,
+        StkMonedasCotizacion
+        from BaseStock.StkRubro JOIN  BaseStock.StkMonedas
+        where StkRubro.StkRubroAbr = ?
+        and StkRubro.StkRubroTM = idStkMonedas`
 
-            rbuscaancho[0].AnchoTela
-            calpaños = (largo / rbuscaancho[0].AnchoTela) - Math.trunc(largo / rbuscaancho[0].AnchoTela)
-            if (calpaños < .50) {
-              cantpaños = Math.trunc(largo / rbuscaancho[0].AnchoTela) + .5
-            }
-            else {
-              cantpaños = Math.trunc(largo / rbuscaancho[0].AnchoTela) + 1
-            }
-            metroscuad = cantpaños * rbuscaancho[0].AnchoTela * ancho
+      let paramimp = [coefmaymin, metroscuad, StkRubroAbr];
+      const datos = await queryAsync(q, paramimp);
+      const mcuadcob = datos[0]
 
+      const q1 = `Select
+        (StkRubroCosto * StkMonedasCotizacion / 144) * ? as ValorOjales
+        from BaseStock.StkRubro JOIN  BaseStock.StkMonedas
+        where StkRubro.StkRubroAbr = ?
+        and StkRubro.StkRubroTM = idStkMonedas`
 
+      let paramojales = [cantidadojales, tipoojal];
+      const datos1 = await queryAsync(q1, paramojales);
+      const ojales = datos1[0]
 
-            if (drenajesn == 'cd') {
-              if (detallep == '') {
-                detalle = "Lona para pileta, con cortes para caños de aluminio, con drenaje "
-              }
-              else {
-                detalle = detallep + ''
-              }
-              minutosdren = ((largo / 1.50) + 2) * 12
+      let detalle = detallep !== '' ? `${detallep} en :  ${mcuadcob.StkRubroDesc}` : `Lona enrollable para pileta, con fajas en las puntas, con ojales de ${detojal} reforzados, ${detdrenaje} en :  ${mcuadcob.StkRubroDesc}`;
 
-              /* 12 minutos por drenaje*/
-            } else {
-              if (detallep == '') {
-                detalle = "Lona para pileta, con cortes para caños de aluminio "
-              }
-              else {
-                detalle = detallep + ''
-              }
-              minutosdren = 0
-            }
+      let costo = Number(mcuadcob.ImpUnitario) + Number(ojales.ValorOjales) + valorMOT
+      // IVA / redondeo
+      if (ivasn === "CIVA") {
+        costo = Math.ceil(costo);
+      } else {
+        costo = Math.ceil(costo / 1.21);
+      }
+      // ------------------------------------------------------------------
+      // 5) ARMO RESULTADO DEL ÍTEM
+      // ------------------------------------------------------------------
+      resultados.push({
+        ImpUnitario: costo,
+        Detalle: detalle,
+        Largo: Number(largo).toFixed(2),
+        Ancho: Number(ancho).toFixed(2),
+        MDesc: "S",
+      });
+    }
+    res.json(resultados);
 
-
-            if (datos.minmay == 'my') {
-              coeficiente = result[0].coeficientemay
-              coefMOT = result[0].coefMOTmay
-              ivasn = 'CIVA'
-            }
-            else {
-              coeficiente = result[0].coeficientemin
-              coefMOT = result[0].coefMOTmin
-            }
-
-            if (tipoojale == 'hz') {
-              tipoojal = result[0].abrojales3hz
-              detalle = detalle + ' c/ojales de HZ en : '
-            }
-            else {
-              tipoojal = result[0].abrojales3b
-              detalle = detalle + ' c/ojales de bronce en : '
-            }
-
-            cantidadojales = datos.largo * 2
-            valorMOT = result[0].costoMOT * coefMOT / 60 * ((metroscuad * minutospmc) + minutosdren)
-
-
-            mcuadcob = ['Select ',
-              'StkRubroDesc, StkRubroAbr, ',
-              '((StkRubroCosto / StkRubroAncho * StkMonedasCotizacion * ', coeficiente,
-              ' * ', metroscuad, ')',
-              ' ) as ImpUnitario, ',
-              'StkRubroCosto, ',
-              'StkMonedasCotizacion ',
-              'from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ',
-              'where StkRubro.StkRubroAbr = "', StkRubroAbrP, '" ',
-              'and StkRubro.StkRubroTM = idStkMonedas '
-            ].join('')
-
-
-            ojales = [
-              "Select ",
-              "(StkRubroCosto * StkMonedasCotizacion / 144) * ", cantidadojales,
-              " as ValorOjales from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ",
-              "where StkRubro.StkRubroAbr = '",
-              tipoojal,
-              "'",
-              " and StkRubro.StkRubroTM = idStkMonedas"
-            ].join("");
-
-
-            conexion.query(mcuadcob, function (err, result) {
-              if (err) {
-                console.log("error en mysql");
-                console.log(err);
-              } else {
-                datosenvio.push(result);
-
-              }
-            });
-
-
-            conexion.query(ojales, function (err, result) {
-              if (err) {
-                console.log("error en mysql");
-                console.log(err);
-              } else {
-                datosenvio.push(result);
-              }
-
-              costooriginal = datosenvio[0][0].ImpUnitario + datosenvio[1][0].ValorOjales + valorMOT
-              if (ivasn == 'CIVA') {
-                costooriginal = Math.ceil(Number(costooriginal).toFixed(0) / 10) * 10
-              }
-              else {
-                costooriginal = Math.ceil(Number(costooriginal).toFixed(0) / 1.21 / 10) * 10
-              }
-
-              datosenvio[0][0]['ImpUnitario'] = costooriginal
-              datosenvio[0][0]['Detalle'] = detalle
-              datosenvio[0][0]['Largo'] = (largoreal * 1).toFixed(2)
-              datosenvio[0][0]['Ancho'] = (anchoreal * 1).toFixed(2)
-              datosenvio[0][0]['MDesc'] = 'S'
-              res.json(datosenvio);
-              datosenvio = [];
-            });
-
-
-          });
-      })
-    })
+  } catch (err) {
+    console.log("Error en /presuppiletafca", err);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
 });
-
-conexion.end;
 export default router;

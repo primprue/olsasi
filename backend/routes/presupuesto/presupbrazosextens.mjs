@@ -5,25 +5,13 @@ var router = express.Router();
 import conexion from '../conexion.mjs';
 
 
-
-conexion.connect(err => {
-  if (err) {
-    console.log("no se conecto en presupbrazosextens");
-  } else {
-    console.log("base de datos conectada en presupbrazosextens");
-  }
-});
-
 // ------------------------------------------------------------------
 // FUNCIÓN: ejecuta una consulta MySQL en modo async
 // ------------------------------------------------------------------
-function queryAsync(sql) {
-  return new Promise((resolve, reject) => {
-    conexion.query(sql, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
+
+async function queryAsync(sql, params = []) {
+  const [rows] = await conexion.promise().query(sql, params);
+  return rows;
 }
 
 router.get('/', async (req, res, next) => {
@@ -103,30 +91,36 @@ router.get('/', async (req, res, next) => {
       const q1 = `
           SELECT
             StkRubroAbr,
-            (StkRubroCosto * StkMonedasCotizacion * ${coeficiente}) AS ValorToldoBarrac,
+            (StkRubroCosto * StkMonedasCotizacion * ?) AS ValorToldoBarrac,
             StkRubroCosto,
             StkMonedasCotizacion
           FROM BaseStock.StkRubro
           JOIN BaseStock.StkMonedas
             ON StkRubro.StkRubroTM = idStkMonedas
-          WHERE StkRubro.StkRubroAbr = "${stkrubroabrtbr}"
+          WHERE StkRubro.StkRubroAbr = ?
         `;
+      const params = [coeficiente, stkrubroabrtbr];
       const q2 = `
         SELECT
           StkRubroDesc,
           StkRubroAbr,
-          (StkRubroCosto * StkMonedasCotizacion * ${coeficiente}  * ${panios} 
-            * ${largocal}) AS ImpUnitario,
+          (StkRubroCosto * StkMonedasCotizacion * ?  * ?  * ?) AS ImpUnitario,
           StkRubroCosto,
           StkMonedasCotizacion
         FROM BaseStock.StkRubro
         JOIN BaseStock.StkMonedas
           ON StkRubro.StkRubroTM = idStkMonedas
-        WHERE StkRubro.StkRubroAbr = "${StkRubroAbr}"
+        WHERE StkRubro.StkRubroAbr = ?
       `;
-      const datos1 = await queryAsync(q1);
+      const params1 = [
+        coeficiente,
+        panios,
+        largocal,
+        StkRubroAbr];
+
+      const datos1 = await queryAsync(q1, params);
       const valtoldbarrac = Number(datos1[0].ValorToldoBarrac)
-      const datos2 = await queryAsync(q2);
+      const datos2 = await queryAsync(q2, params1);
       const valimpuntil = Number(datos2[0].ImpUnitario)
 
 
@@ -150,16 +144,16 @@ router.get('/', async (req, res, next) => {
         valormotor = `
           SELECT 
             StkRubroAbr,
-            (StkRubroCosto * StkMonedasCotizacion * ${coeficiente} * 1) AS ValorMotor,
+            (StkRubroCosto * StkMonedasCotizacion * ? * 1) AS ValorMotor,
             StkRubroCosto,
             StkMonedasCotizacion
           FROM BaseStock.StkRubro 
           JOIN BaseStock.StkMonedas 
             ON StkRubro.StkRubroTM = idStkMonedas
-          WHERE StkRubro.StkRubroAbr = "${abrevmotor}"
+          WHERE StkRubro.StkRubroAbr = ?
         `;
-
-        importemotor = await queryAsync(valormotor);
+        const paramsmotor = [coeficiente, abrevmotor];
+        importemotor = await queryAsync(valormotor, paramsmotor);
       }
       /* busca valor de toldo barracuadra */
 

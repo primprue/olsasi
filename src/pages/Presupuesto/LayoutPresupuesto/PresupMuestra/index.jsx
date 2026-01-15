@@ -67,6 +67,7 @@ export default function PresupMuestra() {
 	}
 
 	const handleRowSelect = ({ row }) => {
+		console.log('row  ', row)
 		setRowSel(row);
 	};
 
@@ -93,6 +94,7 @@ export default function PresupMuestra() {
 	};
 
 	async function armanombre(rowsel) {
+		console.log('rowsel  ', rowsel)
 		let resultrescatenombre = await PresupNombre(rowsel);
 		if (resultrescatenombre.text === '[{"error":1}]')
 			alert(`El presupuesto nro ${rowsel.id} no se encuentra`);

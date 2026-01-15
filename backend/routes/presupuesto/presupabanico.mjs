@@ -5,14 +5,11 @@ var router = express.Router();
 import conexion from '../conexion.mjs';
 
 // Helper para usar MySQL en modo promesa
-function queryAsync(sql) {
-  return new Promise((resolve, reject) => {
-    conexion.query(sql, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
+async function queryAsync(sql, params = []) {
+  const [rows] = await conexion.promise().query(sql, params);
+  return rows;
 }
+
 
 router.get("/", async (req, res) => {
   try {
@@ -85,16 +82,17 @@ router.get("/", async (req, res) => {
             StkRubroDesc,
             StkRubroAbr,
             (
-              (StkRubroCosto * StkMonedasCotizacion * ${coeficiente} * ${telatotal})
-              + ${MOTarmado}
+              (StkRubroCosto * StkMonedasCotizacion * ? * ?)
+              + ?
             ) AS ImpUnitario,
             StkRubroCosto,
             StkMonedasCotizacion
           FROM BaseStock.StkRubro
           JOIN BaseStock.StkMonedas
             ON StkRubro.StkRubroTM = idStkMonedas
-          WHERE StkRubro.StkRubroAbr = "${StkRubroAbr}"
+          WHERE StkRubro.StkRubroAbr = ?
         `;
+      const params = [coeficiente, telatotal, MOTarmado, StkRubroAbr];
       let detvol = ''
       let detalle = ''
       altovolado != 0 ? detvol = `y volado de ${altovolado} cm.` : detvol = ''
@@ -105,7 +103,7 @@ router.get("/", async (req, res) => {
         detalle = `${detallep} en : ${StkRubroAbr}`
       }
 
-      const r = await queryAsync(q);
+      const r = await queryAsync(q, params);
       const data = r[0];
       let impu = Number(data.ImpUnitario);
       ivasncal == 'CIVA' ? impu = impu : impu = impu / 1.21;

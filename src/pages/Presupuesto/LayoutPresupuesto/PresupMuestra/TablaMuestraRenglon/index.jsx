@@ -24,6 +24,7 @@ import OrdTrabajo from "../../../../../context/OrdTrabajo.jsx";
 // ));
 
 export function TablaMuestraRenglon(props) {
+	console.log('props tablamuestrarenglon  ', props)
 	const { otdatos, setOTdatos } = use(OrdTrabajo);
 	const { open, handleClose, Presup, origen } = props;
 	const [renglon, setRenglon] = useState([]);

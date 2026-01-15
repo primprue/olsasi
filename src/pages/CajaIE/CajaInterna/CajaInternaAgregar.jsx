@@ -27,28 +27,3 @@ export function CajaInternaAgregar(props) {
 
 	});
 }
-
-/*	.then(function (res) {
-			const respuesta = JSON.parse(res.text);
-			if (respuesta.affectedRows !== 0)
-				Mensaje("error", "Grupo agregado correctamente");
-			else Mensaje("error", "No se pudo modificar");
-		})
-		.catch((err) => CodigoError(err));*/
-/*		setTimeout(() => {
-			console.log('rows CajaInternaAgregar  ', rows)
-			const url = IpServidor + "/cajainternaagregar";
-			request
-				.post(url)
-				.set("Content-Type", "application/json")
-				.send({ rows: rows })
-				.set("X-API-Key", "foobar")
-				.then((res) => {
-					MuestraMensaje(res);
-					resolve(res); // avisamos que terminó
-				})
-				.catch((err) => {
-					MuestraMensaje(err);
-					reject(err); // avisamos que falló
-				});
-		}, 300);*/

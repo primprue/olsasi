@@ -1,229 +1,184 @@
-import express from "express";
+import express from 'express';
 var router = express.Router();
 
-import conexion from "../conexion.mjs";
-
-var datosenvio = [];
+import conexion from '../conexion.mjs';
 
 
-router.get("/", (req, res, next) => {
-  var q, i = 0;
-  var coeficiente = 0, StkRubroAbrP = '', largo = 0, ancho = 0.00, perimetro = 0, cantidadcob = 0.00, ojalescada = 0.00, detallep = '', ivasn = '', coefimpuesto = 0.00
-  var datosrec, costoMOTHs, detalle, coefMOT, valorMOT, codmoneda, mlinealcob, msogadobladillo, ojales, cotizacion
-  var cantidad, tipoojale, largoreal, anchoreal, cantidadojales, ganancia, tipoojal, sogadobladillo, ValorMOTtotal, j, valorflete
+// ------------------------------------------------------------------
+// FUNCIÓN: ejecuta una consulta MySQL en modo async
+// ------------------------------------------------------------------
+async function queryAsync(sql, params = []) {
+  const [rows] = await conexion.promise().query(sql, params);
+  return rows;
+}
+router.get('/', async (req, res, next) => {
 
-  q = ['select * from BasePresup.PresupParam'].join(' ')
-  conexion.query(q,
-    function (err, result) {
-      if (err) {
-        console.log(err);
+  try {
+    const datosrec = JSON.parse(req.query.datoscalculo);
+    const parametros = await queryAsync(`SELECT * FROM BasePresup.PresupParam`);
+    const p = parametros[0];
+
+    const resultados = [];
+
+    for (const item of datosrec) {
+      const {
+        cantidad,
+        tipoojale,
+        detallep,
+        presupojalesc,
+        StkRubroAbr,
+        ivasn,
+        largo,
+        anchocomedero,
+        minmay,
+      } = item;
+
+      let perimetro = Number(largo * 2)
+      let metsogadob = perimetro + 4
+      let largocal = Number(largo) + 0.08;
+      let anchoreal = Number(anchocomedero)
+      let ancho = anchoreal + 0.08;
+
+
+      let ojalescada = Number(presupojalesc) / 100;
+      let cantidadojales = (perimetro / ojalescada) + (largo)
+      let detalle = ''
+      if (detallep == '') {
+        detalle = "Comedero "
+      }
+      else {
+        detalle = detallep + ''
+      }
+      let cantidadcob = 0;
+      if (anchoreal == 0.68) {
+        cantidadcob = largocal / 2
+      }
+      else {
+        if (anchoreal == 0.42) {
+          cantidadcob = largocal / 3
+        }
+
+        else {
+          cantidadcob = Math.ceil(largocal / 1.5) * ancho
+        }
       }
 
-      var costooriginal = 0;
-      var coeficiente = 0,
-        StkRubroAbrP = "",
-        largo = 0,
-        ancho = 0.0,
-        metsogadob = 0.0,
-        perimetro = 0,
-        cantidadcob = 0.0;
+      let ganancia = p.coefgancsoga
+      let coeficiente = 0;
+      let coefMOT = 0;
+      let tipoojal = '';
 
-      datosrec = JSON.parse(req.query.datoscalculo);
-      datosrec.map(datos => {
-        cantidad = datos.cantidad;
-        tipoojale = datos.tipoojale;
-        detallep = datos.detallep;
-        ojalescada = datos.presupojalesc / 100;
-        StkRubroAbrP = datos.StkRubroAbr;
-        ivasn = datos.ivasn;
-        largoreal = (datos.largo * 1)
-        anchoreal = (datos.anchocomedero * 1)
-        perimetro = (datos.largo * 2)
-        metsogadob = perimetro + 4
-        largo = (datos.largo * 1) + 0.08;
-        ancho = (anchoreal * 1) + 0.08;
-
-        cantidadojales = (perimetro / ojalescada) + (largoreal)
-
-        if (detallep == '') {
-          detalle = "Comedero "
-        }
-        else {
-          detalle = detallep + ''
-        }
-
-        if (anchoreal == 0.68) {
-          cantidadcob = largo / 2
-        }
-        else {
-          if (anchoreal == 0.42) {
-            cantidadcob = largo / 3
-          }
-
-          else {
-            cantidadcob = Math.ceil(largo / 1.5) * ancho
-          }
-        }
-
-        ganancia = result[0].coefgancsoga
-
-        if (datos.minmay == 'my') {
-          coeficiente = result[0].coeficientemay;
-          coefMOT = result[0].coefMOTmay
-          tipoojal = result[0].abrojales28;
-          ganancia = result[0].coefganmay
-          ivasn = 'CIVA'
-        }
-        else {
-          coeficiente = result[0].coeficientemin;
-          coefMOT = result[0].coefMOTmin
-        }
+      if (minmay == 'my') {
+        coeficiente = p.coeficientemay;
+        coefMOT = p.coefMOTmay
+        tipoojal = p.abrojales28;
+        ganancia = p.coefganmay
+        ivasn = 'CIVA'
+      }
+      else {
+        coeficiente = p.coeficientemin;
+        coefMOT = p.coefMOTmin
+      }
 
 
 
-        if (tipoojale == 'hz') {
-          tipoojal = 'OHCOL'
-          detalle = detalle + ' c/ojales de hierro cada ' + ojalescada + ' mts. en : '
-        }
-        else {
-          tipoojal = 'OBCOL'
-          detalle = detalle + ' c/ojales de bronce cada ' + ojalescada + ' mts. en : '
-        }
-        if (detallep != '') {
-          detalle = ''
-          detalle = detallep + ' en : '
-        }
+      if (tipoojale == 'hz') {
+        tipoojal = 'OHCOL'
+        detalle = `${detalle} c/ojales de hierro cada ${ojalescada} mts. en : `
+      }
+      else {
+        tipoojal = 'OBCOL'
+        detalle = `${detalle} c/ojales de bronce cada ${ojalescada} mts. en : `
+      }
+      if (detallep != '') {
+        detalle = ''
+        detalle = `${detallep} en : `
+      }
 
 
-        sogadobladillo = result[0].sogadobladillo;
-        valorflete = result[0].flete;
-        valorMOT = result[0].MOTpM2;
-        codmoneda = result[0].codmoneda;
-        coefimpuesto = result[0].coefimpuestos
+      let sogadobladillo = p.sogadobladillo;
+      let valorflete = p.flete;
+      let valorMOT = p.MOTpM2;
+      let codmoneda = p.codmoneda;
+      let coefimpuesto = p.coefimpuestos
 
 
-        ValorMOTtotal = ((result[0].costoMOT / 60) * 3.5 * largo) * coefMOT
-        costoMOTHs = result[0].costoMOT
-        mlinealcob = [
-          "Select ",
-          "StkRubroDesc, StkRubroAbr, ",
-          "(StkRubroCosto * StkMonedasCotizacion  * " + coeficiente + " ) as ValorCobML ",
-          "from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ",
-          'where StkRubro.StkRubroAbr = "',
-          StkRubroAbrP,
-          '" ',
-          "and StkRubro.StkRubroTM = idStkMonedas"
-        ].join("");
+      let ValorMOTtotal = ((p.costoMOT / 60) * 3.5 * largocal) * coefMOT
+      let costoMOTHs = p.costoMOT
 
+      const sql = `
+        SELECT
+            -- cobertor lineal
+            (r1.StkRubroCosto * m1.StkMonedasCotizacion * ?) AS ValorCobML,
 
-        msogadobladillo = [
-          "Select ",
-          "(StkRubroCosto * StkMonedasCotizacion * " + coeficiente + ") as ValorMSDobladillo ",
-          "from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ",
-          "where StkRubro.StkRubroAbr = '",
-          sogadobladillo,
-          "'",
-          "and StkRubro.StkRubroTM = idStkMonedas"
-        ].join("");
+            -- soga dobladillo
+            (r2.StkRubroCosto * m2.StkMonedasCotizacion * ?) AS ValorMSDobladillo,
 
-        ojales = [
-          "Select ",
-          "(StkRubroCosto * StkMonedasCotizacion * " + coeficiente + ") as ValorGrsOjal ",
-          "from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ",
-          "where StkRubro.StkRubroAbr = '",
-          tipoojal,
-          "'",
-          "and StkRubro.StkRubroTM = idStkMonedas"
-        ].join("");
+            -- ojales
+            (r3.StkRubroCosto * m3.StkMonedasCotizacion * ?) AS ValorGrsOjal,
 
-        cotizacion = [
-          "Select ",
-          "StkMonedasCotizacion ",
-          "from   BaseStock.StkMonedas ",
-          "where  StkMonedas.idStkMonedas = '",
-          codmoneda,
-          "'"
-        ].join("");
+            -- cotización
+            m4.StkMonedasCotizacion AS Cotizacion
 
-        conexion.query(mlinealcob, function (err, result) {
-          if (err) {
-            console.log("error en mysql");
-            console.log(err);
-          } else {
-            datosenvio.push(result);
-          }
-        });
+        FROM BaseStock.StkRubro r1
+            JOIN BaseStock.StkMonedas m1 ON r1.StkRubroTM = m1.idStkMonedas,
 
+            BaseStock.StkRubro r2
+            JOIN BaseStock.StkMonedas m2 ON r2.StkRubroTM = m2.idStkMonedas,
 
-        conexion.query(msogadobladillo, function (err, result) {
-          if (err) {
-            console.log("error en mysql");
-            console.log(err);
-          } else {
-            datosenvio.push(result);
-          }
-        });
-        // }
+            BaseStock.StkRubro r3
+            JOIN BaseStock.StkMonedas m3 ON r3.StkRubroTM = m3.idStkMonedas,
 
-        conexion.query(cotizacion, function (err, result) {
-          if (err) {
-            console.log("error en mysql");
-            console.log(err);
-          } else {
-            datosenvio.push(result);
-          }
-        });
-        conexion.query(ojales, function (err, result) {
-          if (err) {
-            console.log("error en mysql");
-            console.log(err);
-          } else {
-            datosenvio.push(result);
-            j = 0;
+            BaseStock.StkMonedas m4
 
+        WHERE r1.StkRubroAbr = ?
+          AND r2.StkRubroAbr = ?
+          AND r3.StkRubroAbr = ?
+          AND m4.idStkMonedas = ?
+          `;
 
-            while (j < 3) {
-              costooriginal = datosenvio[j][0].ValorCobML * cantidadcob
-              j++;
+      const params = [
+        coeficiente,
+        coeficiente,
+        coeficiente,
+        StkRubroAbr,
+        sogadobladillo,
+        tipoojal,
+        codmoneda
+      ];
+      const datos = await queryAsync(sql, params);
+      const d = datos[0];
+      let costo = 0;
+      costo = Number(d.ValorCobML) * cantidadcob
+      costo = costo + (Number(d.ValorMSDobladillo) * metsogadob);
+      costo = costo + (Number(d.ValorGrsOjal) / 100 * cantidadojales)
+      costo = costo + (((costoMOTHs * coeficiente) / 60 / 60 * 30) * cantidadojales)
 
+      costo = costo * coefimpuesto + ValorMOTtotal
+      if (ivasn === "CIVA") {
+        costo = Math.ceil(costo / 10) * 10;
+      } else {
+        costo = Math.ceil(costo / 1.21 / 10) * 10;
+      }
 
-              costooriginal = costooriginal + (datosenvio[j][0].ValorMSDobladillo * metsogadob);
-              j++;
-              j++;
-              costooriginal = costooriginal + (datosenvio[j][0].ValorGrsOjal / 100 * cantidadojales)
-
-
-              costooriginal = costooriginal + (((costoMOTHs * coeficiente) / 60 / 60 * 30) * cantidadojales)
-
-
-
-              costooriginal = costooriginal * coefimpuesto + ValorMOTtotal
-              // costooriginal = costooriginal * ganancia * coefimpuesto;
-
-              if (ivasn == 'CIVA') {
-                costooriginal = Math.ceil(Number(costooriginal).toFixed(0) / 10) * 10
-              }
-              else {
-                costooriginal = Math.ceil(Number(costooriginal).toFixed(0) / 1.21 / 10) * 10
-              }
-
-              datosenvio[0][0]['ImpUnitario'] = costooriginal
-              datosenvio[0][0]['Detalle'] = detalle
-              datosenvio[0][0]['Largo'] = (largoreal * 1).toFixed(2)
-              datosenvio[0][0]['Ancho'] = (anchoreal * 1).toFixed(2)
-
-              //esto es para que imprima o no la descripción que se pide
-              datosenvio[0][0]['MDesc'] = 'S'
-              costooriginal = 0;
-            }
-            res.json(datosenvio);
-            datosenvio = [];
-          }
-          // }
-        });
+      // ------------------------------------------------------------------
+      // 5) ARMO RESULTADO DEL ÍTEM
+      // ------------------------------------------------------------------
+      let Largo = Number(largo).toFixed(2)
+      let Ancho = Number(anchoreal).toFixed(2)
+      resultados.push({
+        ImpUnitario: costo,
+        Detalle: detalle,
+        Largo: Largo,
+        Ancho: Ancho,
+        MDesc: "S",
       });
-    })
-});
+    }
+    res.json(resultados);
 
-conexion.end;
+  } catch (err) {
+    console.log("Error en /presuplonaconf", err);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
 export default router;

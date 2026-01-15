@@ -2,25 +2,12 @@ import express from 'express';
 var router = express.Router();
 import conexion from '../conexion.mjs';
 
-
-conexion.connect(err => {
-  if (err) {
-    console.log("no se conecto en presupenrollables");
-  } else {
-    console.log("base de datos conectada en presupenrollables");
-  }
-});
-
 // ------------------------------------------------------------------
 // FUNCIÓN: ejecuta una consulta MySQL en modo async
 // ------------------------------------------------------------------
-function queryAsync(sql) {
-  return new Promise((resolve, reject) => {
-    conexion.query(sql, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
+async function queryAsync(sql, params = []) {
+  const [rows] = await conexion.promise().query(sql, params);
+  return rows;
 }
 
 router.get('/', async (req, res, next) => {
@@ -53,9 +40,16 @@ router.get('/', async (req, res, next) => {
       } else { fajade = ' c/faja p/2" ' }
       const q = `Select StkRubroAncho as 
           anchotela
-          from BaseStock.StkRubro where StkRubro.StkRubroAbr = "${StkRubroAbr}" `
+          from BaseStock.StkRubro where StkRubro.StkRubroAbr = ? `
 
-      const datos = await queryAsync(q);
+      const params = [
+        StkRubroAbr
+      ];
+
+
+      const datos = await queryAsync(q, params);
+
+      //const datos = await queryAsync(q);
       const d = datos[0]
       let enteropanios = Math.trunc(ancho / d.anchotela)
       let coeficiente = 0
@@ -83,11 +77,19 @@ router.get('/', async (req, res, next) => {
       if (tamcristal != 'NOPVC') {
         largocristal = (ancho * 1 - (sobrantemarco * 2 / 100))
         q1 = `Select  StkRubroAbr, StkRubroAncho as anchocristal, 
-        ((StkRubroCosto * StkMonedasCotizacion * ${coeficiente} * ${largocristal}) + ((${largocristal} * 2 ) + ((StkRubroAncho - 0.03 ) * 2))  * 7 * ${valorMOTmin})
+        ((StkRubroCosto * StkMonedasCotizacion * ? * ?) + ((? * 2 ) + ((StkRubroAncho - 0.03 ) * 2))  * 7 * ?)
         as ArmadoCristal, StkRubroCosto, StkMonedasCotizacion 
         from BaseStock.StkRubro JOIN  BaseStock.StkMonedas 
-        where StkRubro.StkRubroAbr = "${tamcristal}" 
+        where StkRubro.StkRubroAbr = ? 
         and StkRubro.StkRubroTM = idStkMonedas`}
+
+      const paramscristal = [
+        coeficiente,
+        largocristal,
+        largocristal,
+        valorMOTmin,
+        tamcristal,
+      ];
 
       const q2 = `Select StkRubroDesc, StkRubroAbr, 
       ((StkRubroCosto * StkMonedasCotizacion * ${coeficiente} * ${panios} * ${largocal}) + ${MOTarmado}) as ImpUnitario, 
@@ -96,12 +98,23 @@ router.get('/', async (req, res, next) => {
       where StkRubro.StkRubroAbr = "${StkRubroAbr}" 
       and StkRubro.StkRubroTM = idStkMonedas`
 
+      const paramsimp = [
+        coeficiente,            // subquery
+        panios,        // r1
+        largocal,         // r2
+        MOTarmado,    // r3
+        StkRubroAbr          // moneda
+      ];
       let dcristal = []
       if (q1 !== '') {
-        const datoscristal = await queryAsync(q1);
+        const datoscristal = await queryAsync(q1, paramscristal);
+
+        // const datoscristal = await queryAsync(q1);
         dcristal = datoscristal[0]
       }
-      const datosimporte = await queryAsync(q2);
+      //   const datosimporte = await queryAsync(q2);
+      const datosimporte = await queryAsync(q2, paramsimp);
+
       const di = datosimporte[0]
 
       let impunitario = Number(di.ImpUnitario)

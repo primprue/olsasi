@@ -3,26 +3,11 @@ import conexion from "../conexion.mjs";
 
 const router = express.Router();
 
-conexion.connect(err => {
-  if (err) {
-    console.log("no se conecto en presuplonaabolinada");
-  } else {
-    console.log("base de datos conectada en presuplonaabolinada");
-  }
-});
 
-// ------------------------------------------------------------------
-// FUNCIÓN: ejecuta una consulta MySQL en modo async
-// ------------------------------------------------------------------
-function queryAsync(sql) {
-  return new Promise((resolve, reject) => {
-    conexion.query(sql, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
+async function queryAsync(sql, params = []) {
+  const [rows] = await conexion.promise().query(sql, params);
+  return rows;
 }
-
 // ------------------------------------------------------------------
 // ENDPOINT
 // ------------------------------------------------------------------
@@ -32,7 +17,6 @@ router.get("/", async (req, res) => {
     // 1) Cargo parámetros una sola vez
     const parametros = await queryAsync(`SELECT * FROM BasePresup.PresupParam`);
     const p = parametros[0];
-
     const resultados = [];
 
     for (const item of datosRec) {
@@ -72,42 +56,50 @@ router.get("/", async (req, res) => {
       // 3) QUERY PRINCIPAL COMPLETA (todo junto)
       // ------------------------------------------------------------------
       const sql = `
-        SELECT
-          -- costo lona
-          (r1.StkRubroCosto * m1.StkMonedasCotizacion / r1.StkRubroAncho * 1.02)  AS CostoCobMC,
+            SELECT
+              (r1.StkRubroCosto * m1.StkMonedasCotizacion / r1.StkRubroAncho * 1.02) AS CostoCobMC,
+              (r2.StkRubroCosto * m2.StkMonedasCotizacion * 3) AS CostoMSChicote,
+              (r3.StkRubroCosto * m3.StkMonedasCotizacion) AS CostoMSDobladillo,
+              m4.StkMonedasCotizacion AS Cotizacion,
+              r1.StkRubroDesc AS StkRubroDesc,
 
-          -- costo soga chicote
-          (r2.StkRubroCosto * m2.StkMonedasCotizacion * 3)   AS CostoMSChicote,
-          -- soga dobladillo
-          (r3.StkRubroCosto * m3.StkMonedasCotizacion)    AS CostoMSDobladillo,
-          -- cotización
-          m4.StkMonedasCotizacion      AS Cotizacion,
-          -- detalle de material
-          (r7.StkRubroDesc) AS StkRubroDesc,
-          -- costo del ojal
-          (SELECT SUM(r5.StkRubroCosto * m5.StkMonedasCotizacion)
-            FROM BasePresup.PresupConfTipo t
-                JOIN BaseStock.StkRubro r5 ON t.PresupConfTipoRubro = r5.StkRubroAbr
-                JOIN BaseStock.StkMonedas m5 ON r5.StkRubroTM = m5.idStkMonedas
-            WHERE r5.StkRubroAbr = '${tipoojal}'
-          )  AS CostoOjalM2
+              (
+                SELECT SUM(r5.StkRubroCosto * m5.StkMonedasCotizacion)
+                FROM BasePresup.PresupConfTipo t
+                  JOIN BaseStock.StkRubro r5 ON t.PresupConfTipoRubro = r5.StkRubroAbr
+                  JOIN BaseStock.StkMonedas m5 ON r5.StkRubroTM = m5.idStkMonedas
+                WHERE r5.StkRubroAbr = ?
+              ) AS CostoOjalM2
 
-        FROM BaseStock.StkRubro r1
-            JOIN BaseStock.StkMonedas m1 ON r1.StkRubroTM = m1.idStkMonedas,
-            BaseStock.StkRubro r2
-            JOIN BaseStock.StkMonedas m2 ON r2.StkRubroTM = m2.idStkMonedas,
-            BaseStock.StkRubro r3
-            JOIN BaseStock.StkMonedas m3 ON r3.StkRubroTM = m3.idStkMonedas,
-            BaseStock.StkMonedas m4,
-            BaseStock.StkRubro r7
+            FROM BaseStock.StkRubro r1
+            JOIN BaseStock.StkMonedas m1
+              ON r1.StkRubroTM = m1.idStkMonedas
+            AND r1.StkRubroAbr = ?
 
-        WHERE r1.StkRubroAbr = '${StkRubroAbrP}'
-          AND r2.StkRubroAbr = '${sogachicote}'
-          AND r3.StkRubroAbr = '${p.sogadobladillo}'
-          AND m4.idStkMonedas = '${p.codmoneda}'
-          AND r7.StkRubroAbr = '${StkRubroAbrP}'
-      `;
-      const datos = await queryAsync(sql);
+            JOIN BaseStock.StkRubro r2
+              ON r2.StkRubroAbr = ?
+            JOIN BaseStock.StkMonedas m2
+              ON r2.StkRubroTM = m2.idStkMonedas
+
+            JOIN BaseStock.StkRubro r3
+              ON r3.StkRubroAbr = ?
+            JOIN BaseStock.StkMonedas m3
+              ON r3.StkRubroTM = m3.idStkMonedas
+
+            JOIN BaseStock.StkMonedas m4
+              ON m4.idStkMonedas = ?
+            `;
+
+      const params = [
+        tipoojal,            // subquery
+        StkRubroAbrP,        // r1
+        sogachicote,         // r2
+        p.sogadobladillo,    // r3
+        p.codmoneda          // moneda
+      ];
+
+
+      const datos = await queryAsync(sql, params);
       const d = datos[0];
       // descripción
       let detalle = detallep

@@ -35,7 +35,6 @@ export default function CajaInterna({ open, handleClose }) {
 
     async function leeSaldoInicial() {
         const data = await CajaInternaSILeer();
-        console.log('data[0].CajaInternaSIM  ', data[0])
         setSaldoIncial(data[0]);
         leeSumaTot();
 
@@ -45,10 +44,7 @@ export default function CajaInterna({ open, handleClose }) {
         let anioactual = new Date().getFullYear();
         let fechadesde = new Date(anioactual, 3, 1);
         let fechahasta = new Date(anioactual + 1, 2, 31);
-        console.log('fechadesde  ', fechadesde)
-        console.log('fechahasta  ', fechahasta)
         const data = await CajaInternaSumTot(fechadesde, fechahasta);
-        console.log('data[0].TotalEntradaM  ', data[0])
 
     }
     async function Verificacion() {
@@ -134,19 +130,6 @@ export default function CajaInterna({ open, handleClose }) {
                     }}
                 >
                     Ingreso a la Caja Interna
-                    {/* 
-                    <Typography variant="h6" color="primary">
-                        Saldo Inicial M ({saldoIncial.CajaInternaSIM})
-
-                        Saldo Inicial T ({saldoIncial.CajaInternaSIT})
-                    </Typography> */}
-
-                    {/* CajaInternaSIFecha: '2025-11-01T03:00:00.000Z',
-             
-               CajaInternaSIM: '1542000.00',
-             
-               CajaInternaSIT: '1000000.00' */}
-
                     <CancelTwoToneIcon
                         sx={{ color: "red", fontSize: 30, cursor: "pointer" }}
                         titleAccess="Cerrar"

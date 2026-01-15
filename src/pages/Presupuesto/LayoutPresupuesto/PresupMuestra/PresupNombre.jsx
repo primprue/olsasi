@@ -3,6 +3,7 @@ import request from "superagent";
 import IpServidor from "../../../VariablesDeEntorno.js";
 
 export const PresupNombre = (datos) => {
+	console.log('datos  ', datos)
 	var nombrepresupue = "";
 	if (datos) {
 		var Cliente = datos.NombreCliente.trimRight();

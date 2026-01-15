@@ -3,24 +3,14 @@ var router = express.Router();
 
 import conexion from "../conexion.mjs";
 
-conexion.connect(err => {
-  if (err) {
-    console.log("no se conecto en presupcambpanio");
-  } else {
-    console.log("base de datos conectada en presupcambpanio");
-  }
-});
+
 
 // ------------------------------------------------------------------
 // FUNCIÓN: ejecuta una consulta MySQL en modo async
 // ------------------------------------------------------------------
-function queryAsync(sql) {
-  return new Promise((resolve, reject) => {
-    conexion.query(sql, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
+async function queryAsync(sql, params = []) {
+  const [rows] = await conexion.promise().query(sql, params);
+  return rows;
 }
 
 router.get("/", async (req, res) => {
@@ -32,7 +22,6 @@ router.get("/", async (req, res) => {
     const paramrep = await queryAsync(`SELECT * FROM reparacion.parametrosrep`);
     const vhln = paramrep[0].REPValorMOT;
     const vhla = paramrep[0].REPValorMOTLA;
-
     const resultados = [];
 
     for (const item of datosRec) {
@@ -41,11 +30,11 @@ router.get("/", async (req, res) => {
       const detallep = item.detallep;
       const StkRubroAbrP = item.StkRubroAbr;
       const ivasn = item.ivasn;
-      const largoreal = (item.largo * 1);
-      const anchoreal = (item.ancho * 1);
+      const largoreal = Number(item.largo);
+      const anchoreal = Number(item.ancho);
       const minmay = item.minmay;
-      const largo = (item.largo * 1) + 0.08;
-      const ancho = (item.ancho * 1) + 0.08;
+      const largo = Number(item.largo) + 0.08;
+      const ancho = Number + 0.08;
       const lna = item.lonanuestraafuera;
 
       let detalle = "", ganancia = 0, minutosunion = 0;
@@ -104,15 +93,25 @@ router.get("/", async (req, res) => {
                     JOIN BaseStock.StkMonedas m6 ON r6.StkRubroTM = m6.idStkMonedas,
                     BaseStock.StkRubro r7
 
-                WHERE r1.StkRubroAbr = '${StkRubroAbrP}'
-                    AND r2.StkRubroAbr = '${StkRubroAbrP}'
-                    AND r3.StkRubroAbr = '${sogachicote}'
-                    AND r4.StkRubroAbr = '${p.sogadobladillo}'
-                    AND m5.idStkMonedas = '${p.codmoneda}'
-                    AND r6.StkRubroAbr = '${tipoojal}'
-                    AND r7.StkRubroAbr = '${StkRubroAbrP}'
+                WHERE r1.StkRubroAbr = ?
+                    AND r2.StkRubroAbr = ?
+                    AND r3.StkRubroAbr = ?
+                    AND r4.StkRubroAbr = ?
+                    AND m5.idStkMonedas = ?
+                    AND r6.StkRubroAbr = ?
+                    AND r7.StkRubroAbr = ?
                 `;
-      const datos1 = await queryAsync(sql);
+
+      const params = [
+        StkRubroAbrP,
+        StkRubroAbrP,
+        sogachicote,
+        p.sogadobladillo,
+        p.codmoneda,
+        tipoojal,
+        StkRubroAbrP
+      ];
+      const datos1 = await queryAsync(sql, params);
       const d = datos1[0];
 
       (tipoojale == 'hz') ?
@@ -130,7 +129,7 @@ router.get("/", async (req, res) => {
       const CostoMSDobladillo = Number(d.CostoMSDobladillo);
       const costoOjalM2 = Number(d.CostoOjalM2) || 0;
       const costoFleteMot = Cotizacion * (flete + MOT);
-
+      const costohora = (Number(valorhora) / 60 * 21 * anchoreal * 2)
       let costo =
         CostoCobMC +
         CostoRefuerzo +
@@ -138,9 +137,9 @@ router.get("/", async (req, res) => {
         CostoMSDobladillo +
         costoOjalM2 +
         costoFleteMot;
+      console.log('costo  ', costo)
 
       const metrosCuad = largoreal * anchoreal;
-
       costo = costo * ganancia * p.coefimpuestos;
       costo = costo * metrosCuad;
 
@@ -154,7 +153,7 @@ router.get("/", async (req, res) => {
         costo *= 1.0325;
       }
 
-
+      costo = costo + costohora
       // IVA / redondeo
       if (ivasn === "CIVA") {
         costo = Math.ceil(costo / 10) * 10;

@@ -208,7 +208,6 @@ import presupencableer from "./routes/presupuesto/presupencableer.mjs";
 import presupencableenro from "./routes/presupuesto/presupencableenro.mjs";
 import presuprenglonleer from "./routes/presupuesto/presuprenglonleer.mjs";
 import presupnombre from "./routes/presupuesto/presupnombre.mjs";
-import presuprengleer from "./routes/presupuesto/presuprengleer.mjs";
 import presupborrar from "./routes/presupuesto/presupborrar.mjs";
 import presupborrarenpreview from "./routes/presupuesto/presupborrarenpreview.mjs";
 
@@ -546,7 +545,6 @@ app.use("/presupencableer", presupencableer);
 app.use("/presupencableenro", presupencableenro);
 app.use("/presuprenglonleer", presuprenglonleer);
 app.use("/presupnombre", presupnombre);
-app.use("/presuprengleer", presuprengleer);
 app.use("/presupborrar", presupborrar);
 app.use("/presupborrarenpreview", presupborrarenpreview);
 

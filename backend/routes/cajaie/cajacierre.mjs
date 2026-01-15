@@ -9,9 +9,14 @@ import conexion from '../conexion.mjs';
 
 router.get('/', function (req, res, next) {
     let q1
-    let fechahoy = new Date().toISOString().split("T")[0]
-
+    //let fechahoy = new Date().toISOString().split("T")[0]
+    let fecha = new Date();
+    // fecha.setDate(fecha.getDate() - 1);
+    fecha.setDate(fecha.getDate());
+    console.log('fecha  ', fecha)
+    let fechahoy = fecha.toISOString().split("T")[0];
     q1 = ['SELECT  CajaIEFecha, CajaIEMT, sum(CajaIEImporte) as CajaIEImporte,  CajaIEGrabado  FROM BaseCaja.CajaIE where  BaseCaja.CajaIE.CajaIEFecha = ' + fechahoy + 'group by CajaIEMT'].join(' ')
+    console.log(q1)
     conexion.query(q1,
         function (err, result) {
             if (err) {

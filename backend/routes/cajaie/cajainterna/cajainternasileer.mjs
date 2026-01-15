@@ -10,10 +10,10 @@ router.get('/', function (req, res) {
     let q1
 
     q1 = [`SELECT idCajaInternaSI as id, 
-         CajaInternaSIFecha,
+        CajaInternaSIFecha,
         CajaInternaSIM, CajaInternaSIT
         FROM BaseCaja.CajaInternaSI
-         WHERE CajaInternaSIFecha = (SELECT MAX(CajaInternaSIFecha)
+        WHERE CajaInternaSIFecha = (SELECT MAX(CajaInternaSIFecha)
         FROM BaseCaja.CajaInternaSI)`].join(' ')
     conexion.query(q1,
         function (err, result) {

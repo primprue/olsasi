@@ -69,6 +69,7 @@ export function DialogoDatos(props) {
 				const tieneErrores = Object.values(formState).some((v) => v === "");
 				if (!tieneErrores) {
 					onRowAdd(formState, formdatos);
+					handleClose();
 				} else {
 					MuestraMensaje(415); // campos vacíos
 				}

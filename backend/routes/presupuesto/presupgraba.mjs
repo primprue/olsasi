@@ -8,7 +8,12 @@ moment.locale("es");
 router.use(express.json());
 
 router.all("/", async function (req, res) {
+  const conn = await conexion.promise().getConnection();
+
   try {
+    // ⭐ INICIAR TRANSACCIÓN
+    await conn.beginTransaction();
+
     const d = new Date();
     const finalDate = d.toISOString().split("T")[0];
 
@@ -25,15 +30,18 @@ router.all("/", async function (req, res) {
       PresupEncabExplic: req.body.explicacionPresup,
     };
 
-    // ⭐ INSERT ENCABEZADO (async/await)
-    const [resEncab] = await conexion
-      .promise()
-      .query("INSERT INTO BasePresup.PresupEncab SET ?", registroEncab);
+    // ⭐ INSERT ENCABEZADO
+    const [resEncab] = await conn.query(
+      "INSERT INTO BasePresup.PresupEncab SET ?",
+      registroEncab
+    );
 
     const nropresup = resEncab.insertId;
 
-    // ⭐ PREPARAR ARRAY DE PROMESAS PARA TODOS LOS RENGLONES
-    const promesasRenglones = req.body.DatosPresup.datos.map((renglon, i) => {
+    // ⭐ INSERT RENGLONES
+    for (let i = 0; i < req.body.DatosPresup.datos.length; i++) {
+      const renglon = req.body.DatosPresup.datos[i];
+
       const registroReng = {
         idPresupRenglon: i + 1,
         PresupRenglonNroPresup: nropresup,
@@ -43,17 +51,18 @@ router.all("/", async function (req, res) {
         PresupRenglonAncho: renglon.PresupAncho,
         PresupRenglonImpUnit: Number(renglon.ImpUnitario).toFixed(2),
         PresupRenglonImpItem: Number(renglon.ImpItem).toFixed(2),
-        PresupRenglonParamInt: JSON.stringify(renglon.dcalculo[0])
+        PresupRenglonParamInt: JSON.stringify(renglon.dcalculo[0]),
       };
-      return conexion
-        .promise()
-        .query("INSERT INTO BasePresup.PresupRenglon SET ?", registroReng);
-    });
 
-    // ⭐ ESPERAR A QUE SE INSERTE TODO
-    await Promise.all(promesasRenglones);
-    console.log('nropresup ', nropresup)
-    // ⭐ RESPUESTA ÚNICA CUANDO TODO TERMINÓ
+      await conn.query(
+        "INSERT INTO BasePresup.PresupRenglon SET ?",
+        registroReng
+      );
+    }
+
+    // ⭐ CONFIRMAR TODO
+    await conn.commit();
+
     res.json({
       ok: true,
       message: "Presupuesto grabado correctamente",
@@ -61,11 +70,18 @@ router.all("/", async function (req, res) {
     });
 
   } catch (err) {
+    // ❌ DESHACER TODO SI FALLA ALGO
+    await conn.rollback();
+
     console.error("Error al grabar el presupuesto:", err);
     res.status(500).json({
       ok: false,
       error: err.message,
     });
+
+  } finally {
+    // ⭐ LIBERAR CONEXIÓN
+    conn.release();
   }
 });
 

@@ -3,15 +3,13 @@ var router = express.Router();
 
 import conexion from "../conexion.mjs";
 
+
 var datosenvio = [];
-var valorhora = 0;
 
 
 router.get("/", (req, res, next) => {
-  var q, i = 0;
-  var datosrec, tipoconf, detallep, ivasn, detalle, tipoojale, valorMOT, codmoneda, coefimpuesto, valorflete
-  var largoreal, anchoreal, lna, ganancia, tipoojal, sogachicote, sogadobladillo, coefMOT, valorMOTmin, MOTarmado, minutosunion
-  var vhln, vhla, mcuadcob, msogachicote, msogadobladillo, ojales, cotizacion, j
+  var q, datosrec, detalle, detallep, ivasn, j, ciclo, i, ganancia, coefimpuesto, valorflete, valorMOT, codmoneda, mcuadcob, msogachicote, msogadobladillo, ojales, cotizacion
+  var tipoconf, tipoojale, largoreal, anchoreal, tipoojal, sogachicote, sogadobladillo, minutosunion, valorMOTrecorte, valorMOTcorte, costooriginal, metroscuad, coeficiente, cantidad, largo, ancho
   q = ['select * from BasePresup.PresupParam'].join(' ')
   conexion.query(q,
     function (err, result) {
@@ -41,25 +39,16 @@ router.get("/", (req, res, next) => {
         anchoreal = (datos.ancho * 1)
         largo = (datos.largo * 1) + 0.08;
         ancho = (datos.ancho * 1) + 0.08;
-        lna = datos.lonanuestraafuera;
 
-        // if (tipoconf == 'cs') {
+
         if (detallep == '') {
-          detalle = "Cambio de paño lona"
+          detalle = "Poncho para riego confeccionado en: "
         }
         else {
           detalle = detallep + ''
         }
         ganancia = result[0].coefgancsoga
-        // } else {
-        //   if (detallep == '') {
-        //     detalle = "Lona con ojales reforzados, chicotes sin soga en dobladillo"
-        //   }
-        //   else {
-        //     detalle = detallep + ''
-        //   }
-        //   ganancia = result[0].coefganssoga
-        // }
+
         if (datos.minmay == 'my') {
           coeficiente = result[0].coeficientemay;
           tipoojal = result[0].abrojales28;
@@ -72,14 +61,7 @@ router.get("/", (req, res, next) => {
           sogachicote = result[0].sogachicotemin;
 
         }
-        if (tipoojale == 'hz') {
-          tipoojal = result[0].abrojales3hz
-          detalle = detalle + ' en : '
-        }
-        else {
-          tipoojal = result[0].abrojales3b
-          detalle = detalle + ' c/ojales de bronce en : '
-        }
+        tipoojal = result[0].abrojales3hz
         minutosunion = (datos.ancho + 0.08) * largo * 5;
         sogadobladillo = result[0].sogadobladillo;
         valorflete = result[0].flete;
@@ -87,8 +69,6 @@ router.get("/", (req, res, next) => {
         codmoneda = result[0].codmoneda;
         coefimpuesto = result[0].coefimpuestos
 
-        vhln = ["SELECT REPValorMOT FROM reparacion.parametrosrep"].join("");
-        vhla = ["SELECT REPValorMOTLA FROM reparacion.parametrosrep"].join("");
         mcuadcob = [
           "Select ",
           "StkRubroDesc, StkRubroAbr, ",
@@ -159,16 +139,16 @@ router.get("/", (req, res, next) => {
             datosenvio.push(result);
           }
         });
-        //   if (tipoconf === 'cs') {
-        conexion.query(msogadobladillo, function (err, result) {
-          if (err) {
-            console.log("error en mysql");
-            console.log(err);
-          } else {
-            datosenvio.push(result);
-          }
-        });
-        // }
+        if (tipoconf === 'cs') {
+          conexion.query(msogadobladillo, function (err, result) {
+            if (err) {
+              console.log("error en mysql");
+              console.log(err);
+            } else {
+              datosenvio.push(result);
+            }
+          });
+        }
 
         conexion.query(cotizacion, function (err, result) {
           if (err) {
@@ -179,32 +159,13 @@ router.get("/", (req, res, next) => {
           }
         });
 
-        if (lna === 'LN') {
-          conexion.query(vhln, function (err, result) {
-            if (err) {
-              console.log("error en mysql");
-              console.log(err);
-            } else {
-              valorhora = result[0].REPValorMOT
-            }
-          });
-        }
-        else {
-          conexion.query(vhla, function (err, result) {
-            if (err) {
-              console.log("error en mysql");
-              console.log(err);
-            } else {
-              valorhora = result[0].REPValorMOTLA
-            }
-          });
-        }
         conexion.query(ojales, function (err, result) {
           if (err) {
             console.log("error en mysql");
             console.log(err);
           } else {
             datosenvio.push(result);
+
             j = 0;
 
             while (j < 4) {
@@ -226,31 +187,19 @@ router.get("/", (req, res, next) => {
               costooriginal = costooriginal + datosenvio[j][0].CostoOjalM2;
               j++;
 
-
-
               costooriginal = costooriginal * ganancia * coefimpuesto;
 
               metroscuad = anchoreal * largoreal
               costooriginal = costooriginal * metroscuad
 
-              if (metroscuad < 22 && metroscuad >= 16) {
+              ciclo = (metroscuad < 12) ? 3 : 0
+              ciclo = (metroscuad < 16 && metroscuad >= 12) ? 2 : 0
+              ciclo = (metroscuad < 22 && metroscuad >= 16) ? 1 : ciclo = 0
+              i = 0
+              while (i < ciclo) {
                 costooriginal = costooriginal * 1.0325
+                i++
               }
-              if (metroscuad < 16 && metroscuad >= 12) {
-                costooriginal = costooriginal * 1.0325
-                costooriginal = costooriginal * 1.0325
-              }
-              if (metroscuad < 12) {
-                costooriginal = costooriginal * 1.0325
-                costooriginal = costooriginal * 1.0325
-                costooriginal = costooriginal * 1.0325
-              }
-
-              costooriginal = costooriginal + (valorhora / 60 * 21 * anchoreal * 2)
-
-
-
-              // datosenvio[0][0]['ImpItem'] = costooriginal
               if (ivasn == 'CIVA') {
                 costooriginal = Math.ceil(Number(costooriginal).toFixed(0) / 10) * 10
               }

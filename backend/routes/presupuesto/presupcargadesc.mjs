@@ -2,24 +2,13 @@ import express from 'express';
 var router = express.Router();
 import conexion from "../conexion.mjs";
 
-conexion.connect(err => {
-  if (err) {
-    console.log("no se conecto en presupbrazosextens");
-  } else {
-    console.log("base de datos conectada en presupbrazosextens");
-  }
-});
-
 // ------------------------------------------------------------------
 // FUNCIÓN: ejecuta una consulta MySQL en modo async
 // ------------------------------------------------------------------
-function queryAsync(sql) {
-  return new Promise((resolve, reject) => {
-    conexion.query(sql, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
+
+async function queryAsync(sql, params = []) {
+  const [rows] = await conexion.promise().query(sql, params);
+  return rows;
 }
 router.get('/', async (req, res, next) => {
 
@@ -40,10 +29,10 @@ router.get('/', async (req, res, next) => {
         SELECT
           StkRubroDesc, StkRubroAbr
           FROM BaseStock.StkRubro
-        WHERE StkRubro.StkRubroAbr = "${StkRubroAbr}"
+        WHERE StkRubro.StkRubroAbr = ?
       `;
-
-      const r = await queryAsync(q);
+      const params = [StkRubroAbr];
+      const r = await queryAsync(q, params);
       const d = r[0];
       let Detalle = ''
 

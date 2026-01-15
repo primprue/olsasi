@@ -2,26 +2,18 @@ import express from "express";
 var router = express.Router();
 import conexion from "../conexion.mjs";
 
-conexion.connect(err => {
-    if (err) {
-        console.log("no se conecto en presuplonaconf");
-    } else {
-        console.log("base de datos conectada en presuplonaconf");
-    }
-});
-
 // ------------------------------------------------------------------
 // FUNCIÓN: ejecuta una consulta MySQL en modo async
 // ------------------------------------------------------------------
-function queryAsync(sql) {
-    return new Promise((resolve, reject) => {
-        conexion.query(sql, (err, result) => {
-            if (err) reject(err);
-            else resolve(result);
-        });
-    });
-}
+// async function queryAsync(sql) {
+//     const [rows] = await conexion.promise().query(sql);
+//     return rows;
+// }
 
+async function queryAsync(sql, params = []) {
+    const [rows] = await conexion.promise().query(sql, params);
+    return rows;
+}
 router.get("/", async (req, res) => {
     try {
         const datosRec = JSON.parse(req.query.datoscalculo);
@@ -87,17 +79,28 @@ router.get("/", async (req, res) => {
                     BaseStock.StkMonedas m5,
                     BaseStock.StkRubro r6
                     JOIN BaseStock.StkMonedas m6 ON r6.StkRubroTM = m6.idStkMonedas,
-                     BaseStock.StkRubro r7
+                    BaseStock.StkRubro r7
 
-                WHERE r1.StkRubroAbr = '${StkRubroAbrP}'
-                    AND r2.StkRubroAbr = '${StkRubroAbrP}'
-                    AND r3.StkRubroAbr = '${sogachicote}'
-                    AND r4.StkRubroAbr = '${p.sogadobladillo}'
-                    AND m5.idStkMonedas = '${p.codmoneda}'
-                    AND r6.StkRubroAbr = '${tipoojal}'
-                    AND r7.StkRubroAbr = '${StkRubroAbrP}'
+                WHERE r1.StkRubroAbr = ?
+                    AND r2.StkRubroAbr = ?
+                    AND r3.StkRubroAbr = ?
+                    AND r4.StkRubroAbr = ?
+                    AND m5.idStkMonedas = ?
+                    AND r6.StkRubroAbr = ?
+                    AND r7.StkRubroAbr = ?
                 `;
-            const datos1 = await queryAsync(sql);
+            const params = [
+                StkRubroAbrP,            // subquery
+                StkRubroAbrP,        // r1
+                sogachicote,         // r2
+                p.sogadobladillo,    // r3
+                p.codmoneda,          // moneda
+                tipoojal,            // subquery
+                StkRubroAbrP       // r1
+            ];
+            const datos1 = await queryAsync(sql, params);
+
+            //const datos1 = await queryAsync(sql);
             const d = datos1[0];
             detalle = detallep !== '' ? `${detallep} en :  ${d.StkRubroDesc}` : `Lona con ojales de ${detojal} reforzados, chicotes, ${detconf} soga en dobladillo en :  ${d.StkRubroDesc}`;
 
@@ -165,96 +168,3 @@ router.get("/", async (req, res) => {
     }
 });
 export default router;
-
-
-//                 FROM BasePresup.PresupConfTipo t
-//                     JOIN BaseStock.StkRubro r6 ON t.PresupConfTipoRubro = r6.StkRubroAbr
-//                     JOIN BaseStock.StkMonedas m6 ON r6.StkRubroTM = m6.idStkMonedas
-//                 WHERE r6.StkRubroAbr = '${tipoojal}'
-//             )  AS CostoOjalM2 
-
-
-// const queries = [
-//     `SELECT StkRubroDesc, StkRubroAbr,
-//             (StkRubroCosto * StkMonedasCotizacion / StkRubroAncho * 1.02 ) AS CostoCobMC,
-//             (StkRubroCosto * StkMonedasCotizacion * 0.20 / 11 ) AS CostoRefuerzo
-//             FROM BaseStock.StkRubro JOIN BaseStock.StkMonedas
-//             WHERE StkRubro.StkRubroAbr = '${StkRubroAbrP}'
-//             AND StkRubro.StkRubroTM = idStkMonedas`,
-
-//     `SELECT (StkRubroCosto * StkMonedasCotizacion * 1.65) AS CostoMSChicote
-//             FROM BaseStock.StkRubro JOIN BaseStock.StkMonedas
-//             WHERE StkRubro.StkRubroAbr = '${sogachicote}'
-//             AND StkRubro.StkRubroTM = idStkMonedas`,
-
-//     ...(tipoconf === "cs"
-//         ? [
-//             `SELECT (StkRubroCosto * StkMonedasCotizacion) AS CostoMSDobladillo
-//             FROM BaseStock.StkRubro JOIN BaseStock.StkMonedas
-//             WHERE StkRubro.StkRubroAbr = '${sogadobladillo}'
-//             AND StkRubro.StkRubroTM = idStkMonedas`,
-//         ]
-//         : []),
-
-//     `SELECT StkMonedasCotizacion
-//             FROM BaseStock.StkMonedas
-//             WHERE idStkMonedas = '${p.codmoneda}'`,
-
-//     `SELECT (StkRubroCosto * StkMonedasCotizacion / 144) AS CostoOjalM2
-//             FROM BaseStock.StkRubro JOIN BaseStock.StkMonedas
-//             WHERE StkRubro.StkRubroAbr = '${tipoojal}'
-//             AND StkRubro.StkRubroTM = idStkMonedas`,
-// ];
-
-// const resultadosParciales = await Promise.all(queries.map(q => queryPromise(q)));
-// // los resultados quedan en el mismo orden siempre
-// resultados.push(resultadosParciales.map(r => r[0]));
-// // }
-
-// let j = 0;
-// let costooriginal = 0;
-
-// la estructura es [ [ {...}, {...}, ... ] ]
-// const datosenvio = resultados[0];
-// const datos = Object.assign({}, ...datosenvio);
-// while (j < datos.length) {
-//     costooriginal =
-//         parseFloat(datos[j].CostoCobMC) + parseFloat(datos[j].CostoRefuerzo);
-//     j++;
-
-//     costooriginal += parseFloat(datos[j].CostoMSChicote);
-//     if (tipoconf === "cs") {
-//         j++;
-//         costooriginal += parseFloat(datos[j].CostoMSDobladillo);
-//     }
-
-//     j++;
-//     costooriginal +=
-//         parseFloat(datos[j].StkMonedasCotizacion) * p.valorflete +
-//         parseFloat(datos[j].StkMonedasCotizacion) * p.valorMOT;
-
-//     j++;
-//     costooriginal += parseFloat(datos[j].CostoOjalM2);
-//     j++;
-//     costooriginal = costooriginal * ganancia * p.coefimpuesto;
-//     const metroscuad = anchoreal * largoreal;
-//     costooriginal = costooriginal * metroscuad;
-
-//     let ciclo = 0;
-//     if (metroscuad < 12) ciclo = 3;
-//     else if (metroscuad < 16) ciclo = 2;
-//     else if (metroscuad < 22) ciclo = 1;
-
-//     let i = 0;
-//     while (i < ciclo) {
-//         costooriginal = costooriginal * 1.0325;
-//         i++;
-//     }
-/*function queryPromise(sql) {
-    return new Promise((resolve, reject) => {
-        conexion.query(sql, (err, result) => {
-            if (err) reject(err);
-            else resolve(result);
-        });
-    });
-}*/ 

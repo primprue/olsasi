@@ -3,25 +3,13 @@ var router = express.Router();
 
 import conexion from '../conexion.mjs';
 
-
-conexion.connect(err => {
-  if (err) {
-    console.log("no se conecto en presupdesfac");
-  } else {
-    console.log("base de datos conectada en presupdesfac");
-  }
-});
-
 // ------------------------------------------------------------------
 // FUNCIÓN: ejecuta una consulta MySQL en modo async
 // ------------------------------------------------------------------
-function queryAsync(sql) {
-  return new Promise((resolve, reject) => {
-    conexion.query(sql, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
+
+async function queryAsync(sql, params = []) {
+  const [rows] = await conexion.promise().query(sql, params);
+  return rows;
 }
 
 router.get('/', async (req, res, next) => {
@@ -44,9 +32,9 @@ router.get('/', async (req, res, next) => {
       } = item;
 
       const coeficiente =
-        minmay === "my" ? p.coeficientemay : p.coeficientemin;
+        minmay === "my" ? Number(p.coeficientemay) : Number(p.coeficientemin);
       const coefMOT =
-        minmay === "my" ? p.coefMOTmay : p.coefMOTmin;
+        minmay === "my" ? Number(p.coefMOTmay) : Number(p.coefMOTmin);
       let ivasncal = minmay === "my" ? "CIVA" : ivasn;
 
       const segcoefMOT = coefMOT / 60 / 60
@@ -54,12 +42,12 @@ router.get('/', async (req, res, next) => {
       const valorMOTrecorte = p.costoMOT * segcoefMOT * p.segpurecorte
       const valorMOTfajas = p.costoMOT * segcoefMOT * p.segsolfaja
 
-      let anchocal = ancho + 0.28
+      let anchocal = Number(ancho) + 0.28
       let enteropanios = Math.trunc(anchocal / 1.50)
 
       const decimalpanios = (anchocal / 1.5) - enteropanios;
       const cantpanos = decimalpanios > 0 ? enteropanios + 1 : enteropanios;
-      const impunion = decimalpanios > 0 ? ((cantpanos * ancho) + 0.75) * valorMOTmup : ancho * valorMOTmup
+      const impunion = decimalpanios > 0 ? ((cantpanos * Number(ancho)) + 0.75) * valorMOTmup : Number(ancho) * valorMOTmup
 
       const imprecorte = anchocal * valorMOTrecorte
       const impsolfaja = largo * valorMOTfajas * 2
@@ -67,14 +55,21 @@ router.get('/', async (req, res, next) => {
 
       const q = `Select
         StkRubroDesc, StkRubroAbr,
-        (((StkRubroCosto * StkMonedasCotizacion * ${coeficiente}) * ${cantpanos} * ${ancho}) + ${importeMOTtotal}) as ImpUnitario,
+        (((StkRubroCosto * StkMonedasCotizacion * ?) * ? *?) + ?) as ImpUnitario,
         StkRubroCosto,
         StkMonedasCotizacion
         from BaseStock.StkRubro JOIN  BaseStock.StkMonedas
-        where StkRubro.StkRubroAbr = "${StkRubroAbr}"
+        where StkRubro.StkRubroAbr = ?
         and StkRubro.StkRubroTM = idStkMonedas`
 
-      const datos = await queryAsync(q);
+      const params = [
+        coeficiente,
+        cantpanos,
+        ancho,
+        importeMOTtotal,
+        StkRubroAbr
+      ];
+      const datos = await queryAsync(q, params);
       const d = datos[0]
 
       let detalle = ""

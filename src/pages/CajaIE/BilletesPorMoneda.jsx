@@ -32,6 +32,7 @@ export default function BilletesPorMoneda({ billetes, moneda, totalEsperado }) {
         }
     }, [billetesFiltrados]);
 
+    console.log('cantidades  ', cantidades)
     const handleDialogAccept = () => {
         const valor = Number(tempCantidad) || 0;
         const billeteActual = billetesFiltrados[billeteIndex];

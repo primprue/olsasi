@@ -3,14 +3,9 @@ import conexion from "../conexion.mjs";
 
 const router = express.Router();
 
-// Helper para usar MySQL en modo promesa
-function queryAsync(sql) {
-  return new Promise((resolve, reject) => {
-    conexion.query(sql, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
+async function queryAsync(sql, params = []) {
+  const [rows] = await conexion.promise().query(sql, params);
+  return rows;
 }
 
 router.get("/", async (req, res) => {
@@ -39,11 +34,14 @@ router.get("/", async (req, res) => {
         minmay === "my" ? p.coefMOTmay : p.coefMOTmin;
       let ivasncal = minmay === "my" ? "CIVA" : ivasn;
       // ancho de tela
+      let param = [StkRubroAbr];
       const r2 = await queryAsync(
         `SELECT StkRubroAncho AS anchotela
           FROM BaseStock.StkRubro
-          WHERE StkRubroAbr = "${StkRubroAbr}"`
+          WHERE StkRubroAbr = ?`,
+        param
       );
+
       const anchotela = r2[0].anchotela;
 
       // cálculos MOT
@@ -72,20 +70,20 @@ router.get("/", async (req, res) => {
         SELECT
           StkRubroDesc, StkRubroAbr,
           (
-            ((StkRubroCosto * StkMonedasCotizacion * ${coef}) *
-              ${cantidad} * ${largo})
-            + ${importeMOTtotal}
+            ((StkRubroCosto * StkMonedasCotizacion * ?) *
+              ? * ?)
+            + ?
           ) AS ImpUnitario,
           StkRubroAncho AS Ancho,
           StkRubroCosto,
-          StkMonedasCotizacion,
+          StkMonedasCotizacion
         FROM BaseStock.StkRubro
         JOIN BaseStock.StkMonedas
           ON StkRubro.StkRubroTM = idStkMonedas
-        WHERE StkRubro.StkRubroAbr = "${StkRubroAbr}"
-      `;
-
-      const r = await queryAsync(q);
+        WHERE StkRubro.StkRubroAbr = ?
+        `;
+      let paramimp = [coef, cantidad, largo, importeMOTtotal, StkRubroAbr];
+      const r = await queryAsync(q, paramimp);
       const data = r[0];
 
       // redondeo con o sin IVA

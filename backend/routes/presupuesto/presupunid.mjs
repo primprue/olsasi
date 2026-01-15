@@ -3,81 +3,82 @@ var router = express.Router();
 
 import conexion from '../conexion.mjs';
 
-var datosenvio = []
+async function queryAsync(sql, params = []) {
+  const [rows] = await conexion.promise().query(sql, params);
+  return rows;
+}
 
-router.get('/', (req, res, next) => {
-  var q, i = 0
-  var coeficiente = 0, cantidad = 0, StkRubroAbrP = ''
-  q = ['select * from BasePresup.PresupParam'].join(' ')
-  conexion.query(q,
-    function (err, result) {
-      if (err) {
-        console.log(err);
+
+router.get("/", async (req, res) => {
+  try {
+    const datosrec = JSON.parse(req.query.datoscalculo);
+    const parametros = await queryAsync(`SELECT * FROM BasePresup.PresupParam`);
+    const p = parametros[0];
+
+    const resultados = [];
+
+    for (const item of datosrec) {
+      const {
+        cantidad,
+        StkRubroAbr,
+        ivasn,
+        minmay,
+      } = item;
+      let coeficiente = 0;
+
+      if (minmay == 'my') {
+        coeficiente = Number(p.coeficientemay) || 0;
+        ivasn = 'CIVA'
       }
-      var datosrec = JSON.parse(req.query.datoscalculo)
+      else {
+        coeficiente = Number(p.coeficientemin) || 0;
+      }
+      console.log('coeficiente  ', coeficiente)
+      const q = `
+          SELECT 
+            StkRubroDesc,   StkRubroAbr,
+            (StkRubroCosto * StkMonedasCotizacion * ${coeficiente})       AS ImpUnitario,
+            (StkRubroCosto * StkMonedasCotizacion * ${coeficiente} * ${cantidad})   AS ImpItem,
+            StkRubroCosto,
+            StkMonedasCotizacion,
+            StkRubroDesc,
+            StkRubroUM
+          FROM BaseStock.StkRubro
+          JOIN BaseStock.StkMonedas
+            ON StkRubro.StkRubroTM = idStkMonedas
+          WHERE StkRubro.StkRubroAbr = '${StkRubroAbr}'
+          `;
 
-      var totalreg = datosrec.length
-      var ivasn = datosrec[0].ivasn;
-      datosrec.map((datos) => {
-        cantidad = datos.cantidad;
-        StkRubroAbrP = datos.StkRubroAbr;
+      let param = [coeficiente, coeficiente, cantidad, StkRubroAbr];
 
-        if (datos.minmay == 'my') {
-          coeficiente = result[0].coeficientemay
-          ivasn = 'CIVA'
-        }
-        else {
-          coeficiente = result[0].coeficientemin
-        }
-        q = ['Select',
-          'StkRubroDesc, StkRubroAbr, ',
-          '(StkRubroCosto * StkMonedasCotizacion * ', coeficiente, ' ) as ImpUnitario, ',
-          '(StkRubroCosto * StkMonedasCotizacion * ', coeficiente, ' * ', cantidad, ' ) as ImpItem, ',
-          'StkRubroCosto,',
-          'StkMonedasCotizacion, ',
-          'StkRubroUM ',
-          'from BaseStock.StkRubro JOIN  BaseStock.StkMonedas, ',
-          'reparacion.parametrosrep ',
-          'where StkRubro.StkRubroAbr = "' + StkRubroAbrP + '" ',
-          'and StkRubro.StkRubroTM = idStkMonedas',
-        ].join(' ')
+      const result = await queryAsync(q, param);
+      const data = result[0];
+      let impu = 0
+      let detalle = `${data.StkRubroUM}  en :  ${data.StkRubroDesc}`
+      if (ivasn == 'CIVA') {
+        data.ImpItem = Number(data.ImpItem).toFixed(0)
+        impu = Number(data.ImpUnitario).toFixed(0)
+      }
+      else {
+        data.ImpItem = Number(data.ImpItem).toFixed(0) / 1.21
+        impu = Number(data.ImpUnitario).toFixed(0) / 1.21
+      }
 
-        conexion.query(
-          q,
-          function (err, result) {
-            if (err) {
-              console.log('error en mysql')
-              console.log(err)
-            }
-            else {
-              if (ivasn == 'CIVA') {
+      resultados.push({
+        ImpUnitario: impu,
+        Detalle: detalle,
+        Largo: 0,
+        Ancho: 0,
+        MDesc: "S",
+      });
+    }
 
-                result[0].ImpItem = Number(result[0].ImpItem).toFixed(0)
-                result[0].ImpUnitario = Number(result[0].ImpUnitario).toFixed(0)
-              }
-              else {
-                result[0].ImpItem = Number(result[0].ImpItem).toFixed(0) / 1.21
-                result[0].ImpUnitario = Number(result[0].ImpUnitario).toFixed(0) / 1.21
-              }
+    res.json(resultados);
 
-              result[0].Detalle = ""
-              result[0].Largo = 0
-              result[0].Ancho = 0
-              result[0].MDesc = 'S'
-              datosenvio.push(result)
-              i++
-              if (i === totalreg) {
-                res.json(datosenvio)
-
-                datosenvio = []
-
-              }
-            }
-          })
-      })
-    })
+  } catch (error) {
+    console.log("Error en /presupunid", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
 });
 
-
-conexion.end
 export default router;

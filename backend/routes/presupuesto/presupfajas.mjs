@@ -4,24 +4,15 @@ var router = express.Router();
 import conexion from '../conexion.mjs';
 
 
-conexion.connect(err => {
-  if (err) {
-    console.log("no se conecto en presupfajas");
-  } else {
-    console.log("base de datos conectada en presupfajas");
-  }
-});
+
 
 // ------------------------------------------------------------------
 // FUNCIÓN: ejecuta una consulta MySQL en modo async
 // ------------------------------------------------------------------
-function queryAsync(sql) {
-  return new Promise((resolve, reject) => {
-    conexion.query(sql, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
+
+async function queryAsync(sql, params = []) {
+  const [rows] = await conexion.promise().query(sql, params);
+  return rows;
 }
 
 router.get('/', async (req, res, next) => {
@@ -62,16 +53,27 @@ router.get('/', async (req, res, next) => {
 
       const valorMOTmin = p.costoMOT * coefMOT / 60
       const MOTarmado = valorMOTmin * minutosunion
-      const q = `Select
+      const sql = `Select
         StkRubroDesc, StkRubroAbr,
-        (((StkRubroCosto * StkMonedasCotizacion * ${coeficiente}) * ${anchotot} * ${largocal}) + ${MOTarmado} ) as ImpUnitario,
+        (((StkRubroCosto * StkMonedasCotizacion * ?) * ? * ?) + ? ) as ImpUnitario,
         StkRubroCosto,
         StkMonedasCotizacion
         from BaseStock.StkRubro JOIN  BaseStock.StkMonedas
-        where StkRubro.StkRubroAbr = "${StkRubroAbr}"
+        where StkRubro.StkRubroAbr = ?
         and StkRubro.StkRubroTM = idStkMonedas`
 
-      const datos = await queryAsync(q);
+      const params = [
+        coeficiente,            // subquery
+        anchotot,        // r1
+        largocal,         // r2
+        MOTarmado,    // r3
+        StkRubroAbr          // moneda
+      ];
+
+
+      const datos = await queryAsync(sql, params);
+
+      // const datos = await queryAsync(q);
       const d = datos[0]
       let detalle = ""
 

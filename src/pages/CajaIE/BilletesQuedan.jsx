@@ -31,15 +31,19 @@ export default function BilletesQuedan(props) {
 
             // 3. Convertir a número lo que queda es de la mañana
             const saldoqueda = parseFloat(conPunto);
+            console.log('saldoqueda ', saldoqueda)
             retiroManiana = 0
             retiroTarde = 0
             totales[monedaId]?.totalT > 0 ?
                 retiroTarde = totales[monedaId]?.totalTSinInstr : 0
+
             totales[monedaId]?.totalM > 0 ?
                 retiroManiana = totales[monedaId]?.totalMEsp - saldoqueda - retiroTarde : 0
 
             totalInstrumentos = totales[monedaId]?.totalInstr
 
+            console.log('totales[monedaId]?.totalInstr ', totalInstrumentos)
+            console.log('totales[monedaId]?.totalMEsp ', totales[monedaId]?.totalMEsp)
 
             datoagrabar.push({ monedaId, retiroManiana, retiroTarde, saldoqueda, totalInstrumentos })
 
