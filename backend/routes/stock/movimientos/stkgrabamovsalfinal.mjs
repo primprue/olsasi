@@ -1,7 +1,7 @@
 import express from "express";
 var router = express.Router();
 
-import conexion from "../../conexion.mjs";
+import { conexion } from '../../conexion.mjs';
 
 router.post("/", async function (req, res, next) {
   var StkItemsGrupo = req.body.StkItemsGrupo;

@@ -1,7 +1,7 @@
 import express from "express";
 var router = express.Router();
 
-import conexion from "../conexion.mjs";
+import { conexion } from '../conexion.mjs';
 
 
 // ------------------------------------------------------------------
@@ -105,7 +105,6 @@ router.get('/', async (req, res, next) => {
         }
       }
 
-
       let SegundosMOT = 0
 
       let cantcriquet = 0
@@ -180,7 +179,9 @@ router.get('/', async (req, res, next) => {
         let segcortefondo = perimetro * 120
 
 
-        SegundosMOT = segcortarpf + segunirpf + segcortarpp + segunirpp + segspisofondo + segcortefondo
+        SegundosMOT = SegundosMOT + segcortarpf + segunirpf + segcortarpp + segunirpp + segspisofondo + segcortefondo
+
+
         let seghacercortes = 0
         let mcuadradosfaldon = 0
         let segsoldarfaldon = 0
@@ -265,6 +266,9 @@ router.get('/', async (req, res, next) => {
 
       let MOTarmado = valorMOTseg * SegundosMOT
       let MOTarmadoAd = valorMOTseg * SegundosMOTAd
+
+
+
       const q3 = `Select 
         (StkRubroCosto * StkMonedasCotizacion * ?  ) as ValorAdicionales,
         StkRubroCosto, StkMonedasCotizacion  from BaseStock.StkRubro JOIN  BaseStock.StkMonedas

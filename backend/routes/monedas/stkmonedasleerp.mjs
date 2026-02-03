@@ -1,20 +1,21 @@
 import express from 'express';
 var router = express.Router();
 
-import conexion from '../conexion.mjs';
+import { conexionpool } from '../conexion.mjs';
 
 
+router.get("/", async (req, res) => {
+    const q = `SELECT idStkMonedas as value, StkMonedasDescripcion as label FROM BaseStock.StkMonedas`;
+    try {
+        const [rows] = await conexionpool.query(q);
 
-router.get('/', function (req, res, next) {
-    var q = ['Select idStkMonedas  as value, StkMonedasDescripcion as label from StkMonedas '].join(' ')
-    conexion.query(q,
-        function (err, result) {
-            if (err) {
-                console.log(err.errno);
-            } else {
-                res.json(result);
-            }
+        res.json(rows);
+    } catch (err) {
+        console.error("Error en la DB:", err);
+        res.status(500).json({
+            error: "Error al obtener los Monedas",
+            details: err.message
         });
+    }
 });
-conexion.end;
 export default router;

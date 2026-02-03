@@ -1,27 +1,24 @@
 import express from "express";
 var router = express.Router();
 
-import conexion from "../../conexion.mjs";
+import { conexion } from '../../conexion.mjs';
 
+async function queryAsync(sql, params = []) {
+  const [rows] = await conexion.promise().query(sql, params);
+  return rows;
+}
 
-
-router.delete("/", function (req, res, next) {
-  var indice = req.query.id;
-  var q = `delete from BaseCaja.CajaInterna where idCajaInterna = ${indice}`;
-  conexion.query(q, function (err, result) {
-    if (err) {
-      if (err.errno == 1451) {
-        return res
-          .status(411)
-          .send({ message: "error Código de CajaInterna usado en otra tabla" });
-      }
-      {
-        console.log(err);
-      }
-    } else {
-      res.json(result.rows);
-    }
-  });
+router.delete("/", async (req, res) => {
+  try {
+    var q = `delete from BaseCaja.CajaInterna where idCajaInterna = ?`;
+    const param = [req.query.id];
+    const resultados = await queryAsync(q, param);
+    res.json(resultados);
+  } catch (err) {
+    console.log("Error en /cajainternaborrar", err);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
 });
-conexion.end;
+
+
 export default router;

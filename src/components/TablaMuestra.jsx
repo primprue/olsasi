@@ -60,6 +60,7 @@ import AddToPhotosTwoToneIcon from "@mui/icons-material/AddToPhotosTwoTone";
 import CheckCircleTwoToneIcon from "@mui/icons-material/CheckCircleTwoTone";
 import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
 import PreviewTwoToneIcon from "@mui/icons-material/PreviewTwoTone";
+import { RecargaIcon, BorrarIcono, AgregarIcon } from "../components/comppropios/CustomIcons.jsx";
 import estilotabla from "../Styles/Tabla.module.css";
 import { green } from "@mui/material/colors";
 //https://www.youtube.com/watch?v=1zYf4Yw1jqs usa custom hooks y en el ejemplo maneja promesas y errores
@@ -219,17 +220,11 @@ export default function TablaMuestra(props) {
 			`Alta de ${formdatos.tablabase} (moverse por los campos con tab)`
 		);
 		setOpen(true);
-	};
-	const handleAlta1 = () => {
-		setNombreBoton("Enviar");
-		setTituloDial(
-			`Alta de ${formdatos.tablabase} (moverse por los campos con tab)`
-		);
-		setOpen(true);
+
 	};
 
+
 	const handleModifica = (params) => {
-		console.log('handlemodifica  ', params)
 		// setTimeout(() => {
 		if (formdatos.tablabase === "Transportes") TransporteModificar(params);
 		if (formdatos.tablabase === "Clientes") ClientesModificar(params);
@@ -313,7 +308,7 @@ export default function TablaMuestra(props) {
 
 				{(formdatos.tablabase !== "MuestraPresupuesto" && (
 					<React.Fragment>
-						<AddToPhotosTwoToneIcon
+						<AgregarIcon
 							className={estilotabla.iconoagregar}
 							size="large"
 							titleAccess="Agregar"
@@ -343,11 +338,18 @@ export default function TablaMuestra(props) {
 					className={estilotabla.iconoimpresora}
 					titleAccess="Imprimir"
 				/>
-				<DeleteSharpIcon
+				<BorrarIcono
 					variant="contained"
 					titleAccess="Borrar"
 					className={estilotabla.iconoborrar}
 					onClick={() => handleDelete(rowsel)}
+				/>
+				<RecargaIcon
+					variant="contained"
+					titleAccess="Recargar"
+					sx={{ color: '#0954ec' }}
+					className={estilotabla.iconorecarga}
+					onClick={() => relee()}
 				/>
 			</GridToolbarContainer>
 		);

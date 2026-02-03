@@ -1,5 +1,5 @@
 import express from "express";
-import conexion from "../conexion.mjs";
+import { conexion } from '../conexion.mjs';
 
 const router = express.Router();
 
@@ -88,6 +88,8 @@ router.get("/", async (req, res) => {
 
       // redondeo con o sin IVA
       let impu = Number(data.ImpUnitario);
+      console.log('impu ', impu);
+      console.log('ivasncal ', ivasncal);
       ivasncal == 'CIVA' ? impu = impu : impu = impu / 1.21;
 
       // armado de detalle

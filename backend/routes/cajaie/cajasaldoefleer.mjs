@@ -1,26 +1,30 @@
 import express from 'express';
 
 var router = express.Router();
-// var path = require('path');
-import conexion from '../conexion.mjs';
+import { conexion } from '../conexion.mjs';
+
+async function queryAsync(sql, params = []) {
+    const [rows] = await conexion.promise().query(sql, params);
+    return rows;
+}
+
+router.get('/', async (req, res) => {
 
 
-
-router.get('/', function (req, res, next) {
-    let q1
-
-    // q1 = ['SELECT idCajaSaldoEfFecha  FROM BaseCaja.CajaSaldoEf ORDER BY idCajaSaldoEfFecha DESC LIMIT 1'].join(' ')
-
-    q1 = ['SELECT  idCajaSaldoEfFecha, CajaSaldoEfImporte, CajaSaldoEfMoneda FROM BaseCaja.CajaSaldoEf WHERE idCajaSaldoEfFecha = (SELECT MAX(idCajaSaldoEfFecha) ',
-        'FROM BaseCaja.CajaSaldoEf)'].join(' ')
-    conexion.query(q1,
-        function (err, result) {
-            if (err) {
-                console.log(err);
-
-            }
-            res.json(result);
+    let q1 = `SELECT  idCajaSaldoEfFecha, CajaSaldoEfImporte, CajaSaldoEfMoneda 
+    FROM BaseCaja.CajaSaldoEf WHERE
+    idCajaSaldoEfFecha = (SELECT MAX(idCajaSaldoEfFecha)  
+       FROM BaseCaja.CajaSaldoEf)`;
+    try {
+        const result = await queryAsync(q1);
+        res.json(result);
+    } catch (err) {
+        console.error('Error SQL:', err);
+        res.status(500).json({
+            ok: false,
+            mensaje: 'Error en cajasaldoefleer',
+            detalle: err.message
         });
+    }
 });
-
 export default router;

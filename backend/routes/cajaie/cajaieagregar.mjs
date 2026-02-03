@@ -1,13 +1,17 @@
 import express from "express";
 import moment from "moment";
-import conexion from "../conexion.mjs";
+import { conexion } from '../conexion.mjs';
 
 moment.locale("es");
 
 const router = express.Router();
+async function queryAsync(sql, params = []) {
+    const [rows] = await conexion.promise().query(sql, params);
+    return rows;
+}
 
+router.post('/', async (req, res) => {
 
-router.post("/", async function (req, res) {
     // const registros = await Promise.all(req.body.rows.map(async (row) => {
     //     return new Promise((resolve, reject) => {
 
@@ -16,9 +20,9 @@ router.post("/", async function (req, res) {
             .filter(row => row.CajaIEGrabado !== 'S')
             .map(async (row) => {
                 return new Promise((resolve, reject) => {
-                    const q1 = `SELECT CajaCPSumaResta FROM BaseCaja.CajaCP WHERE idCajaCP = ${row.CajaIEConcepto}`;
-
-                    conexion.query(q1, function (err, result) {
+                    const q1 = `SELECT CajaCPSumaResta FROM BaseCaja.CajaCP WHERE idCajaCP = ?`;
+                    const param = [row.CajaIEConcepto];
+                    conexion.query(q1, param, function (err, result) {
                         if (err) {
                             console.log(err);
                             return reject(err);
@@ -55,31 +59,36 @@ router.post("/", async function (req, res) {
     for (const registro of registros) {
         try {
             const resultado = await new Promise((resolve, reject) => {
-                conexion.query("INSERT INTO BaseCaja.CajaIE SET ?", registro, (err, result) => {
+                const q1 = "INSERT INTO BaseCaja.CajaIE SET ?";
+                const param = [registro];
+                conexion.query(q1, param, (err, result) => {
+                    // conexion.query("INSERT INTO BaseCaja.CajaIE SET ?", registro, (err, result) => {
                     if (err) {
                         if (err.errno === 1062) {
-                            var q = ['UPDATE BaseCaja.CajaIE SET',
-                                ' CajaIEFecha = "',
-                                registro.CajaIEFecha,
-                                '", CajaIECliente = "',
+                            const q2 = `UPDATE BaseCaja.CajaIE SET
+                            CajaIEFecha = ?,
+                            CajaIECliente = ?,
+                            CajaIEConcepto = ?,
+                            CajaIEMT = ?,
+                            CajaIEMoneda = ?,
+                            CajaIEImporte = ?,
+                            CajaIECodIP = ?,
+                            CajaIEImpIP = ?,
+                            CajaIEGrabado = ?
+                            WHERE idCajaIE = ?`;
+                            const param = [
                                 registro.CajaIECliente,
-                                '", CajaIEConcepto = "',
                                 registro.CajaIEConcepto,
-                                '", CajaIEMT = "',
                                 registro.CajaIEMT,
-                                '", CajaIEMoneda = "',
                                 registro.CajaIEMoneda,
-                                '", CajaIEImporte = ',
                                 registro.CajaIEImporte,
-                                ', CajaIECodIP = "',
                                 registro.CajaIECodIP,
-                                '", CajaIEImpIP = "',
                                 registro.CajaIEImpIP,
-                                '", CajaIEGrabado = "S"',
-                                ' WHERE idCajaIE = ',
+                                registro.CajaIEGrabado,
                                 registro.idCajaIE,
-                            ].join('')
-                            conexion.query(q, function (err, result) {
+                            ];
+
+                            conexion.query(q, param, function (err, result) {
                                 if (err) {
                                     console.log(err);
                                     reject(err);
@@ -89,13 +98,14 @@ router.post("/", async function (req, res) {
                                 }
                             });
 
-                            console.log("Clave duplicada para:", registro.idCajaIE);
-                            resolve({ error: "duplicado", id: registro.idCajaIE });
+                            // console.log("Clave duplicada para:", registro.idCajaIE);
+                            // resolve({ error: "duplicado", id: registro.idCajaIE });
 
                         } else {
                             reject(err);
                         }
-                    } else {
+                    }
+                    else {
                         resolve({ success: true, id: registro.idCajaIE });
                     }
                 });

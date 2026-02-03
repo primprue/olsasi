@@ -2,7 +2,7 @@ import express from "express";
 var router = express.Router();
 
 import moment from "moment";
-import conexion from "../conexion.mjs";
+import { conexion } from '../conexion.mjs';
 import variables from '../../public/variables.mjs';
 import { exec } from 'child_process';
 moment.locale("es");

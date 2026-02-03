@@ -156,7 +156,7 @@ router.get("/", (req, res) => {
           if (StkRubroAbrP == 'POL19') {
             SegundosMOT = perimetro * 600
             if (anchopared > 0.10) {
-              SegundosMOT = SegundosMOT + perimetro * 600
+                SegundosMOT = SegundosMOT + perimetro * 600
             }
 
           }
@@ -164,6 +164,7 @@ router.get("/", (req, res) => {
           //hasta acá excepto porque falta calcular el diametro interno en DE y en PE, todo está bien para pol19
 
           else {
+            SegundosMOT = perimetro * 600
             // calculo de los paños del piso
             calpaños = (diametroI % anchotela)
 
@@ -206,16 +207,19 @@ router.get("/", (req, res) => {
 
 
             metroscuadtotal = canttelapiso * 1 + metroscuadper * 1
+         
             // 240 segundos para soldar los paños del perímetro al fondo
 
             segspisofondo = perimetro * 240
             segcortefondo = perimetro * 120
 
-            SegundosMOT = segcortarpf + segunirpf + segcortarpp + segunirpp + segspisofondo + segcortefondo
+            SegundosMOT = SegundosMOT + segcortarpf + segunirpf + segcortarpp + segunirpp + segspisofondo + segcortefondo
 
             switch (termbordeeleg) {
               case "SF":
                 SegundosMOT = SegundosMOT
+               break
+            //= SegundosMOT
               case "CF":
               case "CFS":
               case "CFC":
@@ -231,9 +235,9 @@ router.get("/", (req, res) => {
                 metroscuadtotal = metroscuadtotal + mcuadradosfaldon
                 segsoldarfaldon = (diametro * 3.1416 * 240)
                 SegundosMOT = SegundosMOT + seghacercortes + segsoldarfaldon
-
-              default:
-                console.log('vino al default')
+               break 
+             // default:
+             //   console.log('vino al default')
 
             }
             if (termbordeeleg == "CFS") {
@@ -292,8 +296,8 @@ router.get("/", (req, res) => {
 
           MOTarmado = valorMOTseg * SegundosMOT
           MOTarmadoAd = valorMOTseg * SegundosMOTAd
-          console.log('SegundosMOT  ', SegundosMOT)
-
+           
+        
           valorsogacriq = ['Select ',
             '(StkRubroCosto * StkMonedasCotizacion * ', coeficiente,
             ' ) as ValorAdicionales, ',
@@ -330,6 +334,7 @@ router.get("/", (req, res) => {
                 'and StkRubro.StkRubroTM = idStkMonedas '
               ].join('')
 
+     
 
               if (detallep !== '') {
                 detalle = detallep + ' '
@@ -345,6 +350,7 @@ router.get("/", (req, res) => {
                     result[0].Detalle = detalle
                     result[0].Largo = 0.00
                     result[0].Ancho = 0.00
+  
 
                     if (StkRubroAbrP == 'POL19') {
                       result[0].ImpUnitario = Math.ceil((result[0].ImpUnitario * 1.15 + MOTarmadoAd + importesogaper + importecriquetper) / 10) * 10
@@ -352,6 +358,7 @@ router.get("/", (req, res) => {
                     else {
                       result[0].ImpUnitario = Math.ceil((result[0].ImpUnitario * 1 + MOTarmadoAd + importesogaper + importecriquetper) / 10) * 10
                     }
+
                     if (ivasn == 'CIVA') {
                       result[0].ImpUnitario = Math.ceil((result[0].ImpUnitario) / 10) * 10
                     }

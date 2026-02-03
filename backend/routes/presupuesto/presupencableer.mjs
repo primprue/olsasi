@@ -1,6 +1,6 @@
 import express from "express";
 import dateFormat from "dateformat";
-import conexion from "../conexion.mjs";
+import { conexion } from '../conexion.mjs';
 
 const router = express.Router();
 

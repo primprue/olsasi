@@ -1,7 +1,7 @@
 import express from "express";
 var router = express.Router();
 
-import conexion from "../../conexion.mjs";
+import { conexion } from '../../conexion.mjs';
 
 //cambié en la tabla de rubros de PreBalance el indice autoincremental 
 

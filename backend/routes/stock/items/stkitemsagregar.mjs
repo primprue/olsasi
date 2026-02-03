@@ -2,7 +2,7 @@ import express from "express";
 var router = express.Router();
 
 import moment from "moment";
-import conexion from "../../conexion.mjs";
+import { conexion } from '../../conexion.mjs';
 
 
 moment.locale("es");
@@ -26,7 +26,6 @@ router.post("/", async function (req, res) {
     StkItemsMin: req.body.StkItemsMin,
     StkItemsMax: req.body.StkItemsMax
   };
-  console.log('registro StkItems ', registro)
   conexion.query("INSERT INTO StkItems SET ?", registro, function (
     err,
     result

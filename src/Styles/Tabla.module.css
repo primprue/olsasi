@@ -252,6 +252,15 @@
 	font-size: 35px;
 }
 
+.iconorecarga {
+	color: rgba(7, 4, 185, 0.76);
+	margin-left: 35px;
+	font-size: 30px;
+}
+.iconorecarga:hover {
+	color: rgba(7, 4, 185, 0.76);
+	font-size: 35px;
+}
 .iconoordentrabao {
 	color: rgba(7, 4, 185, 0.76);
 	margin-left: 35px;

@@ -14,56 +14,56 @@ import { PBComprobantesBorrar } from "../pages/PreBalance/PBComprobantes/PBCompr
 import { PBPorIVABorrar } from "../pages/PreBalance/PBPorIVA/PBPorIVABorrar";
 import { CajaInternaBorrar } from "../pages/CajaIE/CajaInterna/CajaInternaBorrar";
 // import { PresupBorrar } from "../pages/Presupuesto/LayoutPresupuesto/PrespuConMod/PresupBorrar";
-export function onRowDelete(paramsid, newData, paramsbor) {
-
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      if (newData.tablabase === 'Proveedores') {
-        ProveedoresBorrar(paramsid)
-      }
-      if (newData.tablabase === 'Monedas') {
-        StkMonedasBorrar(paramsid);
-      }
-      if (newData.tablabase === 'Transportes') {
-        TransporteBorrar(paramsid);
-      }
-      if (newData.tablabase === 'StkGrupos') {
-        StkGrupoBorrar(paramsid)
-      }
-      if (newData.tablabase === 'StkRubros') {
-        StkRubroBorrar(paramsid)
-      }
-      if (newData.tablabase === 'StkItems') {
-        StkItemsBorrar(paramsbor)
-      }
-      if (newData.tablabase === 'UniMedidas') {
-        StkUnMedBorrar(paramsid)
-      }
-      if (newData.tablabase === 'PresupDetPie') {
-        PresupDetPieBorrar(paramsid)
-      }
-      if (newData.tablabase === 'ParamComp') {
-        ParamCompBorrar(paramsid)
-      }
-      if (newData.tablabase === 'OTCondPago') {
-        OTCondPagoBorrar(paramsid)
-      }
-      if (newData.tablabase === 'PBRubros') {
-        PBRubrosBorrar(paramsid)
-      }
-      if (newData.tablabase === 'PBSubRubros') {
-        PBSubRubrosBorrar(paramsid)
-      }
-      if (newData.tablabase === 'PBComprobantes') {
-        PBComprobantesBorrar(paramsid)
-      }
-      if (newData.tablabase === 'PBPorIVA') {
-        PBPorIVABorrar(paramsid)
-      }
-      if (newData.tablabase === 'CajaInterna') {
-        CajaInternaBorrar(paramsid)
-      }
-      resolve(50);
-    }, 100);
-  });
+export async function onRowDelete(paramsid, newData, paramsbor) {
+  try {
+    if (newData.tablabase === 'Proveedores') {
+      await ProveedoresBorrar(paramsid)
+    }
+    if (newData.tablabase === 'Monedas') {
+      await StkMonedasBorrar(paramsid);
+    }
+    if (newData.tablabase === 'Transportes') {
+      await TransporteBorrar(paramsid);
+    }
+    if (newData.tablabase === 'StkGrupos') {
+      await StkGrupoBorrar(paramsid)
+    }
+    if (newData.tablabase === 'StkRubros') {
+      await StkRubroBorrar(paramsid)
+    }
+    if (newData.tablabase === 'StkItems') {
+      await StkItemsBorrar(paramsbor)
+    }
+    if (newData.tablabase === 'UniMedidas') {
+      await StkUnMedBorrar(paramsid)
+    }
+    if (newData.tablabase === 'PresupDetPie') {
+      await PresupDetPieBorrar(paramsid)
+    }
+    if (newData.tablabase === 'ParamComp') {
+      await ParamCompBorrar(paramsid)
+    }
+    if (newData.tablabase === 'OTCondPago') {
+      await OTCondPagoBorrar(paramsid)
+    }
+    if (newData.tablabase === 'PBRubros') {
+      await PBRubrosBorrar(paramsid)
+    }
+    if (newData.tablabase === 'PBSubRubros') {
+      await PBSubRubrosBorrar(paramsid)
+    }
+    if (newData.tablabase === 'PBComprobantes') {
+      await PBComprobantesBorrar(paramsid)
+    }
+    if (newData.tablabase === 'PBPorIVA') {
+      await PBPorIVABorrar(paramsid)
+    }
+    if (newData.tablabase === 'CajaInterna') {
+      await CajaInternaBorrar(paramsid)
+    }
+    return true; // Todo salió bien
+  } catch (error) {
+    console.error("Error en onrowDelete:", error);
+    throw error; // Re-lanzamos el error para manejarlo en el Dialogo
+  }
 }

@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import conexion from "../conexion.mjs";
+import { conexion } from '../conexion.mjs';
 
 // ------------------------------------------------------------------
 // FUNCIÓN: ejecuta una consulta MySQL en modo async
@@ -29,8 +29,8 @@ router.get("/", async (req, res) => {
             const detallep = item.detallep;
             const ivasn = item.ivasn;
             const minmay = item.minmay;
-            let largoreal = (item.largo * 1)
-            let anchoreal = (item.ancho * 1)
+            let largoreal = Number(item.largo)
+            let anchoreal = Number(item.ancho)
             let detalle = "", ganancia = 0, tipoojal = "", sogachicote = "", sogadobladillo = "";
 
             // definimos variables locales
@@ -135,12 +135,14 @@ router.get("/", async (req, res) => {
             if (metrosCuad < 12) ciclo = 3;
             else if (metrosCuad < 16) ciclo = 2;
             else if (metrosCuad < 22) ciclo = 1;
-
+            console.log('ciclo  ', ciclo)
+            console.log('costo  ', costo)
             for (let i = 0; i < ciclo; i++) {
+                console.log('costo  ', costo)
                 costo *= 1.0325;
             }
 
-
+            console.log('costo  ', costo)
             // IVA / redondeo
             if (ivasn === "CIVA") {
                 costo = Math.ceil(costo / 10) * 10;

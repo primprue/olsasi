@@ -4,7 +4,6 @@ import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 
 export function PresupDetPieAgregar(props) {
 	const { PresupDetPieLeyenda } = props;
-
 	const url = IpServidor + "/presupdetpieagregar";
 	request
 		.post(url)
@@ -16,6 +15,7 @@ export function PresupDetPieAgregar(props) {
 			MuestraMensaje(res);
 		})
 		.catch((err) => {
+
 			MuestraMensaje(err);
 		});
 }

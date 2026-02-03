@@ -1,9 +1,8 @@
 import express from 'express';
 var router = express.Router();
-import conexion from '../../conexion.mjs';
+import { conexion } from '../../conexion.mjs';
 
 router.get('/', function (req, res) {
-    console.log('cajainternarsumatot');
 
     const fechad = req.query.fechad;
     const fechah = req.query.fechah;

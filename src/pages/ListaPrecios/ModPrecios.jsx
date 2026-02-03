@@ -9,7 +9,8 @@ export const ModPrecios = (
 	Importe,
 	Porcentaje
 ) => {
-	return new Promise((resolve) => {
+
+	return new Promise((resolve, reject) => {
 		const url = IpServidor + "/modprecios";
 		request
 			.post(url)
@@ -22,8 +23,14 @@ export const ModPrecios = (
 				porcentmod: Porcentaje,
 			})
 			.then((res) => {
+				console.log('res  ', res)
 				MuestraMensaje(res);
+				resolve(res); // <--- IMPORTANTE: Esto avisa que la función terminó con éxito
 			})
-			.catch((err) => MuestraMensaje(err));
+			.catch((err) => {
+				console.log('err  ', err)
+				MuestraMensaje(err);
+				reject(err);  // <--- IMPORTANTE: Esto avisa que hubo un error
+			});
 	})
 }

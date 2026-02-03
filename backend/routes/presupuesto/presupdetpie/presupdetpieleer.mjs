@@ -1,21 +1,27 @@
 import express from "express";
 var router = express.Router();
-import conexion from "../../conexion.mjs";
+import { conexion } from '../../conexion.mjs';
 
+function queryAsync(sql, values) {
+  return new Promise((resolve, reject) => {
+    conexion.query(sql, values, (err, result) => {
+      if (err) reject(err);
+      else resolve(result);
+    });
+  });
+}
 
 
 
 router.get("/", function (req, res, next) {
+  let q = `Select idPresupDetPie as id, PresupDetPieLeyenda, PresupDetPieSelec from BasePresup.PresupDetPie order by PresupDetPieLeyenda`;
+  try {
+    let result = queryAsync(q);
+    res.json(result);
+  } catch (err) {
+    console.log(err);
+  }
 
-  var q = ["Select idPresupDetPie as id, PresupDetPieLeyenda, PresupDetPieSelec from BasePresup.PresupDetPie order by PresupDetPieLeyenda"].join(" ");
-
-  conexion.query(q, function (err, result) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(result);
-    }
-  });
 });
 conexion.end;
 export default router;

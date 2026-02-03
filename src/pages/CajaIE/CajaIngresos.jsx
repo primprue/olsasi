@@ -13,7 +13,9 @@ import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
 import CajaCierre from "./CajaCierre.jsx";
 import estilotabla from "../../Styles/Tabla.module.css";
 import MueMovCIE from "./CajaIEConsultas/MueMovCIE.jsx";
+import CajaIEFecEst from "./CajaIEConsultas/CajaIEFecEst.jsx";
 import CajaInterna from "./CajaInterna/CajaInterna.jsx";
+import MuestraMensaje from "../../components/lib/MuestraMensaje.js";
 export default function CajaIngresos() {
     const [rows, setRows] = useState([]);
     const [openCierre, setOpenCierre] = useState(false);
@@ -22,7 +24,16 @@ export default function CajaIngresos() {
     const apiRef = useGridApiRef(); // <- referencia para manejar foco
     const [totalInstrumentos, setTotalInstrumentos] = useState(0);
     const [LlamaMueMovCIE, setLlamaMueMovCIE] = useState(false);
+    const [LlamaCajaIEFecEst, setLlamaCajaIEFecEst] = useState(false);
     const [LlamaCajaInterna, setLlamaCajaInterna] = useState(false);
+
+    const AbreCajaIEFecEst = () => {
+        setLlamaCajaIEFecEst(true);
+    };
+
+    const CierraCajaIEFecEst = () => {
+        setLlamaCajaIEFecEst(false);
+    };
     const AbreMueMovCIE = () => {
         setLlamaMueMovCIE(true);
     };
@@ -39,12 +50,68 @@ export default function CajaIngresos() {
         setLlamaCajaInterna(false);
     };
 
+    // async function handleAlta() {
+    //     console.log('rows', rows)
+    //     // CajaIECliente
+    //     // CajaIEConcepto
+    //     // CajaIEMT
+    //     // CajaIEMoneda
+    //     // CajaIEImporte
+    //     await CajaIEAgregar({ rows })
+    //     const data = await CajaIELeer();
+    //     setRows(data);
+    // };
     async function handleAlta() {
-        await CajaIEAgregar({ rows })
-        const data = await CajaIELeer();
-        setRows(data);
-    };
+        // 1. Definimos los campos obligatorios
+        // const camposRequeridos = [
+        //     'CajaIECliente',
+        //     'CajaIEConcepto',
+        //     'CajaIEMT',
+        //     'CajaIEMoneda',
+        // ];
+        let filasIncompletas = [];
+        filasIncompletas = rows.filter(row => {
+            // 1. Campos que SIEMPRE deben estar (strings no vacíos)
+            const faltanBasicos =
+                !row.CajaIECliente?.toString().trim() ||
+                !row.CajaIEConcepto?.toString().trim() ||
+                !row.CajaIEMT?.toString().trim() ||
+                !row.CajaIEMoneda?.toString().trim();
 
+            // 2. Regla especial de importes:
+            // Es inválido si AMBOS están vacíos o son 0.
+            // Si uno de los dos tiene valor > 0, esta condición será 'false' (está OK).
+            const importePrincipal = parseFloat(row.CajaIEImporte) || 0;
+            const importeIP = parseFloat(row.CajaIEImpIP) || 0;
+
+            const noTieneNingunImporte = (importePrincipal === 0 && importeIP === 0);
+
+            // Retorna true si falta lo básico O si no hay ningún importe cargado
+            return faltanBasicos || noTieneNingunImporte;
+        });
+        // // 2. Buscamos si hay alguna fila que tenga campos vacíos
+        // filasIncompletas = rows.filter(row => {
+        //     return camposRequeridos.some(campo => !row[campo] || row[campo].toString().trim() === "");
+        // });
+
+        // 3. Si hay filas incompletas, avisamos al usuario y cortamos la ejecución
+        if (filasIncompletas.length > 0) {
+            MuestraMensaje(413);
+            // alert("Por favor, completa todos los campos obligatorios en todas las filas antes de guardar.");
+            // Aquí podrías usar un Snackbar de MUI para que se vea más profesional
+            return;
+        }
+
+        try {
+            // 4. Si pasó la validación, procedemos a guardar
+            await CajaIEAgregar({ rows });
+            const data = await CajaIELeer();
+            setRows(data);
+            //  MuestraMensaje(200);
+        } catch (error) {
+            console.error("Error al guardar:", error);
+        }
+    }
     const handleCierre = () => {
         setOpenCierre(true);
     };
@@ -127,6 +194,16 @@ export default function CajaIngresos() {
                         '&:hover': { color: '#bdc009f9' } // color al pasar el mouse
                     }}
                     onClick={() => AbreMueMovCIE()}
+                />
+                <HistoryEduIcon
+                    titleAccess="Estadísticas"
+                    sx={{
+                        fontSize: '35px',
+                        color: '#4c05f1f9',
+                        cursor: 'pointer',
+                        '&:hover': { color: '#bdc009f9' } // color al pasar el mouse
+                    }}
+                    onClick={() => AbreCajaIEFecEst()}
                 />
                 {/* separador flexible */}
                 <Box sx={{ flexGrow: 1 }} />
@@ -379,6 +456,7 @@ export default function CajaIngresos() {
             {openCierre && <CajaCierre rows={rows} onClose={() => setOpenCierre(false)} />}
             {LlamaMueMovCIE && <MueMovCIE open={LlamaMueMovCIE} handleClose={CierraMueMovCIE} />}
             {LlamaCajaInterna && <CajaInterna open={LlamaCajaInterna} handleClose={CierraCajaInterna} />}
+            {LlamaCajaIEFecEst && <CajaIEFecEst open={LlamaCajaIEFecEst} handleClose={CierraCajaIEFecEst} />}
 
         </Box>
     );

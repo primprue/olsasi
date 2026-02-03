@@ -1,7 +1,7 @@
 import express from 'express';
 var router = express.Router();
 
-import conexion from '../conexion.mjs';
+import { conexion } from '../conexion.mjs';
 // const Afip = require('@afipsdk/afip.js');
 import Afip from '@afipsdk/afip.js';
 conexion.connect(function (err) {

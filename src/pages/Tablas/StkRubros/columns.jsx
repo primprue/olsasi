@@ -101,7 +101,7 @@ function columnsFill(stkgrupo, stkrubro, stkUnMed, stkMonedas, confsn) {
 				headerClassName: estilotabla.encabcolumns,
 			},
 			{
-				headerName: "Pres. Descripción",
+				headerName: "Presentación Des. Ej. Rollo",
 				field: "StkRubroPresDes",
 				order: true,
 				width: 80,
@@ -114,7 +114,7 @@ function columnsFill(stkgrupo, stkrubro, stkUnMed, stkMonedas, confsn) {
 				headerClassName: estilotabla.encabcolumns,
 			},
 			{
-				headerName: "Presentación",
+				headerName: "Presentación (Nº de Unidades) Ej. 50 que tiene el rollo",
 				field: "StkRubroPres",
 				order: true,
 				width: 80,
@@ -171,12 +171,13 @@ function columnsFill(stkgrupo, stkrubro, stkUnMed, stkMonedas, confsn) {
 				headerClassName: estilotabla.encabcolumns,
 			},
 			{
-				headerName: "Conf S/N",
+				headerName: "si se usa en Confección S/N",
 				field: "StkRubroConf",
 				type: "singleSelect",
 				required: true,
 				valueOptions: confsn,
 				editable: "true",
+				helptext: "Se usa en confección?",
 				xs: 4,
 				headerClassName: estilotabla.encabcolumns,
 			},

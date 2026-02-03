@@ -1,23 +1,30 @@
 import express from 'express';
 
 var router = express.Router();
-import conexion from '../conexion.mjs';
 
+import { conexion } from '../conexion.mjs';
 
+async function queryAsync(sql, params = []) {
+    const [rows] = await conexion.promise().query(sql, params);
+    return rows;
+}
 
-router.get('/', function (req, res, next) {
-    let q1
+router.get('/', async (req, res) => {
 
-    q1 = ['SELECT *  FROM BaseCaja.CajaCierreParam'].join(' ')
-    conexion.query(q1,
-        function (err, result) {
-            if (err) {
-                console.log(err);
+    let q1 = `SELECT *  FROM BaseCaja.CajaCierreParam`;
 
-            } else {
-                res.json(result);
-            }
-        });
+    try {
+        const result = await queryAsync(q1);
+        res.json(result);
+    } catch (err) {
+        console.error('Error SQL:', err);
+        res.status(500).json({
+            ok: false,
+            mensaje: 'Error al obtener CajaCierreParam',
+            detalle: err.message
+        }); // 👈 se envia el mensaje de error
+    }
+
 });
 
 export default router;

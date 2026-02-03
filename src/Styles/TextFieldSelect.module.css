@@ -65,7 +65,7 @@
     font-size: 16px;  /* Tamaño de fuente más pequeño */
     line-height: 2.5; /* Reduce la altura interna */
     height: 50px;
-    width: 90px;
+    width: 100%;
     border: 2px solid rgba(12, 12, 12, 0.123);
     border-bottom: 2px solid rgb(0, 4, 255);
     border-radius: 6px; /* Redondeado más sutil */

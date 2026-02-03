@@ -45,6 +45,7 @@ function columnsFill(puntosn, instrumpago, conceptopago, monedas) {
 				align: "left", //alinea el contenido
 				headerAlign: "center",
 				xs: 8,
+				required: true,
 				headerClassName: estilotabla.encabcolumns,
 			},
 			{

@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import conexion from "../conexion.mjs";
+import { conexion } from '../conexion.mjs';
 
 router.use(express.json()); // Asegúrate de que esto está habilitado para que `req.body` no sea vacío
 router.post("/", async function (req, res, next) {

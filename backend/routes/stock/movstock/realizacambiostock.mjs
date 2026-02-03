@@ -1,116 +1,120 @@
 import express from "express";
-var router = express.Router();
+const router = express.Router();
 
-import conexion from "../../conexion.mjs";
+import { conexion } from '../../conexion.mjs';
+import { itemdescripcion } from './leeitemdesc.mjs';
 
-var datosenvio = [];
+function queryAsync(sql, values) {
+    return new Promise((resolve, reject) => {
+        conexion.query(sql, values, (err, result) => {
+            if (err) reject(err);
+            else resolve(result);
+        });
+    });
+}
 
-router.post("/", function (req, res, next) {
-    var datosmodstock = req.body.infingreso
-    var d = new Date();
-    var finalDate = d.toISOString().split("T")[0];
+router.post("/", async (req, res) => {
+    const datosmodstock = req.body.infingreso
+    const d = new Date();
+    const finalDate = d.toISOString().split("T")[0];
+    try {
+        const itemdesco = await itemdescripcion(datosmodstock[0].abrevrubroo, datosmodstock[0].indiceitemo)
+        let itemdesccambio = ''
+        if (datosmodstock[0].cambiatela === 'S') {
+            itemdesccambio = await itemdescripcion(datosmodstock[0].abrevrubrocambio, datosmodstock[0].indiceitemocambio)
+        }
 
 
-    var q = ''
-    var q1 = ''
-    var cambioconf = ''
-    datosmodstock[0].cambiatela === 'S' ?
-        cambioconf = ' Cambio ' : cambioconf = 'Confirma';
 
-    if (datosmodstock[0].cambiatela === 'S') {
+        var cambioconf = ''
+        datosmodstock[0].cambiatela === 'S' ?
+            cambioconf = ' Cambio ' : cambioconf = 'Confirma';
+
         //modifica disponible y stock de la nueva tela y agrega en el disponible de la anterior
-        var q = [" UPDATE BaseStock.StkItems SET ",
-            "StkItemsCantidad = StkItemsCantidad - ", datosmodstock[0].tingreso,
-            ", StkItemsCantDisp = StkItemsCantDisp - ", datosmodstock[0].tingreso,
-            ", StkItemsFAct = '", finalDate,
-            "' WHERE (idStkItems = ", datosmodstock[0].indiceitemocambio, ") and  (StkItemsRubroAbr = '", datosmodstock[0].abrevrubrocambio, "')"
-        ].join("");
+        let q = ` UPDATE BaseStock.StkItems SET 
+            StkItemsCantidad = StkItemsCantidad - ?,
+            StkItemsCantDisp = StkItemsCantDisp - ?,
+            StkItemsFAct = ?
+            WHERE (idStkItems = ?) and  (StkItemsRubroAbr = ?)`
+        const paramsq = [
+            datosmodstock[0].tingreso,
+            datosmodstock[0].tingreso,
+            finalDate,
+            datosmodstock[0].indiceitemocambio,
+            datosmodstock[0].abrevrubrocambio
+        ];
+        let q1 = ` UPDATE BaseStock.StkItems SET 
+            StkItemsCantDisp = StkItemsCantDisp + ?,
+            StkItemsFAct = ?
+            WHERE (idStkItems = ?) and  (StkItemsRubroAbr = ?)`
+        const paramsq1 = [
+            datosmodstock[0].tingreso,
+            finalDate,
+            datosmodstock[0].indiceitemo,
+            datosmodstock[0].abrevrubroo
+        ];
 
 
-        var q1 = [" UPDATE BaseStock.StkItems SET ",
-            "StkItemsCantDisp = StkItemsCantDisp + ", datosmodstock[0].tingreso,
-            ", StkItemsFAct = '", finalDate,
-            "' WHERE (idStkItems = ", datosmodstock[0].indiceitemo, ") and  (StkItemsRubroAbr = '", datosmodstock[0].abrevrubroo, "')"
-        ].join("");
+        let q2 = ` INSERT INTO BaseStock.StkMov SET 
+            StkMovFecha = ?, StkMovTotal = ?,
+            StkMovRubroAbr = ?, StkMovItemDesc = ?,
+            StkMovCliente = ?`
+        const paramsq2 = [
+            finalDate,
+            datosmodstock[0].tingreso,
+            datosmodstock[0].abrevrubroo,
+            itemdesco + " x " + itemdesccambio,
+            datosmodstock[0].abrevrubrocambio + " " + cambioconf
+        ];
 
-        var q2 = [" INSERT INTO BaseStock.StkMov SET ",
-            "StkMovFecha = '", finalDate, "', StkMovTotal = ", datosmodstock[0].tingreso,
-            ", StkMovRubroAbr = '", datosmodstock[0].abrevrubroo, "', StkMovItemDesc = '",
-            datosmodstock[0].indiceitemo, "', StkMovCliente = '", datosmodstock[0].abrevrubrocambio + " " + cambioconf, "'"
-        ].join("");
+        // }
+        // else {
+        let q3 = ` UPDATE BaseStock.StkItems SET 
+            StkItemsCantidad = StkItemsCantidad - ?,
+            StkItemsFAct = ?
+            WHERE (idStkItems = ?) and  (StkItemsRubroAbr = ?)`
+        const paramsq3 = [
+            datosmodstock[0].tingreso,
+            finalDate,
+            datosmodstock[0].indiceitemo,
+            datosmodstock[0].abrevrubroo
+        ];
+        let q4 = ` INSERT INTO BaseStock.StkMov SET 
+            StkMovFecha = ?, StkMovTotal = ?,
+            StkMovRubroAbr = ?, StkMovItemDesc = ?,
+            StkMovCliente = ?`
+        const paramsq4 = [
+            finalDate,
+            datosmodstock[0].tingreso,
+            datosmodstock[0].abrevrubrocambio,
+            itemdesco,
+            datosmodstock[0].abrevrubrocambio + " " + cambioconf
+        ];
 
 
 
+        if (datosmodstock[0].cambiatela === 'S') {
+            const datos1 = await queryAsync(q, paramsq);
+            const datos2 = await queryAsync(q1, paramsq1);
+            const datos3 = await queryAsync(q2, paramsq2);
+        }
+        else {
+            const datos4 = await queryAsync(q3, paramsq3);
+            const datos5 = await queryAsync(q4, paramsq4);
 
-
-    }
-    else {
-        var q1 = [" UPDATE BaseStock.StkItems SET ",
-            "StkItemsCantidad = StkItemsCantidad - ", datosmodstock[0].tingreso,
-            ", StkItemsFAct = '", finalDate,
-            "' WHERE (idStkItems = ", datosmodstock[0].indiceitemo, ") and  (StkItemsRubroAbr = '", datosmodstock[0].abrevrubroo, "')"
-        ].join("");
-    }
-    var q3 = [" INSERT INTO BaseStock.StkMov SET ",
-        "StkMovFecha = '", finalDate, "', StkMovTotal = ", datosmodstock[0].tingreso,
-        ", StkMovRubroAbr = '", datosmodstock[0].abrevrubrocambio, "', StkMovItemDesc = '",
-        datosmodstock[0].indiceitemo, "', StkMovCliente = '", datosmodstock[0].abrevrubrocambio + " " + cambioconf, "'"
-    ].join("");
-
-    if (q !== '') {
-        conexion.query(q, function (err, result) {
-            if (err) {
-                console.log(err);
-            } else {
-                datosenvio.push(result);
-            }
-
-            // Ejecutar la segunda consulta después de la primera
-            conexion.query(q1, function (err, result) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    datosenvio.push(result);
-                }
-                conexion.query(q2, function (err, result) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        datosenvio.push(result);
-                    }
-                    conexion.query(q3, function (err, result) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            datosenvio.push(result);
-                        }
-                        res.json(datosenvio);
-                        datosenvio = [];
-                    });
-                });
-            });
+        }
+        res.status(201).json({
+            leyenda: 'Movimiento registrado correctamente',
+            idGenerado: datosmodstock[0].indiceitemocambio
         });
-    } else {
-        // Solo ejecutar la segunda consulta
-        conexion.query(q1, function (err, result) {
-            if (err) {
-                console.log(err);
-            } else {
-                datosenvio.push(result);
-            }
-            conexion.query(q3, function (err, result) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    datosenvio.push(result);
-                }
-                res.json(datosenvio);
-                datosenvio = [];
-            });
-        });
+    } catch (err) {
+        console.error("Error en el proceso:", err);
+
+        // Manejo de errores de duplicados o longitud
+        if (err.errno === 1062) return res.status(460).json({ message: "Clave duplicada" });
+        if (err.errno === 1406) return res.status(410).json({ message: "Dato demasiado largo" });
+
+        return res.status(500).json({ leyenda: "Error interno del servidor" });
     }
-
-
 });
-
 export default router;

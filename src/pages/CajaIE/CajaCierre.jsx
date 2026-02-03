@@ -96,7 +96,6 @@ export default function CajaCierre({ rows, onClose }) {
         }));
     };
 
-
     function formatDate(fechaISO) {
         if (!fechaISO) return "";
         const fecha = new Date(fechaISO);
@@ -297,6 +296,7 @@ export default function CajaCierre({ rows, onClose }) {
                 monedas={monedas}
                 billetes={billetes}
                 totales={totales}
+                cantidades={cantidades}
 
             />
 

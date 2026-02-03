@@ -2,7 +2,7 @@ import express from 'express';
 
 var router = express.Router();
 
-import conexion from '../conexion.mjs';
+import { conexion } from '../conexion.mjs';
 
 // Helper para usar MySQL en modo promesa
 async function queryAsync(sql, params = []) {

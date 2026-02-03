@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import conexion from "../conexion.mjs";
+import { conexion } from '../conexion.mjs';
 
 
 
@@ -64,8 +64,8 @@ router.get("/", async (req, res) => {
       let coefmaymin = 0;
       let ivareal = ''
       let coefMOT = 0;
-      const detojal = (tipoojale === "hz") ? " de hierro " : " de bronce ";
-      let tipoojal = (tipoojale === "hz") ? p.abrojales3hz : p.abrojales3b;
+      let tipoojal = '';
+
       if (minmay == 'my') {
         coefmaymin = Number(p.coeficientemay) || 0;
         tipoojal = p.abrojales28;
@@ -77,7 +77,8 @@ router.get("/", async (req, res) => {
         coefMOT = Number(p.coefMOTmin) || 0;
         ivareal = ivasn
       }
-
+      const detojal = (tipoojale === "hz") ? " de hierro " : " de bronce ";
+      tipoojal = (tipoojale === "hz") ? p.abrojales3hz : p.abrojales3b;
       let cantidadojales = largo * 2
 
       let valorMOT = p.costoMOT * coefMOT / 60 * ((metroscuad * minutospmc) + minutosdren)
@@ -107,7 +108,7 @@ router.get("/", async (req, res) => {
 
       const ojales = datos1[0]
 
-      let detalle = detallep !== '' ? `${detallep} en :  ${mcuadcob.StkRubroDesc}` : `Lona enrollable para pileta, con fajas en las puntas, con ojales de ${detojal} reforzados, ${detdrenaje} en :  ${mcuadcob.StkRubroDesc}`;
+      let detalle = detallep !== '' ? `${detallep} en :  ${mcuadcob.StkRubroDesc}` : `Lona enrollable para pileta, con fajas en las puntas, con ojales de ${detojal}, ${detdrenaje} en :  ${mcuadcob.StkRubroDesc}`;
 
       let costo = Number(mcuadcob.ImpUnitario) + Number(ojales.ValorOjales) + valorMOT
       // IVA / redondeo

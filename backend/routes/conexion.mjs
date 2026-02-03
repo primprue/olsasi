@@ -1,43 +1,19 @@
-// import mysql from "mysql";
+// conexion.js
+import mysqlCallback from 'mysql2';
+import mysqlPromise from 'mysql2/promise';
 
-// var conexion = mysql.createConnection({
-//   // user: "root",
-//   // host: "192.168.2.11",
-//   // password: "drasan",
-//   user: "sandra",
-//   password: "drasan141",
-//   host: "localhost",
-//   database: "BaseStock",
-//   port: 3306,
-//   multipleStatements: true,
-// });
-
-// export default conexion;
-
-import mysql from 'mysql2';
-
-const conexion = mysql.createConnection({
+const config = {
 
   user: "root",
   password: "drasan141",
   host: "localhost",
-
-  // user: "root",
-  // host: "192.168.2.11",
-  // password: "drasan",
   database: "BaseStock",
   port: 3306,
   multipleStatements: true,
+};
 
-});
+// La versión vieja para archivos viejos
+export const conexion = mysqlCallback.createConnection(config);
 
-conexion.connect((err) => {
-
-  if (err) {
-    console.error('Error al conectar a MySQL:', err);
-  } else {
-    console.log('Conectado a MySQL');
-  }
-});
-
-export default conexion;
+// La versión nueva para archivos nuevos
+export const conexionpool = mysqlPromise.createPool(config);

@@ -1,7 +1,7 @@
 import express from "express";
 var router = express.Router();
 
-import conexion from "../../conexion.mjs";
+import { conexion } from '../../conexion.mjs';
 
 router.get("/", function (req, res, next) {
     var q = ["Select concat(PBidItems, PBItemsRubro, PBItemsSubRubro) as id, concat(  PBItemsSubRubro, PBidItems)  as codsubrubro, PBidItems, PBItemsRubro,  PBItemsSubRubro, PBItemsFecha, PBItemsTipoComp, PBItemsNroComp, PBItemsProv, " +

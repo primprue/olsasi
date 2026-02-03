@@ -1,7 +1,7 @@
 import express from 'express';
 var router = express.Router();
 
-import conexion from '../../conexion.mjs';
+import { conexion } from '../../conexion.mjs';
 
 router.get('/', function (req, res, next) {
     var q = ['SELECT idParamComp as id,  ParamCompLetra, ParamCompAbrev, ParamCompSuc, ParamCompNro, ParamCompSR, ParamCompDesc, ParamCompDisc, ParamCompIVAAsoc FROM CtaCte.ParamComp '].join(' ')

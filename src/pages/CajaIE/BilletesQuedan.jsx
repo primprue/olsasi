@@ -7,7 +7,7 @@ import { green } from "@mui/material/colors";
 import Grid from "@mui/material/Grid";
 
 export default function BilletesQuedan(props) {
-    const { open, handleClose, monedas, billetes, totales } = props;
+    const { open, handleClose, monedas, billetes, totales, cantidades } = props;
     const [cantidadesBilquedan, setCantidadesBilquedan] = useState({});
     const [totalqueda, setTotalqueda] = useState({});
     const [bilquedan, setBilquedan] = useState(false);
@@ -16,8 +16,11 @@ export default function BilletesQuedan(props) {
     const handleClose1 = () => {
         setOpen1(false);
     };
-
+    console.log('cantidades BilletesQuedan ', cantidades)
+    // console.log('cantidadesBilquedan  ', cantidadesBilquedan)
     async function GrabCierraLimpia() {
+        console.log('cantidades BilletesQuedan GrabCierraLimpia ', cantidades)
+        console.log('bilquedan BilletesQuedan GrabCierraLimpia ', bilquedan)
         let retiroManiana = 0
         let retiroTarde = 0
         let datoagrabar = []
@@ -31,19 +34,18 @@ export default function BilletesQuedan(props) {
 
             // 3. Convertir a número lo que queda es de la mañana
             const saldoqueda = parseFloat(conPunto);
-            console.log('saldoqueda ', saldoqueda)
             retiroManiana = 0
             retiroTarde = 0
+
             totales[monedaId]?.totalT > 0 ?
                 retiroTarde = totales[monedaId]?.totalTSinInstr : 0
-
+            console.log('totales  ', totales)
+            console.log(' totales[monedaId]?.totalMEsp  ', totales[monedaId]?.totalMEsp)
             totales[monedaId]?.totalM > 0 ?
                 retiroManiana = totales[monedaId]?.totalMEsp - saldoqueda - retiroTarde : 0
 
             totalInstrumentos = totales[monedaId]?.totalInstr
 
-            console.log('totales[monedaId]?.totalInstr ', totalInstrumentos)
-            console.log('totales[monedaId]?.totalMEsp ', totales[monedaId]?.totalMEsp)
 
             datoagrabar.push({ monedaId, retiroManiana, retiroTarde, saldoqueda, totalInstrumentos })
 

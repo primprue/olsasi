@@ -1,7 +1,7 @@
 import express from 'express';
 var router = express.Router();
 
-import conexion from '../conexion.mjs';
+import { conexion } from '../conexion.mjs';
 
 
 router.get('/', async function (req, res) {

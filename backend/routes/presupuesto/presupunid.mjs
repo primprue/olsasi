@@ -1,7 +1,7 @@
 import express from 'express';
 var router = express.Router();
 
-import conexion from '../conexion.mjs';
+import { conexion } from '../conexion.mjs';
 
 async function queryAsync(sql, params = []) {
   const [rows] = await conexion.promise().query(sql, params);
@@ -25,15 +25,14 @@ router.get("/", async (req, res) => {
         minmay,
       } = item;
       let coeficiente = 0;
-
+      let ivasnvar = ivasn
       if (minmay == 'my') {
         coeficiente = Number(p.coeficientemay) || 0;
-        ivasn = 'CIVA'
+        ivasnvar = 'CIVA'
       }
       else {
         coeficiente = Number(p.coeficientemin) || 0;
       }
-      console.log('coeficiente  ', coeficiente)
       const q = `
           SELECT 
             StkRubroDesc,   StkRubroAbr,
@@ -55,7 +54,7 @@ router.get("/", async (req, res) => {
       const data = result[0];
       let impu = 0
       let detalle = `${data.StkRubroUM}  en :  ${data.StkRubroDesc}`
-      if (ivasn == 'CIVA') {
+      if (ivasnvar == 'CIVA') {
         data.ImpItem = Number(data.ImpItem).toFixed(0)
         impu = Number(data.ImpUnitario).toFixed(0)
       }

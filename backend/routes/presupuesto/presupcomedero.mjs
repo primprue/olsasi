@@ -1,7 +1,7 @@
 import express from 'express';
 var router = express.Router();
 
-import conexion from '../conexion.mjs';
+import { conexion } from '../conexion.mjs';
 
 
 // ------------------------------------------------------------------
@@ -41,7 +41,8 @@ router.get('/', async (req, res, next) => {
 
 
       let ojalescada = Number(presupojalesc) / 100;
-      let cantidadojales = (perimetro / ojalescada) + (largo)
+      let cantidadojales = (perimetro / ojalescada) + Number(largo)
+
       let detalle = ''
       if (detallep == '') {
         detalle = "Comedero "
@@ -150,11 +151,15 @@ router.get('/', async (req, res, next) => {
       const d = datos[0];
       let costo = 0;
       costo = Number(d.ValorCobML) * cantidadcob
+
       costo = costo + (Number(d.ValorMSDobladillo) * metsogadob);
+
       costo = costo + (Number(d.ValorGrsOjal) / 100 * cantidadojales)
+
       costo = costo + (((costoMOTHs * coeficiente) / 60 / 60 * 30) * cantidadojales)
 
       costo = costo * coefimpuesto + ValorMOTtotal
+
       if (ivasn === "CIVA") {
         costo = Math.ceil(costo / 10) * 10;
       } else {

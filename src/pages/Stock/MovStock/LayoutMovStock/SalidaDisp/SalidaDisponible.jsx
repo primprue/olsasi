@@ -16,7 +16,6 @@ export default function SalidaDisponible({ onClick, ...other }) {
 	const [cantidad, setCantidad] = useState(1);
 	const [largo, setLargo] = useState(0);
 	const [ancho, setAncho] = useState(0);
-	// const [cliente, setCliente] = useState('');
 	const confeccioneleg = useRef(null);
 	const textInput = useRef(null);
 	const textInput1 = useRef(null);
@@ -24,7 +23,6 @@ export default function SalidaDisponible({ onClick, ...other }) {
 	const textInput3 = useRef(null);
 	const textInput4 = useRef(null);
 	const [tipopresupleidos, setTipopresupleidos] = useState();
-	// let telaadescontar = 0
 
 	const handleChange = (value, id) => {
 		setState({ ...state, [id]: value });
@@ -42,11 +40,13 @@ export default function SalidaDisponible({ onClick, ...other }) {
 			setState({ ...state, clienteorden: value });
 		}
 	};
+	let labelLC = 'Largo';
+	let labelLA = 'Ancho';
 	const telaadescontar = useMemo(() => {
+
 		if (!state.selectRow || largo === 0) return 0;
 		let maslargo = 0.00;
 		let masancho = 0.00;
-
 		switch (confeccioneleg.current) {
 			case "DESTAPA FACIL":
 			case "LONAS ENROLLABLES":
@@ -58,6 +58,10 @@ export default function SalidaDisponible({ onClick, ...other }) {
 				masancho = 0.08;
 				maslargo = 0.08;
 				break;
+			// case "PAÑO UNIDO":
+			// 	labelLC = 'Cant.Paños';
+			// 	labelLA = 'Largo Paños';
+			// 	break;
 			case "PONCHO DE RIEGO":
 			case "LATERAL CORREDIZO":
 			case "PILETA ENROLLABLE":
@@ -97,11 +101,9 @@ export default function SalidaDisponible({ onClick, ...other }) {
 		}
 		return resultado;
 	}, [cantidad, largo, ancho, confeccioneleg.current, state.selectRow]);
-
 	async function conftipoleer() {
 		const result = await MovStockLeeTipoConf();
-		//	const result = await leePresupConfTipoLeeAnexo(anexo, "PAE");
-		//	console.log('result', result)
+
 		setTipopresupleidos(result);
 	}
 
@@ -137,7 +139,10 @@ export default function SalidaDisponible({ onClick, ...other }) {
 		}));
 
 	};
-
+	const cambialabel = () => {
+		labelLC = 'Cant.Paños';
+		labelLA = 'Largo Paños';
+	}
 	return (
 		<div style={{ display: 'flex', gap: '10px', marginBottom: '8px' }}>
 
@@ -184,6 +189,8 @@ export default function SalidaDisponible({ onClick, ...other }) {
 									}
 								}}
 							/>
+							{confeccioneleg.current === "PAÑO UNIDO" && (
+								cambialabel())}
 
 							<TextFieldComun
 								inputRef={textInput1}
@@ -191,7 +198,7 @@ export default function SalidaDisponible({ onClick, ...other }) {
 								type="number"
 								id="largo"
 								width="100px"
-								label="Largo"
+								label={labelLC}
 								onChange={handleChange}
 								value={largo}
 								onKeyDown={(e2) => {
@@ -202,24 +209,26 @@ export default function SalidaDisponible({ onClick, ...other }) {
 									}
 								}}
 							/>
-							{confeccioneleg.current !== 'UNIDAD' && (
-								<TextFieldComun
-									inputRef={textInput2}
-									size="small"
-									type="number"
-									id="ancho"
-									width="100px"
-									label="Ancho"
-									onChange={handleChange}
-									value={ancho}
-									onKeyDown={(e2) => {
-										if (e2.key === "Enter") {
-											setTimeout(() => {
-												textInput3.current.focus();
-											}, 100);
-										}
-									}}
-								/>)}
+							{
+								confeccioneleg.current !== 'UNIDAD' && (
+									<TextFieldComun
+										inputRef={textInput2}
+										size="small"
+										type="number"
+										id="ancho"
+										width="100px"
+										label={labelLA}
+										onChange={handleChange}
+										value={ancho}
+										onKeyDown={(e2) => {
+											if (e2.key === "Enter") {
+												setTimeout(() => {
+													textInput3.current.focus();
+												}, 100);
+											}
+										}}
+									/>)
+							}
 
 							<TextFieldComun
 								inputRef={textInput3}
@@ -254,38 +263,6 @@ export default function SalidaDisponible({ onClick, ...other }) {
 			}
 		</div >
 
-		// </div >
+
 	);
 }
-// export default SalidaDisponible;
-
-
-{/* <div style={{ marginBottom: '8px' }}>
-							{
-								tipopresupleidos.current &&
-								textdatatp.map(({ id, label, value, options }, index) => (
-									<TextFieldSelect
-										key={index}
-										id={id}
-										label={label}
-										value={selectedValues[id] ?? value ?? ''}
-										onChange={handleSelectChange}
-										options={options}
-										width="400px"
-									/>
-								))}
-						</div> */}
-
-// const textdatatp = useMemo(() => {
-// 	if (state.tipopresupleidos === undefined) return [];
-// 	console.log('return ', state.tipopresupleidos)
-// 	return [{
-// 		id: "TipoConfeccion",
-// 		label: 'Confección',
-// 		value: state.tipopresupleidos[0].StkRubroAbr,
-// 		options: state.tipopresupleidos.map((option) => ({
-// 			value: option.NroConfTipo,
-// 			label: option.PresupConfTipoDesc
-// 		}))
-// 	}];
-// }, [state.selectRow, state.tipopresupleidos]);

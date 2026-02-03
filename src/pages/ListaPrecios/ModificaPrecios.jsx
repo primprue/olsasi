@@ -25,7 +25,15 @@ export default function ModificaPrecios() {
 			state.StkRubroAbr,
 			state.Importe,
 			state.Porcentaje
-		);
+		).then(() => {
+			console.log('estoy en el then  ')
+			// Esto se ejecuta SOLO cuando la petición termina con éxito
+			setState({
+				...state,
+				Importe: 0,
+				Porcentaje: 0
+			})
+		});
 	};
 
 
@@ -217,6 +225,11 @@ export default function ModificaPrecios() {
 
 	const selecImpPor = useMemo(() => opcionImpPes || "", [opcionImpPes]);
 	const handleOptionChangeIP = (newOption) => {
+		setState({
+			...state,
+			Importe: 0,
+			Porcentaje: 0
+		})
 		setOpcionImpPes(newOption);
 	};
 

@@ -1,7 +1,7 @@
 import express from "express";
 var router = express.Router();
 
-import conexion from "../conexion.mjs";
+import { conexion } from '../conexion.mjs';
 
 
 
@@ -19,9 +19,8 @@ router.get("/", async (req, res) => {
     const datosRec = JSON.parse(req.query.datoscalculo);
     const parametros = await queryAsync(`SELECT * FROM BasePresup.PresupParam`);
     const p = parametros[0];
-    const paramrep = await queryAsync(`SELECT * FROM reparacion.parametrosrep`);
-    const vhln = paramrep[0].REPValorMOT;
-    const vhla = paramrep[0].REPValorMOTLA;
+    const vhln = Number(p.costoMOT) * Number(p.coefMOTmay)
+    const vhla = Number(p.costoMOT) * Number(p.coefMOTmin)
     const resultados = [];
 
     for (const item of datosRec) {
@@ -34,7 +33,7 @@ router.get("/", async (req, res) => {
       const anchoreal = Number(item.ancho);
       const minmay = item.minmay;
       const largo = Number(item.largo) + 0.08;
-      const ancho = Number + 0.08;
+      const ancho = Number(item.ancho) + 0.08;
       const lna = item.lonanuestraafuera;
 
       let detalle = "", ganancia = 0, minutosunion = 0;
@@ -43,7 +42,6 @@ router.get("/", async (req, res) => {
       (detallep == "" || detallep == undefined) ? detalle = `Cambio de paño lona` : detalle = detallep;
 
       lna === 'LN' ? valorhora = vhln : valorhora = vhla
-
 
       ganancia = p.coefgancsoga
 
@@ -129,7 +127,7 @@ router.get("/", async (req, res) => {
       const CostoMSDobladillo = Number(d.CostoMSDobladillo);
       const costoOjalM2 = Number(d.CostoOjalM2) || 0;
       const costoFleteMot = Cotizacion * (flete + MOT);
-      const costohora = (Number(valorhora) / 60 * 21 * anchoreal * 2)
+      const costohora = (Number(valorhora) / 60 * 21 * ancho * 2)
       let costo =
         CostoCobMC +
         CostoRefuerzo +
@@ -137,7 +135,6 @@ router.get("/", async (req, res) => {
         CostoMSDobladillo +
         costoOjalM2 +
         costoFleteMot;
-      console.log('costo  ', costo)
 
       const metrosCuad = largoreal * anchoreal;
       costo = costo * ganancia * p.coefimpuestos;
@@ -152,7 +149,6 @@ router.get("/", async (req, res) => {
       for (let i = 0; i < ciclo; i++) {
         costo *= 1.0325;
       }
-
       costo = costo + costohora
       // IVA / redondeo
       if (ivasn === "CIVA") {

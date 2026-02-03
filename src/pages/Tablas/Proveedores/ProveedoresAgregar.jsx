@@ -2,6 +2,7 @@ import request from "superagent";
 import IpServidor from "../../VariablesDeEntorno";
 import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 export function stkProveedoresAgregar(props) {
+	console.log('stkProveedoresAgregar props  ', props)
 	return new Promise(function () {
 		setTimeout(() => {
 			const {

@@ -1,7 +1,7 @@
 import express from "express";
 var router = express.Router();
 
-import conexion from "../../conexion.mjs";
+import { conexion } from '../../conexion.mjs';
 // Helper para usar MySQL en modo promesa
 function queryAsync(sql) {
   return new Promise((resolve, reject) => {
@@ -55,7 +55,7 @@ router.get("/", async (req, res) => {
           PresupConfTipoDesc = "${tipo}"`);
       const vlrMAT = Number(q[0].ImpUnitario);
       let ImpUnitario = 0
-      vlrMAT === 0 ? ImpUnitario = vlrMAT : ImpUnitario = (vlrMOT + vlrMAT) * coefgcia;
+      vlrMOT === 0 ? ImpUnitario = vlrMAT : ImpUnitario = (vlrMOT + vlrMAT) * coefgcia;
 
       let impu = Number(ImpUnitario);
       ivasncal == 'CIVA' ? impu = impu : impu = impu / 1.21;

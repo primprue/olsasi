@@ -1,13 +1,13 @@
 import express from 'express';
 
 var router = express.Router();
-import conexion from '../conexion.mjs';
+import { conexion } from '../conexion.mjs';
 
 
 
 router.get('/', function (req, res, next) {
-    let q1
-    q1 = ['SELECT idBilletes as value, BilletesValor as label, BilletesMoneda  FROM BaseCaja.Billetes order by BilletesValor desc'].join(' ')
+
+    let q1 = `SELECT idBilletes as value, BilletesValor as label, BilletesMoneda  FROM BaseCaja.Billetes order by BilletesValor desc`
     conexion.query(q1,
         function (err, result) {
             if (err) {

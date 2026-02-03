@@ -44,7 +44,7 @@ function columnsFill(tipoprov, monedas) {
 				type: "singleSelect",
 				width: 200,
 				valueOptions: tipoprov,
-				// required: true,
+				required: true,
 				editable: true,
 				headerClassName: estilotabla.encabcolumns,
 			},

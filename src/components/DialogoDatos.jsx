@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from "react";
-import { Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
+import { useState, useEffect } from "react";
+import { Button, Dialog, DialogContent, DialogTitle, FormHelperText } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import TablasContexto from "../context/TablasContext";
 import { use } from "react";
@@ -11,7 +11,7 @@ import estilos from "../Styles/Boton.module.css";
 import { ValidatedTextField } from "../hooks/useValidTextField";
 
 export function DialogoDatos(props) {
-	const { formdatos, setFormdatos, datoborrado, setDatoborrado } = use(TablasContexto);
+	const { formdatos, setDatoborrado } = use(TablasContexto);
 
 	const { open, handleClose, columns, nombrebtn, paramsbor, titulodial } = props;
 	// 🔧 Generar una fila vacía según las columnas
@@ -47,45 +47,84 @@ export function DialogoDatos(props) {
 	const [error, setError] = useState({ error: false, message: "" });
 
 	// ♻️ Actualizar formState si cambia la fila o columnas
-	useEffect(() => {
-		if (paramsbor) {
-			setFormState({ ...paramsbor });
-		} else {
-			setFormState(generarFilaVacia());
-		}
-	}, [paramsbor, columns]);
 
+
+	// ♻️ Actualizar formState si cambia la fila, columnas o si se cierra el diálogo
+	useEffect(() => {
+		if (open) {
+			// Si el diálogo se abre y hay datos para editar (paramsbor), los cargamos
+			if (paramsbor) {
+				setFormState({ ...paramsbor });
+			} else {
+				// Si se abre para un registro nuevo, aseguramos que esté vacío
+				setFormState(generarFilaVacia());
+			}
+		} else {
+			// ✨ CUANDO SE CIERRA (open === false): Limpiamos el estado
+			setFormState(generarFilaVacia());
+			// También es buena idea limpiar errores si los tuvieras
+			setError({ error: false, message: "" });
+		}
+	}, [open, paramsbor, columns]);
+
+	// Añadimos 'open' a las dependencias
 	// 🖋 Cambios en inputs
+
 	const manejarCambio = (e) => {
-		const { id, value } = e.target;
-		setFormState((prev) => ({ ...prev, [id]: value }));
+		setFormState((prev) => ({
+			...prev,
+			[e.target.name]: e.target.value
+		}));
+
 	};
 
-	// ✅ Enviar formulario
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault();
-		setTimeout(() => {
-			if (nombrebtn === "Enviar") {
-				const tieneErrores = Object.values(formState).some((v) => v === "");
-				if (!tieneErrores) {
-					onRowAdd(formState, formdatos);
+
+		if (nombrebtn === "Enviar") {
+			// Validación: revisamos si algún campo REQUERIDO está vacío
+			const tieneErrores = columns.some(col => {
+				const valor = formState[col.field];
+				// Manejamos si required es booleano o función
+				const isReq = typeof col.required === "function"
+					? col.required({ row: formState })
+					: col.required;
+
+				return isReq && (!valor || valor.toString().trim() === "");
+			});
+
+			if (!tieneErrores) {
+				try {
+					// 2. ESPERAMOS a que el registro se guarde en el backend
+					await onRowAdd(formState, formdatos);
 					handleClose();
-				} else {
-					MuestraMensaje(415); // campos vacíos
+				} catch (err) {
+					console.error("Error al guardar:", err);
+					MuestraMensaje(500);
 				}
 			} else {
-				let valorresuelto = onRowDelete(paramsbor.id, formdatos, paramsbor);
-				setDatoborrado(valorresuelto);
+				// Muestra mensaje: "Faltan campos obligatorios"
+				MuestraMensaje(415);
 			}
-		}, 300);
+		} else {
+			// Lógica de borrado (se mantiene igual)
+			let valorresuelto = onRowDelete(paramsbor.id, formdatos, paramsbor);
+			setDatoborrado(valorresuelto);
+			handleClose();
+		}
 	};
 
 	return (
-		<Dialog open={open} onClose={handleClose}>
+		<Dialog
+			open={open}
+			onClose={handleClose}
+			fullWidth      // Ocupa el ancho máximo disponible
+			maxWidth="sm"  // Puedes cambiar a "md" si lo quieres aún más ancho
+		>
 			<DialogTitle>{titulodial}</DialogTitle>
 			<DialogContent>
 				<form onSubmit={handleSubmit}>
-					<Grid container spacing={2} alignItems="center">
+					<Grid container spacing={2} alignItems="center" sx={{ mt: 1 }}>
 						{columns.map((col, index) => {
 							const isAlta = !paramsbor;
 							const isEditable =
@@ -99,55 +138,96 @@ export function DialogoDatos(props) {
 									: normalizeBool(col.required);
 
 							const commonProps = {
-								// key: index,
 								id: col.field,
 								label: col.headerName,
-								value: formState[col.field] || "",
+								name: col.field,
+								value: formState[col.field] !== undefined && formState[col.field] !== null
+									? formState[col.field]
+									: "",
+								// value: formState[col.field] || "",
 								required: isRequired,
 								readOnly: !isEditable,
 								onChange: manejarCambio,
+								pattern: col.pattern,
+								maxLength: col.maxLength,
 								error: error.error,
 								margin: "dense",
 								variant: "outlined",
-								type: col.type === "date" ? "date" : "text", // si querés campos tipo fecha
+								fullWidth: true, // Asegura que ocupen todo el ancho del Grid item
+								helperText: col.type === "singleSelect" ? col.helptext : "<Tab> pasa al siguiente campo",
+								type: col.type === "date" ? "date" : "text",
 							};
 
+							return (
+								<Grid item xs={12} key={col.field || index}>
+									{col.type === "singleSelect" ? (
+										<div style={{ display: 'flex', flexDirection: 'column' }}>
+											{/* Label manual para el select estándar */}
+											<label style={{
+												fontSize: '0.75rem',
+												color: 'rgba(0, 0, 0, 0.6)',
+												marginBottom: '4px'
+											}}>
+												{col.headerName} {isRequired && '*'}
+											</label>
 
-							if (col.type === "singleSelect") {
-								return (
-									<select
-										className={estilo.selectFieldDialogDatos}
-										key={col.field}
-										id={col.field}
-										value={formState[col.field] || ""}
-										required={isRequired}
-										onChange={manejarCambio}
-										disabled={!isEditable}
-									>
-										<option value="">{col.headerName}</option>
-										{col.valueOptions?.map((option) => (
-											<option key={option.value} value={option.value}>
-												{option.label}
-											</option>
-										))}
-									</select>
-								);
-							}
+											<select
+												className={estilo.selectFieldDialogDatos}
+												id={col.field}
+												name={col.field}
+												// value={formState[col.field] || ""}
+												value={formState[col.field] !== undefined && formState[col.field] !== null
+													? formState[col.field]
+													: ""}
+												required={isRequired}
+												onChange={manejarCambio}
+												disabled={!isEditable}
+												style={{ width: '100%', padding: '10px' }} // Forzamos ancho total
+											>
+												<option value="">Seleccione {col.headerName}</option>
+												{col.valueOptions?.map((option) => (
+													<option key={option.value} value={option.value}>
+														{option.label}
+													</option>
+												))}
+											</select>
 
-							return <ValidatedTextField key={index} {...commonProps} />;
+											{/* HelperText manual para el select */}
+											<span style={{
+												fontSize: '0.75rem',
+												color: 'rgba(0, 0, 0, 0.6)',
+												marginTop: '4px',
+												marginLeft: '14px'
+											}}>
+												{col.helptext}
+											</span>
+										</div>
+									) : (
+										<ValidatedTextField {...commonProps} />
+									)}
+								</Grid>
+							);
 						})}
 
-						<Button type="submit" className={estilos.botonfincargadatos}>
-							{nombrebtn}
-						</Button>
+						<Grid item xs={12} sx={{ display: 'flex', gap: 2, mt: 2 }}>
+							<Button
+								type="submit"
+								variant="contained"
+								className={estilos.botonfincargadatos}
+								fullWidth
+							>
+								{nombrebtn}
+							</Button>
 
-						<Button
-							onClick={handleClose}
-							variant="outlined"
-							className={estilos.botoncierracargadatos}
-						>
-							Cerrar
-						</Button>
+							<Button
+								onClick={handleClose}
+								variant="outlined"
+								className={estilos.botoncierracargadatos}
+								fullWidth
+							>
+								Cerrar
+							</Button>
+						</Grid>
 					</Grid>
 				</form>
 			</DialogContent>

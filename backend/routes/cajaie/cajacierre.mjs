@@ -1,33 +1,38 @@
 import express from 'express';
 
 var router = express.Router();
-import conexion from '../conexion.mjs';
+import { conexion } from '../conexion.mjs';
 
 
 
+async function queryAsync(sql, params = []) {
+    const [rows] = await conexion.promise().query(sql, params);
+    return rows;
+}
+// ------------------------------------------------------------------
+// ENDPOINT
+// ------------------------------------------------------------------
+router.post("/", async (req, res) => {
+    try {
 
+        let fecha = new Date();
+        // fecha.setDate(fecha.getDate() - 1);
+        fecha.setDate(fecha.getDate());
+        let fechahoy = fecha.toISOString().split("T")[0];
+        var q = `SELECT  CajaIEFecha, CajaIEMT, sum(CajaIEImporte) as CajaIEImporte,
+                CajaIEGrabado  
+                FROM BaseCaja.CajaIE where
+                BaseCaja.CajaIE.CajaIEFecha = ? group by CajaIEMT`;
+        const params = [fechahoy];
+        const resultados = await queryAsync(q, params)
+        res.json(resultados);
 
-router.get('/', function (req, res, next) {
-    let q1
-    //let fechahoy = new Date().toISOString().split("T")[0]
-    let fecha = new Date();
-    // fecha.setDate(fecha.getDate() - 1);
-    fecha.setDate(fecha.getDate());
-    console.log('fecha  ', fecha)
-    let fechahoy = fecha.toISOString().split("T")[0];
-    q1 = ['SELECT  CajaIEFecha, CajaIEMT, sum(CajaIEImporte) as CajaIEImporte,  CajaIEGrabado  FROM BaseCaja.CajaIE where  BaseCaja.CajaIE.CajaIEFecha = ' + fechahoy + 'group by CajaIEMT'].join(' ')
-    console.log(q1)
-    conexion.query(q1,
-        function (err, result) {
-            if (err) {
-                console.log(err);
-
-            }
-            else {
-
-                res.json(result);
-            }
-        });
+    }
+    catch (err) {
+        console.log("Error en /cajacierre", err);
+        res.status(500).json({ error: "Error interno del servidor" });
+    }
 });
+
 
 export default router;

@@ -1,5 +1,5 @@
 import express from "express";
-import conexion from "../conexion.mjs";
+import { conexion } from '../conexion.mjs';
 
 const router = express.Router();
 

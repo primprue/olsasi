@@ -16,7 +16,7 @@ import verificaclave from "./routes/controlusuarios/verificaclave.mjs";
 
 import proveedoresleer from "./routes/proveedores/proveedoresleer.mjs";
 
-import proveedoresleercod from "./routes/proveedores/proveedoresleercod.mjs";
+// import proveedoresleercod from "./routes/proveedores/proveedoresleercod.mjs";
 import proveedoresagregar from "./routes/proveedores/proveedoresagregar.mjs";
 import proveedoresborrar from "./routes/proveedores/proveedoresborrar.mjs";
 import proveedoresmodificar from "./routes/proveedores/proveedoresmodificar.mjs";
@@ -34,6 +34,7 @@ import cajasaldoefleer from "./routes/cajaie/cajasaldoefleer.mjs";
 import cajasaldoefagregar from "./routes/cajaie/cajasaldoefagregar.mjs";
 import cajaiesumamov from "./routes/cajaie/cajaiesumamov.mjs";
 import buscaie from "./routes/cajaie/buscaie.mjs";
+import cajaieestadistica from "./routes/cajaie/cajaieestadistica.mjs";
 
 
 import cajainternaleer from "./routes/cajaie/cajainterna/cajainternaleer.mjs";
@@ -111,10 +112,10 @@ import stkrubroleercod from "./routes/stock/rubros/stkrubroleercod.mjs";
 import stkrubroagregar from "./routes/stock/rubros/stkrubroagregar.mjs";
 import stkrubromodificar from "./routes/stock/rubros/stkrubromodificar.mjs";
 import stkrubroborrar from "./routes/stock/rubros/stkrubroborrar.mjs";
-import stkrubroleecodgrupo from "./routes/stock/rubros/stkrubroleecodgrupo.mjs";
-import stkrubroleecodgryrb from "./routes/stock/rubros/stkrubroleecodgryrb.mjs";
+// import stkrubroleecodgrupo from "./routes/stock/rubros/stkrubroleecodgrupo.mjs";
+// import stkrubroleecodgryrb from "./routes/stock/rubros/stkrubroleecodgryrb.mjs";
 import stkrubroleeultnro from "./routes/stock/rubros/stkrubroleeultnro.mjs";
-import stkrubroleecodgrupored from "./routes/stock/rubros/stkrubroleecodgrupored.mjs";
+// import stkrubroleecodgrupored from "./routes/stock/rubros/stkrubroleecodgrupored.mjs";
 import stkrubroleeproveedor from "./routes/stock/rubros/stkrubroleeproveedor.mjs";
 import stkrubroleerdesc from "./routes/stock/rubros/stkrubroleerdesc.mjs";
 import stkrubroleerconf from "./routes/stock/rubros/stkrubroleerconf.mjs";
@@ -347,7 +348,7 @@ app.use("/verificaclave", verificaclave);
 // app.use("/importacsv", importacsv);
 
 app.use("/proveedoresleer", proveedoresleer);
-app.use("/proveedoresleercod", proveedoresleercod);
+// app.use("/proveedoresleercod", proveedoresleercod);
 app.use("/proveedoresagregar", proveedoresagregar);
 app.use("/proveedoresmodificar", proveedoresmodificar);
 app.use("/proveedoresleertipo26", proveedoresleertipo26);
@@ -365,6 +366,7 @@ app.use("/cajasaldoefleer", cajasaldoefleer);
 app.use("/cajasaldoefagregar", cajasaldoefagregar);
 app.use("/cajaiesumamov", cajaiesumamov);
 app.use("/buscaie", buscaie);
+app.use("/cajaieestadistica", cajaieestadistica);
 
 
 app.use("/cajainternaleer", cajainternaleer);
@@ -449,10 +451,10 @@ app.use("/stkrubroleercod", stkrubroleercod);
 app.use("/stkrubroagregar", stkrubroagregar);
 app.use("/stkrubromodificar", stkrubromodificar);
 app.use("/stkrubroborrar", stkrubroborrar);
-app.use("/stkrubroleecodgrupo", stkrubroleecodgrupo);
-app.use("/stkrubroleecodgryrb", stkrubroleecodgryrb);
+// app.use("/stkrubroleecodgrupo", stkrubroleecodgrupo);
+// app.use("/stkrubroleecodgryrb", stkrubroleecodgryrb);
 app.use("/stkrubroleeultnro", stkrubroleeultnro);
-app.use("/stkrubroleecodgrupored", stkrubroleecodgrupored);
+// app.use("/stkrubroleecodgrupored", stkrubroleecodgrupored);
 app.use("/stkrubroleeproveedor", stkrubroleeproveedor);
 app.use("/stkrubroleerdesc", stkrubroleerdesc);
 app.use("/stkrubroleerconf", stkrubroleerconf);

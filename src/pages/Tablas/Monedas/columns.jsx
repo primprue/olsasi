@@ -1,4 +1,3 @@
-import React from "react";
 import estilotabla from "../../../Styles/Tabla.module.css";
 export async function llenarcolumns() {
 	return columnsFill();
@@ -64,6 +63,4 @@ function columnsFill() {
 	});
 }
 
-// inputProps: {
-// 	"data-testid": `validated-textfield-ProveedoresDesc`,
-// },
+

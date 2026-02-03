@@ -1,15 +1,12 @@
 import express from "express";
 var router = express.Router();
 
-import conexion from "../../conexion.mjs";
+import { conexion } from '../../conexion.mjs';
 
 
-router.get("/?:idStkGrupo", function (req, res, next) {
-  var indice = req.params.idStkGrupo;
+router.get("/", function (req, res, next) {
   var q = [
-    "Select idStkRubro , StkRubroDesc from StkRubro where StkRubroCodGrp = ",
-    indice,
-    " order by StkRubroDesc "
+    "SELECT idProveedores as value, ProveedoresDesc as label FROM BasesGenerales.Proveedores where ProveedoresTipo = 26 order by ProveedoresDesc"
   ].join(" ");
 
   conexion.query(q, function (err, result) {

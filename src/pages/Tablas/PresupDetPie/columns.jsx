@@ -6,13 +6,14 @@ export async function llenarcolumns() {
 function columnsFill() {
 	return new Promise(function (resolve) {
 		resolve([
-			{
-				headerName: "PieLeyenda(ID)",
-				field: "id",
-				editable: "never",
-				order: true,
-				headerClassName: estilotabla.encabcolumns,
-			},
+			// {
+			// 	headerName: "PieLeyenda(ID)",
+			// 	field: "id",
+			// 	editable: "never",
+			// 	order: true,
+			// 	required: false,
+			// 	headerClassName: estilotabla.encabcolumns,
+			// },
 			{
 				headerName: "Detalle",
 				field: "PresupDetPieLeyenda",

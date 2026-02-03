@@ -1,6 +1,6 @@
 import express from 'express';
 var router = express.Router();
-import conexion from '../conexion.mjs';
+import { conexion } from '../conexion.mjs';
 
 // ------------------------------------------------------------------
 // FUNCIÓN: ejecuta una consulta MySQL en modo async

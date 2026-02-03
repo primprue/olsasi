@@ -5,10 +5,12 @@ import ThumbDownAltTwoToneIcon from "@mui/icons-material/ThumbDownAltTwoTone";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import TablasContexto from "../context/TablasContext";
 export function ValidatedTextField(props) {
-	console.log('props en ValidatedTextField', props);
 	const { formdatos, setFormdatos } = useContext(TablasContexto);
 	const [isValid, setIsValid] = useState(true);
 	const label = props.label;
+	const helperText = props.helperText;
+	const { editable, ...restProps } = props;
+
 	const handleKeyPress = (event) => {
 		//if (event.key === "Enter" || event.key === "Tab") {
 		if (event.key === "Tab") {
@@ -24,58 +26,59 @@ export function ValidatedTextField(props) {
 		const formato = props.pattern;
 		const id = props.id;
 		const { value } = event.target;
+
 		const pattern = formato;
 		const isValidValue = new RegExp(pattern).test(value);
-		setIsValid(isValidValue);
-		console.log('props.maxLength', props.maxLength)
-		console.log('value.length', value.length)
-		value.length > props.maxLength ? setIsValid(false) : setIsValid(true)
-		props.required ? value.length === 0 ? setIsValid(false) : setIsValid(true) : setIsValid(true)
-		// setIsValid(value.length > 0 && value.length <= props.maxLength);
 
-		if (isValidValue) {
+		setIsValid(isValidValue);
+		var error = 0
+		if (value.length > props.maxLength) error++
+		if (props.required && value.length === 0) error++
+		if (error > 0) setIsValid(false); else setIsValid(true)
+		console.log('error useValidTextField  ', error)
+		if (error === 0) {
 			setFormdatos({
 				...formdatos,
 				[id]: value,
 				datoserroneos: !isValidValue,
 			});
-		} else { console.log('error en validar', value) }
+		} else {
+			setFormdatos({
+				...formdatos,
+				[id]: value,
+				datoserroneos: isValidValue,
+			})
+			event.preventDefault();
+
+		}
+
 	};
+
 	const handleMouseDown = (event) => {
 		event.preventDefault(); // Evita que el campo reciba foco
 	};
 
-	// valueFormatter: ({ value }) => {
-	// 	if (!value || typeof value !== "number") {
-	// 		return value;
-	// 	}
-	// 	return `${value.toLocaleString()}$`;
-	// };
-	// Realiza aquí tu lógica de validación según tus requerimientos
-	//setIsValid(value.length >= 5); // Ejemplo de validación: longitud mínima de 5 caracteres
-
-	// const classes = CssTextField();
-	//inputProps={{ "data-testid": `validated-textfield-${label}` }} Añade un	atributo data-testid 	único
 	return (
 		<TextField
-			{...props}
+			{...restProps}
 			label={label}
-			helperText="<Tab> pasa al siguiente campo"
-			inputProps={{ "data-testid": `validated-textfield-${label}` }}
+			helperText={helperText}
+			// inputProps={{ "data-testid": `validated-textfield-${label}` }}
 			required={props.required}
 			autoFocus={props.autoFocus}
-			InputProps={{
-				readOnly: props.readOnly,
-				startAdornment: isValid ? (
-					<CheckCircleIcon color="success" />
-				) : (
-					<ThumbDownAltTwoToneIcon color="error" />
-				),
-				// startAdornment: isValid ? <CheckCircleIcon /> : <ErrorIcon />,
+			slotProps={{
+				input: {
+					"data-testid": `validated-textfield-${label}`,
+					readOnly: props.readOnly,
+					// readOnly: !editable,
+					startAdornment: isValid ? (
+						<CheckCircleIcon color="success" />
+					) : (
+						<ThumbDownAltTwoToneIcon color="error" />
+					),
+				}
 			}}
 			onKeyDown={handleKeyPress}
-			onMouseDown={handleMouseDown}
-		// onChange={handleChange}
 		/>
 	);
 }

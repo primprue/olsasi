@@ -11,6 +11,7 @@ export function proveedoresleer(_) {
 				.set("Content-Type", "application/json")
 				.then((res) => {
 					const proveedoresleido = JSON.parse(res.text);
+
 					resolve(proveedoresleido);
 				})
 				.catch((err) => MuestraMensaje(err));

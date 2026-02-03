@@ -1,5 +1,5 @@
 // import express from "express";
-// import conexion from "../conexion.mjs";
+// import {conexion} from '../conexion.mjs';
 // import argon2 from "argon2";
 
 // const router = express.Router();
@@ -33,7 +33,7 @@
 
 
 import express from "express";
-import conexion from "../conexion.mjs";
+import { conexion } from "../conexion.mjs";
 import argon2 from "argon2";
 
 const router = express.Router();

@@ -1,6 +1,6 @@
 import express from "express";
 var router = express.Router();
-import conexion from "../conexion.mjs";
+import { conexion } from '../conexion.mjs';
 
 
 // ------------------------------------------------------------------
@@ -130,7 +130,14 @@ router.get("/", async (req, res) => {
       const costoOjalM2 = Number(d.CostoOjalM2) || 0;
       const costoFleteMot = Cotizacion * (flete + MOT);
 
-
+      console.log('Cotizacion  ', Cotizacion)
+      console.log('CostoCobMC  ', CostoCobMC)
+      console.log('CostoRefuerzo  ', CostoRefuerzo)
+      console.log('CostoGancho  ', CostoGancho)
+      console.log('CostoMSChicote  ', CostoMSChicote)
+      console.log('CostoMSDobladillo  ', CostoMSDobladillo)
+      console.log('costoOjalM2  ', costoOjalM2)
+      console.log('costoFleteMot  ', costoFleteMot)
       let costo =
         CostoCobMC +
         CostoRefuerzo +
@@ -141,14 +148,17 @@ router.get("/", async (req, res) => {
         costoMOTDren +
         costomincolchi +
         costoFleteMot;
-
       const metrosCuad = largoreal * anchoreal;
-      costo = costo * ganancia * p.coefimpuestos;
+      console.log('costo = CostoCobMC + CostoRefuerzo + CostoGancho + CostoMSChicote + CostoMSDobladillo + costoOjalM2 + costoMOTDren + costomincolchi + costoFleteMot;  ', costo)
+      costo = costo * ganancia * Number(p.coefimpuestos);
+      console.log('p.coef  ', p.coefimpuestos)
+      console.log('costo = costo * ganancia * p.coefimpuestos;  ', costo)
 
 
 
 
       costo = costo * metrosCuad;
+      console.log('costo', costo);
       // soga para abolinar (ciclos)
       let ciclo = 0;
       if (metrosCuad < 12) ciclo = 3;

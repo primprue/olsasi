@@ -1,82 +1,82 @@
 import express from "express";
-var router = express.Router();
-import moment from "moment";
-import conexion from "../../conexion.mjs";
+const router = express.Router();
+import { conexion } from '../../conexion.mjs';
 import { buscacodigo } from './stkgennrorubro.mjs';
 
-moment.locale("es");
+router.post("/", async (req, res) => {
+  const {
+    StkRubroCodGrp, StkRubroDesc, StkRubroAbr, StkRubroProv,
+    StkRubroAncho, StkRubroPresDes, StkRubroPres, StkRubroUM,
+    StkRubroCosto, StkRubroTM, StkRubroConf
+  } = req.body;
 
+  const codgrupo = Number(StkRubroCodGrp);
+  const finalDate = new Date().toISOString().slice(0, 10);
 
+  try {
+    // PASO 1: Generar el nuevo ID de Rubro
+    // (Asegúrate que buscacodigo también esté usando promesas internamente)
+    const nuevoIdRubro = await buscacodigo(codgrupo);
 
-router.all("/", async function (req, res) {
-  // let codgrupo
-  let codgrupo = req.body.StkRubroCodGrp;
-  var d = new Date();
-  let finalDate = d.toISOString().split("T")[0];
-  var RubroDesc = req.body.StkRubroDesc === undefined ? '' : req.body.StkRubroDesc.toUpperCase()
-  var RubroPresDes = req.body.StkRubroPresDes === undefined ? '' : req.body.StkRubroPresDes.toUpperCase()
-  var registro = {
-    idStkRubro: req.body.idStkRubro,
-    StkRubroCodGrp: req.body.StkRubroCodGrp,
-    StkRubroDesc: RubroDesc,
-    StkRubroAbr: req.body.StkRubroAbr.toUpperCase(),
-    StkRubroProv: req.body.StkRubroProv,
-    StkRubroAncho: req.body.StkRubroAncho,
-    StkRubroPresDes: RubroPresDes,
-    StkRubroPres: req.body.StkRubroPres,
-    StkRubroUM: req.body.StkRubroUM,
-    StkRubroCosto: req.body.StkRubroCosto,
-    StkRubroTM: req.body.StkRubroTM,
-    StkRubroConf: req.body.StkRubroConf,
-    StkRubroFecha: finalDate,
-  };
+    // PASO 2: Insertar en StkRubro
+    const registroRubro = {
+      idStkRubro: nuevoIdRubro,
+      StkRubroCodGrp: codgrupo,
+      StkRubroDesc: (StkRubroDesc || '').toUpperCase(),
+      StkRubroAbr: (StkRubroAbr || '').toUpperCase(),
+      StkRubroProv: Number(StkRubroProv || 0),
+      StkRubroAncho: Number(StkRubroAncho || 0),
+      StkRubroPresDes: (StkRubroPresDes || '').toUpperCase(),
+      StkRubroPres: Number(StkRubroPres || 0),
+      StkRubroUM: StkRubroUM,
+      StkRubroCosto: Number(StkRubroCosto || 0),
+      StkRubroTM: StkRubroTM,
+      StkRubroConf: StkRubroConf,
+      StkRubroFecha: finalDate,
+    };
 
-  conexion.query("INSERT INTO StkRubro SET ?", registro, function (err, result) {
-    if (err) {
-      if (err.errno == 1062) {
-        return res.status(460).send({ message: "error clave duplicada" });
-      } else if (err.errno == 1406 || err.errno == 1264) {
-        console.log(err.errno);
-        return res
-          .status(410)
-          .send({ message: "Abreviatura con más de cinco letras" });
-      }
-      {
-        console.log("en stkrubroagregar err.errno");
-        console.log(err.errno);
-      }
-    } else {
-      res.json(result);
+    // Usamos conexion.query directamente (gracias a mysql2/promise)
+    await conexion.query("INSERT INTO StkRubro SET ?", [registroRubro]);
 
-    }
-    var registro1 = {
-      idStkItems: 1,
-      StkItemsGrupo: req.body.StkRubroCodGrp,
-      StkItemsRubro: req.body.idStkRubro,
-      StkItemsRubroAbr: req.body.StkRubroAbr.toUpperCase(),
+    // PASO 3: Insertar en StkItems
+    const registroItems = {
+      idStkItems: 1, // ¿Este ID es fijo o autoincremental?
+      StkItemsGrupo: codgrupo,
+      StkItemsRubro: nuevoIdRubro,
+      StkItemsRubroAbr: (StkRubroAbr || '').toUpperCase(),
       StkItemsDesc: '',
+      StkItemsOTD: 'S',
       StkItemsCantidad: 0,
       StkItemsCantDisp: 0,
       StkItemsFAct: finalDate,
       StkItemsMin: 1,
       StkItemsMax: 2
     };
-    conexion.query("INSERT INTO StkItems SET ?", registro1, function (
-      err,
-      result
-    ) {
-      if (err) {
-        console.log("ERROR ");
-        console.log(err.errno);
-      } else {
-        res.json(result.rows);
-      }
+
+    await conexion.query("INSERT INTO StkItems SET ?", [registroItems]);
+
+    // Respuesta exitosa
+    return res.status(201).json({
+      leyenda: 'Rubro e Item creados correctamente',
+      idGenerado: nuevoIdRubro // Antes decía req.body.idStkRubro
     });
-    //}
-  });
-  // gencodrubro.buscacodigo(codgrupo);
-  buscacodigo(codgrupo);
+
+  } catch (err) {
+    console.error("Error en el proceso:", err);
+
+    // Manejo de errores específicos de SQL
+    if (err.errno === 1062) {
+      return res.status(460).json({ message: "Clave duplicada" });
+    }
+    if (err.errno === 1406) {
+      return res.status(410).json({ message: "Dato demasiado largo para una columna" });
+    }
+
+    return res.status(500).json({
+      leyenda: "Error interno del servidor",
+      error: err.message
+    });
+  }
 });
 
-conexion.end;
 export default router;

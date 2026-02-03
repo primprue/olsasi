@@ -3,24 +3,22 @@ import IpServidor from "../../VariablesDeEntorno";
 import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 
 export function StkRubroBorrar(props) {
-	return new Promise(function (resolve) {
-		const { idStkRubro, StkRubroCodGrp } = props;
-
-		var url =
-			IpServidor +
-			"/stkrubroborrar/" +
-			"?idStkRubro=" +
-			idStkRubro +
-			"&StkRubroCodGrp=" +
-			StkRubroCodGrp;
-		request
-			.get(url)
-			.set("Content-Type", "application/json")
-			.then(function (res) {
-				MuestraMensaje(res);
-			})
-			.catch((err) => MuestraMensaje(err));
-
-		resolve();
+	return new Promise(function () {
+		setTimeout(() => {
+			const url = IpServidor + "/stkrubroborrar/?id=" + props;
+			request
+				.delete(url)
+				.set("Content-Type", "application/json")
+				.then(function (res) {
+					MuestraMensaje(res);
+				})
+				.catch((err) => {
+					console.log('err en st  ', err)
+					MuestraMensaje(err);
+				});
+		}, 300);
 	});
 }
+
+
+

@@ -1,4 +1,3 @@
-import * as React from 'react';
 
 import estilo from "../../Styles/TextField.module.css";
 

@@ -17,70 +17,78 @@ import { PBPorIVAAgregar } from "../pages/PreBalance/PBPorIVA/PBPorIVAAgregar";
 import { OTDatosAgregar } from "../pages/OrdenTrabajo/OTTablas/OTDatos/OTDatosAgregar";
 import { CajaIEAgregar } from "../pages/CajaIE/CajaIEAgregar";
 import { CajaInternaAgregar } from "../pages/CajaIE/CajaInterna/CajaInternaAgregar";
-export function onRowAdd(newData, formdatos) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      if (formdatos.tablabase === 'Clientes') {
-        ClientesAgregar(newData)
-      }
-      if (formdatos.tablabase === 'Proveedores') {
-        stkProveedoresAgregar(newData)
-      }
-      if (formdatos.tablabase === 'Monedas') {
-        StkMonedasAgregar(newData);
-      }
-      if (formdatos.tablabase === 'Transportes') {
+export async function onRowAdd(newData, formdatos) {
+  // Eliminamos el setTimeout artificial y usamos async/await
+  try {
+    // export function onRowAdd(newData, formdatos) {
+    //   return new Promise((resolve) => {
+    //     setTimeout(() => {
+    if (formdatos.tablabase === 'Clientes') {
+      await ClientesAgregar(newData)
+    }
+    if (formdatos.tablabase === 'Proveedores') {
+      await stkProveedoresAgregar(newData)
+    }
+    if (formdatos.tablabase === 'Monedas') {
+      await StkMonedasAgregar(newData);
+    }
+    if (formdatos.tablabase === 'Transportes') {
+      await TransporteAgregar(newData);
+    }
+    if (formdatos.tablabase === 'StkGrupos') {
+      await StkGruposAgregar(newData);
+    }
+    if (formdatos.tablabase === 'StkRubros') {
+      await StkRubroAgregar(newData);
+    }
+    if (formdatos.tablabase === 'UniMedidas') {
+      await StkUnMedAgregar(newData);
+    }
+    if (formdatos.tablabase === 'StkItems') {
+      await stkItemsBuscaCod(newData)
+    }
+    // if (formdatos.tablabase === 'StkItemsAgregar') {
+    //   // StkItemsAgregar(newData);
+    //   StkItemsAgregar(newData)
+    // }
+    if (formdatos.tablabase === 'PresupDetPie') {
+      await PresupDetPieAgregar(newData);
+    }
+    if (formdatos.tablabase === 'ParamComp') {
+      await ParamCompAgregar(newData);
+    }
+    if (formdatos.tablabase === 'OTCondPago') {
+      await OTCondPagoAgregar(newData);
+    }
+    if (formdatos.tablabase === 'PBRubros') {
+      await PBRubrosAgregar(newData);
+    }
+    if (formdatos.tablabase === 'PBSubRubros') {
+      await PBSubRubrosAgregar(newData);
+    }
+    if (formdatos.tablabase === 'PBItems') {
+      await PBItemsAgregar(newData);
+    }
+    if (formdatos.tablabase === 'PBPorIVA') {
+      await PBPorIVAAgregar(newData);
+    }
+    if (formdatos.tablabase === 'OTDatos') {
+      await OTDatosAgregar(newData);
+    }
+    if (formdatos.tablabase === 'CajaIE') {
+      await CajaIEAgregar(newData);
+    }
+    if (formdatos.tablabase === 'CajaInterna') {
+      await CajaInternaAgregar(newData);
+    }
+    //       resolve(50);
+    //     }, 100);
+    //   });
+    // }
 
-        TransporteAgregar(newData);
-      }
-      if (formdatos.tablabase === 'StkGrupos') {
-        StkGruposAgregar(newData);
-      }
-      if (formdatos.tablabase === 'StkRubros') {
-        StkRubroAgregar(newData);
-      }
-      if (formdatos.tablabase === 'UniMedidas') {
-        StkUnMedAgregar(newData);
-
-      }
-      if (formdatos.tablabase === 'StkItems') {
-        stkItemsBuscaCod(newData)
-      }
-      // if (formdatos.tablabase === 'StkItemsAgregar') {
-      //   // StkItemsAgregar(newData);
-      //   StkItemsAgregar(newData)
-      // }
-      if (formdatos.tablabase === 'PresupDetPie') {
-        PresupDetPieAgregar(newData);
-      }
-      if (formdatos.tablabase === 'ParamComp') {
-        ParamCompAgregar(newData);
-      }
-      if (formdatos.tablabase === 'OTCondPago') {
-        OTCondPagoAgregar(newData);
-      }
-      if (formdatos.tablabase === 'PBRubros') {
-        PBRubrosAgregar(newData);
-      }
-      if (formdatos.tablabase === 'PBSubRubros') {
-        PBSubRubrosAgregar(newData);
-      }
-      if (formdatos.tablabase === 'PBItems') {
-        PBItemsAgregar(newData);
-      }
-      if (formdatos.tablabase === 'PBPorIVA') {
-        PBPorIVAAgregar(newData);
-      }
-      if (formdatos.tablabase === 'OTDatos') {
-        OTDatosAgregar(newData);
-      }
-      if (formdatos.tablabase === 'CajaIE') {
-        CajaIEAgregar(newData);
-      }
-      if (formdatos.tablabase === 'CajaInterna') {
-        CajaInternaAgregar(newData);
-      }
-      resolve(50);
-    }, 100);
-  });
+    return true; // Todo salió bien
+  } catch (error) {
+    console.error("Error en onRowAdd:", error);
+    throw error; // Re-lanzamos el error para manejarlo en el Dialogo
+  }
 }
