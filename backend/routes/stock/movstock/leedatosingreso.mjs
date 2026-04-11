@@ -1,39 +1,40 @@
 import express from "express";
 var router = express.Router();
 
-import { conexion } from '../../conexion.mjs';
+import { conexionpool } from '../../conexion.mjs';
 
-router.get("/", function (req, res, next) {
-    // var q = ["SET @numero=0 "].join(" ");
-    // conexion.query(q, function (err, result) {
-    //     if (err) {
-    //         console.log(err);
-    //     }
-    // });
-    var StkRubroAbr = req.query.abr;
-    var q1 = [
-        'SET @numero=0; ',
-        'Select  @numero:=@numero+1 as id, idStkRubro, StkRubroCodGrp, StkRubroDesc, StkItems.idStkItems,  StkGrupo.StkGrupoDesc as GrupoDesc, ',
-        'StkItemsDesc, BasesGenerales.Proveedores.ProveedoresDesc, StkRubroPresDes, StkRubroAncho, StkRubroPres, StkRubroProv, ',
-        'StkItemsMin, StkItemsMax, StkItemsCantidad, StkItemsCantDisp, StkRubroUM, ',
-        'date_format(StkItemsFAct, "%d-%m-%Y") as StkItemsFAct ',
-        'from StkRubro JOIN StkGrupo, BasesGenerales.Proveedores, StkMonedas, StkItems ',
-        'where StkRubroCodGrp = idStkGrupo ',
-        'and StkRubroProv = idProveedores ',
-        'and StkRubroTM = idStkMonedas ',
-        'and StkRubroCodGrp = idStkGrupo ',
-        "and StkItemsRubroAbr = '" + StkRubroAbr + "'",
-        "and StkRubroAbr = '" + StkRubroAbr + "'",
-        'order by StkRubroCodGrp, idStkRubro ',
+router.get("/", async (req, res) => {
 
-    ].join(" ");
-    conexion.query(q1, function (err, result) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.json(result[1]);
-        }
-    });
+    const StkRubroAbr = req.query.abr;
+    //SET @numero=0;
+    try {
+        const q1 = `
+        Select  @numero:=@numero+1 as id, idStkRubro, StkRubroCodGrp, StkRubroDesc,
+        StkItems.idStkItems,  StkGrupo.StkGrupoDesc as GrupoDesc,
+        StkItemsDesc, BasesGenerales.Proveedores.ProveedoresDesc,
+        StkRubroPresDes, StkRubroAncho, StkRubroPres, StkRubroProv,
+        StkItemsMin, StkItemsMax, StkItemsCantidad, StkItemsCantDisp, StkRubroUM,
+        date_format(StkItemsFAct, "%d-%m-%Y") as StkItemsFAct
+        from StkRubro JOIN StkGrupo, BasesGenerales.Proveedores, StkMonedas, StkItems,
+        (SELECT @numero := 0) AS init
+        where StkRubroCodGrp = idStkGrupo
+        and StkRubroProv = idProveedores
+        and StkRubroTM = idStkMonedas
+        and StkRubroCodGrp = idStkGrupo
+        and StkItemsRubroAbr = ?
+        and StkRubroAbr = ?
+        order by StkRubroCodGrp, idStkRubro
+        `
+        const [result] = await conexionpool.query(q1, [StkRubroAbr, StkRubroAbr]);
+        return res.json(result);
+    } catch (err) {
+        console.error("Error en el proceso:", err);
+
+        return res.status(500).json({
+            leyenda: "Error interno del servidor",
+            error: err.message
+        });
+    }
 });
 
 export default router;

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presupuesto </title>
+</head>
+
+<body>
+    <header>
+        <img src="{{logoBase64}}" alt="logo" width="100%">
+        <div>
+            <h5 class="alineado-a-la-derecha">Bahía Blanca, {{fecha}}</h5>
+            <h4 class="alineado-a-la-izquierda">Sr. </h4>
+            <h5 class="alineado-a-la-izquierda">({{idClienteElegE}}) {{nomClienteElegE}}</h5>
+
+            <h4 class="nropresupuesto">Presupuesto Nro. : <strong>{{nroPresupuesto}}</strong> </h4>
+            <b></b>
+            <b></b>
+            <h4 class="textoinicial">La aceptación de esta cotización incluye las
+                condiciones al pie de la misma</h4>
+        </div>
+    </header>
+
+    <main>
+        <!-- <div class="contenedor-campos">
+
+        </div> -->
+
+        <table class="tabla-productos">
+            <thead>
+                <tr>
+                    <th>It</th>
+                    <th>Cant</th>
+                    <th>Descripción</th>
+                    <th>Ancho</th>
+                    <th>Largo</th>
+                    <th>Imp. Unidad</th>
+                    <th>Imp. Item</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each productos}}
+                <tr>
+                    <td>{{this.id}}</td>
+                    <td align="center">{{this.PresupCantidad}}</td>
+                    <td>{{this.StkRubroDesc}}</td>
+                    <td>{{this.PresupAncho}}</td>
+                    <td>{{this.PresupLargo}}</td>
+                    <td>{{this.ImpUnitariof}}</td>
+                    <td>{{this.ImpItemf}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+            <!-- {{#with productos.[0]}} -->
+            <!-- {{!-- Handlebars evalúa el 0 como false, por lo que si es 0 no entrará aquí --}} -->
+            {{#if ../totalpresup}}
+
+            <tfoot>
+                <tr>
+                    <td colspan="6"><strong>Total:</strong></td>
+                    <td><strong>{{../totalpresup}}</strong></td>
+                </tr>
+            </tfoot>
+            {{/if}}
+            {{/with}}
+        </table>
+        <!-- tabla de condiciones -->
+        <div class="contenedor-condiciones">
+            <h4>Condiciones de presupuesto</h4>
+
+            {{#each condiciones}}
+            <div>
+                <span class="item-condicion">•</span> {{this}}
+            </div>
+            {{/each}}
+        </div>
+        <p>{{otracondicion}}</p>
+        {{#if (eq ClienteMayMin "mn")}}
+        <p class="leyenda">{{leyenda}}</p>
+        {{/if}}
+
+        <p class="operador">{{operador}}</p>
+
+        {{#if leyendatanque}}
+        <p class="leyendatanque">{{leyendatanque}}</p>
+        {{/if}}
+    </main>
+</body>
+
+</html>
+
+<!--<form method="POST" action="http://localhost:3001/generarpdf" target="_blank">
+    <input type="hidden" name="nombrepresup" value="Vista PREVIA Presupuesto">
+    <input type="hidden" name="fecha" value="2026-03-23T20:44:01.488Z">
+    <input type="hidden" name="ClienteMayMin" value="mn">
+    <input type="hidden" name="nomClienteElegE" value="AAGAARD RUBEN LORENZO                        ">
+    <input type="hidden" name="idClienteElegE" value="184">
+    <input type="hidden" name="condiciones" value="[]">
+    <input type="hidden" name="otracondicion" value="">
+    <input type="hidden" name="operador" value="">
+    <input type="hidden" name="tipoleygral" value="">
+    <input type="hidden" name="explicacionPresup" value="">
+    <input type="hidden" name="productos" value="[{&quot;id&quot;:1,&quot;PresupCantidad&quot;:1,&quot;StkRubroDesc&quot;:&quot;Lona con soga en dobladillo, c/ojales  de hierro  cada 20 cm. en :  COB. 840  &quot;,&quot;PresupLargo&quot;:&quot;2.00&quot;,&quot;PresupAncho&quot;:&quot;3.00&quot;,&quot;ImpUnitario&quot;:&quot;160320.00&quot;,&quot;ImpUnitariof&quot;:&quot;$ 160.320,00&quot;,&quot;ImpItem&quot;:&quot;160320.00&quot;,&quot;ImpItemf&quot;:&quot;$ 160.320,00&quot;,&quot;dcalculo&quot;:[{&quot;StkRubroAbr&quot;:&quot;ST840&quot;,&quot;minmay&quot;:&quot;mn&quot;,&quot;ivasn&quot;:&quot;CIVA&quot;,&quot;cantidad&quot;:1,&quot;detallep&quot;:&quot;&quot;,&quot;detaller&quot;:&quot;&quot;,&quot;largo&quot;:&quot;2&quot;,&quot;ancho&quot;:&quot;3&quot;,&quot;tipopresup&quot;:&quot;ABOLINADA&quot;,&quot;cotdivisa&quot;:1,&quot;signomonet&quot;:&quot;$&quot;,&quot;faltadato&quot;:false,&quot;tipoojale&quot;:&quot;hz&quot;,&quot;presupojalesc&quot;:20}]}]">
+    <input type="hidden" name="nroPresupuesto" value="0">
+    <input type="hidden" name="leyenda" value="El precio acordado, se mantiene, hasta 5 días posteriores a la fecha de entrega establecida.
+								Pasados los 5 días, SE ACTUALIZARÁ A LA FECHA DE RETIRO.
+								Si la mercadería no se retira dentro de los 60 días posteriores a la fecha establecida para la entrega,
+								se considerará abandonada y nuestra empresa dispondrá de ella, incluso para su destrucción">
+    <input type="hidden" name="informacion" value="plantillapresup.html"></form>-->

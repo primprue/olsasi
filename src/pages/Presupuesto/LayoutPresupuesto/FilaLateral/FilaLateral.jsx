@@ -1,16 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import Grid from "@mui/material/Grid";
-import { stkrubroleelat } from "../../../Tablas/StkRubros/StkRubroLeeLAT";
+// import { stkrubroleelat } from "../../../Tablas/StkRubros/StkRubroLeeLAT";
 // Context
 import { use } from "react";
 import PresupPant from "../../../../context/PresupPant";
 import TextFieldComun from "../../../../components/comppropios/TextFieldComun";
 import TextFieldSelect from "../../../../components/comppropios/TextFieldSelect";
 import TildeSiNo from "../../../../components/comppropios/TildeSiNo";
+import { stkrubroleelat } from "../../../Tablas/StkRubros/StkRubroLeeLAT";
 
 export default function FilaLateral() {
 	const { state, setState } = use(PresupPant);
-	const [chcolocacion, setColocacion] = useState(false);
+	const [colocacion, setColocacion] = useState(true);
 	const hebillasleidas = useRef(false);
 	const hebillas = useRef();
 	const carrosleidos = useRef(false);
@@ -93,6 +94,7 @@ export default function FilaLateral() {
 	};
 
 	const handleChecked = (event) => {
+		console.log('eve   ', event)
 		// setColocacion(event);
 		setState({ ...state, colocacion: event });
 	}
@@ -114,6 +116,7 @@ export default function FilaLateral() {
 			stkrubroleerlat();
 		}
 		if (state.stkrubrolat.length > 0) {
+			console.log('state.stkrubrolat', state.stkrubrolat)
 			setState({
 				...state, tipoheb: hebillas.current[0].StkRubroAbrLAT,
 				tipocarro: carros.current[0].StkRubroAbrLAT,
@@ -209,7 +212,7 @@ export default function FilaLateral() {
 				</Grid>
 				<Grid container padding={4}>
 					<TildeSiNo
-						checked={chcolocacion}
+						checked={colocacion}
 						onChange={handleChecked}
 						name="checkedColocacion"
 						label="Colocación?"

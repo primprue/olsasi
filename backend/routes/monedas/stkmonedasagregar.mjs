@@ -1,46 +1,41 @@
 import express from 'express';
 var router = express.Router();
 
-import moment from 'moment';
-import { conexion } from '../conexion.mjs';
+import { conexionpool } from '../conexion.mjs';
 
 
-moment.locale('es');
 
-
-router.post('/', function (req, res, next) {
-    var registro = {
-        idStkMonedas: req.body.idStkMonedas,
+router.post('/', async (req, res) => {
+    const registro = {
+        idStkMonedas: req.body.id,
         StkMonedasDescripcion: req.body.StkMonedasDescripcion.toUpperCase(),
         StkMonedasCotizacion: req.body.StkMonedasCotizacion,
         StkMonedasSigno: req.body.StkMonedasSigno
     }
+    try {
 
-
-    conexion.query('INSERT INTO StkMonedas SET ?', registro,
-        function (err, result) {
-            if (err) {
-                if (err.errno == 1062) {
-                    return res.status(409).send({ message: "error clave duplicada" });
-                }
-                else
-                    if (err.errno == 1406 || err.errno == 1264) {
-                        return res.status(410).send({ message: "Código con más de cuatro letras" });
-                    }
-                {
-                    console.log(err.errno);
-                }
-            }
-
-
-            else {
-                res.json(result.rows);
-            }
+        const q = `INSERT INTO StkMonedas SET ?`;
+        await conexionpool.query(q, [registro]);
+        return res.status(201).json({
+            leyenda: "StkMonedas creado correctamente"
         });
+    } catch (err) {
+        console.error("Error en el proceso:", err);
+
+        // Manejo de errores específicos de SQL
+        if (err.errno === 1062) {
+            return res.status(460).json({ message: "Clave duplicada" });
+        }
+        if (err.errno === 1406) {
+            return res.status(410).json({ message: "Dato demasiado largo para una columna" });
+        }
+
+        return res.status(500).json({
+            leyenda: "Error interno del servidor",
+            error: err.message
+        });
+    }
 });
-
-
-
 
 
 export default router;

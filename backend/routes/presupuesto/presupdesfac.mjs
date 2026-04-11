@@ -43,11 +43,10 @@ router.get('/', async (req, res, next) => {
       const valorMOTfajas = p.costoMOT * segcoefMOT * p.segsolfaja
 
       let anchocal = Number(ancho) + 0.28
-      let enteropanios = Math.trunc(anchocal / 1.50)
-
-      const decimalpanios = (anchocal / 1.5) - enteropanios;
+      let enteropanios = Math.trunc(Number(largo) / 1.50)
+      const decimalpanios = (Number(largo) / 1.5) - enteropanios;
       const cantpanos = decimalpanios > 0 ? enteropanios + 1 : enteropanios;
-      const impunion = decimalpanios > 0 ? ((cantpanos * Number(ancho)) + 0.75) * valorMOTmup : Number(ancho) * valorMOTmup
+      const impunion = decimalpanios > 0 ? (((cantpanos - 1) * Number(anchocal)) + 0.75) * valorMOTmup : (cantpanos - 1) * Number(anchocal) * valorMOTmup
 
       const imprecorte = anchocal * valorMOTrecorte
       const impsolfaja = largo * valorMOTfajas * 2
@@ -65,7 +64,7 @@ router.get('/', async (req, res, next) => {
       const params = [
         coeficiente,
         cantpanos,
-        ancho,
+        anchocal,
         importeMOTtotal,
         StkRubroAbr
       ];
@@ -77,11 +76,8 @@ router.get('/', async (req, res, next) => {
       detalle = detallep !== '' ? `${detallep} en :  ${d.StkRubroDesc}` : `Lona enrollable para destape fácil en :  ${d.StkRubroDesc}`;
 
       let impunitario = Number(d.ImpUnitario)
-      if (ivasncal === "CIVA") {
-        impunitario = Math.ceil(impunitario / 10) * 10;
-      } else {
-        impunitario = Math.ceil(impunitario / 1.21 / 10) * 10;
-      }
+      ivasncal == 'CIVA' ? impunitario = impunitario : impunitario = impunitario / 1.21;
+
       // ------------------------------------------------------------------
       // 5) ARMO RESULTADO DEL ÍTEM
       // ------------------------------------------------------------------

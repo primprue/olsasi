@@ -89,7 +89,7 @@ export default function Reparacion() {
 	const cierraImprime = () => setImprime(false);
 	async function datosParches() {
 		const data = await LeeParamRep();
-		setValorA(data[0].ValorMCC)
+		setValorA(data)
 	}
 
 	async function columnsParches() {
@@ -152,10 +152,12 @@ export default function Reparacion() {
 			datoscalculos,
 			anexoelegido
 		);
-		setValormtChicotes(datosrenglon1[0])
+		let valor = Number(datosrenglon1[0].ImpUnitario)
+		setValormtChicotes(valor)
 	}
 	async function BuscaValorHora() {
 		const datosrenglon1 = await RepLeeValorHs();
+
 		setValorHoraMotN(datosrenglon1[0])
 		setValorHoraMotA(datosrenglon1[1])
 	}
@@ -176,6 +178,10 @@ export default function Reparacion() {
 		setSumaParcheleg(0)
 		setRowsParcheleg([])
 		setImpTotalRep(0)
+		setTHsMot1(0)
+		setTMinMot1(0)
+		setTHsMot2(0)
+		setTMinMot2(0)
 
 	}
 
@@ -510,16 +516,6 @@ export default function Reparacion() {
 
 	return (
 		<>
-			{/* // <Box
-
-		// 	sx={{
-		// 		width: "100%",
-		// 		align: "center",
-		// 		justifycontent: "center",
-		// 		boxShadow: 5,
-		// 		padding: 5,
-		// 	}}
-		// > */}
 			<Grid container >
 				{rowsparches !== undefined && columnsparches !== undefined &&
 					<div style={{ height: 435, width: '74%', paddingBottom: 5 }}>

@@ -1,30 +1,26 @@
 import express from "express";
 var router = express.Router();
 
-import { conexion } from '../../conexion.mjs';
+import { conexionpool } from '../../conexion.mjs';
 
 
 
-router.get("/", async function (req, res, next) {
-  var idStkItems = req.query.id1;
-  var StkItemsGrupo = req.query.id2;
-  var StkItemsRubro = req.query.id3;
+router.get("/", async (req, res) => {
+  try {
+    const idStkItems = req.query.id1;
+    const StkItemsGrupo = req.query.id2;
+    const StkItemsRubro = req.query.id3;
+    const q = `Select * from StkItems where idStkItems = ? and  StkItemsGrupo  = ? and  StkItemsRubro  = ?`;
+    const [result] = await conexionpool.query(q, [idStkItems, StkItemsGrupo, StkItemsRubro]);
+    return res.json(result);
+  } catch (err) {
+    console.error("Error en el proceso:", err);
+    return res.status(500).json({
+      leyenda: "Error interno del servidor",
+      error: err.message
+    });
+  }
 
-  var q = [
-    "Select * from StkItems where idStkItems = ",
-    idStkItems,
-    " and  StkItemsGrupo  = ",
-    StkItemsGrupo,
-    " and  StkItemsRubro  = ",
-    StkItemsRubro
-  ].join(" ");
-  conexion.query(q, function (err, result) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(result);
-    }
-  });
 });
 
 export default router;

@@ -1,47 +1,45 @@
-
-SELECT JSON_OBJECTAGG(
-        moneda,
-        JSON_OBJECT(
-            'saldoEf', saldoEf, -- El saldo es general de la moneda
-            'conceptos', conceptosDetalle
-        )
-    ) AS TotalesPorMoneda
+SELECT 
+    JSON_OBJECTAGG(fecha, TotalesPorMoneda) AS TotalesPorFecha
 FROM (
     SELECT 
-        t.moneda,
-        t.saldoEf,
-        -- Agrupamos todos los conceptos de esta moneda en un array de objetos JSON
-        JSON_ARRAYAGG(
-            JSON_OBJECT(
-                'concepto', t.concepto,
-                'totalM', t.totalM,
-                'totalT', t.totalT,
-                'totalInstr', t.totalInstr,
-                'totalTSinInstr', t.totalT - t.totalInstr,
-                'totalMEsp', t.totalM + t.totalT - t.totalInstr + t.saldoEf
-            )
-        ) AS conceptosDetalle
+        fecha,
+        JSON_OBJECTAGG(
+            moneda, 
+            JSON_OBJECT('conceptos', conceptosDetalle)
+        ) AS TotalesPorMoneda
     FROM (
         SELECT 
-            c.CajaIEMoneda AS moneda,
-            c.CajaIEConcepto AS concepto, -- Asumo que así se llama tu campo
-            SUM(CASE WHEN c.CajaIEMT = 'M' AND DATE(c.CajaIEFecha) BETWEEN ? AND ? THEN c.CajaIEImporte ELSE 0 END) AS totalM,
-            SUM(CASE WHEN c.CajaIEMT = 'T' AND DATE(c.CajaIEFecha) BETWEEN ? AND ? THEN c.CajaIEImporte ELSE 0 END) AS totalT,
-            SUM(CASE WHEN c.CajaIEMT = 'T' AND c.CajaIEImpIP <> 0 AND c.CajaIECodIP <> 'EFC' AND DATE(c.CajaIEFecha) BETWEEN ? AND ? THEN c.CajaIEImpIP ELSE 0 END) AS totalInstr,
-            COALESCE(s.CajaSaldoEfImporte, 0) AS saldoEf
-        FROM BaseCaja.CajaIE c
-        LEFT JOIN (
-            -- Subconsulta de saldo (se mantiene igual)
-            SELECT x.CajaSaldoEfMoneda, x.CajaSaldoEfImporte
-            FROM BaseCaja.CajaSaldoEf x
-            INNER JOIN (
-                SELECT CajaSaldoEfMoneda, MAX(idCajaSaldoEfFecha) AS ultFecha
-                FROM BaseCaja.CajaSaldoEf
-                GROUP BY CajaSaldoEfMoneda
-            ) y ON x.CajaSaldoEfMoneda = y.CajaSaldoEfMoneda AND x.idCajaSaldoEfFecha = y.ultFecha
-        ) s ON s.CajaSaldoEfMoneda = c.CajaIEMoneda
-        -- Agrupamos por MONEDA y por CONCEPTO
-        GROUP BY c.CajaIEMoneda, c.CajaIEConcepto, s.CajaSaldoEfImporte
-    ) t
-    GROUP BY t.moneda, t.saldoEf
+            fecha,
+            moneda,
+            JSON_ARRAYAGG(
+                JSON_OBJECT(
+                     'concepto', t.concepto,
+                    'detconepto', t.detconepto,
+                    'moneda', t.moneda,
+                    'totalM', t.totalM,
+                    'totalT', t.totalT,
+                    'totalInstr', t.totalInstr,
+                    'totalTEfvo', t.totalT - t.totalInstr
+                    -- 'totalMEsp', t.totalM + t.totalT - t.totalInstr
+                )
+            ) AS conceptosDetalle
+        FROM (
+            SELECT 
+                DATE(c.CajaIEFecha) AS fecha,
+                c.CajaIEMoneda AS moneda,
+                c.CajaIEConcepto AS concepto,
+                p.CajaCPDesc AS detconepto,
+                SUM(CASE WHEN c.CajaIEMT = 'M' THEN c.CajaIEImporte ELSE 0 END) AS totalM,
+                SUM(CASE WHEN c.CajaIEMT = 'T' THEN c.CajaIEImporte ELSE 0 END) AS totalT,
+                SUM(CASE WHEN c.CajaIEMT = 'T' AND c.CajaIEImpIP <> 0 AND c.CajaIECodIP <> 'EFC' THEN c.CajaIEImpIP ELSE 0 END) AS totalInstr
+            FROM BaseCaja.CajaIE c
+            INNER JOIN BaseCaja.CajaCP p ON p.idCajaCP = c.CajaIEConcepto
+            -- EL FILTRO CRÍTICO AQUÍ:
+            WHERE c.CajaIEFecha >= ? 
+              AND c.CajaIEFecha <= ?
+            GROUP BY DATE(c.CajaIEFecha), c.CajaIEMoneda, c.CajaIEConcepto
+        ) t
+        GROUP BY fecha, moneda
+    ) t2
+    GROUP BY fecha
 ) final;

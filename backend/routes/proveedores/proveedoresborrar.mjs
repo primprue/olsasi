@@ -4,9 +4,9 @@ var router = express.Router();
 import { conexion } from '../conexion.mjs';
 
 
+router.delete('/', async function (req, res) {
+    var indice = req.query.id;
 
-router.delete('/?:id', async function (req, res) {
-    var indice = req.params.id;
     var q = ['delete from BasesGenerales.Proveedores where idProveedores = ' + indice].join(' ')
     console.log('q en borrar ', q)
     conexion.query(q,

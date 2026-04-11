@@ -37,33 +37,27 @@ router.get("/", async (req, res) => {
         minmay,
         lonanuestraafuera
       } = item;
-      let largoreal = largo
-      let anchoreal = ancho
-      let largorealn = largon
-      let anchorealn = anchon
-      let largocal = largo + 0.08;
-      let anchocal = ancho + 0.08;
-      let largoncal = largon + 0.08;
-      let anchoncal = anchon + 0.08;
-      let lna = p.lonanuestraafuera;
-
-      let coeficiente = 0
+      let largoreal = Number(largo)
+      let anchoreal = Number(ancho)
+      let largorealn = Number(largon)
+      let anchorealn = Number(anchon)
       let tipoojal = ''
       let sogachicote = ''
 
 
 
-      let ganancia = tipoconf === 'cs' ? p.coefgancsoga : p.coefganssoga
+      let ganancia = tipoconf === 'cs' ? Number(p.coefgancsoga) : Number(p.coefganssoga)
       tipoojal = (tipoojale === "hz") ? p.abrojales3hz : p.abrojales3b;
+      let coeficiente = Number(p.coeficientemin);
+      let ivasncal = minmay === "my" ? "CIVA" : ivasn;
       if (minmay == 'my') {
-        coeficiente = p.coeficientemay;
+        coeficiente = Number(p.coeficientemay);
         tipoojal = p.abrojales28;
         sogachicote = p.sogachicotemay;
-        ganancia = p.coefganmay
-        ivasn = 'CIVA'
+        ganancia = Number(p.coefganmay)
       }
       else {
-        coeficiente = p.coeficientemin;
+        coeficiente = Number(p.coeficientemin);
         sogachicote = p.sogachicotemin;
 
       }
@@ -72,19 +66,10 @@ router.get("/", async (req, res) => {
       const detojal = (tipoojale === "hz") ? " de hierro " : " de bronce ";
 
 
-      let minutosunion = (ancho + 0.08) * largocal * 5;
-      let sogadobladillo = p.sogadobladillo;
-      let valorflete = p.flete;
-      let valorMOT = p.MOTpM2;
-      let codmoneda = p.codmoneda;
-      let coefimpuesto = p.coefimpuestos
-      // const vhlnl = await queryAsync(`SELECT REPValorMOT FROM reparacion.parametrosrep`);
-      // const vhln = vhlnl[0];
-      // const vhlal = await queryAsync(`SELECT REPValorMOTLA FROM reparacion.parametrosrep`);
-      // const vhla = vhlal[0];
 
-      // vhln = ["SELECT REPValorMOT FROM reparacion.parametrosrep"].join("");
-      // vhla = ["SELECT REPValorMOTLA FROM reparacion.parametrosrep"].join("");
+      let valorflete = Number(p.flete);
+      let valorMOT = Number(p.MOTpM2);
+
       const sql = `
                 SELECT
                     -- costo lona
@@ -125,30 +110,35 @@ router.get("/", async (req, res) => {
       const datos1 = await queryAsync(sql);
       const d = datos1[0];
 
-
       let detalle = detallep !== '' ? `${detallep} en :  ${d.StkRubroDesc}` :
         `Modificación de lona de : ${largoreal} x ${anchoreal} a =>  ${largorealn} x ${anchorealn} con ojales de ${detojal} reforzados en :  ${d.StkRubroDesc}`;
 
-      let valorhora = lna === 'LN' ? p.costoMOT * p.coefMOTmay : p.costoMOT * p.coefMOTmin
+      let valorhora = lonanuestraafuera === 'LN' ? Number(p.costoMOT) * Number(p.coefMOTmay) : Number(p.costoMOT) * Number(p.coefMOTmin)
+
+
+      const Cotizacion = Number(d.Cotizacion) || 0;
       const CostoCobMC = Number(d.CostoCobMC) || 0;
       const CostoRefuerzo = Number(d.CostoRefuerzo) || 0;
       const CostoMSChicote = Number(d.CostoMSChicote) || 0;
       const CostoMSDobladillo = tipoconf === "cs" ? Number(d.CostoMSDobladillo) || 0 : 0;
       const costoOjalM2 = Number(d.CostoOjalM2) || 0;
-      const costoFleteMot = Number(d.CostoFleteMot) || 0;
+      const costoFleteMot = Number(valorflete * Cotizacion) || 0;
+      const valorMOTCos = Number(valorMOT * Cotizacion) || 0;
+
+
       let costooriginal =
         CostoCobMC +
         CostoRefuerzo +
         CostoMSChicote +
         CostoMSDobladillo +
         costoOjalM2 +
-        costoFleteMot;
+        costoFleteMot +
+        valorMOTCos;
 
       const metrosCuad = largoreal * anchoreal;
 
       costooriginal = costooriginal * ganancia * p.coefimpuestos;
       /* hasta acá es para calcular el metro cuadrado de tela */
-
       /* Esto lo pongo primero para no agregar una variable para costo original */
       let metroscuadn = anchorealn * largorealn
       let costooriginaln = costooriginal * metroscuadn
@@ -172,7 +162,6 @@ router.get("/", async (req, res) => {
       let costoMOTb = 0
       let costoMOTc = 0
       let costoMOTd = 0
-
       if ((largorealn > largoreal) || (anchorealn > anchoreal)) {
         costodiflona = costooriginaln - costooriginal
       }
@@ -180,15 +169,12 @@ router.get("/", async (req, res) => {
       if (largorealn < largoreal) {
         costoMOTa = (valorhora / 60 * (15 * anchorealn * 2))
       }
-
       if (anchorealn < anchoreal) {
         costoMOTb = (valorhora / 60 * (15 * largorealn))
       }
-
       if ((largorealn > largoreal)) {
         costoMOTc = (valorhora / 60 * 16 * ((anchorealn * 2)))
       }
-
       if ((anchorealn > anchoreal)) {
         costoMOTd = (valorhora / 60 * 16 * ((largoreal * 2)))
         if (costoMOTc === 0) {
@@ -197,7 +183,8 @@ router.get("/", async (req, res) => {
       }
 
       costooriginal = costodiflona + costoMOTa + costoMOTb + costoMOTc + costoMOTd
-      if (ivasn == 'CIVA') {
+
+      if (ivasncal == 'CIVA') {
         costooriginal = Math.ceil(Number(costooriginal).toFixed(0))
       }
       else {

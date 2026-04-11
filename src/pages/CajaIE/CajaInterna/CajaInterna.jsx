@@ -15,12 +15,15 @@ import { CajaInternaSILeer } from './CajaInternaSILeer.jsx';
 import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
 import TextFieldComunChico from '../../../components/comppropios/TextFieldComunChico.jsx';
 import { CajaInternaSumTot } from './CajaInternaSumTot.jsx';
+import CajaInternaSumatoria from './CajaInternaSumatoria.jsx';
 export default function CajaInterna({ open, handleClose }) {
     const { formdatos, setFormdatos } = use(TablasContexto);
     const [usuario, setUsuario] = useState('');
     const [Clave, setClave] = useState('');
     const [columns, setColumns] = useState([]);
     const [abretabla, setAbretabla] = useState(false);
+    const [abresuma, setAbresuma] = useState(false);
+    const [datadesuma, setDatadesuma] = useState([]);
     const [rows, setRows] = useState([]);
     const [saldoIncial, setSaldoIncial] = useState(0);
     const handleChange = (value, id) => {
@@ -36,16 +39,19 @@ export default function CajaInterna({ open, handleClose }) {
     async function leeSaldoInicial() {
         const data = await CajaInternaSILeer();
         setSaldoIncial(data[0]);
-        leeSumaTot();
-
     }
 
     async function leeSumaTot() {
         let anioactual = new Date().getFullYear();
+        let mesactual = new Date().getMonth();
         let fechadesde = new Date(anioactual, 3, 1);
         let fechahasta = new Date(anioactual + 1, 2, 31);
-        const data = await CajaInternaSumTot(fechadesde, fechahasta);
-
+        mesactual <= 3 ? fechadesde = new Date(anioactual - 1, 3, 1) : fechadesde = new Date(anioactual, 3, 1)
+        mesactual <= 3 ? fechahasta = new Date(anioactual, 2, 31) : fechahasta = new Date(anioactual + 1, 2, 31)
+        let fechadesdeenv = fechadesde.toISOString().split('T')[0];
+        let fechahastaenv = fechahasta.toISOString().split('T')[0];
+        const data = await CajaInternaSumTot(fechadesdeenv, fechahastaenv);
+        setDatadesuma(data);
     }
     async function Verificacion() {
         const data = await VerificaClave({ usuario, Clave });
@@ -138,6 +144,13 @@ export default function CajaInterna({ open, handleClose }) {
                             handleClose();
                         }}
                     />
+                    <CancelTwoToneIcon
+                        sx={{ color: "#6f00ff", fontSize: 30, cursor: "pointer" }}
+                        titleAccess="Ver Saldo"
+                        onClick={() => {
+                            leeSumaTot();
+                        }}
+                    />
                 </DialogTitle>
 
                 <DialogContent >
@@ -148,6 +161,11 @@ export default function CajaInterna({ open, handleClose }) {
                     ></TablaMuestra>
                 </DialogContent>
             </Dialog>
+            {datadesuma.length > 0 &&
+                <CajaInternaSumatoria
+                    datadesuma={datadesuma}
+                    open={abresuma}
+                    handleClose={handleClose} />}
         </>
 
     )

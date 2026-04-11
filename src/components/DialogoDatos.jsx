@@ -97,6 +97,7 @@ export function DialogoDatos(props) {
 				try {
 					// 2. ESPERAMOS a que el registro se guarde en el backend
 					await onRowAdd(formState, formdatos);
+
 					handleClose();
 				} catch (err) {
 					console.error("Error al guardar:", err);
@@ -108,7 +109,9 @@ export function DialogoDatos(props) {
 			}
 		} else {
 			// Lógica de borrado (se mantiene igual)
-			let valorresuelto = onRowDelete(paramsbor.id, formdatos, paramsbor);
+			// let valorresuelto = onRowDelete(paramsbor.id, formdatos, paramsbor);
+			// let valorresuelto = onRowDelete(paramsbor.id, formdatos);
+			let valorresuelto = onRowDelete(paramsbor, formdatos);
 			setDatoborrado(valorresuelto);
 			handleClose();
 		}

@@ -1,12 +1,8 @@
-import {
-	FormHelperText,
-} from "@mui/material";
-// Context
+
 
 import { use, useMemo } from "react";
 import PresupPant from "../../../../context/PresupPant";
 import CustomSwitch from "../../../../components/comppropios/CustomSwitch";
-import React from "react";
 
 export default function TipoCliente() {
 

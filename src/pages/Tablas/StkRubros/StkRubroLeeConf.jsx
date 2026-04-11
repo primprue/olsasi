@@ -7,7 +7,6 @@ export const stkrubroleeconf = (cuallee) => {
 
 	return new Promise((resolve) => {
 		const url = IpServidor + "/stkrubroleerconf/?cuallee=" + cuallee
-		// const url = IpServidor + "/stkrubroleerconf/" + cuallee;
 		request
 			.get(url)
 			.set("Content-Type", "application/json")

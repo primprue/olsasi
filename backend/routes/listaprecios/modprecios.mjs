@@ -15,7 +15,6 @@ router.post('/', async (req, res) => {
     try {
         const { idProveedores, idStkGrupo, StkRubroAbr, importemod, porcentmod } = req.body;
         const finalDate = new Date().toISOString().split("T")[0];
-
         let column = '';
         let value = '';
 
@@ -49,10 +48,8 @@ router.post('/', async (req, res) => {
             query = `UPDATE StkRubro SET StkRubroFecha = ?, StkRubroCosto = StkRubroCosto + (StkRubroCosto * ?) WHERE ${column} = ?`;
             params = [finalDate, factor, value];
         }
-
         // EJECUCIÓN DIRECTA
         const result = await queryAsync(query, params);
-
         // console.log(`Update exitoso en ${column}:`, result);
 
         // Enviamos respuesta al frontend

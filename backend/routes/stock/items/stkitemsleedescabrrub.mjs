@@ -5,7 +5,7 @@ import { conexion } from '../../conexion.mjs';
 
 
 
-router.get("/?:StkItemsRubroAbr", function (req, res, next) {
+router.get("/:StkItemsRubroAbr", function (req, res, next) {
   var StkRubroAbr = req.params.StkItemsRubroAbr;
 
   var q = [

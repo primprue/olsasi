@@ -1,22 +1,13 @@
 import express from "express";
-import path from "path";
 import cors from "cors";
 import logger from "morgan";
 import cookieParser from "cookie-parser";
-import bodyParser from "body-parser";
-import { fileURLToPath } from 'url';
-//  var routes = require('./routes/index');
-
-// require('events').EventEmitter.defaultMaxListeners = 20;
 
 //el mensaje que larga al ejecutarse el backend es el de la pimer linea del requiere en este caso proveedoresleer
-// import importacsv from "./routes/prebalance/importacsv.mjs";
-
 import verificaclave from "./routes/controlusuarios/verificaclave.mjs";
 
 import proveedoresleer from "./routes/proveedores/proveedoresleer.mjs";
 
-// import proveedoresleercod from "./routes/proveedores/proveedoresleercod.mjs";
 import proveedoresagregar from "./routes/proveedores/proveedoresagregar.mjs";
 import proveedoresborrar from "./routes/proveedores/proveedoresborrar.mjs";
 import proveedoresmodificar from "./routes/proveedores/proveedoresmodificar.mjs";
@@ -56,12 +47,8 @@ import clientesleerdescmayigual from "./routes/clientes/clientesleerdescmayigual
 import clientesleerpresup from "./routes/clientes/clientesleerpresup.mjs";
 import clientestraenuevos from "./routes/clientes/clientestraenuevos.mjs";
 import clientescobol from "./routes/clientes/clientescobol.mjs";
-import clientesleerot from "./routes/clientes/clientesleerot.mjs";
 import clientesleerencabot from "./routes/clientes/clientesleerencabot.mjs";
 import clientesleerdescod from "./routes/clientes/clientesleerdescod.mjs";
-
-// var clientespresupagregar = require("./routes/clientes/clientespresupagregar");
-
 
 import transporteleer from "./routes/transporte/transporteleer.mjs";
 
@@ -78,9 +65,6 @@ import stkmonedasborrar from "./routes/monedas/stkmonedasborrar.mjs";
 import stkmonedasleerred from "./routes/monedas/stkmonedasleerred.mjs";
 import stkmonedasleerorig from "./routes/monedas/stkmonedasleerorig.mjs";
 
-// var stkbgsubrubroleer = require('./routes/stkbgsubrubroleer');
-
-import stktipoproveedleer from "./routes/proveedores/stktipoproveedleer.mjs";
 
 import stkunmedleer from "./routes/stock/unidadmedidas/stkunmedleer.mjs";
 import stkunmedleercod from "./routes/stock/unidadmedidas/stkunmedleercod.mjs";
@@ -96,67 +80,42 @@ import stkgrupomodificar from "./routes/stock/grupos/stkgrupomodificar.mjs";
 import stkgrupoborrar from "./routes/stock/grupos/stkgrupoborrar.mjs";
 import stkgrupoleerred from "./routes/stock/grupos/stkgrupoleerred.mjs";
 import stkgrupoleerredrubros from "./routes/stock/grupos/stkgrupoleerredrubros.mjs";
+
 import stkubfisicaleer from "./routes/stock/ubfisica/stkubfisicaleer.mjs";
-
-// var stkubfisicaleercod = require('./routes/ubfisica/stkubfisicaleercod');
 import stkubfisicaagregar from "./routes/stock/ubfisica/stkubfisicaagregar.mjs";
-
-// var stkubfisicamodificar = require('./routes/ubfisica/stkubfisicamodificar');
 import stkubfisicaborrar from "./routes/stock/ubfisica/stkubfisicaborrar.mjs";
-
 import stkubfisicaleerUbG from "./routes/stock/ubfisica/stkubfisicaleerUbG.mjs";
+
 import stkrubroleer from "./routes/stock/rubros/stkrubroleer.mjs";
 import stkrubroleeselec from "./routes/stock/rubros/stkrubroleeselec.mjs";
 import stkrubroleermezcla from "./routes/stock/rubros/stkrubroleermezcla.mjs";
-import stkrubroleercod from "./routes/stock/rubros/stkrubroleercod.mjs";
 import stkrubroagregar from "./routes/stock/rubros/stkrubroagregar.mjs";
 import stkrubromodificar from "./routes/stock/rubros/stkrubromodificar.mjs";
 import stkrubroborrar from "./routes/stock/rubros/stkrubroborrar.mjs";
-// import stkrubroleecodgrupo from "./routes/stock/rubros/stkrubroleecodgrupo.mjs";
-// import stkrubroleecodgryrb from "./routes/stock/rubros/stkrubroleecodgryrb.mjs";
 import stkrubroleeultnro from "./routes/stock/rubros/stkrubroleeultnro.mjs";
-// import stkrubroleecodgrupored from "./routes/stock/rubros/stkrubroleecodgrupored.mjs";
 import stkrubroleeproveedor from "./routes/stock/rubros/stkrubroleeproveedor.mjs";
 import stkrubroleerdesc from "./routes/stock/rubros/stkrubroleerdesc.mjs";
 import stkrubroleerconf from "./routes/stock/rubros/stkrubroleerconf.mjs";
 import stkrubroleerTBR from "./routes/stock/rubros/stkrubroleerTBR.mjs";
 import stkrubroleerprov from "./routes/stock/rubros/stkrubroleerprov.mjs";
-import stkrubroleerconfgrp from "./routes/stock/rubros/stkrubroleerconfgrp.mjs";
 import stkrubroleerabr from "./routes/stock/rubros/stkrubroleerabr.mjs";
 
 
 //01-06-2023
 import stkrubroleerLAT from "./routes/stock/rubros/stkrubroleerLAT.mjs";
 
-import stkitemsleer from "./routes/stock/items/stkitemsleer.mjs";
 import stkitemsagregar from "./routes/stock/items/stkitemsagregar.mjs";
 import stkitemsmodificar from "./routes/stock/items/stkitemsmodificar.mjs";
 import stkitemsborrar from "./routes/stock/items/stkitemsborrar.mjs";
 import stkitemsleecod from "./routes/stock/items/stkitemsleecod.mjs";
-import stkitemsleecodgryrb from "./routes/stock/items/stkitemsleecodgryrb.mjs";
-import stkitemsleecodgrrbit from "./routes/stock/items/stkitemsleecodgrrbit.mjs";
 import stkitemsleedetalles from "./routes/stock/items/stkitemsleedetalles.mjs";
-import stkitemsleedisp from "./routes/stock/items/stkitemsleedisp.mjs";
-import stkitemsmoddisp from "./routes/stock/items/stkitemsmoddisp.mjs";
-import stkitemsmodstock from "./routes/stock/items/stkitemsmodstock.mjs";
 import stkitemslistaprecios from "./routes/stock/items/stkitemslistaprecios.mjs";
 import stkitemscodabr from "./routes/stock/items/stkitemscodabr.mjs";
-import stkitemsborrarabr from "./routes/stock/items/stkitemsborrarabr.mjs";
 import stkitemsleeabrrub from "./routes/stock/items/stkitemsleeabrrub.mjs";
-import stkitemsleecodgr from "./routes/stock/items/stkitemsleecodgr.mjs";
 
 //15-02-2023 OT
 import stkitemsleedescabrrub from "./routes/stock/items/stkitemsleedescabrrub.mjs";
 
-import stkitemsventa from "./routes/stock/items/stkitemsventa.mjs"; //una prueba
-import stkverificadisp from "./routes/stock/movimientos/stkverificadisp.mjs";
-import stkmovsalfinal from "./routes/stock/movimientos/stkmovsalfinal.mjs";
-import stkgrabamovsalfinal from "./routes/stock/movimientos/stkgrabamovsalfinal.mjs";
-import stkmovenvase from "./routes/stock/movimientos/stkmovenvase.mjs";
-import stkmovvtaagregar from "./routes/stock/envase/stkmovvtaagregar.mjs";
-import stkenvaseagregar from "./routes/stock/envase/stkenvaseagregar.mjs";
-import stkenvaseleeimp from "./routes/stock/envase/stkenvaseleeimp.mjs";
-import stkenvasecambiaimp from "./routes/stock/envase/stkenvasecambiaimp.mjs";
 import leedatosingreso from "./routes/stock/movstock/leedatosingreso.mjs";
 import sumaingreso from "./routes/stock/movstock/sumaingreso.mjs";
 import realizacambiostock from "./routes/stock/movstock/realizacambiostock.mjs";
@@ -168,12 +127,7 @@ import movstockleetipoconf from "./routes/stock/movstock/movstockleetipoconf.mjs
 
 
 //Movimiento Stock
-import leestock from "./routes/movstock/leestock.mjs";
-
 import inventario from "./routes/movstock/inventario.mjs";
-
-//CONSULTAS
-//var consultastock = require("./routes/consultas/consultastock");
 
 // PRESUPUESTO
 import presupunid from "./routes/presupuesto/presupunid.mjs";
@@ -194,6 +148,7 @@ import presuplonaabolinada from "./routes/presupuesto/presuplonaabolinada.mjs";
 import presupcomedero from "./routes/presupuesto/presupcomedero.mjs";
 import presupcambpanio from "./routes/presupuesto/presupcambpanio.mjs";
 import presuppiletafca from "./routes/presupuesto/presuppiletafca.mjs";
+import presuppiletacadsol from "./routes/presupuesto/presuppiletacadsol.mjs";
 import presupponchorie from "./routes/presupuesto/presupponchorie.mjs";
 import presupmodificamed from "./routes/presupuesto/presupmodificamed.mjs";
 import presupabanico from "./routes/presupuesto/presupabanico.mjs";
@@ -208,9 +163,9 @@ import presuplatcorr from "./routes/presupuesto/presuplatcorr.mjs";
 import presupencableer from "./routes/presupuesto/presupencableer.mjs";
 import presupencableenro from "./routes/presupuesto/presupencableenro.mjs";
 import presuprenglonleer from "./routes/presupuesto/presuprenglonleer.mjs";
-import presupnombre from "./routes/presupuesto/presupnombre.mjs";
-import presupborrar from "./routes/presupuesto/presupborrar.mjs";
-import presupborrarenpreview from "./routes/presupuesto/presupborrarenpreview.mjs";
+// import presupnombre from "./routes/presupuesto/presupnombre.mjs";
+// import presupborrar from "./routes/presupuesto/presupborrar.mjs";
+// import presupborrarenpreview from "./routes/presupuesto/presupborrarenpreview.mjs";
 
 import presupconftipoleer from "./routes/presupuesto/presupconftipo/presupconftipoleer.mjs";
 import presupconftipoleerdesc from "./routes/presupuesto/presupconftipo/presupconftipoleerdesc.mjs";
@@ -226,20 +181,19 @@ import presupdetpieleer from "./routes/presupuesto/presupdetpie/presupdetpieleer
 import presupdetpiemodificar from "./routes/presupuesto/presupdetpie/presupdetpiemodificar.mjs";
 import presupdetpieborrar from "./routes/presupuesto/presupdetpie/presupdetpieborrar.mjs";
 import presupdetpieagregar from "./routes/presupuesto/presupdetpie/presupdetpieagregar.mjs";
-import imppresup from "./routes/impresion/imppresup.mjs";
 
-// var muestrapdf = require("./routes/impresion/muestrapdf");
-// var generadoc = require("./routes/impresion/generadoc");
 
-// const router = require("./routes/impresion/imppresup");
+import presupcalexpleer from "./routes/presupuesto/presupcalexp/presupcalexpleer.mjs";
+import presupcalexpmodificar from "./routes/presupuesto/presupcalexp/presupcalexpmodificar.mjs";
+import presupcalexpborrar from "./routes/presupuesto/presupcalexp/presupcalexpborrar.mjs";
+import presupcalexpagregar from "./routes/presupuesto/presupcalexp/presupcalexpagregar.mjs";
+
 
 
 //programas para backup
 import copiafact from "./routes/procinternos/copiafact.mjs";
 
 // //programas para ordenes de trabajo
-// var datosencabpresupeleg = require("./routes/ordentrabajo/datosencabpresupeleg")
-// var otarmatabla = require("./routes/ordentrabajo/otarmatabla")
 import otorigenpresupagregar from "./routes/ordentrabajo/otorigenpresupagregar.mjs";
 
 import otdatosleer from "./routes/ordentrabajo/otdatosleer.mjs";
@@ -261,14 +215,13 @@ import otdatosagregar from "./routes/ordentrabajo/otdatos/otdatosagregar.mjs";
 import otdatosagregaselec from "./routes/ordentrabajo/otdatos/otdatosagregaselec.mjs";
 import otdatosmodificar from "./routes/ordentrabajo/otdatos/otdatosmodificar.mjs";
 //para ctacte
-// var conectaafip = require("./routes/afip/conectaafip")
+// var conectaafip = require("./routes/afip/conectaafip"
 
 import paramcompleer from "./routes/ctacte/paramcomp/paramcompleer.mjs";
 
 import paramcompborrar from "./routes/ctacte/paramcomp/paramcompborrar.mjs";
 import paramcompagregar from "./routes/ctacte/paramcomp/paramcompagregar.mjs";
 import paramcompmodificar from "./routes/ctacte/paramcomp/paramcompmodificar.mjs";
-import reparacionleer from "./routes/reparacion/reparacionleer.mjs";
 import repleecob from "./routes/reparacion/repleecob.mjs";
 import repleevalorhs from "./routes/reparacion/repleevalorhs.mjs";
 
@@ -290,486 +243,283 @@ import pbcomprobantesleer from "./routes/prebalance/pbcomprobantes/pbcomprobante
 import pbcomprobantesborrar from "./routes/prebalance/pbcomprobantes/pbcomprobantesborrar.mjs";
 import pbcomprobantesmodificar from "./routes/prebalance/pbcomprobantes/pbcomprobantesmodificar.mjs";
 
-import pbporivaleer from "./routes/prebalance/poriva/porivaleer.mjs";
-import pbporivaagregar from "./routes/prebalance/poriva/porivaagregar.mjs";
-import pbporivamodificar from "./routes/prebalance/poriva/porivamodificar.mjs";
-import pbporivaborrar from "./routes/prebalance/poriva/porivaborrar.mjs";
+import porivaleer from "./routes/poriva/porivaleer.mjs";
+import porivaagregar from "./routes/poriva/porivaagregar.mjs";
+import porivamodificar from "./routes/poriva/porivamodificar.mjs";
+import porivaborrar from "./routes/poriva/porivaborrar.mjs";
+import porivavalueleer from "./routes/poriva/porivavalueleer.mjs";
 
+import genimppresup from "./routes/impresion/genimppresup.mjs";
+import generarpdfpresup from "./routes/impresion/generarpdfpresup.mjs";
 
-function perimitirCrossDomain(req, res, next) {
-  // const allowedOrigins = ['*'];
-  const allowedOrigins = ['http://localhost:3000',
-    'http://192.168.2.108:4000/',
-    'http://192.168.2.11',
-    'http://localhost:4000',
-    'http://localhost:5173'];
-
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS"); // Métodos permitidos
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Content-Type,Authorization,X-API-Key" // Incluye el encabezado X-API-Key
-  );
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(204);
-  }
-
-  next();
-}
-
-
-
+// import enviowa from "./routes/comuicacionexterna/enviowa.mjs";
 
 
 var app = express();
-app.use(cors()); //esto estaba antes de que se colgara
-
-
+app.use(cors());
 app.use(logger("dev"));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json()); // Reemplaza a bodyParser
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, "public")));
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
-// Servir archivos estáticos desde el directorio "public"
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(perimitirCrossDomain);
+app.use("/api", genimppresup);
+app.use("/api", generarpdfpresup);
+app.use("/api/verificaclave", verificaclave);
 
 
-app.use("/verificaclave", verificaclave);
+app.use("/api/proveedoresleer", proveedoresleer);
+app.use("/api/proveedoresagregar", proveedoresagregar);
+app.use("/api/proveedoresmodificar", proveedoresmodificar);
+app.use("/api/proveedoresleertipo26", proveedoresleertipo26);
+app.use("/api/proveedoresvalueleer", proveedoresvalueleer);
+app.use("/api/proveedoresborrar", proveedoresborrar);
 
-// app.use("/importacsv", importacsv);
-
-app.use("/proveedoresleer", proveedoresleer);
-// app.use("/proveedoresleercod", proveedoresleercod);
-app.use("/proveedoresagregar", proveedoresagregar);
-app.use("/proveedoresmodificar", proveedoresmodificar);
-app.use("/proveedoresleertipo26", proveedoresleertipo26);
-app.use("/proveedoresvalueleer", proveedoresvalueleer);
-app.use("/proveedoresborrar", proveedoresborrar);
-
-app.use("/cajaieleer", cajaieleer);
-app.use("/cajaipleer", cajaipleer);
-app.use("/cajacpleer", cajacpleer);
-app.use("/cajaieagregar", cajaieagregar);
-app.use("/cajacierre", cajacierre);
-app.use("/cajacierreparamlee", cajacierreparamlee);
-app.use("/billetesleer", billetesleer);
-app.use("/cajasaldoefleer", cajasaldoefleer);
-app.use("/cajasaldoefagregar", cajasaldoefagregar);
-app.use("/cajaiesumamov", cajaiesumamov);
-app.use("/buscaie", buscaie);
-app.use("/cajaieestadistica", cajaieestadistica);
+app.use("/api/cajaieleer", cajaieleer);
+app.use("/api/cajaipleer", cajaipleer);
+app.use("/api/cajacpleer", cajacpleer);
+app.use("/api/cajaieagregar", cajaieagregar);
+app.use("/api/cajacierre", cajacierre);
+app.use("/api/cajacierreparamlee", cajacierreparamlee);
+app.use("/api/billetesleer", billetesleer);
+app.use("/api/cajasaldoefleer", cajasaldoefleer);
+app.use("/api/cajasaldoefagregar", cajasaldoefagregar);
+app.use("/api/cajaiesumamov", cajaiesumamov);
+app.use("/api/buscaie", buscaie);
+app.use("/api/cajaieestadistica", cajaieestadistica);
 
 
-app.use("/cajainternaleer", cajainternaleer);
-app.use("/cajainternaagregar", cajainternaagregar);
-app.use("/cajainternaborrar", cajainternaborrar);
-app.use("/cajainternamodificar", cajainternamodificar);
-app.use("/cajainternasileer", cajainternasileer);
-app.use("/cajainternasumatot", cajainternasumatot);
+app.use("/api/cajainternaleer", cajainternaleer);
+app.use("/api/cajainternaagregar", cajainternaagregar);
+app.use("/api/cajainternaborrar", cajainternaborrar);
+app.use("/api/cajainternamodificar", cajainternamodificar);
+app.use("/api/cajainternasileer", cajainternasileer);
+app.use("/api/cajainternasumatot", cajainternasumatot);
 
 
-app.use("/clientesleer", clientesleer);
-app.use("/clientesleercod", clientesleercod);
-app.use("/clientesleerdesc", clientesleerdesc);
-app.use("/clientesagregar", clientesagregar);
-app.use("/clientesmodificar", clientesmodificar);
-app.use("/clientesborrar", clientesborrar);
-app.use("/clientesleercodmayor", clientesleercodmayor);
-app.use("/clientesleerdescmayigual", clientesleerdescmayigual);
-app.use("/clientesleerpresup", clientesleerpresup);
-app.use("/clientestraenuevos", clientestraenuevos);
-app.use("/clientescobol", clientescobol);
-app.use("/clientesleerot", clientesleerot);
-app.use("/clientesleerencabot", clientesleerencabot);
-app.use("/clientesleerdescod", clientesleerdescod);
+app.use("/api/clientesleer", clientesleer);
+app.use("/api/clientesleercod", clientesleercod);
+app.use("/api/clientesleerdesc", clientesleerdesc);
+app.use("/api/clientesagregar", clientesagregar);
+app.use("/api/clientesmodificar", clientesmodificar);
+app.use("/api/clientesborrar", clientesborrar);
+app.use("/api/clientesleercodmayor", clientesleercodmayor);
+app.use("/api/clientesleerdescmayigual", clientesleerdescmayigual);
+app.use("/api/clientesleerpresup", clientesleerpresup);
+app.use("/api/clientestraenuevos", clientestraenuevos);
+app.use("/api/clientescobol", clientescobol);
+app.use("/api/clientesleerencabot", clientesleerencabot);
+app.use("/api/clientesleerdescod", clientesleerdescod);
 
-// app.use("/clientespresupagregar", clientespresupagregar);
+app.use("/api/transporteleer", transporteleer);
+app.use("/api/transporteleercod", transporteleercod);
+app.use("/api/transporteagregar", transporteagregar);
+app.use("/api/transportemodificar", transportemodificar);
+app.use("/api/transporteborrar", transporteborrar);
 
-app.use("/transporteleer", transporteleer);
-app.use("/transporteleercod", transporteleercod);
-app.use("/transporteagregar", transporteagregar);
-app.use("/transportemodificar", transportemodificar);
-app.use("/transporteborrar", transporteborrar);
+app.use("/api/stkbgsubrubroleer", stkbgsubrubroleer);
 
-app.use("/stkbgsubrubroleer", stkbgsubrubroleer);
+app.use("/api/stkmonedasleer", stkmonedasleer);
+app.use("/api/stkmonedasleerp", stkmonedasleerp);
+app.use("/api/stkmonedasleercod", stkmonedasleercod);
+app.use("/api/stkmonedasagregar", stkmonedasagregar);
+app.use("/api/stkmonedasmodificar", stkmonedasmodificar);
+app.use("/api/stkmonedasborrar", stkmonedasborrar);
+app.use("/api/stkmonedasleerred", stkmonedasleerred);
+app.use("/api/stkmonedasleerorig", stkmonedasleerorig);
 
-app.use("/stkmonedasleer", stkmonedasleer);
-app.use("/stkmonedasleerp", stkmonedasleerp);
-app.use("/stkmonedasleercod", stkmonedasleercod);
-app.use("/stkmonedasagregar", stkmonedasagregar);
-app.use("/stkmonedasmodificar", stkmonedasmodificar);
-app.use("/stkmonedasborrar", stkmonedasborrar);
-app.use("/stkmonedasleerred", stkmonedasleerred);
-app.use("/stkmonedasleerorig", stkmonedasleerorig);
-
-// app.use('/stkbgsubrubroleer', stkbgsubrubroleer);
-
-app.use("/stktipoproveedleer", stktipoproveedleer);
-// app.use('/stktipoproveedleercod', stktipoproveedleercod);
-// app.use('/stktipoproveedagregar', stktipoproveedagregar);
-// app.use('/stktipoproveedmodificar', stktipoproveedmodificar);
-// app.use('/stktipoproveedborrar', stktipoproveedborrar);
-
-app.use("/stkunmedleer", stkunmedleer);
-app.use("/stkunmedleercod", stkunmedleercod);
-app.use("/stkunmedagregar", stkunmedagregar);
-app.use("/stkunmedmodificar", stkunmedmodificar);
-app.use("/stkunmedborrar", stkunmedborrar);
-app.use("/stkunmedleerred", stkunmedleerred);
+app.use("/api/stkunmedleer", stkunmedleer);
+app.use("/api/stkunmedleercod", stkunmedleercod);
+app.use("/api/stkunmedagregar", stkunmedagregar);
+app.use("/api/stkunmedmodificar", stkunmedmodificar);
+app.use("/api/stkunmedborrar", stkunmedborrar);
+app.use("/api/stkunmedleerred", stkunmedleerred);
 
 
 
-app.use("/stkgrupoleer", stkgrupoleer);
-app.use("/stkgrupoleeselec", stkgrupoleeselec);
-app.use("/stkgrupoleercod", stkgrupoleercod);
-app.use("/stkgrupoagregar", stkgrupoagregar);
-app.use("/stkgrupomodificar", stkgrupomodificar);
-app.use("/stkgrupoborrar", stkgrupoborrar);
-app.use("/stkgrupoleerred", stkgrupoleerred);
-app.use("/stkgrupoleerredrubros", stkgrupoleerredrubros);
+app.use("/api/stkgrupoleer", stkgrupoleer);
+app.use("/api/stkgrupoleeselec", stkgrupoleeselec);
+app.use("/api/stkgrupoleercod", stkgrupoleercod);
+app.use("/api/stkgrupoagregar", stkgrupoagregar);
+app.use("/api/stkgrupomodificar", stkgrupomodificar);
+app.use("/api/stkgrupoborrar", stkgrupoborrar);
+app.use("/api/stkgrupoleerred", stkgrupoleerred);
+app.use("/api/stkgrupoleerredrubros", stkgrupoleerredrubros);
 
-app.use("/stkubfisicaleer", stkubfisicaleer);
-// app.use('/stkubfisicaleercod', stkubfisicaleercod);
-app.use("/stkubfisicaagregar", stkubfisicaagregar);
-// app.use('/stkubfisicamodificar', stkubfisicamodificar);
-app.use("/stkubfisicaborrar", stkubfisicaborrar);
-app.use("/stkubfisicaleerUbG", stkubfisicaleerUbG);
+app.use("/api/stkubfisicaleer", stkubfisicaleer);
+app.use("/api/stkubfisicaagregar", stkubfisicaagregar);
+app.use("/api/stkubfisicaborrar", stkubfisicaborrar);
+app.use("/api/stkubfisicaleerUbG", stkubfisicaleerUbG);
 
-app.use("/stkrubroleer", stkrubroleer);
-app.use("/stkrubroleeselec", stkrubroleeselec);
-app.use("/stkrubroleermezcla", stkrubroleermezcla);
-app.use("/stkrubroleercod", stkrubroleercod);
-app.use("/stkrubroagregar", stkrubroagregar);
-app.use("/stkrubromodificar", stkrubromodificar);
-app.use("/stkrubroborrar", stkrubroborrar);
-// app.use("/stkrubroleecodgrupo", stkrubroleecodgrupo);
-// app.use("/stkrubroleecodgryrb", stkrubroleecodgryrb);
-app.use("/stkrubroleeultnro", stkrubroleeultnro);
-// app.use("/stkrubroleecodgrupored", stkrubroleecodgrupored);
-app.use("/stkrubroleeproveedor", stkrubroleeproveedor);
-app.use("/stkrubroleerdesc", stkrubroleerdesc);
-app.use("/stkrubroleerconf", stkrubroleerconf);
-app.use("/stkrubroleerTBR", stkrubroleerTBR);
-app.use("/stkrubroleerprov", stkrubroleerprov);
-app.use("/stkrubroleerconfgrp", stkrubroleerconfgrp);
-//01-06-2023
-app.use("/stkrubroleerLAT", stkrubroleerLAT);
-//02/05/20025
-app.use("/stkrubroleerabr", stkrubroleerabr);
+app.use("/api/stkrubroleer", stkrubroleer);
+app.use("/api/stkrubroleeselec", stkrubroleeselec);
+app.use("/api/stkrubroleermezcla", stkrubroleermezcla);
+app.use("/api/stkrubroagregar", stkrubroagregar);
+app.use("/api/stkrubromodificar", stkrubromodificar);
+app.use("/api/stkrubroborrar", stkrubroborrar);
+app.use("/api/stkrubroleeultnro", stkrubroleeultnro);
+app.use("/api/stkrubroleeproveedor", stkrubroleeproveedor);
+app.use("/api/stkrubroleerdesc", stkrubroleerdesc);
+app.use("/api/stkrubroleerconf", stkrubroleerconf);
+app.use("/api/stkrubroleerTBR", stkrubroleerTBR);
+app.use("/api/stkrubroleerprov", stkrubroleerprov);
+app.use("/api/stkrubroleerLAT", stkrubroleerLAT);
+app.use("/api/stkrubroleerabr", stkrubroleerabr);
 
 
-app.use("/stkitemsleer", stkitemsleer);
-app.use("/stkitemsagregar", stkitemsagregar);
-app.use("/stkitemsmodificar", stkitemsmodificar);
-app.use("/stkitemsborrar", stkitemsborrar);
-app.use("/stkitemsleecod", stkitemsleecod);
-app.use("/stkitemsleecodgryrb", stkitemsleecodgryrb);
-app.use("/stkitemsleecodgrrbit", stkitemsleecodgrrbit);
-app.use("/stkitemsleedetalles", stkitemsleedetalles);
-app.use("/stkitemsleedisp", stkitemsleedisp);
-app.use("/stkitemsmoddisp", stkitemsmoddisp);
-app.use("/stkverificadisp", stkverificadisp);
-app.use("/stkitemscodabr", stkitemscodabr);
-app.use("/stkitemsborrarabr", stkitemsborrarabr);
-app.use("/stkitemsleeabrrub", stkitemsleeabrrub);
-app.use("/stkitemsleecodgr", stkitemsleecodgr);
+app.use("/api/stkitemsagregar", stkitemsagregar);
+app.use("/api/stkitemsmodificar", stkitemsmodificar);
+app.use("/api/stkitemsborrar", stkitemsborrar);
+app.use("/api/stkitemsleecod", stkitemsleecod);
+app.use("/api/stkitemsleedetalles", stkitemsleedetalles);
+app.use("/api/stkitemscodabr", stkitemscodabr);
+app.use("/api/stkitemsleeabrrub", stkitemsleeabrrub);
 //15-02-2023 OT
-app.use("/stkitemsleedescabrrub", stkitemsleedescabrrub);
+app.use("/api/stkitemsleedescabrrub", stkitemsleedescabrrub);
 
 
 
-app.use("/stkitemsmodstock", stkitemsmodstock);
-app.use("/stkitemslistaprecios", stkitemslistaprecios);
+app.use("/api/stkitemslistaprecios", stkitemslistaprecios);
 
-app.use("/stkmovsalfinal", stkmovsalfinal);
-app.use("/stkgrabamovsalfinal", stkgrabamovsalfinal);
-app.use("/stkmovenvase", stkmovenvase);
 
-app.use("/stkitemsventa", stkitemsventa);
-app.use("/stkenvaseagregar", stkenvaseagregar);
-app.use("/stkenvaseleeimp", stkenvaseleeimp);
-app.use("/stkenvasecambiaimp", stkenvasecambiaimp);
 
-app.use("/leedatosingreso", leedatosingreso);
-app.use("/sumaingreso", sumaingreso);
-app.use("/realizacambiostock", realizacambiostock);
-app.use("/movstockagregar", movstockagregar);
-app.use("/movstockleer", movstockleer);
-app.use("/movstockleetipoconf", movstockleetipoconf);
+app.use("/api/leedatosingreso", leedatosingreso);
+app.use("/api/sumaingreso", sumaingreso);
+app.use("/api/realizacambiostock", realizacambiostock);
+app.use("/api/movstockagregar", movstockagregar);
+app.use("/api/movstockleer", movstockleer);
+app.use("/api/movstockleetipoconf", movstockleetipoconf);
 
 // app.use('/imprime1', imprime1);
-app.use("/stkmovvtaagregar", stkmovvtaagregar);
+// app.use("/api/stkmovvtaagregar", stkmovvtaagregar);
 
-app.use("/listaprecios", listaprecios);
-app.use("/modprecios", modprecios);
+app.use("/api/listaprecios", listaprecios);
+app.use("/api/modprecios", modprecios);
 
 //Movimiento stock
-app.use("/leestock", leestock);
-app.use("/inventario", inventario);
+app.use("/api/inventario", inventario);
 
 //PRESUPUESTO
-app.use("/presupunid", presupunid);
-app.use("/presuppu", presuppu);
-app.use("/presuppurec", presuppurec);
-app.use("/presupfajas", presupfajas);
-app.use("/presuplonaconf", presuplonaconf);
-app.use("/presupgraba", presupgraba);
-app.use("/presupdesfac", presupdesfac);
-app.use("/presupenrollables", presupenrollables);
-app.use("/presupbolsontanque", presupbolsontanque);
-app.use("/presuppiletaenr", presuppiletaenr);
-app.use("/presupbrazosextens", presupbrazosextens);
-app.use("/presuplonapiletaelas", presuplonapiletaelas);
-app.use("/presupcargadesc", presupcargadesc);
-app.use("/presuplonaabolinada", presuplonaabolinada);
-app.use("/presupcomedero", presupcomedero);
-app.use("/presupcambpanio", presupcambpanio);
-app.use("/presuppiletafca", presuppiletafca);
-app.use("/presupponchorie", presupponchorie);
-app.use("/presupmodificamed", presupmodificamed);
-app.use("/presupabanico", presupabanico);
+app.use("/api/presupunid", presupunid);
+app.use("/api/presuppu", presuppu);
+app.use("/api/presuppurec", presuppurec);
+app.use("/api/presupfajas", presupfajas);
+app.use("/api/presuplonaconf", presuplonaconf);
+app.use("/api/presupgraba", presupgraba);
+app.use("/api/presupdesfac", presupdesfac);
+app.use("/api/presupenrollables", presupenrollables);
+app.use("/api/presupbolsontanque", presupbolsontanque);
+app.use("/api/presuppiletaenr", presuppiletaenr);
+app.use("/api/presupbrazosextens", presupbrazosextens);
+app.use("/api/presuplonapiletaelas", presuplonapiletaelas);
+app.use("/api/presupcargadesc", presupcargadesc);
+app.use("/api/presuplonaabolinada", presuplonaabolinada);
+app.use("/api/presupcomedero", presupcomedero);
+app.use("/api/presupcambpanio", presupcambpanio);
+app.use("/api/presuppiletafca", presuppiletafca);
+app.use("/api/presuppiletacadsol", presuppiletacadsol);
+app.use("/api/presupponchorie", presupponchorie);
+app.use("/api/presupmodificamed", presupmodificamed);
+app.use("/api/presupabanico", presupabanico);
 //22-12-2022
-app.use("/presuppisopil", presuppisopil);
+app.use("/api/presuppisopil", presuppisopil);
 //12-06-2023
-app.use("/presuplatcorr", presuplatcorr);
+app.use("/api/presuplatcorr", presuplatcorr);
 
 
-app.use("/presupencableer", presupencableer);
-app.use("/presupencableenro", presupencableenro);
-app.use("/presuprenglonleer", presuprenglonleer);
-app.use("/presupnombre", presupnombre);
-app.use("/presupborrar", presupborrar);
-app.use("/presupborrarenpreview", presupborrarenpreview);
+app.use("/api/presupencableer", presupencableer);
+app.use("/api/presupencableenro", presupencableenro);
+app.use("/api/presuprenglonleer", presuprenglonleer);
+// app.use("/api/presupnombre", presupnombre);
+// app.use("/api/presupborrar", presupborrar);
+// app.use("/api/presupborrarenpreview", presupborrarenpreview);
 
 
-app.use("/presupconftipoleer", presupconftipoleer);
-app.use("/presupconftipoleerdesc", presupconftipoleerdesc);
-app.use("/presupconftipoleeanexo", presupconftipoleeanexo);
-app.use("/presupconftipomodificar", presupconftipomodificar);
-app.use("/presupconftipoborrar", presupconftipoborrar);
-app.use("/presupconftipoagregar", presupconftipoagregar);
-app.use("/presupconftipocalc", presupconftipocalc);
-app.use("/presupconftipoleerunif", presupconftipoleerunif);
+app.use("/api/presupconftipoleer", presupconftipoleer);
+app.use("/api/presupconftipoleerdesc", presupconftipoleerdesc);
+app.use("/api/presupconftipoleeanexo", presupconftipoleeanexo);
+app.use("/api/presupconftipomodificar", presupconftipomodificar);
+app.use("/api/presupconftipoborrar", presupconftipoborrar);
+app.use("/api/presupconftipoagregar", presupconftipoagregar);
+app.use("/api/presupconftipocalc", presupconftipocalc);
+app.use("/api/presupconftipoleerunif", presupconftipoleerunif);
 
 
-app.use("/presupdetpieleer", presupdetpieleer);
-app.use("/presupdetpiemodificar", presupdetpiemodificar);
-app.use("/presupdetpieborrar", presupdetpieborrar);
-app.use("/presupdetpieagregar", presupdetpieagregar);
-app.use("/presupparcalclee", presupparcalclee);
-
-
-app.use("/imppresup", imppresup);
-// app.use("/muestrapdf", muestrapdf);
-
-// app.use("/generadoc", generadoc);
+app.use("/api/presupdetpieleer", presupdetpieleer);
+app.use("/api/presupdetpiemodificar", presupdetpiemodificar);
+app.use("/api/presupdetpieborrar", presupdetpieborrar);
+app.use("/api/presupdetpieagregar", presupdetpieagregar);
 
 
 
+app.use("/api/presupcalexpleer", presupcalexpleer);
+app.use("/api/presupcalexpmodificar", presupcalexpmodificar);
+app.use("/api/presupcalexpborrar", presupcalexpborrar);
+app.use("/api/presupcalexpagregar", presupcalexpagregar);
 
-app.use("/copiafact", copiafact);
+app.use("/api/presupparcalclee", presupparcalclee);
+
+app.use("/api/copiafact", copiafact);
 
 //programas para ordenes de trabajo
-// app.use("/datosencabpresupeleg", datosencabpresupeleg);
-// app.use("/otarmatabla", otarmatabla);
-app.use("/otorigenpresupagregar", otorigenpresupagregar);
-app.use("/otdatosleer", otdatosleer);
-app.use("/otgraba", otgraba);
-app.use("/otleeencab", otleeencab);
-app.use("/otestadoleer", otestadoleer);
-app.use("/otrengleerpot", otrengleerpot);
-app.use("/otguardapdf", otguardapdf);
-app.use("/otdatosmodificar", otdatosmodificar);
+app.use("/api/otorigenpresupagregar", otorigenpresupagregar);
+app.use("/api/otdatosleer", otdatosleer);
+app.use("/api/otgraba", otgraba);
+app.use("/api/otleeencab", otleeencab);
+app.use("/api/otestadoleer", otestadoleer);
+app.use("/api/otrengleerpot", otrengleerpot);
+app.use("/api/otguardapdf", otguardapdf);
+app.use("/api/otdatosmodificar", otdatosmodificar);
 
 
 
-app.use("/otcondpagoleer", otcondpagoleer);
-app.use("/otcondpagoleercod", otcondpagoleercod);
-app.use("/otcondpagoagregar", otcondpagoagregar);
-app.use("/otcondpagomodificar", otcondpagomodificar);
-app.use("/otcondpagoborrar", otcondpagoborrar);
+app.use("/api/otcondpagoleer", otcondpagoleer);
+app.use("/api/otcondpagoleercod", otcondpagoleercod);
+app.use("/api/otcondpagoagregar", otcondpagoagregar);
+app.use("/api/otcondpagomodificar", otcondpagomodificar);
+app.use("/api/otcondpagoborrar", otcondpagoborrar);
 
-app.use("/otdatoslee", otdatoslee);
-app.use("/otdatosagregar", otdatosagregar);
-app.use("/otdatosagregaselec", otdatosagregaselec);
+app.use("/api/otdatoslee", otdatoslee);
+app.use("/api/otdatosagregar", otdatosagregar);
+app.use("/api/otdatosagregaselec", otdatosagregaselec);
 
 
 //temas ctacte
-// app.use("/conectaafip", conectaafip);
-app.use("/paramcompleer", paramcompleer);
-app.use("/paramcompborrar", paramcompborrar);
-app.use("/paramcompagregar", paramcompagregar);
-app.use("/paramcompmodificar", paramcompmodificar);
+// app.use("/api/conectaafip", conectaafip);
+app.use("/api/paramcompleer", paramcompleer);
+app.use("/api/paramcompborrar", paramcompborrar);
+app.use("/api/paramcompagregar", paramcompagregar);
+app.use("/api/paramcompmodificar", paramcompmodificar);
 
-app.use("/reparacionleer", reparacionleer);
-app.use("/repleecob", repleecob);
-app.use("/repleevalorhs", repleevalorhs);
+app.use("/api/repleecob", repleecob);
+app.use("/api/repleevalorhs", repleevalorhs);
 
 //prebalance
-app.use("/pbrubrosagregar", pbrubrosagregar);
-app.use("/pbrubrosleer", pbrubrosleer);
-app.use("/pbrubrosmodificar", pbrubrosmodificar);
-app.use("/pbrubrosborrar", pbrubrosborrar);
-app.use("/pbsubrubrosleer", pbsubrubrosleer);
-app.use("/pbrubrosvalueleer", pbrubrosvalueleer);
-app.use("/pbsubrubrosmodificar", pbsubrubrosmodificar);
-app.use("/pbsubrubrosagregar", pbsubrubrosagregar);
-app.use("/pbsubrubrosborrar", pbsubrubrosborrar);
-app.use("/pbsubrubrosvalueleer", pbsubrubrosvalueleer);
-app.use("/pbitemsleer", pbitemsleer);
-app.use("/pbitemsagregar", pbitemsagregar);
+app.use("/api/pbrubrosagregar", pbrubrosagregar);
+app.use("/api/pbrubrosleer", pbrubrosleer);
+app.use("/api/pbrubrosmodificar", pbrubrosmodificar);
+app.use("/api/pbrubrosborrar", pbrubrosborrar);
+app.use("/api/pbsubrubrosleer", pbsubrubrosleer);
+app.use("/api/pbrubrosvalueleer", pbrubrosvalueleer);
+app.use("/api/pbsubrubrosmodificar", pbsubrubrosmodificar);
+app.use("/api/pbsubrubrosagregar", pbsubrubrosagregar);
+app.use("/api/pbsubrubrosborrar", pbsubrubrosborrar);
+app.use("/api/pbsubrubrosvalueleer", pbsubrubrosvalueleer);
+app.use("/api/pbitemsleer", pbitemsleer);
+app.use("/api/pbitemsagregar", pbitemsagregar);
 
-app.use("/pbcomprobantesleer", pbcomprobantesleer);
-app.use("/pbcomprobantesborrar", pbcomprobantesborrar);
-app.use("/pbcomprobantesmodificar", pbcomprobantesmodificar);
+app.use("/api/pbcomprobantesleer", pbcomprobantesleer);
+app.use("/api/pbcomprobantesborrar", pbcomprobantesborrar);
+app.use("/api/pbcomprobantesmodificar", pbcomprobantesmodificar);
 
-app.use("/pbporivaleer", pbporivaleer);
-app.use("/pbporivaagregar", pbporivaagregar);
-app.use("/pbporivamodificar", pbporivamodificar);
-app.use("/pbporivaborrar", pbporivaborrar);
+app.use("/api/porivaleer", porivaleer);
+app.use("/api/porivaagregar", porivaagregar);
+app.use("/api/porivamodificar", porivamodificar);
+app.use("/api/porivaborrar", porivaborrar);
+app.use("/api/porivavalueleer", porivavalueleer);
 
-app.use("/", proveedoresleer);
+app.use("/api/", proveedoresleer);
+
+// app.use("/api/enviowa", enviowa);
 
 
-app.use(function (req, res, next) {
-  var err = new Error("El programa de backend no se encuentra");
-  err.status = 404;
-  next(err);
-});
-
-// error handler
-app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.Error
-  //estaba puesta la linea de abajo la cambié por la de arriba por el error que daba aunque andaba
-  //res.render("error ");
-});
-// const PORT = 3000;
-// app.listen(PORT, () => {
-//   console.log(`Servidor corriendo en el puerto ${PORT}`);
-// });
 export default app;
-
-
-// const app = express();
-// app.use(express.json());
-// app.disable('x-powered-by');
-
-// app.use(cors({
-//   origin: (origin, callback) => {
-//     const ACCEPTED_ORIGINS = [
-//       'http://localhost:3000',
-//       'http://localhost:7000',
-//       'http://192.168.2.108:4000/',
-//       'http://192.168.2.11',
-//       'http://localhost:4000',
-//       'http://localhost:5173'
-//     ]
-
-//     if (ACCEPTED_ORIGINS.includes(origin)) {
-//       return callback(null, true)
-//     }
-
-//     if (!origin) {
-//       return callback(null, true)
-//     }
-
-//     return callback(new Error('Not allowed by CORS'))
-//   }
-// }))
-// app.disable('x-powered-by') // deshabilitar el header X-Powered-By: Express
-// const perimitirCrossDomain = (req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "http://localhost:5173"); // Permitir solo este origen
-//   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS"); // Métodos permitidos
-//   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-API-KEY"); // Agrega aquí tus encabezados personalizados
-//   res.header("Access-Control-Allow-Credentials", "true"); // Si necesitas enviar cookies o credenciales
-
-//   // Responde automáticamente a las solicitudes OPTIONS (preflight)
-//   if (req.method === "OPTIONS") {
-//     return res.sendStatus(204);
-//   }
-
-//   next();
-// };
-
-
-
-// Middleware personalizado para CORS
-// app.use(perimitirCrossDomain);
-
-// // Manejo de preflight para CORS
-// app.options("*", (req, res) => {
-//   res.header("Access-Control-Allow-Origin", "http://localhost:5137");
-//   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-//   res.header("Access-Control-Allow-Headers", "Content-Type,Authorization");
-//   res.sendStatus(200);
-// });
-
-// Otros middlewares
-// app.use(logger("dev"));
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(cookieParser());
-
-// // Servir archivos estáticos desde el directorio "public"
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
-// app.use(express.static(path.join(__dirname, "public")));
-
-// // Ejemplo de una ruta
-// app.get("/api", (req, res) => {
-//   res.json({ message: "CORS configurado correctamente" });
-// });
-
-// Iniciar servidor
-// app.listen(3000, () => {
-//   console.log("Servidor corriendo en http://localhost:3000");
-// });
-
-
-/*
-// const { RouterSharp } = require("@material-ui/icons");
-
-// function agregada por el error CORS
-function perimitirCrossDomain(req, res, next) {
-  //en vez de * se puede definir SÓLO los orígenes que permitimos
-
-  res.header("Access-Control-Allow-Origin", "http://localhost:5173");
-  //metodos http permitidos para CORS
-  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-  res.header("Access-Control-Allow-Headers", "Content-Type");
-  next();
-}
-
-var app = express();
-// app.use(cors()); //esto estaba antes de que se colgara
-
-
-app.use(perimitirCrossDomain);
-app.use(logger("dev"));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, "public")));
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Servir archivos estáticos desde el directorio "public"
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(perimitirCrossDomain);
-*/

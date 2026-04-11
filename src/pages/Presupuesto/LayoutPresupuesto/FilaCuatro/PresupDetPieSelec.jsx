@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
 	DataGrid,
@@ -6,7 +6,8 @@ import {
 } from "@mui/x-data-grid";
 import { esES } from '@mui/material/locale';
 import { llenarcolumns } from "../../../Tablas/PresupDetPie/columns.jsx";
-import { PresupDetPieLee } from "../../../Tablas/PresupDetPie/PresupDetPieLee";
+import formdata from "../../../Tablas/PresupDetPie/formdata.js";
+import { DatosLeer } from "../../../../components/DatosLeer.jsx";
 // Context
 import { useContext } from "react";
 import PresupPant from "../../../../context/PresupPant";
@@ -23,7 +24,8 @@ export default function PresupDetPieSelect() {
 	}
 
 	async function dataFetch() {
-		const data = await PresupDetPieLee();
+		const data = await DatosLeer(formdata.nombackleer);
+		// const data = await PresupDetPieLee();
 		setData(data);
 	}
 
@@ -42,7 +44,6 @@ export default function PresupDetPieSelect() {
 		const selectedLeyendas = selectionModel.map((row, i) =>
 			data.filter((rows) => rows.id == row)
 		);
-
 		setSelectionModel(selectedLeyendas);
 		setState({ ...state, condpagoeleg: selectedLeyendas });
 	};

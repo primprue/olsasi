@@ -1,22 +1,21 @@
 import express from 'express';
 var router = express.Router();
 
-import { conexion } from '../conexion.mjs';
+import { conexionpool } from '../conexion.mjs';
 
 
-router.get('/', async function (req, res) {
-    var indice = req.query.id;
-    var q = ['SELECT * FROM BasesGenerales.Transporte where idTransporte = ' + indice].join(' ')
-    console.log('q transporteleercod ', q)
-    conexion.query(q,
-        function (err, result) {
-            if (err) {
-                console.log(err);
-            } else {
-                res.json(result);
-            }
+router.get('/', async (req, res) => {
+    const indice = req.query.id;
+    try {
+        const q = `Select * from BasesGenerales.Transporte where idTransporte = ?`;
+        const [result] = await conexionpool.query(q, [indice]);
+        return res.json(result);
+    } catch (err) {
+        console.error("Error en el proceso:", err);
+        return res.status(500).json({
+            leyenda: "Error interno del servidor",
+            error: err.message
         });
-
+    }
 });
-conexion.end;
 export default router;

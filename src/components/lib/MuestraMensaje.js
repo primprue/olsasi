@@ -11,8 +11,10 @@ function MuestraMensaje(response, leyendaMens = "") {
   // o de response.response.status (típico en errores de Axios)
   const status = response?.status || response?.response?.status;
   leyendaMens = leyendaMens || response?.body?.leyenda || response?.response?.body?.leyenda;
+
   // 2. Definimos el diccionario de mensajes
   const mapaMensajes = {
+    404: { tipo: "error", texto: leyendaMens || "No se encontró la información solicitada" },
     409: { tipo: "error", texto: leyendaMens || "Código/Clave ingresado EXISTENTE no se puede duplicar" },
     410: { tipo: "error", texto: leyendaMens || "El Código excede la cantidad de dígitos permitidos" },
     411: { tipo: "error", texto: leyendaMens || "Código usado no se puede borrar" },
@@ -42,11 +44,5 @@ function MuestraMensaje(response, leyendaMens = "") {
 }
 
 export default MuestraMensaje;
-// if (err.status === 409) => 1062 => cuando se da de alta un código existente
-// if (err.status === 410) => 1406 => el campo  alfanumérico más grande de lo que corresponde
-// if (err.status === 412) => 1264 => el campo numérico más grande de lo que corresponde
-// if (err.status === 411) => 1451 => Código  Usado no se puede borrar
-// if (err.status === 413) => 1366 => Faltan datos para ingresar información en tabla
-// if (err.status === 414) => 1054 => Faltan datos para leer información en tabla
 
 

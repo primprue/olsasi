@@ -1,81 +1,31 @@
-/* esto estaba usando antes de hacer el pool para evitar el queryAsync
-import mysql from 'mysql2';
+// conexion.js
+import 'dotenv/config';
+import mysqlCallback from 'mysql2';
+import mysqlPromise from 'mysql2/promise';
+const CLAVE = process.env.CLAVE_MYSQL;
 
-const conexion = mysql.createConnection({
-
+const config = {
   user: "root",
-    password: "drasan141",
+  password: CLAVE,
   host: "localhost",
   database: "BaseStock",
   port: 3306,
   multipleStatements: true,
+};
 
-});
+// La versión vieja para archivos viejos
+export const conexion = mysqlCallback.createConnection(config);
 
-conexion.connect((err) => {
+// La versión nueva para archivos nuevos
+// export const conexionpool = mysqlPromise.createPool(config);
 
-  if (err) {
-    console.error('Error al conectar a MySQL:', err);
-  } else {
-    console.log('Conectado a MySQL');
-  }
-});
-
-export default conexion;
-
-hasta acá
-*/
-
-// conexion.mjs
-import mysql from 'mysql2/promise';
-
-// Creamos un pool de conexiones (más eficiente para apps web)
-const conexion = mysql.createPool({
+export const conexionpool = mysqlPromise.createPool({
   user: "root",
-  password: "drasan141",
+  password: CLAVE,
   host: "localhost",
   database: "BaseStock",
+  port: 3306,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
 });
-
-export default conexion;
-
-
-
-
-
-
-
-// import mysql from "mysql";
-
-// var conexion = mysql.createConnection({
-//   // user: "root",
-//   // host: "192.168.2.11",
-//   // password: "drasan",
-//   user: "sandra",
-//   password: "drasan141",
-//   host: "localhost",
-//   database: "BaseStock",
-//   port: 3306,
-//   multipleStatements: true,
-// });
-
-// export default conexion;
-
-
-
-
-
-
-
-
-
-// user: "root",
-// host: "192.168.2.108",
-// password: "drasan141",
-
-// user: "root",
-// host: "192.168.2.11",
-// password: "drasan",

@@ -1,57 +1,51 @@
 import express from "express";
 var router = express.Router();
 
-import { conexion } from '../../conexion.mjs';
+import { conexionpool } from '../../conexion.mjs';
 
 
 
 router.post("/", async function (req, res, next) {
-  var indice = req.query.id;
-  var PresupConfTipoLargo = req.body.PresupConfTipoLargo;
-  var PresupConfTipoAncho = req.body.PresupConfTipoAncho;
-  var PresupConfTipoAnexo = req.body.PresupConfTipoAnexo.toUpperCase();
-  var PresupConfTipoCant = req.body.PresupConfTipoCant;
-  var PresupConfTipoM2 = req.body.PresupConfTipoM2.toUpperCase();
-  var PresupConfTipoDesc = req.body.PresupConfTipoDesc.toUpperCase();
-  var PresupConfTipoRubro = req.body.PresupConfTipoRubro.toUpperCase();
-  var PresupConfTipoImprime = req.body.PresupConfTipoImprime.toUpperCase();
-  var PresupConfTipoMinMOT = req.body.PresupConfTipoMinMOT
+  let indice = req.query.id;
+  let PresupConfTipoLargo = req.body.PresupConfTipoLargo;
+  let PresupConfTipoAncho = req.body.PresupConfTipoAncho;
+  let PresupConfTipoAnexo = req.body.PresupConfTipoAnexo.toUpperCase();
+  let PresupConfTipoCant = req.body.PresupConfTipoCant;
+  let PresupConfTipoM2 = req.body.PresupConfTipoM2.toUpperCase();
+  let PresupConfTipoDesc = req.body.PresupConfTipoDesc.toUpperCase();
+  let PresupConfTipoRubro = req.body.PresupConfTipoRubro.toUpperCase();
+  let PresupConfTipoImprime = req.body.PresupConfTipoImprime.toUpperCase();
+  let PresupConfTipoMinMOT = req.body.PresupConfTipoMinMOT
+  try {
+    const q = `UPDATE BasePresup.PresupConfTipo SET PresupConfTipoAnexo = ?,
+                  PresupConfTipoCant = ?, PresupConfTipoM2 = ?,
+                  PresupConfTipoDesc = ?, PresupConfTipoRubro = ?, PresupConfTipoLargo = ?,
+                  PresupConfTipoAncho = ?, PresupConfTipoImprime = ?, PresupConfTipoMinMOT = ?
+                  WHERE idPresupConfTipo = ?`;
+    await conexionpool.query(q, [PresupConfTipoAnexo, PresupConfTipoCant,
+      PresupConfTipoM2, PresupConfTipoDesc, PresupConfTipoRubro,
+      PresupConfTipoLargo, PresupConfTipoAncho, PresupConfTipoImprime,
+      PresupConfTipoMinMOT, indice]);
+    return res.status(200).json({
+      leyenda: 'Datos actualizados correctamente',
+    });
+  } catch (err) {
+    console.error("Error en el proceso:", err);
 
-  var q = [
-    'UPDATE BasePresup.PresupConfTipo SET PresupConfTipoAnexo = "' +
-    PresupConfTipoAnexo +
-    '", PresupConfTipoCant = ' +
-    PresupConfTipoCant +
-    ', PresupConfTipoM2 = "' +
-    PresupConfTipoM2 +
-    '", PresupConfTipoDesc = "' +
-    PresupConfTipoDesc +
-    '", PresupConfTipoRubro = "' +
-    PresupConfTipoRubro +
-    '", PresupConfTipoLargo = "' +
-    PresupConfTipoLargo +
-    '", PresupConfTipoAncho = "' +
-    PresupConfTipoAncho +
-    '", PresupConfTipoImprime = "' +
-    PresupConfTipoImprime +
-    '", PresupConfTipoMinMOT = "' +
-    PresupConfTipoMinMOT +
-    '" WHERE idPresupConfTipo = ' +
-    indice
-  ];
-  // .join(" ");
-  conexion.query(q[0], function (err, result) {
-    if (err) {
-      if (err.errno == 1062) {
-        return res
-          .status(409)
-          .send({ message: "Abreviatura de Grupo existente" });
-      } else console.log(err);
-    } else {
-      res.json(result);
+    // Manejo de errores específicos de SQL
+    if (err.errno === 1062) {
+      return res.status(460).json({ message: "Clave duplicada" });
     }
-  });
-});
+    if (err.errno === 1406) {
+      return res.status(410).json({ message: "Dato demasiado largo para una columna" });
+    }
 
-conexion.end;
+    return res.status(500).json({
+      leyenda: "Error interno del servidor",
+      error: err.message
+    });
+  }
+});
 export default router;
+
+

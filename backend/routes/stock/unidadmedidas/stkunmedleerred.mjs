@@ -1,18 +1,23 @@
 import express from "express";
 var router = express.Router();
 
-import { conexion } from '../../conexion.mjs';
+import { conexionpool } from '../../conexion.mjs';
 
 
-router.get("/", function (req, res, next) {
 
-  conexion.query("Select idStkUnMed as value, StkUnMedDesc as label from StkUnMed ", function (err, result) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(result);
-    }
-  });
+router.get("/", async (req, res) => {
+  try {
+    const q = `Select idStkUnMed as value, StkUnMedDesc as label from StkUnMed `;
+
+    const [result] = await conexionpool.query(q);
+    return res.json(result);
+  } catch (err) {
+    console.error("Error en el proceso:", err);
+    return res.status(500).json({
+      leyenda: "Error interno del servidor",
+      error: err.message
+    });
+  }
 });
-conexion.end;
+
 export default router;

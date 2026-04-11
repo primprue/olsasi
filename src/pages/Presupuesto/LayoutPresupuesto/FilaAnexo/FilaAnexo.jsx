@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { presupcalculador } from "../../PresupCalculador";
 import { filaanexosColumns } from "./filaanexosColumns";
-import leePresupConfTipoLeeAnexo from "../../leePresupConfTipoLeeAnexo";
+import { leePresupConfTipoLeeAnexo } from "../../leePresupConfTipoLeeAnexo";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import RuleFolderIcon from "@mui/icons-material/RuleFolder";
 import CloseIcon from "@mui/icons-material/Close";
@@ -38,7 +38,7 @@ export default function FilaAnexo(props) {
 	}
 
 	async function cargaAnexos() {
-		const tipoanexo = await leePresupConfTipoLeeAnexo("S", "");
+		const tipoanexo = await leePresupConfTipoLeeAnexo("S", " ");
 		setDatosAnexo(tipoanexo);
 	}
 

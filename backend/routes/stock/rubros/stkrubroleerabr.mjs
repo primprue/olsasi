@@ -1,22 +1,24 @@
 import express from "express";
 var router = express.Router();
 
-import { conexion } from '../../conexion.mjs';
+import { conexionpool } from '../../conexion.mjs';
 
 
 
-router.get("/", function (req, res, next) {
-  var indice = req.params.id;
+router.get("/", async (req, res) => {
+  let q = `Select StkRubroAbr, StkRubroDesc from  StkRubro order by StkRubroDesc`
+  try {
+    const [rows] = await conexionpool.query(q);
 
-  var q = ["Select  StkRubroAbr, StkRubroDesc from StkRubro order by StkRubroDesc"].join(" ");
-  conexion.query(q, function (err, result) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(result);
-    }
-  });
+    res.json(rows);
+  } catch (err) {
+    console.error("Error en la DB:", err);
+    res.status(500).json({
+      error: "Error al obtener los StkRubro",
+      details: err.message
+    });
+  }
 });
 
-conexion.end;
+
 export default router;

@@ -6,7 +6,7 @@ export const CajaInternaLeer = () => {
     return new Promise((resolve) => {
         setTimeout(() => {
             const url = IpServidor + "/cajainternaleer";
-
+            console.log('url leer  ', url)
             request
                 .get(url)
                 .then((res) => {

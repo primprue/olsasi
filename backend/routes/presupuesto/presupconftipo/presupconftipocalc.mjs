@@ -13,12 +13,12 @@ function queryAsync(sql) {
 }
 
 router.get("/", async (req, res) => {
+
   let tipo = req.query.tipo;
   try {
     const datosrec = JSON.parse(req.query.datoscalculo);
     const parametros = await queryAsync(`SELECT * FROM BasePresup.PresupParam`);
     const p = parametros[0];
-
     const resultados = [];
 
     for (const item of datosrec) {
@@ -29,23 +29,19 @@ router.get("/", async (req, res) => {
 
 
       const coefgcia =
-        minmay === "my" ? p.coefMOTmay : p.coefMOTmin;
+        minmay === "my" ? Number(p.coefMOTmay) : Number(p.coefMOTmin);
       let ivasncal = minmay === "my" ? "CIVA" : ivasn;
 
       const q1 = await queryAsync(`SELECT (PresupConfTipoMinMOT * costoMOT / 60) as CostoMotCon
         FROM BasePresup.PresupConfTipo, BasePresup.PresupParam
         where PresupConfTipoDesc = "${tipo}" and PresupConfTipoMinMOT <> 0`);
-
-
       let vlrMOT = 0
-      q1.length === 0 ? vlrMOT = 0 : vlrMOT = Number(q1[0].CostoMotCon);
-
+      q1.length === 0 ? vlrMOT = 0 : vlrMOT = Number(q1[0].CostoMotCon)
       const q2 = await queryAsync(
         `SELECT PresupConfTipoImprime as PresupConfTipoImprime
         FROM BasePresup.PresupConfTipo
         where PresupConfTipoDesc = "${tipo}"`);
       const ImprimeSN = q2[0].PresupConfTipoImprime;
-
 
       const q = await queryAsync(
         `select sum(BaseStock.StkRubro.StkRubroCosto * BaseStock.StkMonedas.StkMonedasCotizacion * BasePresup.PresupConfTipo.PresupConfTipoCant)
@@ -55,19 +51,16 @@ router.get("/", async (req, res) => {
           PresupConfTipoDesc = "${tipo}"`);
       const vlrMAT = Number(q[0].ImpUnitario);
       let ImpUnitario = 0
-      vlrMOT === 0 ? ImpUnitario = vlrMAT : ImpUnitario = (vlrMOT + vlrMAT) * coefgcia;
-
-      let impu = Number(ImpUnitario);
-      ivasncal == 'CIVA' ? impu = impu : impu = impu / 1.21;
-
+      vlrMOT === 0 ? ImpUnitario = vlrMAT : ImpUnitario = parseInt((vlrMOT + vlrMAT) * coefgcia);
+      let impu = Number(ImpUnitario).toFixed(2);
+      ivasncal == 'CIVA' ? impu = Number(impu) : impu = Number(impu) / 1.21;
       resultados.push({
-        ImpUnitario: impu.toFixed(2),
+        ImpUnitario: Number(ImpUnitario),
         ImprimeSN: ImprimeSN,
 
       });
 
     }
-
     res.json(resultados);
 
   } catch (error) {

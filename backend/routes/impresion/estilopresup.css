@@ -1,0 +1,177 @@
+h1 {
+    color: blue;
+    font-size: 20px;
+}
+
+
+.tabla-productos {
+  width: 100%;                /* Tabla ocupa todo el ancho */
+  border-collapse: collapse;  /* Bordes simples en lugar de dobles */
+  margin: 10px 0;             /* Espaciado superior e inferior */
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+}
+
+.tabla-productos th, 
+.tabla-productos td {
+  border: 1px solid #324fd1;    /* Borde suave en celdas */
+  padding: 5px;             /* Espaciado interno */
+  text-align: left;          /* Alineación del texto */
+}
+
+.tabla-productos thead {
+  background-color: #f2f2f2; /* Fondo para encabezado */
+  color: #333;
+}
+
+.tabla-productos {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+/* 1. Centrar todos los títulos de la cabecera */
+.tabla-productos th {
+  text-align: center;
+  padding: 8px;
+   font-size: 12px;
+  background-color: #f2f2f2; /* Opcional: para resaltar el encabezado */
+  border-bottom: 2px solid #ddd;
+}
+
+/* 2. Configuración de anchos (se definen en los th) */
+.tabla-productos th:nth-child(1) { width: 5%;  } /* It */
+.tabla-productos th:nth-child(2) { width: 7%;  } /* Cant */
+.tabla-productos th:nth-child(3) { width: 44%; } /* Descripción */
+.tabla-productos th:nth-child(4) { width: 7%;  } /* Ancho */
+.tabla-productos th:nth-child(5) { width: 7%;  } /* Largo */
+.tabla-productos th:nth-child(6) { width: 15%; } /* Imp. Unidad */
+.tabla-productos th:nth-child(7) { width: 15%; } /* Imp. Item */
+
+/* 3. Alineación del contenido de las celdas */
+.tabla-productos td {
+  padding: 8px;
+  vertical-align: middle;
+}
+
+/* Alineamos a la derecha específicamente las columnas de medidas e importes */
+.tabla-productos td:nth-child(4),
+.tabla-productos td:nth-child(5),
+.tabla-productos td:nth-child(6),
+.tabla-productos td:nth-child(7) {
+  text-align: right;
+}
+
+/* Centramos el ID y la Cantidad */
+.tabla-productos td:nth-child(1),
+.tabla-productos td:nth-child(2) {
+  text-align: center;
+}
+/* Estilos para el pie de la tabla */
+.tabla-productos tfoot tr td {
+    padding: 10px 8px; /* Un poco más de espacio arriba y abajo */
+    border-top: 2px solid #333; /* Una línea más gruesa para separar el total */
+    font-size: 1.1em; /* Un poquito más grande para que resalte */
+}
+
+/* El texto "Total:" (la celda con colspan) */
+.tabla-productos tfoot tr td:first-child {
+    text-align: right;
+    text-transform: uppercase; /* Opcional: "TOTAL" en mayúsculas */
+}
+
+/* El valor del total (la última celda) */
+.tabla-productos tfoot tr td:last-child {
+    text-align: right;
+    color: #000; /* Asegura que sea negro sólido o el color de tu marca */
+}
+.tabla-productos td:nth-child(3) {
+    white-space: normal;       /* Permite que el texto salte de línea */
+    word-wrap: break-word;     /* Rompe palabras largas si es necesario */
+    overflow-wrap: break-word; /* Estándar moderno para romper palabras */
+    line-height: 1.4;          /* Mejora la legibilidad cuando hay varias líneas */
+    vertical-align: top;       /* Opcional: alinea el texto arriba si la fila se estira */
+    padding: 8px;              /* Espaciado interno para que no pegue a los bordes */
+}
+/* Para asegurar que el texto no rompa la tabla si es muy largo */
+.tabla-productos td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+height: auto;
+}
+
+
+    .nropresupuesto {
+        text-align: right;
+        font-size: 14px;
+        padding: 15px;
+    }
+ .contenedor-campos {
+        display: flex;
+        /* Activa Flexbox */
+        gap: 10px;
+        /* Espacio entre campos */
+    }
+
+    .alineado-a-la-derecha {
+        text-align: right;
+    }
+    
+    .alineado-a-la-izquierda {
+        text-align: left;
+    }
+
+    .contenedor-condiciones {
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 10px; /* Ideal para presupuestos */
+}
+
+  h4, h5 {
+    margin: 0;
+    padding: 1px 0; /* Un poquito de aire, pero sin márgenes externos */
+    border: none;   /* Aseguramos que no tengan borde propio */
+}
+
+.item-condicion {
+    padding: 4px 0;
+    border-bottom: 0.5px solid #eee; /* Una línea sutil entre condiciones */
+    color: #007bff; 
+    margin-right: 8px;
+  
+}
+
+.leyenda {
+  border: 2px solid #f1072e;    /* Grosor, estilo (sólido) y color */
+  padding: 10px;             /* Espacio entre el texto y el borde */
+  margin: 10px 0;            /* Espacio por fuera del recuadro */
+  border-radius: 5px;        /* Esquinas redondeadas (opcional) */
+  line-height: 1.5;          /* Mejora la lectura del texto interno */
+    font-size: 14px;
+    color: #ff0000;
+    background-color: rgba(255, 255, 0, 0.397);/* Un fondo sutil para que resalte */
+    margin-top: 20px;
+}
+
+
+.leyendatanque {
+  border: 2px solid #187e04;    /* Grosor, estilo (sólido) y color */
+  padding: 10px;             /* Espacio entre el texto y el borde */
+  margin: 10px 0;            /* Espacio por fuera del recuadro */
+  border-radius: 5px;        /* Esquinas redondeadas (opcional) */
+  line-height: 1.5;          /* Mejora la lectura del texto interno */
+    font-size: 14px;
+    color: #000c0694;
+    background-color: rgba(89, 167, 65, 0.397);/* Un fondo sutil para que resalte */
+    margin-top: 20px;
+}
+.textoinicial {
+    font-size: 14px;
+    color: #f50404;
+    text-align: center;
+}
+.operador {
+    font-size: 6px;
+    color: #080808;
+    text-align: right;
+}

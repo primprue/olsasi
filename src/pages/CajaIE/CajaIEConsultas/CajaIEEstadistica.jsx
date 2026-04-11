@@ -8,7 +8,6 @@ export function CajaIEEstadistica(props) {
     return new Promise((resolve) => {
         setTimeout(() => {
             const url = IpServidor + "/cajaieestadistica/?FechaDesde=" + FechaDesde + "&FechaHasta=" + FechaHasta;
-            console.log('url  ', url)
             request
                 .get(url)
                 .set("Content-Type", "application/json")

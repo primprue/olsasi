@@ -138,7 +138,10 @@ export const GeneraDCalculo = (props, presuptipo, cotidivisa) => {
 		objetoModificado.faltadato = faltadato;
 	}
 
-	if (presuptipo === "PILETA ENROLLABLE" || presuptipo === "PILETAS C/SOGA ELASTICA") {
+	if (presuptipo === "PILETA ENROLLABLE"
+		|| presuptipo === "PILETAS C/SOGA ELASTICA"
+		|| presuptipo === "PILETA CAÑOS Y SOLAPA"
+	) {
 		if (props.PresupAncho === 0) faltadato = true
 		if (props.PresupLargo === 0) faltadato = true
 

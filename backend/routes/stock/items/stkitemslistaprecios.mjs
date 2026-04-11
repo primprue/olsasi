@@ -1,28 +1,25 @@
 import express from "express";
 var router = express.Router();
 
-import { conexion } from '../../conexion.mjs';
+import { conexionpool } from '../../conexion.mjs';
 
 
 
-router.get("/", async function (req, res, next) {
-  var StkItemsGrupo = req.query.idStkGrupo;
-  var StkItemsRubro = req.query.idStkRubro;
+router.get("/", async (req, res) => {
+  const StkItemsGrupo = req.query.idStkGrupo;
+  const StkItemsRubro = req.query.idStkRubro;
+  try {
+    const q = `Select idStkItems as id, StkItemsDesc, StkItemsCantDisp, StkItemsCantidad from StkItems where StkItemsGrupo  = ? and  StkItemsRubro  = ?`;
+    const [result] = await conexionpool.query(q, [StkItemsGrupo, StkItemsRubro]);
+    return res.json(result);
+  } catch (err) {
+    console.error("Error en el proceso:", err);
+    return res.status(500).json({
+      leyenda: "Error interno del servidor",
+      error: err.message
+    });
+  }
 
-  var q = [
-    "Select idStkItems as id, StkItemsDesc, StkItemsCantDisp, StkItemsCantidad from StkItems where StkItemsGrupo  = ",
-    StkItemsGrupo,
-    " and  StkItemsRubro  = ",
-    StkItemsRubro
-  ].join(" ");
-
-  conexion.query(q, function (err, result) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(result);
-    }
-  });
 });
 
 export default router;

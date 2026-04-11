@@ -5,26 +5,10 @@ import backend from '../backend.mjs';
 import debug from 'debug';
 import http from 'http';
 
-// var backend = require('../backend');
-// var debug = require('debug')('backend:server');
-// var http = require('http');
 
-/**
- * Get port from environment and store in Express.
- */
-
-// var port = normalizePort(process.env.PORT || '3000');
 var port = '7000';
 var server;
 
-// console.log('backend  ', backend);
-// console.log('debug  ', debug);
-// console.log('http  ', http);
-// console.log('port  ', port);
-// console.log('server  ', server);
-/**
- * Normalize a port into a number, string, or false.
- */
 
 function normalizePort(val) {
   var port = parseInt(val, 10);
@@ -91,7 +75,9 @@ function onClose() {
 
 function start() {
   console.log('[BOOTING UP BACKEND]');
+
   backend.set('port', port);
+
   server = http.createServer(backend);
 
   server.listen(port);

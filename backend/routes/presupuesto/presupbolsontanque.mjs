@@ -35,7 +35,7 @@ router.get('/', async (req, res, next) => {
 
       } = item;
 
-
+      let ivasnuso = ivasn
       let StkRubroAbrP = StkRubroAbr;
       let medidarec = Number(medida)
       let altodesc = Number(alto)
@@ -242,7 +242,7 @@ router.get('/', async (req, res, next) => {
       if (minmay == 'my') {
         coeficiente = p.coeficientemay
         coefMOT = p.coefMOTmay
-        ivasn = 'CIVA'
+        ivasnuso = 'CIVA'
       }
       else {
         coeficiente = p.coeficientemin
@@ -299,7 +299,7 @@ router.get('/', async (req, res, next) => {
       const d4 = await queryAsync(q4, params4);
       const di = d4[0]
       let impunitario = Number(di.ImpUnitario)
-      if (ivasn === 'CIVA') {
+      if (ivasnuso === 'CIVA') {
         impunitario = Math.ceil(impunitario);
       } else {
         impunitario = Math.ceil(impunitario / 1.21);
@@ -315,7 +315,7 @@ router.get('/', async (req, res, next) => {
       else {
         impunitario = Math.ceil((impunitario + MOTarmadoAd + importesogaper + importecriquetper) / 10) * 10
       }
-      if (ivasn === 'CIVA') {
+      if (ivasnuso === 'CIVA') {
         impunitario = Math.ceil(impunitario / 10) * 10;
       } else {
         impunitario = Math.ceil(impunitario / 1.21 / 10) * 10;

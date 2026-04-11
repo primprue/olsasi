@@ -1,0 +1,113 @@
+import express from "express";
+var router = express.Router();
+
+import moment from "moment";
+import { conexion } from '../conexion.mjs';
+
+moment.locale("es");
+var nroot = 0;
+
+
+router.all("/", async function (req, res) {
+
+    var d = new Date();
+    let finalDate = d.toISOString().split("T")[0];
+    var cliente = 0, clientenoreg = '', importtotal = 0.00, importsenia = 0.00, transporte, OTEncabOC, OTEncabDetalles
+    var i = 0;
+    var registro = {}
+    if (!req.body.otdatos.transporte || req.body.otdatos.transporte === undefined) {
+        transporte = '';
+    } else {
+        transporte = req.body.otdatos.transporte.TransporteDesc;
+    }
+    if (req.body.otdatos.datosencab.length > 1) {
+        cliente = req.body.otdatos.datosencab[1][0].idClientes;
+        clientenoreg = '';
+    } else {
+        cliente = 0;
+        clientenoreg = req.body.otdatos.datosencab[0][0].PresupEncabCliente;
+    }
+    if (req.body.otdatos.TotalPresupuesto === undefined)
+        importtotal = 0.00
+    else
+        importtotal = req.body.otdatos.TotalPresupuesto
+
+    if (req.body.otdatos.OTEncabSenia === undefined)
+        importsenia = 0.00
+    else
+        importsenia = parseFloat(req.body.otdatos.ImporteSenia)
+
+    if (!req.body.otdatos.OTEncabOC || req.body.otdatos.OTEncabOC === undefined) {
+        OTEncabOC = '';
+    } else {
+        OTEncabOC = req.body.otdatos.OTEncabOC;
+    }
+    if (!req.body.otdatos.OTEncabDetalles || req.body.otdatos.OTEncabDetalles === undefined) {
+        OTEncabDetalles = '';
+    } else {
+        OTEncabDetalles = req.body.otdatos.OTEncabDetalles;
+    }
+    registro = {
+        OTEncabCliente: cliente,
+        OTEncabEstado: 1,
+        OTEncabClienteNoReg: clientenoreg,
+        OTEncabFecha: finalDate,
+        OTEncabFechaPromesa: req.body.otdatos.FechaPromesa,
+        OTEncabImpTotal: importtotal,
+        OTEncabSenia: importsenia,
+        OTEncabconIVA: req.body.otdatos.OTEncabconIVA,
+        OTEncabTransporte: transporte,
+        OTEncabOC: OTEncabOC,
+        OTEncabDetalles: OTEncabDetalles
+    }
+    conexion.query("INSERT INTO BasesOrdenes.OTEncab SET ?", registro, function (err, result) {
+        if (err) {
+            if (err.errno == 1062) {
+                return res.status(409).send({ message: "error clave duplicada" });
+            } else {
+                console.log("ERROR en INSERT INTO BasesOrdenes.OTEncab");
+                console.log(err.errno);
+            }
+        } else {
+            console.log('insertó todo bien en BasesOrdenes.OTEncab')
+            res.json(result);
+            nroot = result.insertId
+        }
+        req.body.otdatos.renglonespresup.map(renglon => {
+            var registro1 = {
+                OTRenglonNro: i + 1,
+                idOTRenglonNroOT: nroot,
+                OTRenglonCant: renglon[0].PresupRenglonCant,
+                OTRenglonDesc: renglon[0].PresupRenglonDesc,
+                OTRenglonLargo: renglon[0].PresupRenglonLargo,
+                OTRenglonAncho: renglon[0].PresupRenglonAncho,
+                OTRenglonImpItem: renglon[0].PresupRenglonImpItem,
+                OTRenglonParamInt: renglon[0].PresupRenglonParamInt,
+                OTRenglonDetalles: JSON.stringify(req.body.otdatos.datosconfec)
+            }
+            conexion.query("INSERT INTO BasesOrdenes.OTRenglon SET ?", registro1,
+                function (err, result) {
+                    if (err) {
+                        console.log('err en back de otgraba ', err)
+                        if (err.errno == 1265) {
+                            return res.status(413).send({ message: "Faltan datos para leer información en tabl" });
+                        }
+                        else {
+                            console.log("ERROR en INSERT INTO BasesOrdenes.OTRenglon ");
+                            console.log(err.errno);
+                        }
+                    }
+                    else {
+                        console.log('insertó todo bien en el renglon de Orden de Trabajo')
+                        //   res.json('');
+                    }
+                });
+
+            i++
+        })
+
+    })
+})
+
+conexion.end
+export default router;

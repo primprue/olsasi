@@ -1,27 +1,22 @@
 import express from "express";
 var router = express.Router();
-import { conexion } from '../../conexion.mjs';
-
-function queryAsync(sql, values) {
-  return new Promise((resolve, reject) => {
-    conexion.query(sql, values, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
-}
+import { conexionpool } from '../../conexion.mjs';
 
 
 
-router.get("/", function (req, res, next) {
+
+router.get("/", async (req, res) => {
   let q = `Select idPresupDetPie as id, PresupDetPieLeyenda, PresupDetPieSelec from BasePresup.PresupDetPie order by PresupDetPieLeyenda`;
   try {
-    let result = queryAsync(q);
-    res.json(result);
+    const [rows] = await conexionpool.query(q);
+    res.json(rows);
   } catch (err) {
-    console.log(err);
+    console.error("Error en la DB:", err);
+    res.status(500).json({
+      error: "Error al obtener los leyendas de pie de presupuesto",
+      details: err.message
+    });
   }
 
 });
-conexion.end;
 export default router;

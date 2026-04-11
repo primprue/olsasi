@@ -9,7 +9,7 @@ moment.locale('es');
 
 
 
-router.post("/?:id", function (req, res) {
+router.post("/:id", function (req, res) {
   var d = new Date();
   var indice = req.params.id;
   var cliendesc = req.body.ClientesDesc;

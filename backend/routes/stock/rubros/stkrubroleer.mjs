@@ -1,7 +1,7 @@
 import express from "express";
 var router = express.Router();
 
-import { conexion } from '../../conexion.mjs';
+import { conexionpool } from '../../conexion.mjs';
 
 
 
@@ -9,10 +9,10 @@ router.get("/", async (req, res) => {
 
   let q = `Select idStkRubro as id, StkRubroCodGrp, StkRubroDesc, StkRubroAbr, 
     StkRubroProv, StkRubroAncho, StkRubroPres, StkRubroPresDes, StkRubroUM,
-    'StkRubroCosto, StkRubroTM, StkRubroConf from  StkRubro order by StkRubroDesc`
+    StkRubroCosto, StkRubroTM, StkRubroConf from  StkRubro order by StkRubroDesc`
   try {
-    const [rows] = await conexion.query(q);
-
+    const [rows] = await conexionpool.query(q);
+    console.log('rows  ', rows)
     res.json(rows);
   } catch (err) {
     console.error("Error en la DB:", err);

@@ -10,14 +10,12 @@ import { llenarcolumns } from "./columns.jsx";
 import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
-import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
 import SaveAsTwoToneIcon from "@mui/icons-material/SaveAsTwoTone";
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
-import { deepOrange, red, blue, green, purple, yellow } from "@mui/material/colors";
+import { deepOrange, red, green, purple, yellow } from "@mui/material/colors";
 import { CurrencyTextField } from "../../../../hooks/useCurrencyTextField";
 import EstTF from "../../../../Styles/TextField.module.css";
 import FilaCuatro from "../FilaCuatro/FilaCuatro";
-import { PresupPreview } from "../PresupPreview";
 import FilaAnexo from "../FilaAnexo/FilaAnexo";
 // Context
 import { use } from "react";
@@ -29,18 +27,15 @@ export default function TablaPresup(props) {
 	const { state } = use(PresupPant);
 	const { datosrenglon, setDatosRenglon } = use(PresupPant);
 	const [anexos, setAnexos] = useState({ anexos: false });
-	const [ppreview, setPPreview] = useState({ ppreview: false });
 	const [filacuatro, setFilacuatro] = useState({ filacuatro: false });
 	const [columns, setColumns] = useState([]);
 	async function columnsFetch() {
 		var col = await llenarcolumns();
 		setColumns(() => col);
 	}
-	// const [suma, setSuma] = useState(0);
 	const { suma, setSuma } = use(PresupPant);
 
 	const BorraFila = () => {
-		// var datosrenglon1 = [];
 		if (rowSelectionModel.length !== 0) {
 			rowSelectionModel.map((row) =>
 				setDatosRenglon(datosrenglon.filter((rows) => rows.id !== row))
@@ -112,7 +107,6 @@ export default function TablaPresup(props) {
 							titleAccess="Sumar"
 						/>
 
-						{/* onAnimationStartnClick={() => setAnexos({ anexos: true })} */}
 						<AttachFileIcon
 							onClick={() => setAnexos({ anexos: true })}
 							style={{ color: purple[500] }}
@@ -123,17 +117,11 @@ export default function TablaPresup(props) {
 							onClick={() => setFilacuatro({ filacuatro: true })}
 							style={{ color: deepOrange[500] }}
 							fontSize="medium"
-							titleAccess="Grabar"
-						/>
-						<LocalPrintshopRoundedIcon
-							onClick={() => setPPreview({ ppreview: true })}
-							style={{ color: blue[500] }}
-							fontSize="medium"
-							titleAccess="Imprimir"
+							titleAccess="Vista Previa y Grabar"
 						/>
 
+
 					</Box></Box>
-				{/* <Button onClick={handleClose}>Cierra</Button> */}
 			</GridToolbarContainer>
 		);
 	}
@@ -169,7 +157,6 @@ export default function TablaPresup(props) {
 						onRowSelectionModelChange={(newRowSelectionModel) => {
 							setRowSelectionModel(newRowSelectionModel);
 						}}
-						// autoHeight={true}
 						localeText={esES}
 						shape="rounded"
 						slots={{
@@ -190,11 +177,6 @@ export default function TablaPresup(props) {
 				)}
 			</div>
 			<FilaAnexo open={anexos.anexos} setOpen={setAnexos} />
-			<PresupPreview
-				open={ppreview.ppreview}
-				setOpen={setPPreview}
-			></PresupPreview>
-
 			<FilaCuatro
 				open={filacuatro.filacuatro}
 				datos={datosrenglon}

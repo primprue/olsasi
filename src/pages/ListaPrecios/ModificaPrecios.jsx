@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { stkrubroleer } from "../Tablas/StkRubros/StkRubroLeer";
-import { stkgrupolee } from "../Tablas/StkGrupos/StkGrupoLee";
+// import { stkrubroleer } from "../Tablas/StkRubros/StkRubroLeer";
+// import { stkgrupolee } from "../Tablas/StkGrupos/StkGrupoLee";
+import { DatosLeer } from '../../components/DatosLeer';
 import { Proveedoresleertipo26 } from "../Tablas/Proveedores/Proveedoresleertipo26";
 import { initial_state } from "./Initial_State";
 import TextFieldSelect from '../../components/comppropios/TextFieldSelect';
@@ -9,10 +10,11 @@ import TextFieldComun from '../../components/comppropios/TextFieldComun';
 import EstiloBoton from "../../Styles/Boton.module.css";
 import { Button, Grid } from '@mui/material';
 import { ModPrecios } from "./ModPrecios";
+import formdatag from "../Tablas/StkGrupos/formdata.js";
+import formdatar from "../Tablas/StkRubros/formdata.js";
 export default function ModificaPrecios() {
 	const [opcionselecPGR, setOpcionSelecPGR] = useState('');
 	const [opcionImpPes, setOpcionImpPes] = useState('');
-	// const [valorSeleccionado, setValorSeleccionado] = useState('');
 	const [state, setState] = useState(initial_state);
 	const [proveedores, setProveedores] = useState([]);
 	const [grupos, setGrupos] = useState([]);
@@ -93,19 +95,34 @@ export default function ModificaPrecios() {
 	}
 
 	async function gruposleer() {
-		const data = await stkgrupolee();
+		// const data = await stkgrupolee();
+		const data = await DatosLeer(formdatag.nombackleer);
 		setGrupos(data);
 	}
 
 	async function rubrosleer() {
-		const data = await stkrubroleer();
+		// const data = await stkrubroleer();
+		const data = await DatosLeer(formdatar.nombackleer);
 		setRubros(data);
 	}
 	useEffect(() => {
-		proveedorleer();
-		gruposleer();
-		rubrosleer();
-	}, []); // eslint-disable-line react-hooks/exhaustive-deps
+		const leerTodo = async () => {
+			try {
+				await proveedorleer(); // Espera a que termine este...
+				await gruposleer();    // ...luego este...
+				await rubrosleer();    // ...y finalmente este.
+			} catch (error) {
+				console.error("Error cargando datos:", error)
+			}
+		};
+
+		leerTodo();
+	}, []);
+	// useEffect(() => {
+	// 	proveedorleer();
+	// 	gruposleer();
+	// 	rubrosleer();
+	// }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 
 	const [selectedValues, setSelectedValues] = useState('');

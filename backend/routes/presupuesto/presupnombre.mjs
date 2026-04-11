@@ -1,3 +1,4 @@
+
 import express from "express";
 var router = express.Router();
 
@@ -7,7 +8,6 @@ import variables from '../../public/variables.mjs';
 import path from "path";
 const dirpresupdocumento = path.resolve(variables.dirpresupdocumento);
 const caminoynombrearch = path.resolve(variables.caminoynombrearch);
-
 
 
 router.get("/", function (req, res) {
@@ -30,20 +30,6 @@ router.get("/", function (req, res) {
         res.json({ success: true });
     });
 
-    // exec(comando, (error, stdout, stderr) => {
-    //     if (error) {
-    //         console.log(`error: ${error.message}`);
-    //         console.log(`error: ${error.code}`);
-    //         res.json([{ error: error.code }])
-
-    //         return;
-    //     }
-    //     if (stderr) {
-    //         console.log(`stderr: ${stderr}`);
-    //         return ('exito');
-    //     }
-    //     res.json(stdout)
-    // });
 })
 
 export default router;
@@ -51,6 +37,20 @@ export default router;
 
 
 
+// exec(comando, (error, stdout, stderr) => {
+//     if (error) {
+//         console.log(`error: ${error.message}`);
+//         console.log(`error: ${error.code}`);
+//         res.json([{ error: error.code }])
+
+//         return;
+//     }
+//     if (stderr) {
+//         console.log(`stderr: ${stderr}`);
+//         return ('exito');
+//     }
+//     res.json(stdout)
+// });
 
 // const express = require('express');
 // const path = require('path');

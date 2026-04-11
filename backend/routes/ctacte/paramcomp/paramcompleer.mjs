@@ -1,21 +1,21 @@
 import express from 'express';
 var router = express.Router();
+import { conexionpool } from '../../conexion.mjs';
 
-import { conexion } from '../../conexion.mjs';
 
-router.get('/', function (req, res, next) {
-    var q = ['SELECT idParamComp as id,  ParamCompLetra, ParamCompAbrev, ParamCompSuc, ParamCompNro, ParamCompSR, ParamCompDesc, ParamCompDisc, ParamCompIVAAsoc FROM CtaCte.ParamComp '].join(' ')
-
-    conexion.query(q,
-        function (err, result) {
-            if (err) {
-                console.log(err.errno);
-            } else {
-                res.json(result);
-            }
+router.get('/', async (req, res) => {
+    try {
+        const q = `SELECT idParamComp as id,  ParamCompLetra, ParamCompAbrev, ParamCompSuc, ParamCompNro, ParamCompSR, ParamCompDesc, ParamCompDisc, ParamCompIVAAsoc FROM CtaCte.ParamComp `;
+        const [result] = await conexionpool.query(q);
+        return res.json(result);
+    } catch (err) {
+        console.error("Error en el proceso:", err);
+        return res.status(500).json({
+            leyenda: "Error interno del servidor",
+            error: err.message
         });
-
+    }
 
 });
-conexion.end;
+
 export default router;

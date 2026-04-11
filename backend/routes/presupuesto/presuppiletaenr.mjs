@@ -62,20 +62,17 @@ router.get("/", async (req, res) => {
 
 
       let coefmaymin = 0;
-      let ivareal = ''
       let coefMOT = 0;
       let tipoojal = '';
-
+      let ivasncal = minmay === "my" ? "CIVA" : ivasn;
       if (minmay == 'my') {
         coefmaymin = Number(p.coeficientemay) || 0;
         tipoojal = p.abrojales28;
         coefMOT = Number(p.coefMOTmay) || 0;
-        ivareal = 'CIVA'
       }
       else {
         coefmaymin = Number(p.coeficientemin) || 0;
         coefMOT = Number(p.coefMOTmin) || 0;
-        ivareal = ivasn
       }
       const detojal = (tipoojale === "hz") ? " de hierro " : " de bronce ";
       tipoojal = (tipoojale === "hz") ? p.abrojales3hz : p.abrojales3b;
@@ -112,7 +109,7 @@ router.get("/", async (req, res) => {
 
       let costo = Number(mcuadcob.ImpUnitario) + Number(ojales.ValorOjales) + valorMOT
       // IVA / redondeo
-      if (ivasn === "CIVA") {
+      if (ivasncal === "CIVA") {
         costo = Math.ceil(costo);
       } else {
         costo = Math.ceil(costo / 1.21);

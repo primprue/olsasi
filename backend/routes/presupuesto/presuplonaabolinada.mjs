@@ -27,7 +27,7 @@ router.get("/", async (req, res) => {
       const cantidad = item.cantidad;
       const tipoojale = item.tipoojale;
       const detallep = item.detallep;
-      const ojalescada = item.presupojalesc;
+      const ojalescada = Number(item.presupojalesc);
       const StkRubroAbrP = item.StkRubroAbr;
       const largoreal = parseFloat(item.largo);
       const anchoreal = parseFloat(item.ancho);
@@ -40,13 +40,11 @@ router.get("/", async (req, res) => {
       let coef = p.coeficientemin;
       let sogachicote = p.sogachicotemin;
       let ganancia = p.coefgancsoga;
-      let ivasn = item.ivasn;
-
+      let ivasncal = item.minmay === "my" ? "CIVA" : item.ivasn;
       if (item.minmay == "my") {
         coef = p.coeficientemay;
         sogachicote = p.sogachicotemay;
         ganancia = p.coefganmay;
-        ivasn = "CIVA";
       }
 
       const tipoojal = (tipoojale === "hz") ? "OHCOL" : "OBCOL";
@@ -65,8 +63,7 @@ router.get("/", async (req, res) => {
 
               (
                 SELECT SUM(r5.StkRubroCosto * m5.StkMonedasCotizacion)
-                FROM BasePresup.PresupConfTipo t
-                  JOIN BaseStock.StkRubro r5 ON t.PresupConfTipoRubro = r5.StkRubroAbr
+                FROM  BaseStock.StkRubro r5 
                   JOIN BaseStock.StkMonedas m5 ON r5.StkRubroTM = m5.idStkMonedas
                 WHERE r5.StkRubroAbr = ?
               ) AS CostoOjalM2
@@ -125,16 +122,13 @@ router.get("/", async (req, res) => {
       const metrosCuad = largoreal * anchoreal;
 
       let costoOjalUnit = d.CostoOjalM2;
-
-      costo = costo * ganancia * p.coefimpuestos;
+      costo = costo * Number(ganancia) * Number(p.coefimpuestos);
       costo = costo * metrosCuad;
-
       // soga para abolinar (ciclos)
       let ciclo = 0;
       if (metrosCuad < 12) ciclo = 3;
       else if (metrosCuad < 16) ciclo = 2;
       else if (metrosCuad < 22) ciclo = 1;
-
       for (let i = 0; i < ciclo; i++) {
         costo *= 1.0325;
       }
@@ -142,10 +136,11 @@ router.get("/", async (req, res) => {
       // costo ojales
       const totalOjales = perimetro / (ojalescada / 100);
       const costoOjales = totalOjales * costoOjalUnit;
+
       costo += costoOjales;
 
       // IVA / redondeo
-      if (ivasn === "CIVA") {
+      if (ivasncal === "CIVA") {
         costo = Math.ceil(costo / 10) * 10;
       } else {
         costo = Math.ceil(costo / 1.21 / 10) * 10;

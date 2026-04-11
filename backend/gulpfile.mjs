@@ -4,7 +4,6 @@ import browserSync from 'browser-sync';
 
 const bs = browserSync.create();
 
-// const browserSync = require('browser-sync').create();
 import nodemon from 'gulp-nodemon';
 
 
@@ -45,7 +44,6 @@ gulp.task('browser-sync:reload', function (done) {
   done();
 });
 
-// gulp.task('debug',['nodemon','browser-sync'], function (done) {
 gulp.task('debug', gulp.series('nodemon', 'browser-sync'), function (done) {
   console.log('[STARTING BACKEND]');
 });
@@ -53,51 +51,3 @@ gulp.task('debug', gulp.series('nodemon', 'browser-sync'), function (done) {
 
 
 
-/**
- * 
- * 
- * 
- * var command;
-  gulp.task('server:debug', function (cb) {
-    process.env.DEBUG = 'backend:*';
-    command = spawn('node', ['bin/boot-backend.js'] );
-    console.log('[STARTING NEW PROCESS]', command.pid)
-  // command = spawn('ls', ['-la'] );
-  
-  command.stdout.on('data', (data) => {
-    console.log(`stdout: ${data}`);
-  });
-  
-  command.stderr.on('data', (data) => {
-    console.log(`stdout: ${data}`);
-  });
-
-  command.on('close', (code) => {
-    console.log(`child process exited with code ${code}`);
-  });
- 
-});
-
-
-
-gulp.task('kill:server', function(done) {
-  if (command){
-    console.log('[KILLING PROCESS]', command.pid);
-    command.kill('SIGHUP');//'SIGHUP'
-    // command = null;
-  }
-  done();
-});
-
-
-  gulp.task('server:start', function (done) {
-    server.start();
-    done();
-  });
-  gulp.task('server:stop', function (done) {
-    server.stop();
-    done();
-  });
-  
-
- */

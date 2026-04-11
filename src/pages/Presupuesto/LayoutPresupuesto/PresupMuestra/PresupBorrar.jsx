@@ -9,11 +9,7 @@ export function PresupBorrar(props) {
 		.delete(url)
 		.set("Content-Type", "application/json")
 		.then(function (res) {
-			MuestraMensaje(res[0]);
-			MuestraMensaje(res[1]);
-			MuestraMensaje(res[2]);
+			MuestraMensaje(res);
 		})
-		.catch((err) => {
-			MuestraMensaje(err);
-		});
+		.catch((err) => MuestraMensaje(err));
 }

@@ -7,12 +7,12 @@ import { BilletesLeer } from './BilletesLeer';
 import { CajaSaldoEfLeer } from './CajaSaldoEfLeer';
 import { CajaIESumaMov } from './CajaIESumaMov';
 import ArchiveIcon from "@mui/icons-material/Archive";
-import { leerStkMonedas } from '../Tablas/Monedas/StkMonedasLeer';
+// import { leerStkMonedas } from '../Tablas/Monedas/StkMonedasLeer';
+import { DatosLeer } from "../../components/DatosLeer.jsx";
 import { green } from "@mui/material/colors";
-import CloseIcon from '@mui/icons-material/Close';
 import BilletesQuedan from './BilletesQuedan';
 import { CajaCierreParamLee } from './CajaCierreParamLee';
-
+import formdata from "../Tablas/Monedas/formdata.js";
 export default function CajaCierre({ rows, onClose }) {
     const [snackbar, setSnackbar] = useState(null);
     const [billetes, setBilletes] = useState([]);
@@ -42,11 +42,11 @@ export default function CajaCierre({ rows, onClose }) {
     async function cajaiesumamov() {
         const data = await CajaIESumaMov();
         setTotales((Array.isArray(data[0]) ? data[0][0] : data[0]).TotalesPorMoneda);
-        // setTotales(data[0][0].TotalesPorMoneda);
     }
     /*este es para agregar el saldo anterior al total*/
     async function leemonedas() {
-        const data = await leerStkMonedas();
+        // const data = await leerStkMonedas();
+        const data = await DatosLeer(formdata.nombackleer);
         setMonedas(data);
     }
 
@@ -305,158 +305,3 @@ export default function CajaCierre({ rows, onClose }) {
     );
 
 }
-
-{/* <Stack mt={2} direction="row" spacing={2}>
-                                                    {(() => {
-                                                        const { total, diferencia } =
-                                                            calcularTotalBilletes(moneda.id);
-
-                                                        return (
-                                                            <>
-                                                                <Typography fontWeight="bold">
-                                                                    Total billetes:
-                                                                </Typography>
-                                                                <Typography color="green">{total}</Typography>
-
-                                                                <Typography fontWeight="bold">
-                                                                    Total esperado:
-                                                                </Typography>
-                                                                <Typography color="green">
-                                                                    {totales[moneda.id]?.totalMEsp.toLocaleString(
-                                                                        "es-AR",
-                                                                        {
-                                                                            style: "currency",
-                                                                            currency: moneda.id,
-                                                                        }
-                                                                    )}
-                                                                </Typography>
-
-                                                                <Typography fontWeight="bold">
-                                                                    Diferencia :
-                                                                </Typography>
-                                                                <Typography
-                                                                    color={diferencia === 0 ? "green" : "red"}
-                                                                >
-                                                                    {diferencia}
-                                                                </Typography>
-                                                            </>
-                                                        );
-                                                    })()}
-                                                </Stack> */}
-
-// función que calcula el total de billetes para una moneda
-// const calcularTotalBilletes = (monedaId) => {
-//     if (!cantidades[monedaId]) return 0;
-
-//     const total1 = Object.entries(cantidades[monedaId]).reduce(
-//         (acum, [denominacion, cant]) =>
-//             acum + parseInt(denominacion, 10) * cant,
-//         0
-//     )
-
-//     const total = total1.toLocaleString("es-AR", {
-//         style: "currency",
-//         currency: monedaId,
-//     })
-
-//     const diferencia = (totales[monedaId]?.totalMEsp - total1)
-//         .toLocaleString("es-AR", {
-//             style: "currency",
-//             currency: monedaId,
-//         })
-
-
-//     return { total, diferencia };
-// };
-// const GrabCierraLimpia = () => {
-//     console.log('totalqueda', totalqueda)
-// }
-
-{/* <Dialog open={bilquedan} onClose={() => setBilquedan(false)} maxWidth="lg" >
-                <DialogTitle
-                    sx={{ textAlign: "center", position: "relative", cursor: "move" }}
-                >
-                    Billetes que quedan en caja
-                    <IconButton
-                        aria-label="close"
-                        onClick={() => setBilquedan(false)}
-                        sx={(theme) => ({
-                            position: "absolute",
-                            right: 8,
-                            top: 8,
-                            color: theme.palette.grey[500],
-                        })}
-                    >
-                        <CloseIcon />
-                    </IconButton>
-                </DialogTitle>
-
-
-                {monedas.map((moneda) => (
-                    <Box
-                        key={moneda.id}
-                        mt={2}
-                        display="grid"
-                        gridTemplateColumns="repeat(10, 1fr)"
-                        gap={2}
-                        borderRadius="10px"
-
-                        margin={2}
-
-                    >
-                        {billetes
-                            .filter((b) => b.BilletesMoneda === moneda.id)
-                            .map(({ label }) => (
-                                <TextField
-                                    key={`${moneda.id}-${label}`}
-                                    label={`${label} ${moneda.StkMonedasSigno}`}
-                                    type="number"
-                                    value={cantidadesBilquedan[moneda.id]?.[label] || ""}
-                                    onChange={(e) =>
-                                        handleChangeBilquedan(moneda.id, label, e)
-                                    }
-                                />
-                            ))}
-
-
-                        <Box gridColumn="1 / -1">
-                            {(() => {
-                                const { total } = calcularTotalBilletesQ(moneda.id);
-                                return (
-                                    <Stack direction="row" spacing={2} alignItems="center">
-                                        <Typography fontWeight="bold">Total dinero en Caja:</Typography>
-                                        <Typography color="green">{total}</Typography>
-                                    </Stack>
-                                );
-                            })()}
-                        </Box>
-                    </Box>))}
-
-                <IconButton onClick={() => GrabCierraLimpia()}>
-                    <ArchiveIcon style={{ color: green[500] }} />
-                </IconButton>
-
-            </Dialog> */}
-
-// // función que calcula el total de billetes para una moneda
-// const calcularTotalBilletesQ = (monedaId) => {
-//     if (!cantidadesBilquedan[monedaId]) return 0;
-
-//     const total1 = Object.entries(cantidadesBilquedan[monedaId]).reduce(
-//         (acum, [denominacion, cant]) =>
-//             acum + parseInt(denominacion, 10) * cant,
-//         0
-//     )
-
-//     const total = total1.toLocaleString("es-AR", {
-//         style: "currency",
-//         currency: monedaId,
-//     })
-
-//     setTotalqueda((prev) => ({
-//         ...prev,
-//         [monedaId]: total, // 👈 valor numérico crudo
-//     }));
-//     return { total };
-
-// };

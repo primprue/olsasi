@@ -1,46 +1,42 @@
 import express from 'express';
 var router = express.Router();
-import moment from 'moment';
-import { conexion } from '../conexion.mjs';
+import { conexionpool } from '../conexion.mjs';
 
 
-moment.locale('es');
 
 
-router.post('/', function (req, res, next) {
-
-    var registro = {
-        TransporteDesc: req.body.transdesc,
-        TransporteTel1: req.body.transtel1,
-        TransporteTel2: req.body.transtel2,
-        TransporteWA: req.body.transwa,
-        TransporteMail: req.body.transnromail,
-        TransporteDom: req.body.transdom,
-        TransporteLoc: req.body.transloc,
-        TransporteDestino: req.body.transdestino,
-        TransporteObser: req.body.transobser
+router.post('/', async (req, res) => {
+    const registro = {
+        TransporteDesc: req.body.TransporteDesc.toUpperCase(),
+        TransporteTel1: req.body.TransporteTel1,
+        TransporteTel2: req.body.TransporteTel2,
+        TransporteWA: req.body.TransporteWA,
+        TransporteMail: req.body.TransporteMail,
+        TransporteDom: req.body.TransporteDom,
+        TransporteLoc: req.body.TransporteLoc,
+        TransporteDestino: req.body.TransporteDestino.toUpperCase(),
+        TransporteObser: req.body.TransporteObser
     }
-
-    conexion.query('INSERT INTO BasesGenerales.Transporte SET ?', registro,
-        function (err, result) {
-            if (err) {
-                if (err.errno == 1062) {
-                    return res.status(409).send({ message: "error clave duplicada" });
-                }
-                else
-                    if (err.errno == 1406) {
-                        return res.status(410).send({ message: "excede los digitos permitidos" });
-                    }
-                    else {
-                        console.log('error en proveedores ', err.errno);
-                    }
-            } else {
-                res.json(result.rows);
-            }
+    try {
+        const q = `INSERT INTO BasesGenerales.Transporte SET ?`;
+        await conexionpool.query(q, [registro]);
+        return res.status(201).json({
+            leyenda: 'Transporte creado correctamente',
         });
+    } catch (err) {
+        console.error("Error en el proceso:", err);
+        // Manejo de errores específicos de SQL
+        if (err.errno === 1062) {
+            return res.status(460).json({ message: "Clave duplicada" });
+        }
+        if (err.errno === 1406) {
+            return res.status(410).json({ message: "Dato demasiado largo para una columna" });
+        }
+        return res.status(500).json({
+            leyenda: "Error interno del servidor",
+            error: err.message
+        });
+    }
 });
-
-
-
 
 export default router;

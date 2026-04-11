@@ -6,20 +6,6 @@ async function queryAsync(sql, params = []) {
     const [rows] = await conexion.promise().query(sql, params);
     return rows;
 }
-// router.get('/', function (req, res, next) {
-//     let q1 = ['SELECT idCajaCP as value, CajaCPDesc as label  FROM BaseCaja.CajaCP'].join(' ')
-//     conexion.query(q1,
-//         function (err, result) {
-//             if (err) {
-//                 console.log(err);
-
-//             } else {
-//                 res.json(result);
-//             }
-//         });
-// });
-
-// export default router;
 
 
 router.get('/', async (req, res) => {

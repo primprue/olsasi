@@ -2,263 +2,156 @@ import express from 'express';
 var router = express.Router();
 import { conexion } from '../conexion.mjs';
 
-var datosenvio = []
 
-router.get('/', (req, res, next) => {
-  var q, i = 0
-  var coeficiente = 0, cantidad = 0, StkRubroAbrP = '', largo = 0.00, ancho = 0.00, paniotirasi5070 = 0.00
-  var datosrec, totalreg, cantHeb, detallep, ivasn, tipoheb, cantCarro, cantPlaca
-  var tipoplaca, tipocarro, colocacion, largocalc, coefMOT, valorMOTmin, MOTarmado, detalle
-  var valorheb, valorplaheb, valorind, valcarro, valorplaca, valortela
+/* LA MANO DE OBRA ES u$s 2 POR METRO CUADRDADO, NO INFLUYE EL VALOR DE LA MOT*/
 
+async function queryAsync(sql, params = []) {
+  const [rows] = await conexion.promise().query(sql, params);
+  return rows;
+}
+router.get("/", async (req, res) => {
+  try {
+    const datosRec = JSON.parse(req.query.datoscalculo);
+    const parametros = await queryAsync(`SELECT * FROM BasePresup.PresupParam`);
+    const p = parametros[0];
 
-  q = ['select * from BasePresup.PresupParam'].join(' ')
-  conexion.query(q,
-    function (err, result) {
-      if (err) {
-        console.log(err);
+    const resultados = [];
+
+    for (const item of datosRec) {
+
+      const cantidad = item.cantidad;
+      const StkRubroAbrP = item.StkRubroAbr;
+      const detallep = item.detallep
+      const ivasn = item.ivasn;
+      const ancho = Number(item.ancho)
+      const cantHeb = Number(item.cantHeb)
+      const tipoheb = item.tipoheb
+      const cantCarro = Number(item.cantCarro)
+      const cantPlaca = Number(item.cantPlaca)
+      const tipoplaca = item.tipoplaca
+      const tipocarro = item.tipocarro
+      const largo = Number(item.largo)
+      const largocalc = Number(item.largo) + 0.40
+      const colocacion = item.colocacion;
+      let coeficiente = 0
+      let coefMOT = 0
+      let ivasncal = item.minmay === "my" ? "CIVA" : ivasn;
+      if (item.minmay == 'my') {
+        coeficiente = Number(p.coeficientemay)
+        coefMOT = Number(p.coefMOTmay)
       }
-      var costooriginal = 0;
-      datosrec = JSON.parse(req.query.datoscalculo)
-      totalreg = datosrec.length
-      datosrec.map(datos => {
-        cantidad = datos.cantidad;
-        StkRubroAbrP = datos.StkRubroAbr;
-        detallep = datos.detallep
-        ivasn = datos.ivasn;
-        ancho = datos.ancho * 1
-        cantHeb = datos.cantHeb * 1
-        tipoheb = datos.tipoheb
-        cantCarro = datos.cantCarro * 1
-        cantPlaca = datos.cantPlaca * 1
-        tipoplaca = datos.tipoplaca
-        tipocarro = datos.tipocarro
-        largo = (datos.largo * 1)
-        largocalc = (datos.largo * 1) + 0.40
-        colocacion = datos.colocacion;
+      else {
+        coeficiente = Number(p.coeficientemin)
+        coefMOT = Number(p.coefMOTmin)
+      }
 
-        if (datos.minmay == 'my') {
-          coeficiente = result[0].coeficientemay
-          coefMOT = result[0].coefMOTmay
-          ivasn = 'CIVA'
+      let valorMOTmin = Number(p.costoMOT) * Number(coefMOT) / 60
+      let minutosarmado = 0
+      let detalle = ''
+      //se calculan 50 minutos por metro de largo para hacer la lona, y 60 minutos para colocacion
+      minutosarmado = colocacion ? (largo * 40) + 60 : (largo * 40)
+
+      let MOTarmado = minutosarmado * valorMOTmin
+
+      if (detallep == '') {
+        detalle = "Confección de lona para lateral corredizo de " + largo + " x " + ancho
+        detalle = `${detalle} con ${cantHeb} hebillas y ${cantCarro} carros`
+
+        if (colocacion) {
+          detalle = detalle + " (incluye colocación)"
         }
         else {
-          coeficiente = result[0].coeficientemin
-          coefMOT = result[0].coefMOTmin
+          detalle = detalle + " (sin colocación)"
         }
+        detalle = detalle + ' en : '
+      }
 
-        valorMOTmin = result[0].costoMOT * coefMOT / 60
-        let minutosarmado = 0
-        //se calculan 50 minutos por metro de largo para hacer la lona, y 60 minutos para colocacion
-        minutosarmado = colocacion ? (largo * 40) + 60 : (largo * 40)
+      else {
+        detalle = detallep + ''
+      }
+      let impheb = 0
+      let impplacaheb = 0
+      let impcarro = 0
+      let impplaca = 0
+      let impind = 0
+      let imptela = 0
+      if (cantHeb != 0) {
+        const valorheb = `Select  StkRubroAbr, (StkRubroCosto * StkMonedasCotizacion * ? * ? ) as valorhebillas, 
+        StkRubroCosto,  StkMonedasCotizacion  from BaseStock.StkRubro JOIN  BaseStock.StkMonedas
+        where StkRubro.StkRubroAbr = ? and StkRubro.StkRubroTM = idStkMonedas`
+        const paramscantHeb = [coeficiente, cantHeb, tipoheb]
 
-        MOTarmado = minutosarmado * valorMOTmin
+        //valor placa hebilla y carro
+        const valorplaheb = `Select  StkRubroAbr, (StkRubroCosto * StkMonedasCotizacion * ? * ? ) as valorplacaheb, 
+        StkRubroCosto,  StkMonedasCotizacion  from BaseStock.StkRubro JOIN  BaseStock.StkMonedas
+        where StkRubro.StkRubroAbr = ? and StkRubro.StkRubroTM = idStkMonedas`
+        const paramsvalorplaheb = [coeficiente, cantHeb, 'AL022']
 
-        if (detallep == '') {
-          detalle = "Confección de lona para lateral corredizo de " + largo + " x " + ancho
-          detalle = `${detalle} con ${cantHeb} hebillas y ${cantCarro} carros`
-          // if (cantHeb != 0) {
-          //   detalle = detalle + " con  " + cantHeb + " hebillas "
-          // }
-          // if (cantCarro != 0) {
-          //   if (cantHeb != 0) {
-          //     detalle = detalle + " y " + cantCarro + " carros "
-          //   } else {
-          //     detalle = detalle + " con " + cantCarro + " carros "
-          //   }
-          // }
-          if (colocacion) {
-            detalle = detalle + " (incluye colocación)"
-          }
-          else {
-            detalle = detalle + " (sin colocación)"
-          }
-          detalle = detalle + ' en : '
-        }
+        const impheb1 = await queryAsync(valorheb, paramscantHeb)
+        impheb = Number(impheb1[0].valorhebillas)
+        const impplacaheb1 = await queryAsync(valorplaheb, paramsvalorplaheb)
+        impplacaheb = Number(impplacaheb1[0].valorplacaheb)
 
-        else {
-          detalle = detallep + ''
-        }
+      }
+      // }
+      //cinta de refuerzo en I5070
+      const paniotirasi5070 = Math.ceil(Math.ceil((largo / 0.75) * 2) + largo) / 1.5
+      const valorind = `Select  StkRubroAbr, (StkRubroCosto * StkMonedasCotizacion * ? * 0.08 * ? ) as valorindust, 
+      StkRubroCosto,  StkMonedasCotizacion  from BaseStock.StkRubro JOIN  BaseStock.StkMonedas
+      where StkRubro.StkRubroAbr = ? and StkRubro.StkRubroTM = idStkMonedas`
+      const paramsvalorind = [coeficiente, paniotirasi5070, 'I5070']
+      const impind1 = await queryAsync(valorind, paramsvalorind)
+      impind = Number(impind1[0].valorindust)
 
-        if (cantHeb != 0) {
-          valorheb = ['Select ',
-            ' StkRubroAbr,  ',
-            '(StkRubroCosto * StkMonedasCotizacion * ', coeficiente,
-            ' * ', cantHeb, ') as valorhebillas, ',
-            'StkRubroCosto, ',
-            'StkMonedasCotizacion ',
-            'from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ',
-            'where StkRubro.StkRubroAbr = "', tipoheb, '" ',
-            'and StkRubro.StkRubroTM = idStkMonedas '
-          ].join('')
+      if (cantCarro != 0) {
+        const valcarro = `Select  StkRubroAbr, (StkRubroCosto * StkMonedasCotizacion * ? * ? ) as valorcarros, 
+        StkRubroCosto,  StkMonedasCotizacion  from BaseStock.StkRubro JOIN  BaseStock.StkMonedas
+        where StkRubro.StkRubroAbr = ? and StkRubro.StkRubroTM = idStkMonedas`
+        const paramsvalcarro = [coeficiente, cantCarro, tipocarro]
+        const impcarro1 = await queryAsync(valcarro, paramsvalcarro)
+        impcarro = Number(impcarro1[0].valorcarros)
 
-          valorplaheb = ['Select ',
-            ' StkRubroAbr,  ',
-            '(StkRubroCosto * StkMonedasCotizacion * ', coeficiente,
-            ' * ', cantHeb, ') as valorplacaheb, ',
-            'StkRubroCosto, ',
-            'StkMonedasCotizacion ',
-            'from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ',
-            'where StkRubro.StkRubroAbr = "', 'AL022', '" ',
-            'and StkRubro.StkRubroTM = idStkMonedas '
-          ].join('')
-        }
-        // }
-        //cinta de refuerzo en I5070
-        paniotirasi5070 = Math.ceil(Math.ceil((largo / 0.75) * 2) + largo) / 1.5
-        valorind = ['Select ',
-          // ' StkRubroAbr,  ',
-          '(StkRubroCosto * StkMonedasCotizacion * ', coeficiente,
-          ' * 0.08 * ', paniotirasi5070, ') as valorindust, ',
-          'StkRubroCosto, ',
-          'StkMonedasCotizacion ',
-          'from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ',
-          'where StkRubro.StkRubroAbr = "', 'I5070', '" ',
-          'and StkRubro.StkRubroTM = idStkMonedas '
-        ].join('')
+      }
+      if (cantPlaca != 0) {
+        const valorplaca = `Select  StkRubroAbr, (StkRubroCosto * StkMonedasCotizacion * ? * ? ) as valorplacas, 
+        StkRubroCosto,  StkMonedasCotizacion  from BaseStock.StkRubro JOIN  BaseStock.StkMonedas
+        where StkRubro.StkRubroAbr = ? and StkRubro.StkRubroTM = idStkMonedas`
+        const paramsvalorplaca = [coeficiente, cantPlaca, tipoplaca]
+        const impplaca1 = await queryAsync(valorplaca, paramsvalorplaca)
+        impplaca = Number(impplaca1[0].valorplacas)
 
-        if (cantCarro != 0) {
-          valcarro = ['Select ',
-            ' StkRubroAbr,  ',
-            '(StkRubroCosto * StkMonedasCotizacion * ', coeficiente,
-            ' * ', cantCarro, ') as valorcarros, ',
-            'StkRubroCosto, ',
-            'StkMonedasCotizacion ',
-            'from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ',
-            'where StkRubro.StkRubroAbr = "', tipocarro, '" ',
-            'and StkRubro.StkRubroTM = idStkMonedas '
-          ].join('')
-        }
-        if (cantPlaca != 0) {
-          valorplaca = ['Select ',
-            ' StkRubroAbr,  ',
-            '(StkRubroCosto * StkMonedasCotizacion * ', coeficiente,
-            ' * ', cantPlaca, ') as valorplacas, ',
-            'StkRubroCosto, ',
-            'StkMonedasCotizacion ',
-            'from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ',
-            'where StkRubro.StkRubroAbr = "', tipoplaca, '" ',
-            'and StkRubro.StkRubroTM = idStkMonedas '
-          ].join('')
-        }
-        valortela = ['Select ',
-          'StkRubroDesc, StkRubroAbr, ',
-          '((StkRubroCosto * StkMonedasCotizacion * ', coeficiente,
-          ' * ', 2,
-          ' * ', largocalc, ')',
-          ' + ', MOTarmado, ')',
-          ' as ImpUnitario, ',
-          'StkRubroCosto, ',
-          'StkMonedasCotizacion ',
-          'from BaseStock.StkRubro JOIN  BaseStock.StkMonedas ',
-          'where StkRubro.StkRubroAbr = "', StkRubroAbrP, '" ',
-          'and StkRubro.StkRubroTM = idStkMonedas '
-        ].join('')
-        /////////////////////////////////////////////////
-
-        conexion.query(
-          valortela,
-          function (err, result) {
-            if (err) {
-              console.log('error en mysql valortela')
-              console.log(err)
-            }
-            else {
-              costooriginal = costooriginal + result[0].ImpUnitario
-              datosenvio.push(result);
-            }
-          })
-        if (cantHeb !== 0) {
-          conexion.query(
-            valorheb,
-            function (err, result) {
-              if (err) {
-                console.log('error en mysql valorheb')
-                console.log(err)
-              }
-              else {
-                costooriginal = costooriginal + result[0].valorhebillas
-                datosenvio.push(result);
-              }
-            });
-
-          conexion.query(
-            valorplaheb,
-            function (err, result) {
-              if (err) {
-                console.log('error en mysql valorplaheb')
-                console.log(err)
-              }
-              else {
-                costooriginal = costooriginal + result[0].valorplacaheb
-                datosenvio.push(result);
-              }
-            })
-        }
-        if (cantCarro != 0) {
-          conexion.query(
-            valcarro,
-            function (err, result) {
-              if (err) {
-                console.log('error en mysql valcarro')
-                console.log(err)
-              }
-              else {
-                costooriginal = costooriginal + result[0].valorcarros
-                datosenvio.push(result);
-              }
-            })
-        }
-        if (cantPlaca != 0) {
-          conexion.query(
-            valorplaca,
-            function (err, result) {
-              if (err) {
-                console.log('error en mysql valorplaca')
-                console.log(err)
-              }
-              else {
-                costooriginal = costooriginal + result[0].valorplacas
-                datosenvio.push(result);
-              }
-            })
-        }
-        conexion.query(
-          valorind,
-          function (err, result) {
-            if (err) {
-              console.log('error en mysql en valorind')
-              console.log(err)
-            }
-            else {
-              costooriginal = costooriginal + result[0].valorindust
-              datosenvio.push(result);
-            }
+      }
+      const valortela = `Select  StkRubroDesc, StkRubroAbr, ((StkRubroCosto * StkMonedasCotizacion * ? * ? * ? ) + ? ) as ImpUnitario,  
+      StkRubroCosto,  StkMonedasCotizacion  from BaseStock.StkRubro JOIN  BaseStock.StkMonedas
+      where StkRubro.StkRubroAbr = ? and StkRubro.StkRubroTM = idStkMonedas`
+      const paramsvalortela = [coeficiente, 2, largocalc, MOTarmado, StkRubroAbrP]
+      const imptela1 = await queryAsync(valortela, paramsvalortela)
+      imptela = Number(imptela1[0].ImpUnitario)
 
 
+      let impunitario = imptela + impcarro + impheb + impplaca + impplacaheb + impind
+      console.log('impunitario  ', impunitario)
+      if (ivasncal === 'CIVA') {
+        impunitario = Math.ceil(impunitario);
+      } else {
+        impunitario = Math.ceil(impunitario / 1.21);
+      }
 
-            if (ivasn == 'CIVA') {
-              costooriginal = Math.ceil(Number(costooriginal).toFixed(0) / 10) * 10
-            }
-            else {
-              costooriginal = Math.ceil(Number(costooriginal).toFixed(0) / 1.21 / 10) * 10
-            }
-            datosenvio[0][0]['ImpUnitario'] = costooriginal
-            datosenvio[0][0]['Detalle'] = detalle
-            datosenvio[0][0]['Largo'] = (largo * 1).toFixed(2)
-            datosenvio[0][0]['Ancho'] = (ancho * 1).toFixed(2)
-
-            datosenvio[0][0]['MDesc'] = 'S'
-            costooriginal = 0;
-            res.json(datosenvio);
-            datosenvio = [];
-          })
-      })
-    })
-
-})
-
-
-
-conexion.end
+      detalle = detalle + imptela1[0].StkRubroDesc
+      resultados.push({
+        ImpUnitario: impunitario,
+        Detalle: detalle,
+        Largo: 0.00,
+        Ancho: 0.00,
+        MDesc: "S",
+      });
+    }
+    res.json(resultados);
+  } catch (err) {
+    console.log("Error en /presuplatcorr", err);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
 export default router;
+
+

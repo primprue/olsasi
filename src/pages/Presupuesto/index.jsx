@@ -4,6 +4,7 @@ import TipoCliente from "./LayoutPresupuesto/FilaUno/TipoCliente.jsx";
 import TipoIVA from "./LayoutPresupuesto/FilaUno/TipoIVA.jsx";
 import TipoProducto from "./LayoutPresupuesto/FilaUno/TipoProducto.jsx";
 import FilaUnoIzq from "./LayoutPresupuesto/FilaUno/FilaUnoIzq.jsx";
+import FilaPrincipal from "./LayoutPresupuesto/FilaPrincipal/FilaPrincipal.jsx";
 export default function Presupuesto() {
 	return (
 		<>
@@ -13,6 +14,8 @@ export default function Presupuesto() {
 				<TipoProducto />
 				<FilaUnoIzq />
 				<FilaDos />
+				{/* <FilaPrincipal /> */}
+
 			</Grid>
 		</>
 	);

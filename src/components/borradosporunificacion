@@ -1,0 +1,327 @@
+// if (formdatos.tablabase === "Transportes") resultado = await TransporteModificar(params);
+// if (formdatos.tablabase === "Clientes") resultado = await ClientesModificar(params);
+// if (formdatos.tablabase === "Monedas") resultado = await StkMonedasModificar(params);
+// if (formdatos.tablabase === "PresupConfTipo")
+// 	resultado = await PresupConfTipoModificar(params);
+// if (formdatos.tablabase === "PresupDetPie") resultado = await PresupDetPieModificar(params);
+// if (formdatos.tablabase === "Proveedores") resultado = await ProveedoresModificar(params);
+// if (formdatos.tablabase === "StkGrupos") resultado = await StkGrupoModificar(params);
+// if (formdatos.tablabase === "StkRubros") resultado = await StkRubroModificar(params);
+// if (formdatos.tablabase === "StkItems") resultado = await StkItemsModificar(params);
+// if (formdatos.tablabase === "UniMedidas") resultado = await StkUnMedModificar(params);
+// if (formdatos.tablabase === "ParamComp") resultado = await ParamCompModificar(params);
+// if (formdatos.tablabase === "OTCondPago") resultado = await OTCondPagoModificar(params);
+// if (formdatos.tablabase === "PBRubros") resultado = await PBRubrosModificar(params);
+// if (formdatos.tablabase === "PBSubRubros") resultado = await PBSubRubrosModificar(params);
+// if (formdatos.tablabase === "PBComprobantes") resultado = await PBComprobantesModificar(params);
+// if (formdatos.tablabase === "CajaInterna") resultado = await CajaInternaModificar(params);
+
+
+
+
+
+
+
+
+
+
+
+if (formdatos.tablabase === "Transportes") {
+    const data = await leerTransporte();
+    setRows(data);
+}
+if (formdatos.tablabase === "Clientes") {
+    const data = await ClientesLeer();
+    setRows(data);
+}
+if (formdatos.tablabase === "Monedas") {
+    const data = await leerStkMonedas();
+    setRows(data);
+}
+if (formdatos.tablabase === "PresupConfTipo") {
+    const data = await PresupConfTipoLee();
+    setRows(data);
+}
+if (formdatos.tablabase === "PresupDetPie") {
+    const data = await PresupDetPieLee();
+    setRows(data);
+}
+if (formdatos.tablabase === "Proveedores") {
+    const data = await proveedoresleer();
+    setRows(data);
+}
+if (formdatos.tablabase === "StkGrupos") {
+    const data = await stkgrupolee();
+    setRows(data);
+}
+if (formdatos.tablabase === "StkRubros") {
+    const data = await stkrubroleermezcla();
+    setRows(data);
+}
+if (formdatos.tablabase === "StkItems") {
+    const data = await leeStkItemsDetalles();
+    setRows(data);
+}
+if (formdatos.tablabase === "UniMedidas") {
+    const data = await StkUnMedLee();
+    setRows(data);
+}
+
+if (formdatos.tablabase === "UbiFisica") {
+    const data = await StkUbFisicaLee();
+    setRows(data);
+}
+
+if (formdatos.tablabase === "ParamComp") {
+    const data = await ParamCompLeer();
+    setRows(data);
+}
+
+if (formdatos.tablabase === "OTCondPago") {
+    const data = await OTCondPagoLeer();
+    setRows(data);
+}
+
+if (formdatos.tablabase === "PBRubros") {
+    const data = await PBRubrosLee();
+    setRows(data);
+}
+if (formdatos.tablabase === "PBSubRubros") {
+    const data = await PBSubRubrosLeer();
+    setRows(data);
+}
+if (formdatos.tablabase === "PBComprobantes") {
+    const data = await PBComprobantesLeer();
+    setRows(data);
+}
+if (formdatos.tablabase === "CajaInterna") {
+    const data = await CajaInternaLeer();
+    setRows(data);
+}
+
+
+
+
+
+
+import { TransporteModificar } from "../pages/Tablas/Transporte/TransporteModificar.jsx";
+import { leerTransporte } from "../pages/Tablas/Transporte/TransporteLeer.jsx";
+
+import { ClientesModificar } from "../pages/Tablas/Clientes/ClientesModificar.jsx";
+import { ClientesLeer } from "../pages/Tablas/Clientes/ClientesLeer.jsx";
+
+import { leerStkMonedas } from "../pages/Tablas/Monedas/StkMonedasLeer.jsx";
+import { StkMonedasModificar } from "../pages/Tablas/Monedas/StkMonedasModificar.jsx";
+
+import { PresupConfTipoLee } from "../pages/Tablas/PresupConfTipo/PresupConfTipoLee.jsx";
+import { PresupConfTipoModificar } from "../pages/Tablas/PresupConfTipo/PresupConfTipoModificar.jsx";
+
+import { PresupDetPieLee } from "../pages/Tablas/PresupDetPie/PresupDetPieLee.jsx";
+import { PresupDetPieModificar } from "../pages/Tablas/PresupDetPie/PresupDetPieModificar.jsx";
+
+import { proveedoresleer } from "../pages/Tablas/Proveedores/ProveedoresLeer.jsx";
+import { ProveedoresModificar } from "../pages/Tablas/Proveedores/ProveedoresModificar.jsx";
+
+import { stkgrupolee } from "../pages/Tablas/StkGrupos/StkGrupoLee.jsx";
+import { StkGrupoModificar } from "../pages/Tablas/StkGrupos/StkGrupoModificar.jsx";
+
+import { stkrubroleermezcla } from "../pages/Tablas/StkRubros/StkRubroLeerMezcla.jsx";
+import { StkRubroModificar } from "../pages/Tablas/StkRubros/StkRubroModificar.jsx";
+
+import { leeStkItemsDetalles } from "../pages/Tablas/StkItems/leeStkitemsDetalles.jsx";
+import { StkItemsModificar } from "../pages/Tablas/StkItems/StkItemsModificar.jsx";
+
+import { StkUnMedLee } from "../pages/Tablas/UnidadMedidas/StkUnMedLee.jsx";
+import { StkUnMedModificar } from "../pages/Tablas/UnidadMedidas/StkUnMedModificar.jsx";
+
+import { StkUbFisicaLee } from "../pages/Tablas/UbicacionFisica/StkUbFisicaLee.jsx";
+
+import { ParamCompLeer } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompLeer.jsx";
+import { ParamCompModificar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompModificar.jsx";
+
+import { OTCondPagoLeer } from "../pages/OrdenTrabajo/OTTablas/OTCondPago/OTCondPagoLeer.jsx";
+import { OTCondPagoModificar } from "../pages/OrdenTrabajo/OTTablas/OTCondPago/OTCondPagoModificar.jsx";
+
+import { PBRubrosLee } from "../pages/PreBalance/PBRubros/PBRubrosLee.jsx";
+import { PBRubrosModificar } from "../pages/PreBalance/PBRubros/PBRubrosModificar.jsx";
+
+import { PBSubRubrosLeer } from "../pages/PreBalance/PBSubRubros/PBSubRubrosLeer.jsx";
+import { PBSubRubrosModificar } from "../pages/PreBalance/PBSubRubros/PBSubRubrosModificar.jsx";
+
+import { PBComprobantesLeer } from "../pages/PreBalance/PBComprobantes/PBComprobantesLeer.jsx";
+import { PBComprobantesModificar } from "../pages/PreBalance/PBComprobantes/PBComprobantesModificar.jsx";
+
+import { CajaInternaLeer } from "../pages/CajaIE/CajaInterna/CajaInternaLeer.jsx";
+
+import { CajaInternaModificar } from "../pages/CajaIE/CajaInterna/CajaInternaModificar.jsx";
+
+
+// import { TablaMuestraRenglon } from "../pages/Presupuesto/LayoutPresupuesto/PresupMuestra/TablaMuestraRenglon/index.jsx";
+// import { presupDatos } from "../pages/Presupuesto/LayoutPresupuesto/PresupMuestra/presupDatos.jsx";
+
+
+//Borrado de onRowDelete
+
+
+// export async function onRowDelete(paramsid, newData, paramsbor) {
+//   try {
+//     if (newData.tablabase === 'Proveedores') {
+//       await ProveedoresBorrar(paramsid)
+//     }
+//     if (newData.tablabase === 'Monedas') {
+//       await StkMonedasBorrar(paramsid);
+//     }
+//     if (newData.tablabase === 'Transportes') {
+//       await TransporteBorrar(paramsid);
+//     }
+//     if (newData.tablabase === 'StkGrupos') {
+//       await StkGrupoBorrar(paramsid)
+//     }
+//     if (newData.tablabase === 'StkRubros') {
+//       await StkRubroBorrar(paramsid)
+//     }
+//     if (newData.tablabase === 'StkItems') {
+//       await StkItemsBorrar(paramsbor)
+//     }
+//     if (newData.tablabase === 'UniMedidas') {
+//       await StkUnMedBorrar(paramsid)
+//     }
+//     if (newData.tablabase === 'PresupDetPie') {
+//       await PresupDetPieBorrar(paramsid)
+//     }
+//     if (newData.tablabase === 'PresupCalExp') {
+//       await PresupCalExpBorrar(paramsid)
+//     }
+//     if (newData.tablabase === 'ParamComp') {
+//       await ParamCompBorrar(paramsid)
+//     }
+//     if (newData.tablabase === 'OTCondPago') {
+//       await OTCondPagoBorrar(paramsid)
+//     }
+//     if (newData.tablabase === 'PBRubros') {
+//       await PBRubrosBorrar(paramsid)
+//     }
+//     if (newData.tablabase === 'PBSubRubros') {
+//       await PBSubRubrosBorrar(paramsid)
+//     }
+//     if (newData.tablabase === 'PBComprobantes') {
+//       await PBComprobantesBorrar(paramsid)
+//     }
+//     if (newData.tablabase === 'PBPorIVA') {
+//       await PBPorIVABorrar(paramsid)
+//     }
+//     if (newData.tablabase === 'CajaInterna') {
+//       await CajaInternaBorrar(paramsid)
+//     }
+//     return true; // Todo salió bien
+//   } catch (error) {
+//     console.error("Error en onrowDelete:", error);
+//     throw error; // Re-lanzamos el error para manejarlo en el Dialogo
+//   }
+// }
+
+// import { ProveedoresBorrar } from "../pages/Tablas/Proveedores/ProveedoresBorrar";
+// import { StkMonedasBorrar } from "../pages/Tablas/Monedas/StkMonedasBorrar";
+// import { TransporteBorrar } from "../pages/Tablas/Transporte/TransporteBorrar"
+// import { StkGrupoBorrar } from "../pages/Tablas/StkGrupos/StkGrupoBorrar";
+// import { StkRubroBorrar } from "../pages/Tablas/StkRubros/StkRubroBorrar";
+// import { StkItemsBorrar } from "../pages/Tablas/StkItems/StkItemsBorrar";
+// import { StkUnMedBorrar } from "../pages/Tablas/UnidadMedidas/StkUnMedBorrar";
+// import { PresupDetPieBorrar } from "../pages/Tablas/PresupDetPie/PresupDetPieBorrar";
+// import { PresupCalExpBorrar } from "../pages/Tablas/PresupCalExp/PresupCalExpBorrar";
+// import { ParamCompBorrar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompBorrar";
+// import { OTCondPagoBorrar } from "../pages/OrdenTrabajo/OTTablas/OTCondPago/OTCondPagoBorrar";
+// import { PBRubrosBorrar } from "../pages/PreBalance/PBRubros/PBRubrosBorrar";
+// import { PBSubRubrosBorrar } from "../pages/PreBalance/PBSubRubros/PBSubRubrosBorrar";
+// import { PBComprobantesBorrar } from "../pages/PreBalance/PBComprobantes/PBComprobantesBorrar";
+// import { PBPorIVABorrar } from "../pages/PreBalance/PBPorIVA/PBPorIVABorrar";
+// import { CajaInternaBorrar } from "../pages/CajaIE/CajaInterna/CajaInternaBorrar";
+// import { PresupBorrar } from "../pages/Presupuesto/LayoutPresupuesto/PrespuConMod/PresupBorrar";
+
+
+
+//Borrado de onRowAdd
+
+// import { stkProveedoresAgregar } from "../pages/Tablas/Proveedores/ProveedoresAgregar";
+// import { StkMonedasAgregar } from "../pages/Tablas/Monedas/StkMonedasAgregar";
+// import { TransporteAgregar } from "../pages/Tablas/Transporte/TransporteAgregar";
+// import { StkGruposAgregar } from "../pages/Tablas/StkGrupos/StkGruposAgregar";
+// import { StkRubroAgregar } from "../pages/Tablas/StkRubros/StkRubroAgregar";
+// import { stkItemsBuscaCod } from "../pages/Tablas/StkItems/StkItemsBuscaCod"; //porque tiene que generar primero el codigo del item
+// import { StkUnMedAgregar } from "../pages/Tablas/UnidadMedidas/StkUnMedAgregar";
+// import { PresupDetPieAgregar } from "../pages/Tablas/PresupDetPie/PresupDetPieAgregar";
+// import { PresupCalExpAgregar } from "../pages/Tablas/PresupCalExp/PresupCalExpAgregar";
+// import { PresupConfTipoAgregar } from "../pages/Tablas/PresupConfTipo/PresupConfTipoAgregar";
+// import { ClientesAgregar } from "../pages/Tablas/Clientes/ClientesAgregar";
+// import { ParamCompAgregar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompAgregar";
+// import { OTCondPagoAgregar } from "../pages/OrdenTrabajo/OTTablas/OTCondPago/OTCondPagoAgregar";
+// import { PBRubrosAgregar } from "../pages/PreBalance/PBRubros/PBRubrosAgregar";
+// import { PBSubRubrosAgregar } from "../pages/PreBalance/PBSubRubros/PBSubRubrosAgregar";
+// import { PBItemsAgregar } from "../pages/PreBalance/PBItems/PBItemsAgregar";
+// import { PBPorIVAAgregar } from "../pages/PreBalance/PBPorIVA/PBPorIVAAgregar";
+// import { OTDatosAgregar } from "../pages/OrdenTrabajo/OTTablas/OTDatos/OTDatosAgregar";
+// import { CajaIEAgregar } from "../pages/CajaIE/CajaIEAgregar";
+// import { CajaInternaAgregar } from "../pages/CajaIE/CajaInterna/CajaInternaAgregar";
+
+
+// if (formdatos.tablabase === 'Clientes') {
+//   await DatosAgregar(newData, 'clientesagregar')
+// }
+// if (formdatos.tablabase === 'Proveedores') {
+//   await DatosAgregar(newData, fomdatos.nombackagregar)
+// }
+// if (formdatos.tablabase === 'Monedas') {
+//   await DatosAgregar(newData, 'stkmonedasagregar');
+// }
+// if (formdatos.tablabase === 'Transportes') {
+//   await TransporteAgregar(newData);
+// }
+// if (formdatos.tablabase === 'StkGrupos') {
+//   await DatosAgregar(newData, 'stkgrupoagregar');
+// }
+// if (formdatos.tablabase === 'StkRubros') {
+//   await DatosAgregar(newData, 'stkrubroagregar');
+// }
+// if (formdatos.tablabase === 'UniMedidas') {
+//   await DatosAgregar(newData, 'stkunmedagregar');
+// }
+// if (formdatos.tablabase === 'StkItems') {
+//   await stkItemsBuscaCod(newData)
+// }
+
+// if (formdatos.tablabase === 'PresupDetPie') {
+//   await DatosAgregar(newData, 'presupdetpieagregar');
+// }
+// if (formdatos.tablabase === 'PresupCalExp') {
+//   await DatosAgregar(newData, 'presupcalexpagregar');
+// }
+// if (formdatos.tablabase === 'ParamComp') {
+//   await DatosAgregar(newData, 'paramcompagregar');
+// }
+// if (formdatos.tablabase === 'PresupConfTipo') {
+//   await DatosAgregar(newData, 'presupconftipoagregar');
+// }
+// if (formdatos.tablabase === 'OTCondPago') {
+//   await DatosAgregar(newData, 'otcondpagoagregar');
+// }
+// if (formdatos.tablabase === 'PBRubros') {
+//   await DatosAgregar(newData, 'pbrubrosagregar');
+// }
+// if (formdatos.tablabase === 'PBSubRubros') {
+//   await DatosAgregar(newData, 'pbsubrubrosagregar');
+// }
+// if (formdatos.tablabase === 'PBItems') {
+//   await DatosAgregar(newData, 'pbitemsagregar');
+// }
+// if (formdatos.tablabase === 'PBPorIVA') {
+//   await DatosAgregar(newData, 'pbporivaagregar');
+// }
+// if (formdatos.tablabase === 'OTDatos') {
+//   await DatosAgregar(newData, 'otdatosagregar');
+// }
+// if (formdatos.tablabase === 'CajaIE') {
+//   await DatosAgregar(newData, 'cajaieagregar');
+// }
+// if (formdatos.tablabase === 'CajaInterna') {
+//   await DatosAgregar(newData, 'cajainternaagregar');
+// }

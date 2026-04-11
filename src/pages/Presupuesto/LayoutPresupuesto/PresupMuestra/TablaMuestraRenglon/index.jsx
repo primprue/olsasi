@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef } from "react";
+import { useState, useEffect } from "react";
 import estilotabla from "../../../../../Styles/Tabla.module.css";
 import {
 	Box,
@@ -7,7 +7,6 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogTitle,
-	Slide,
 } from "@mui/material";
 import { DataGrid, GridToolbarContainer } from "@mui/x-data-grid";
 import { presuprenglonleer } from "./PresupRenglonLeer.jsx";
@@ -16,15 +15,8 @@ import { PresupBorrar } from "../PresupBorrar.jsx";
 import { use } from "react";
 import OrdTrabajo from "../../../../../context/OrdTrabajo.jsx";
 
-// const Transition = React.forwardRef(function Transition(props, ref) {
-// 	return <Slide direction="up" ref={ref} {...props} />;
-// });
-// const Transition = forwardRef((props, ref) => (
-// 	<Slide direction="up" ref={ref} {...props} />
-// ));
 
 export function TablaMuestraRenglon(props) {
-	console.log('props tablamuestrarenglon  ', props)
 	const { otdatos, setOTdatos } = use(OrdTrabajo);
 	const { open, handleClose, Presup, origen } = props;
 	const [renglon, setRenglon] = useState([]);
@@ -34,7 +26,6 @@ export function TablaMuestraRenglon(props) {
 		origen === "Borrar"
 			? `Borrará el Presupuesto nro. ${Presup.id} de ${Presup.NombreCliente}`
 			: `Renglones de Presupuesto nro. ${Presup.id} de ${Presup.NombreCliente}`;
-	// let boton = origen === "Borrar" ? "Borrar" : "Cerrar";
 
 	const AceptaBorrar = () => {
 		PresupBorrar(Presup.id);
@@ -45,10 +36,16 @@ export function TablaMuestraRenglon(props) {
 		//idOTRenglon, OTRenglonNroPresup, OTRenglonCant, OTRenglonDesc, OTRenglonLargo, OTRenglonAncho, OTRenglonImpUnit, OTRenglonImpItem, OTRenglonParamInt
 		//los mando por Context a la OT
 		setOTdatos({ ...otdatos, renglonespresup: selectionModel });
-		// handleClose();
+
 	}
 
-
+	// En tu componente:
+	useEffect(() => {
+		if (otdatos.renglonespresup) {
+			// Aquí ejecutas lo que deba pasar CUANDO el estado ya cambió
+			handleClose();
+		}
+	}, [otdatos]); // Se dispara cada vez que otdatos cambia
 	const Cierra = () => {
 		handleClose();
 	};
@@ -133,7 +130,7 @@ export function TablaMuestraRenglon(props) {
 								onClick={AceptaItemOT}
 								className={estilotabla.botontablamuestrarenglon}
 							>
-								Aceptar
+								Ir a Orden de Trabajo
 							</Button>
 						)}
 				</DialogActions>

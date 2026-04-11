@@ -16,48 +16,50 @@ export default function BilletesQuedan(props) {
     const handleClose1 = () => {
         setOpen1(false);
     };
-    console.log('cantidades BilletesQuedan ', cantidades)
-    // console.log('cantidadesBilquedan  ', cantidadesBilquedan)
+
     async function GrabCierraLimpia() {
-        console.log('cantidades BilletesQuedan GrabCierraLimpia ', cantidades)
-        console.log('bilquedan BilletesQuedan GrabCierraLimpia ', bilquedan)
-        let retiroManiana = 0
-        let retiroTarde = 0
-        let datoagrabar = []
-        let totalInstrumentos = 0
-        let TotalMañana = Object.keys(totales).some((monedaId) => {
-            // 1. Quitar símbolo de moneda y espacios
-            const limpio = totalqueda[monedaId].replace(/[^0-9,.-]/g, "");
+        let datoagrabar = [];
 
-            // 2. Cambiar coma decimal por punto
-            const conPunto = limpio.replace(".", "").replace(",", ".");
+        // 1. Recolectamos todos los datos primero
+        Object.keys(totales).forEach((monedaId) => {
+            // Limpieza de strings a números
+            const limpio = totalqueda[monedaId]?.replace(/[^0-9,.-]/g, "") || "0";
+            const conPunto = limpio.replace(/\./g, "").replace(",", ".");
+            const saldoqueda = parseFloat(conPunto) || 0;
 
-            // 3. Convertir a número lo que queda es de la mañana
-            const saldoqueda = parseFloat(conPunto);
-            retiroManiana = 0
-            retiroTarde = 0
+            let retiroTarde = totales[monedaId]?.totalT > 0
+                ? totales[monedaId]?.totalTSinInstr
+                : 0;
 
-            totales[monedaId]?.totalT > 0 ?
-                retiroTarde = totales[monedaId]?.totalTSinInstr : 0
-            console.log('totales  ', totales)
-            console.log(' totales[monedaId]?.totalMEsp  ', totales[monedaId]?.totalMEsp)
-            totales[monedaId]?.totalM > 0 ?
-                retiroManiana = totales[monedaId]?.totalMEsp - saldoqueda - retiroTarde : 0
+            let retiroManiana = totales[monedaId]?.totalM > 0
+                ? totales[monedaId]?.totalMEsp - saldoqueda - retiroTarde
+                : 0;
 
-            totalInstrumentos = totales[monedaId]?.totalInstr
+            let totalInstrumentos = totales[monedaId]?.totalInstr || 0;
 
-
-            datoagrabar.push({ monedaId, retiroManiana, retiroTarde, saldoqueda, totalInstrumentos })
-
-
-            // diferenciaNum = resultados[monedaId]?.diferenciaNum ?? 100; // si no existe, se asume 0
-            // tolerancia = cierreparam.find(p => p.CajaCierreParamMon === monedaId)?.CajaCierreParamTolerancia ?? 0;
-            const resultado = CajaSaldoEfAgregar(datoagrabar)
-            importesaguardar.current = datoagrabar
-            setOpen1(true);
+            datoagrabar.push({
+                monedaId,
+                retiroManiana,
+                retiroTarde,
+                saldoqueda,
+                totalInstrumentos
+            });
         });
-    };
 
+        // 2. UNA SOLA LLAMADA al backend con el array completo
+        if (datoagrabar.length > 0) {
+            try {
+                // Asumo que esta función hace el fetch al backend que vimos antes
+                const resultado = await CajaSaldoEfAgregar(datoagrabar);
+
+                importesaguardar.current = datoagrabar;
+                setOpen1(true);
+            } catch (error) {
+                console.error("Error al grabar:", error);
+                alert("Error al guardar los datos");
+            }
+        }
+    }
     const handleChangeBilquedan = (moneda, label, e) => {
         const valor = e.target.value;
         setCantidadesBilquedan(prev => ({

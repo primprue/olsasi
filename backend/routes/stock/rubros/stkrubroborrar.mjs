@@ -1,10 +1,10 @@
 import express from "express";
 const router = express.Router(); // Cambiado a const
-import { conexion } from '../../conexion.mjs';
+import { conexionpool } from '../../conexion.mjs';
 
 router.delete("/", async (req, res) => {
+  // const idUnico = req.query.id;
   const idUnico = req.query.id;
-
   if (!idUnico) {
     return res.status(400).json({ leyenda: 'No se recibió el identificador para eliminar' });
   }
@@ -13,7 +13,7 @@ router.delete("/", async (req, res) => {
     const q = 'DELETE FROM StkRubro WHERE CONCAT(idStkRubro, StkRubroCodGrp, StkRubroAbr) = ?';
 
     // Con mysql2/promise, usamos destructuring para obtener el resultado [result]
-    const [result] = await conexion.query(q, [idUnico]);
+    const [result] = await conexionpool.query(q, [idUnico]);
 
     // Caso: Consulta exitosa pero no se borró nada (el ID no existía)
     // Esto va aquí, porque NO dispara el catch

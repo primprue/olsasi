@@ -31,7 +31,7 @@ router.get('/', async (req, res, next) => {
         sobrantemarco,
         minmay,
       } = item;
-      const anchocal = ancho + 0.12
+      const anchocal = Number(ancho) + 0.12
       let fajade = ''
       let largocal = Number(largo)
       if (tamfaja === '25P') {
@@ -51,15 +51,15 @@ router.get('/', async (req, res, next) => {
 
       //const datos = await queryAsync(q);
       const d = datos[0]
-      let enteropanios = Math.trunc(ancho / d.anchotela)
+      let enteropanios = Math.trunc(anchocal / d.anchotela)
       let coeficiente = 0
       let coefMOT = 0
       let valorMOTmin = 0
-
+      let ivasncal = ivasn
       if (minmay == 'my') {
         coeficiente = p.coeficientemay
         coefMOT = p.coefMOTmay
-        ivasn = 'CIVA'
+        ivasncal = 'CIVA'
       }
       else {
         coeficiente = p.coeficientemin
@@ -68,9 +68,9 @@ router.get('/', async (req, res, next) => {
 
       valorMOTmin = p.costoMOT * coefMOT / 60
 
-      let decimalpanios = (ancho / d.anchotela) - enteropanios
+      let decimalpanios = (anchocal / d.anchotela) - enteropanios
       let panios = decimalpanios < 0.5 ? enteropanios + 0.50 : enteropanios + 1
-      let MOTarmado = altovolado == 0 ? ancho * 40 * valorMOTmin : ancho * 60 * valorMOTmin
+      let MOTarmado = altovolado == 0 ? anchocal * 40 * valorMOTmin : anchocal * 60 * valorMOTmin
       largocal = altovolado == 0 ? largocal + 0.44 : largocal + 0.44 + (altovolado / 100)
       let largocristal = 0
       let q1 = ''
@@ -118,7 +118,7 @@ router.get('/', async (req, res, next) => {
       const di = datosimporte[0]
 
       let impunitario = Number(di.ImpUnitario)
-      if (ivasn === 'CIVA') {
+      if (ivasncal === 'CIVA') {
         impunitario = Math.ceil(impunitario / 10) * 10;
       } else {
         impunitario = Math.ceil(impunitario / 1.21 / 10) * 10;
@@ -134,7 +134,7 @@ router.get('/', async (req, res, next) => {
         }
         else { detalle = `${detalle} en :  ${di.StkRubroDesc} ` }
       }
-      if (ivasn === 'CIVA') {
+      if (ivasncal === 'CIVA') {
         impunitario = Math.ceil(impunitario / 10) * 10;
       } else {
         impunitario = Math.ceil(impunitario / 1.21 / 10) * 10;

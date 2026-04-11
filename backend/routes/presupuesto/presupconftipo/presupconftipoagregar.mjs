@@ -2,38 +2,48 @@ import express from "express";
 var router = express.Router();
 
 import moment from "moment";
-import { conexion } from '../../conexion.mjs';
+import { conexionpool } from '../../conexion.mjs';
 
 moment.locale("es");
 
 
-router.post("/", function (req, res, next) {
-
-  var registro = {
-    PresupConfTipoDesc: req.body.PresupConfTipoDesc.toUpperCase(),
-    PresupConfTipoRubro: req.body.PresupConfTipoRubro.toUpperCase(),
+router.post("/", async (req, res) => {
+  const registro = {
+    PresupConfTipoDesc: (req.body.PresupConfTipoDesc || '').trim().toUpperCase(),
+    PresupConfTipoRubro: (req.body.PresupConfTipoRubro || '').trim().toUpperCase(),
     PresupConfTipoCant: req.body.PresupConfTipoCant,
-    PresupConfTipoM2: req.body.PresupConfTipoM2,
-    PresupConfTipoAnexo: req.body.PresupConfTipoAnexo.toUpperCase(),
-    PresupConfTipoLargo: req.body.PresupConfTipoLargo,
-    PresupConfTipoAncho: req.body.PresupConfTipoAncho,
-    PresupConfTipoImprime: req.body.PresupConfTipoImprime.toUpperCase(),
+    PresupConfTipoM2: (req.body.PresupConfTipoM2 || '').trim().toUpperCase(),
+    PresupConfTipoAnexo: (req.body.PresupConfTipoAnexo || '').trim().toUpperCase(),
+    PresupConfTipoLargo: (req.body.PresupConfTipoLargo || '').trim().toUpperCase(),
+    PresupConfTipoAncho: (req.body.PresupConfTipoAncho || '').trim().toUpperCase(),
+    PresupConfTipoImprime: (req.body.PresupConfTipoImprime || '').trim().toUpperCase(),
     PresupConfTipoMinMOT: req.body.PresupConfTipoMinMOT,
     PresupConfTipoBack: '',
     PresupConfTipoPElab: 'S'
   };
-  conexion.query("INSERT INTO BasePresup.PresupConfTipo SET ?", registro, function (err, result) {
-    if (err) {
-      if (err.errno == 1062) {
-        return res.status(409).send({ message: "error clave duplicada" });
-      } else {
-        console.log("ERROR ");
-        console.log(err.errno);
-      }
-    } else {
-      res.json(result);
+  try {
+    await conexionpool.query("INSERT INTO BasePresup.PresupConfTipo SET ?", [registro]);
+    // Respuesta exitosa
+    return res.status(201).json({
+      leyenda: "PresupConfTipo creado correctamente"
+    });
+  } catch (err) {
+    console.error("Error en el proceso:", err);
+
+    // Manejo de errores específicos de SQL
+    if (err.errno === 1062) {
+      return res.status(460).json({ message: "Clave duplicada" });
     }
-  });
+    if (err.errno === 1406) {
+      return res.status(410).json({ message: "Dato demasiado largo para una columna" });
+    }
+
+    return res.status(500).json({
+      leyenda: "Error interno del servidor",
+      error: err.message
+    });
+  }
 });
-conexion.end;
+
+
 export default router;

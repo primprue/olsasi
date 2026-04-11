@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useCallback, useEffect } from "react";
+import { useState, useRef, useMemo } from "react";
 import Estilos from "../Ingreso/Ingreso.module.css";
 import { Card, CardContent, Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -7,13 +7,10 @@ import { use } from "react";
 import { MovStockPantContext } from "../../MovStockPant";
 import { datosingreso } from "../Ingreso/DatosIngreso";
 import TextFieldComun from "../../../../../components/comppropios/TextFieldComun";
-import leePresupConfTipoLeeAnexo from "../../../../Presupuesto/leePresupConfTipoLeeAnexo";
 import TextFieldSelect from "../../../../../components/comppropios/TextFieldSelect";
 import CustomSwitch from "../../../../../components/comppropios/CustomSwitch";
-import { set } from "react-hook-form";
 
 export default function SalidaStock({ datositems, onClick, ...other }) {
-	// const SalidaStock = ({ onClick, ...other }) => {
 	const { state, setState } = use(MovStockPantContext);
 	let abrrrubro;
 

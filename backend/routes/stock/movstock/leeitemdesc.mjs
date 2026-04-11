@@ -10,7 +10,6 @@ function queryAsync(sql, values) {
     });
 }
 
-// stkgennrorubro.mjs
 async function itemdescripcion(rubroabr, itemcod) {
     try {
 

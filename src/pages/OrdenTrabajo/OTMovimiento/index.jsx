@@ -20,7 +20,7 @@ import {
 	pink,
 	blueGrey,
 } from "@mui/material/colors";
-import { formdata } from "./formdata.js";
+import formdata from "./formdata.js";
 import TablaMuestra from "../../../components/TablaMuestra.jsx";
 import { Button, Dialog, DialogContent } from "@mui/material";
 import { TablaMuestraRenglon } from "./TablaMuestraRenglon/index.jsx";

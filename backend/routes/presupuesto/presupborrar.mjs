@@ -1,73 +1,68 @@
 import express from "express";
-var router = express.Router();
+const router = express.Router();
 
-import moment from "moment";
-import { conexion } from '../conexion.mjs';
+import fs from 'fs/promises';
+import path from 'path';
+import { conexionpool } from '../conexion.mjs';
 import variables from '../../public/variables.mjs';
-import { exec } from 'child_process';
-moment.locale("es");
 
+router.delete("/", async (req, res) => {
+  const indice = req.query.id;
+  if (!indice) return res.status(400).json({ leyenda: "Falta el ID" });
 
+  // 1. Pedimos una conexión "prestada" al Pool
+  const connection = await conexionpool.getConnection();
 
+  try {
+    // 2. Iniciamos la transacción
+    await connection.beginTransaction();
 
-router.delete("/", function (req, res, next) {
-  var respuesta = []
-  var indice = req.query.id;
-  var nombrepresup = 'Presupuesto\\ nro\\ ' + indice + '*.pdf'
-  var comando = 'rm ' + variables.dirpresupdocumento + nombrepresup
-  exec(comando, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`error: ${error.message}`);
-      console.error(`error: ${error.code}`);
-      respuesta.push(error.message)
-      return;
+    // 3. Borrar Renglones
+    await connection.query(
+      `DELETE FROM BasePresup.PresupRenglon WHERE PresupRenglonNroPresup = ?`,
+      [indice]
+    );
+
+    // 4. Borrar Encabezado
+    const [resultEncab] = await connection.query(
+      `DELETE FROM BasePresup.PresupEncab WHERE idPresupEncab = ?`,
+      [indice]
+    );
+
+    if (resultEncab.affectedRows === 0) {
+      // Si no existe, no hay nada que borrar, hacemos rollback y salimos
+      await connection.rollback();
+      return res.status(404).json({ leyenda: 'No se encontró el presupuesto.' });
     }
-    if (error.code === 1) {
-      respuesta.push(error.code)
-      return;
-    }
-    if (stderr) {
-      console.error(`stderr: ${stderr}`);
-      respuesta.push(stderr)
-      return;
-    }
-    respuesta.push(`${stdout}`)
-  });
-  var q = ["delete", ' from BasePresup.PresupEncab where idPresupEncab = ', indice].join(" ");
-  conexion.query(q, function (err, result) {
-    if (err) {
-      if (err.errno == 1451) {
-        return res
-          .status(411)
-          .send({ message: "error Código " });
+
+    // 5. Borrado de Archivos
+    try {
+      const directorio = variables.dirpresupdocumento;
+      const todosLosArchivos = await fs.readdir(directorio);
+      const archivosABorrar = todosLosArchivos.filter(n => n.startsWith(`Presupuesto nro ${indice}`));
+
+      for (const archivo of archivosABorrar) {
+        await fs.unlink(path.join(directorio, archivo));
       }
-      {
-        console.log(err);
-      }
-    } else {
-      respuesta.push(result)
+    } catch (fileErr) {
+      console.warn("Aviso: No se encontraron archivos físicos, pero se borró de la DB.");
     }
 
-    var q = ['DELETE FROM BasePresup.PresupRenglon WHERE PresupRenglonNroPresup = ', indice].join(" ");
-    conexion.query(q, function (err, result) {
-      if (err) {
-        if (err.errno == 1451) {
-          return res
-            .status(411)
-            .send({ message: "error Código " });
-        }
-        {
-          console.log(err);
-        }
-      } else {
-        respuesta.push(result)
-        res.json(respuesta);
-        respuesta = [];
-      }
-    });
-  });
+    // 6. Si llegamos aquí, todo OK. Confirmamos cambios.
+    await connection.commit();
+    return res.status(200).json({ leyenda: 'Presupuesto eliminado con éxito.' });
 
+  } catch (err) {
+    // 7. Si algo falló en el proceso, deshacemos los cambios de SQL
+    await connection.rollback();
+    console.error('Error en el proceso:', err);
+    return res.status(500).json({ leyenda: 'Error interno', detalle: err.message });
+
+  } finally {
+    // 8. ¡CRUCIAL! Devolvemos la conexión al Pool. 
+    // Si no haces esto, tu servidor se colgará después de unos 10 borrados.
+    connection.release();
+  }
 });
-conexion.end;
-export default router;
 
+export default router;

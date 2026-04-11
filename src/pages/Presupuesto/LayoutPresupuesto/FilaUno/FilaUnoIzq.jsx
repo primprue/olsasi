@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import Grid from "@mui/material/Grid";
-import leePresupConfTipoLeerDesc from "../../leePresupConfTipoLeerDesc";
-import leePresupConfTipoLeeAnexo from "../../leePresupConfTipoLeeAnexo";
+import { leePresupConfTipoLeerDesc } from "../../leePresupConfTipoLeerDesc";
+import { leePresupConfTipoLeeAnexo } from "../../leePresupConfTipoLeeAnexo";
 // Context
 import { use } from "react";
 import PresupPant from "../../../../context/PresupPant";
@@ -11,9 +11,8 @@ export default function FilaUnoIzq() {
 	const { state, setState } = use(PresupPant);
 	const anexo = "N";
 
-	const [selectedValues, setSelectedValues] = useState({});
 	const [tipopresupleidos, setTipopresupleidos] = useState([]);
-
+	const [selectedValues, setSelectedValues] = useState({});
 	// Función para manejar cambios en la selección
 	const handleSelectChange = useCallback((value, id, label) => {
 		setSelectedValues((prev) => ({ ...prev, [id]: value }));
@@ -38,6 +37,7 @@ export default function FilaUnoIzq() {
 	useEffect(() => {
 		conftipoleer();
 	}, [state.PresupProducto]);
+
 
 	// Generar opciones dinámicamente cuando `tipopresupleidos` cambie
 	const textdata = useMemo(() => {
@@ -66,6 +66,7 @@ export default function FilaUnoIzq() {
 						value={selectedValues[id] ?? value ?? ""}
 						onChange={handleSelectChange}
 						options={options}
+						defaultValue={'...'}
 						width="300px"
 					/>
 				))

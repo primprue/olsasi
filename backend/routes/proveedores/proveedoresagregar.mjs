@@ -5,29 +5,27 @@ import { conexionpool } from '../conexion.mjs';
 
 
 router.post("/", async (req, res) => {
-    console.log('esta en agrega pro  ', req.body)
     const registro = {
-        ProveedoresDesc: (req.body.provdesc || '').trim().toUpperCase(),
-        ProveedoresCUIT: (req.body.provcuit || '').trim(),
+        ProveedoresDesc: (req.body.ProveedoresDesc || '').trim().toUpperCase(),
+        ProveedoresCUIT: (req.body.ProveedoresCUIT || '').trim(),
 
         // Números: Evitamos el NaN usando Number() y un valor por defecto
-        ProveedoresTipo: Number(req.body.provtipo) || 1,
-        ProveedoresNroCalle: Number(req.body.provnrocalle) || 0,
+        ProveedoresTipo: Number(req.body.ProveedoresTipo) || 1,
+        ProveedoresNroCalle: Number(req.body.ProveedoresNroCalle) || 0,
 
         // Otros strings
-        ProveedoresCalle: (req.body.provcalle || '').trim().toUpperCase(),
-        ProveedoresPiso: (req.body.provpiso || '').trim(),
-        ProveedoresDto: (req.body.provdto || '').trim().toUpperCase(),
-        ProveedoresCodPos: (req.body.provcodpostal || '').trim(),
-        ProveedoresLoc: (req.body.provlocalidad || '').trim().toUpperCase(),
-        ProveedoresPcia: (req.body.provprovincia || '').trim().toUpperCase(),
-        ProveedoresTel: (req.body.provtelefono || '').trim(),
-        ProveedoresContacto: (req.body.provcontacto || '').trim().toUpperCase(),
-        ProveedoresMail: (req.body.provmail || '').trim().toLowerCase(), // Mail siempre en minúscula
-        ProveedoresWeb: (req.body.provpagweb || '').trim().toLowerCase(),
-        ProveedoresCodMon: req.body.provcodmon
+        ProveedoresCalle: (req.body.ProveedoresCalle || '').trim().toUpperCase(),
+        ProveedoresPiso: (req.body.ProveedoresPiso || '').trim(),
+        ProveedoresDto: (req.body.ProveedoresDto || '').trim().toUpperCase(),
+        ProveedoresCodPos: (req.body.ProveedoresCodPos || '').trim(),
+        ProveedoresLoc: (req.body.ProveedoresLoc || '').trim().toUpperCase(),
+        ProveedoresPcia: (req.body.ProveedoresPcia || '').trim().toUpperCase(),
+        ProveedoresTel: (req.body.ProveedoresTel || '').trim(),
+        ProveedoresContacto: (req.body.ProveedoresContacto || '').trim().toUpperCase(),
+        ProveedoresMail: (req.body.ProveedoresMail || '').trim().toLowerCase(), // Mail siempre en minúscula
+        ProveedoresWeb: (req.body.ProveedoresWeb || '').trim().toLowerCase(),
+        ProveedoresCodMon: req.body.ProveedoresCodMon
     };
-    console.log('registro', registro)
     try {
         await conexionpool.query("INSERT INTO BasesGenerales.Proveedores SET ?", [registro]);
         // Respuesta exitosa

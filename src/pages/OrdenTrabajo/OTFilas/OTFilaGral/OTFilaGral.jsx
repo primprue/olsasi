@@ -2,14 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import OrdTrabajo from "../../../../context/OrdTrabajo.jsx";
 import { llenarcolumns } from "../../../Tablas/Clientes/columns.jsx";
-import { formdata } from "../../../Tablas/Clientes/formdata.js";
 import { Button, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { ClientesLeer } from "../../../Tablas/Clientes/ClientesLeer.jsx";
+// import { ClientesLeer } from "../../../Tablas/Clientes/ClientesLeer.jsx";
+// import { leerTransporte } from "../../../Tablas/Transporte/TransporteLeer.jsx";
+import { DatosLeer } from "../../../../components/DatosLeer.jsx";
+import formdatac from "../../../Tablas/Clientes/formdata.js";
+import formdatat from "../../../Tablas/Transporte/formdata.js";
+import formdataop from "../../../Tablas/OTCondPago/formdata.js";
 import { clientesleercod } from "../../../Tablas/Clientes/ClientesLeerCod.jsx";
-import { leerTransporte } from "../../../Tablas/Transporte/TransporteLeer.jsx";
 import { TransporteLeerCod } from "../../../Tablas/Transporte/TransporteLeerCod.jsx";
-import { OTCondPagoLeer } from "../../OTTablas/OTCondPago/OTCondPagoLeer.jsx";
+// import { OTCondPagoLeer } from "../../../Tablas/OTCondPago/OTCondPagoLeer.js";
+
 // import { TransporteLeerTodo } from "../../../Tablas/Transporte/TransporteLeerTodo.jsx";
 import styles from "../../../../Styles/Boton.module.css";
 import { DialogoDatos } from "../../../../components/DialogoDatos.jsx";
@@ -45,17 +49,18 @@ export default function OTFilaGral(props) {
 		}
 	}
 	async function buscatransporte() {
-		const datostransporte = await leerTransporte();
-
+		// const datostransporte = await leerTransporte();
+		const datostransporte = await DatosLeer(formdatat.nombackleer);
 		setTransportes(datostransporte);
 	}
 	async function buscaotcondpago() {
-		const otcondpago = await OTCondPagoLeer();
-
+		// const otcondpago = await OTCondPagoLeer();
+		const otcondpago = await DatosLeer(formdataop.nombackleer);
 		setOtcondpago(otcondpago);
 	}
 	async function buscaclientes() {
-		const datosclientes = await ClientesLeer();
+		// const datosclientes = await ClientesLeer();
+		const datosclientes = await DatosLeer(formdatac.nombackleer);
 		setClientesleidos(datosclientes);
 	}
 

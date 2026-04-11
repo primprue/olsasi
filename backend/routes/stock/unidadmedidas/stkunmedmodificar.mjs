@@ -1,35 +1,34 @@
 import express from "express";
 var router = express.Router();
 
-import { conexion } from '../../conexion.mjs';
+import { conexionpool } from '../../conexion.mjs';
 
 
-router.post("/?:id", function (req, res, next) {
-  var indice = req.params.id;
+router.post("/", async (req, res) => {
+  const indice = req.query.id;
 
   let descr = req.body.StkUnMedDesc.toUpperCase();
-
-  conexion.query(
-    'UPDATE StkUnMed SET StkUnMedDesc = "' +
-    descr +
-    '" WHERE idStkUnMed = "' +
-    indice +
-    '"',
-
-    function (err, result) {
-      if (err) {
-        if (err.errno == 1062) {
-          return res.status(409).send({ message: "error clave duplicada" });
-        } else if (err.errno == 1406 || err.errno == 1264) {
-          return res.status(410).send({ message: "Texto demasiado largo" });
-        } else {
-          console.log(err.errno);
-        }
-      } else {
-        res.json(result);
-      }
+  try {
+    const q = `UPDATE StkUnMed SET StkUnMedDesc = ? WHERE idStkUnMed = ?`;
+    await conexionpool.query(q, [descr, indice]);
+    return res.status(200).json({
+      leyenda: 'Unidad Medida modificada correctamente',
+    });
+  } catch (err) {
+    console.error("Error en el proceso:", err);
+    // Manejo de errores específicos de SQL
+    if (err.errno === 1062) {
+      return res.status(460).json({ message: "Clave duplicada" });
     }
-  );
+    if (err.errno === 1406) {
+      return res.status(410).json({ message: "Dato demasiado largo para una columna" });
+    }
+    return res.status(500).json({
+      leyenda: "Error interno del servidor",
+      error: err.message
+    });
+  }
+
 });
 
 export default router;

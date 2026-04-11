@@ -1,14 +1,14 @@
 import express from "express";
 const router = express.Router(); // Siempre usa const para el router
-import { conexion } from '../../conexion.mjs';
-
+import { conexionpool } from "../../conexion.mjs";
 router.post("/", async (req, res) => {
   // 1. Extraemos los IDs de la URL (query) y los datos del cuerpo (body)
-  const { idStkRubro, StkRubroCodGrp } = req.query;
+  console.log('req.body  ', req.body)
+  // const { idStkRubro, StkRubroCodGrp } = req.query.params;
 
   // 2. Extraemos y formateamos los datos del cuerpo
   const {
-    StkRubroDesc, StkRubroAbr, StkRubroProv, StkRubroAncho,
+    idStkRubro, StkRubroCodGrp, StkRubroDesc, StkRubroAbr, StkRubroProv, StkRubroAncho,
     StkRubroPresDes, StkRubroPres, StkRubroUM, StkRubroCosto,
     StkRubroTM, StkRubroConf
   } = req.body;
@@ -30,12 +30,11 @@ router.post("/", async (req, res) => {
     StkRubroConf: StkRubroConf,
     StkRubroFecha: finalDate
   };
-
   try {
     // 4. Ejecutamos la consulta usando placeholders (?) para seguridad total
     const q = 'UPDATE StkRubro SET ? WHERE idStkRubro = ? AND StkRubroCodGrp = ?';
 
-    const [result] = await conexion.query(q, [
+    const [result] = await conexionpool.query(q, [
       valoresActualizar,
       idStkRubro,
       StkRubroCodGrp

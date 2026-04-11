@@ -178,7 +178,7 @@ router.get('/', async (req, res, next) => {
 
       detalle = `${detalle} en :  ${StkRubroAbr}`
 
-      if (ivasn === "CIVA") {
+      if (ivasncal === "CIVA") {
         importe1 = Math.ceil(importe1 / 10) * 10;
       } else {
         importe1 = Math.ceil(importe1 / 1.21 / 10) * 10;

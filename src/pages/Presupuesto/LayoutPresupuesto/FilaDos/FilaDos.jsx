@@ -13,7 +13,6 @@ import ArchiveIcon from "@mui/icons-material/Archive";
 import CancelPresentationTwoToneIcon from "@mui/icons-material/CancelPresentationTwoTone";
 import { red, green } from "@mui/material/colors";
 import { GeneraDCalculo } from "./GeneraDCalculo";
-import estilo from "../../../../Styles/TextFieldSelect.module.css"
 // Context
 import { use } from "react";
 import PresupPant from "../../../../context/PresupPant";
@@ -45,7 +44,6 @@ export default function FilaDos() {
 	const { state, setState } = use(PresupPant);
 	const { datosrenglon, setDatosRenglon } = use(PresupPant);
 
-
 	let labellargo = "Largo";
 	let labelancho = "Ancho";
 	const { inicializaPresup } = use(PresupPant);
@@ -71,11 +69,15 @@ export default function FilaDos() {
 
 		if (
 			presuptipo === "LONAS ENROLLABLES" ||
-			presuptipo === "TOLDO BARRACUADRA" ||
-			presuptipo === "LATERAL CORREDIZO"
+			presuptipo === "TOLDO BARRACUADRA"
 		) {
 			labellargo = "Alto";
 		}
+		if (presuptipo === "LATERAL CORREDIZO") {
+			labellargo = "Largo";
+			labelancho = "Alto";
+		}
+
 		if (presuptipo === "CARGA DESCRIPCION") {
 			labellargo = "Importe";
 		}
@@ -133,7 +135,6 @@ export default function FilaDos() {
 		var PresupCantidadM = state.PresupCantidad;
 
 		var dcalculo = [];
-
 		var statepasante = state;
 		var dcalculo1 = await GeneraDCalculo(statepasante, presuptipo, cotidivisa);
 		if (dcalculo1.faltadato === true) {
@@ -149,6 +150,7 @@ export default function FilaDos() {
 				datoscalculos,
 				presuptipo
 			);
+
 			var datospresup = ''
 			datospresup = await Agregar(
 				datosrenglon1,
@@ -161,7 +163,6 @@ export default function FilaDos() {
 				state.renglonanexo,
 				dcalculo
 			);
-
 			if (state.renglonanexo.length !== 0) {
 				setDatosRenglon([...datosrenglon, state.renglonanexo]);
 				setDatosRenglon([...datosrenglon, datospresup[0]]);
@@ -315,6 +316,9 @@ export default function FilaDos() {
 				)}
 				{presuptipo === "BOLSON PARA TANQUE" && <FilaTanques></FilaTanques>}
 				{presuptipo === "PILETA CAÑOS ALUMINIO" && (
+					<FilaPiletasEnr></FilaPiletasEnr>
+				)}
+				{presuptipo === "PILETA CAÑOS Y SOLAPA" && (
 					<FilaPiletasEnr></FilaPiletasEnr>
 				)}
 				{presuptipo === "TOLDO BARRACUADRA" && <FilaToldosExt></FilaToldosExt>}

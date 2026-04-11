@@ -1,12 +1,10 @@
 import express from 'express';
 var router = express.Router();
-import moment from 'moment';
-import { conexion } from '../../conexion.mjs';
-moment.locale('es');
+import { conexionpool } from '../../conexion.mjs';
 
-router.post('/', function (req, res) {
+router.post('/', async (req, res) => {
     const nuevoValor = { "": 0 };
-    var registro = {
+    const registro = {
         OTDatosTipoConf: req.body.OTDatosTipoConf,
         OTDatosDesc: req.body.OTDatosDesc,
         OTDatosOpciones: JSON.stringify(nuevoValor),
@@ -15,21 +13,28 @@ router.post('/', function (req, res) {
         OTDatosOrdenAparicion: req.body.OTDatosOrdenAparicion,
         OTDatosAncho: req.body.OTDatosAncho
     }
-    conexion.query('INSERT INTO BasesOrdenes.OTDatos SET ?', registro,
-        function (err, result) {
-            if (err) {
-                if (err.errno == 1062) {
-                    return res.status(409).send({ message: "error clave duplicada" });
-                }
-                else {
-                    console.log(err.errno);
-                }
-            }
-
-
-            else {
-                res.json(result.rows);
-            }
+    try {
+        const q = `INSERT INTO BasesOrdenes.OTDatos SET ?`;
+        await conexionpool.query(q, [registro]);
+        return res.status(201).json({
+            leyenda: "OTDatos creado correctamente"
         });
+    } catch (err) {
+        console.error("Error en el proceso:", err);
+
+        // Manejo de errores específicos de SQL
+        if (err.errno === 1062) {
+            return res.status(460).json({ message: "Clave duplicada" });
+        }
+        if (err.errno === 1406) {
+            return res.status(410).json({ message: "Dato demasiado largo para una columna" });
+        }
+
+        return res.status(500).json({
+            leyenda: "Error interno del servidor",
+            error: err.message
+        });
+    }
+
 });
 export default router;

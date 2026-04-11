@@ -4,7 +4,7 @@ var router = express.Router();
 import { conexion } from '../../conexion.mjs';
 
 
-router.post('/?:id', function (req, res, next) {
+router.post('/:id', function (req, res, next) {
     var indice = req.params.id;
 
     let ParamCompLetra = req.body.ParamCompLetra;

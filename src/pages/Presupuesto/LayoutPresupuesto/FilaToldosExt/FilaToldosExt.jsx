@@ -1,15 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import {
-	Radio,
-	RadioGroup,
-	FormControlLabel,
-	TextField,
-} from "@mui/material";
+
 import Grid from "@mui/material/Grid";
-import styles from "../styles.module.css";
-import estilo from "../../../../Styles/TextFieldSelect.module.css";
-import estiloI from "../../../../Styles/RadioGroup.module.css";
-import estiloII from "../../../../Styles/TextField.module.css";
+
 import { stkrubroleetbr } from "../../../Tablas/StkRubros/StkRubroLeeTBR";
 // Context
 import { use } from "react";
@@ -25,7 +17,6 @@ export default function FilaToldosExt(props) {
 	const selectedOption = useMemo(() => state.TipoMecanismo || "Manual", [state.TipoMecanismo]);
 	// Función para actualizar la opción seleccionada
 	const handleOptionChange = (newOption) => {
-		console.log('newOption', newOption)
 		// setState({ ...state, mecanismo: newOption });
 		setState({ ...state, TipoMecanismo: newOption });
 	};

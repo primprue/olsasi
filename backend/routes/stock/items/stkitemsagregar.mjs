@@ -2,41 +2,53 @@ import express from "express";
 var router = express.Router();
 
 import moment from "moment";
-import { conexion } from '../../conexion.mjs';
+import { conexionpool } from '../../conexion.mjs';
 
 
 moment.locale("es");
 
 
-router.post("/", async function (req, res) {
-  var d = new Date();
-  var finalDate = d.toISOString().split("T")[0];
+router.post("/", async (req, res) => {
+  let d = new Date();
+  let finalDate = d.toISOString().split("T")[0];
 
-  var ItemDescripcion = req.body.StkItemsDesc === undefined ? '' : req.body.StkItemsDesc.toUpperCase()
-  var registro = {
-    idStkItems: req.body.idStkItems,
-    StkItemsGrupo: req.body.StkItemsGrupo,
-    StkItemsRubro: req.body.StkItemsRubro,
-    StkItemsRubroAbr: req.body.StkItemsRubroAbr,
-    StkItemsDesc: ItemDescripcion,
-    StkItemsOTD: req.body.StkItemsOTD,
-    StkItemsCantidad: req.body.StkItemsCantidad,
-    StkItemsCantDisp: req.body.StkItemsCantDisp,
-    StkItemsFAct: finalDate,
-    StkItemsMin: req.body.StkItemsMin,
-    StkItemsMax: req.body.StkItemsMax
-  };
-  conexion.query("INSERT INTO StkItems SET ?", registro, function (
-    err,
-    result
-  ) {
-    if (err) {
-      console.log("ERROR ");
-      console.log(err.errno);
-    } else {
-      res.json(result.rows);
+  let ItemDescripcion = req.body.StkItemsDesc === undefined ? '' : req.body.StkItemsDesc.toUpperCase()
+  try {
+    const registro = {
+      idStkItems: req.body.idStkItems,
+      StkItemsGrupo: req.body.StkItemsGrupo,
+      StkItemsRubro: req.body.StkItemsRubro,
+      StkItemsRubroAbr: (req.body.StkItemsRubroAbr || '').toUpperCase(),
+      StkItemsDesc: (ItemDescripcion || '').toUpperCase(),
+      StkItemsOTD: (req.body.StkItemsOTD).toUpperCase(),
+      StkItemsCantidad: Number(req.body.StkItemsCantidad || 0),
+      StkItemsCantDisp: Number(req.body.StkItemsCantDisp || 0),
+      StkItemsFAct: finalDate,
+      StkItemsMin: Number(req.body.StkItemsMin || 0),
+      StkItemsMax: Number(req.body.StkItemsMax || 0),
+    };
+    await conexionpool.query("INSERT INTO StkItems SET ?", [registro]);
+
+    return res.status(201).json({
+      leyenda: 'Item creados correctamente',
+    });
+
+  } catch (err) {
+    console.error("Error en el proceso:", err);
+
+    // Manejo de errores específicos de SQL
+    if (err.errno === 1062) {
+      return res.status(460).json({ message: "Clave duplicada" });
     }
-  });
+    if (err.errno === 1406) {
+      return res.status(410).json({ message: "Dato demasiado largo para una columna" });
+    }
+
+    return res.status(500).json({
+      leyenda: "Error interno del servidor",
+      error: err.message
+    });
+  }
 });
 
 export default router;

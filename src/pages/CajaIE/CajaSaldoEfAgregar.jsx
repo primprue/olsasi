@@ -3,7 +3,6 @@ import IpServidor from "../VariablesDeEntorno";
 import MuestraMensaje from "../../components/lib/MuestraMensaje";
 
 export function CajaSaldoEfAgregar(datoagrabar) {
-
 	return new Promise(function (resolve, reject) {
 		setTimeout(() => {
 			const url = IpServidor + "/cajasaldoefagregar";

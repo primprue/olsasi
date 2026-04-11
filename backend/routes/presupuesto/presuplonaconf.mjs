@@ -2,13 +2,7 @@ import express from "express";
 var router = express.Router();
 import { conexion } from '../conexion.mjs';
 
-// ------------------------------------------------------------------
-// FUNCIÓN: ejecuta una consulta MySQL en modo async
-// ------------------------------------------------------------------
-// async function queryAsync(sql) {
-//     const [rows] = await conexion.promise().query(sql);
-//     return rows;
-// }
+/* LA MANO DE OBRA ES u$s 2 POR METRO CUADRDADO, NO INFLUYE EL VALOR DE LA MOT*/
 
 async function queryAsync(sql, params = []) {
     const [rows] = await conexion.promise().query(sql, params);
@@ -98,6 +92,7 @@ router.get("/", async (req, res) => {
                 tipoojal,            // subquery
                 StkRubroAbrP       // r1
             ];
+
             const datos1 = await queryAsync(sql, params);
 
             //const datos1 = await queryAsync(sql);
@@ -135,14 +130,11 @@ router.get("/", async (req, res) => {
             if (metrosCuad < 12) ciclo = 3;
             else if (metrosCuad < 16) ciclo = 2;
             else if (metrosCuad < 22) ciclo = 1;
-            console.log('ciclo  ', ciclo)
-            console.log('costo  ', costo)
+
             for (let i = 0; i < ciclo; i++) {
-                console.log('costo  ', costo)
                 costo *= 1.0325;
             }
 
-            console.log('costo  ', costo)
             // IVA / redondeo
             if (ivasn === "CIVA") {
                 costo = Math.ceil(costo / 10) * 10;

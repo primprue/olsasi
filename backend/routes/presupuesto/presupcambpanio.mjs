@@ -44,13 +44,13 @@ router.get("/", async (req, res) => {
       lna === 'LN' ? valorhora = vhln : valorhora = vhla
 
       ganancia = p.coefgancsoga
-
+      let ivasncal = minmay === "my" ? "CIVA" : ivasn;
       if (minmay == 'my') {
         coeficiente = p.coeficientemay;
         tipoojal = p.abrojales28;
         sogachicote = p.sogachicotemay;
         ganancia = p.coefganmay
-        ivasn = 'CIVA'
+
       }
       else {
         coeficiente = p.coeficientemin;
@@ -151,7 +151,7 @@ router.get("/", async (req, res) => {
       }
       costo = costo + costohora
       // IVA / redondeo
-      if (ivasn === "CIVA") {
+      if (ivasncal === "CIVA") {
         costo = Math.ceil(costo / 10) * 10;
       } else {
         costo = Math.ceil(costo / 1.21 / 10) * 10;

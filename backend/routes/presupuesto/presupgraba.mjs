@@ -1,14 +1,15 @@
 import express from "express";
 import moment from "moment";
-import { conexion } from '../conexion.mjs';
-
+// import { conexion } from '../conexion.mjs';
+import { conexionpool } from '../conexion.mjs';
 const router = express.Router();
 moment.locale("es");
 
 router.use(express.json());
 
-router.all("/", async function (req, res) {
-  const conn = await conexion.promise().getConnection();
+router.all("/", async (req, res) => {
+  // const conn = await conexionpool.promise().getConnection();
+  const conn = await conexionpool.getConnection();
 
   try {
     // ⭐ INICIAR TRANSACCIÓN

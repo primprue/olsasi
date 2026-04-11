@@ -1,68 +1,11 @@
 import React, { Component, useEffect } from "react";
-import { TransporteModificar } from "../pages/Tablas/Transporte/TransporteModificar.jsx";
-import { leerTransporte } from "../pages/Tablas/Transporte/TransporteLeer.jsx";
 
-import { ClientesModificar } from "../pages/Tablas/Clientes/ClientesModificar.jsx";
-import { ClientesLeer } from "../pages/Tablas/Clientes/ClientesLeer.jsx";
-
-import { leerStkMonedas } from "../pages/Tablas/Monedas/StkMonedasLeer.jsx";
-import { StkMonedasModificar } from "../pages/Tablas/Monedas/StkMonedasModificar.jsx";
-
-import { PresupConfTipoLee } from "../pages/Tablas/PresupConfTipo/PresupConfTipoLee.jsx";
-import { PresupConfTipoModificar } from "../pages/Tablas/PresupConfTipo/PresupConfTipoModificar.jsx";
-
-import { PresupDetPieLee } from "../pages/Tablas/PresupDetPie/PresupDetPieLee.jsx";
-import { PresupDetPieModificar } from "../pages/Tablas/PresupDetPie/PresupDetPieModificar.jsx";
-
-import { proveedoresleer } from "../pages/Tablas/Proveedores/ProveedoresLeer.jsx";
-import { ProveedoresModificar } from "../pages/Tablas/Proveedores/ProveedoresModificar.jsx";
-
-import { stkgrupolee } from "../pages/Tablas/StkGrupos/StkGrupoLee.jsx";
-import { StkGrupoModificar } from "../pages/Tablas/StkGrupos/StkGrupoModificar.jsx";
-
-import { stkrubroleermezcla } from "../pages/Tablas/StkRubros/StkRubroLeerMezcla.jsx";
-import { StkRubroModificar } from "../pages/Tablas/StkRubros/StkRubroModificar.jsx";
-
-import { leeStkItemsDetalles } from "../pages/Tablas/StkItems/leeStkitemsDetalles.jsx";
-import { StkItemsModificar } from "../pages/Tablas/StkItems/StkItemsModificar.jsx";
-
-import { StkUnMedLee } from "../pages/Tablas/UnidadMedidas/StkUnMedLee.jsx";
-import { StkUnMedModificar } from "../pages/Tablas/UnidadMedidas/StkUnMedModificar.jsx";
-
-import { StkUbFisicaLee } from "../pages/Tablas/UbicacionFisica/StkUbFisicaLee.jsx";
-
-import { ParamCompLeer } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompLeer.jsx";
-import { ParamCompModificar } from "../pages/CtasCtes/Tablas/ParamComp/ParamCompModificar.jsx";
-
-import { OTCondPagoLeer } from "../pages/OrdenTrabajo/OTTablas/OTCondPago/OTCondPagoLeer.jsx";
-import { OTCondPagoModificar } from "../pages/OrdenTrabajo/OTTablas/OTCondPago/OTCondPagoModificar.jsx";
-
-import { PBRubrosLee } from "../pages/PreBalance/PBRubros/PBRubrosLee.jsx";
-import { PBRubrosModificar } from "../pages/PreBalance/PBRubros/PBRubrosModificar.jsx";
-
-import { PBSubRubrosLeer } from "../pages/PreBalance/PBSubRubros/PBSubRubrosLeer.jsx";
-import { PBSubRubrosModificar } from "../pages/PreBalance/PBSubRubros/PBSubRubrosModificar.jsx";
-
-import { PBComprobantesLeer } from "../pages/PreBalance/PBComprobantes/PBComprobantesLeer.jsx";
-import { PBComprobantesModificar } from "../pages/PreBalance/PBComprobantes/PBComprobantesModificar.jsx";
-
-import { CajaInternaLeer } from "../pages/CajaIE/CajaInterna/CajaInternaLeer.jsx";
-
-import { CajaInternaModificar } from "../pages/CajaIE/CajaInterna/CajaInternaModificar.jsx";
-
-
-// import { TablaMuestraRenglon } from "../pages/Presupuesto/LayoutPresupuesto/PresupMuestra/TablaMuestraRenglon/index.jsx";
-// import { presupDatos } from "../pages/Presupuesto/LayoutPresupuesto/PresupMuestra/presupDatos.jsx";
 import { useState } from "react";
-import DeleteForeverTwoToneIcon from "@mui/icons-material/DeleteForeverTwoTone";
-import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
-import AddToPhotosTwoToneIcon from "@mui/icons-material/AddToPhotosTwoTone";
 import CheckCircleTwoToneIcon from "@mui/icons-material/CheckCircleTwoTone";
 import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
 import PreviewTwoToneIcon from "@mui/icons-material/PreviewTwoTone";
 import { RecargaIcon, BorrarIcono, AgregarIcon } from "../components/comppropios/CustomIcons.jsx";
 import estilotabla from "../Styles/Tabla.module.css";
-import { green } from "@mui/material/colors";
 //https://www.youtube.com/watch?v=1zYf4Yw1jqs usa custom hooks y en el ejemplo maneja promesas y errores
 import {
 	DataGrid,
@@ -72,16 +15,22 @@ import {
 	GridToolbarExport,
 	GridToolbarDensitySelector,
 	GridToolbar,
+	GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
-import { esES } from '@mui/material/locale';
+import { esES } from '@mui/x-data-grid/locales';
+// import { esES } from '@mui/material/locale';
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { DialogoDatos } from "./DialogoDatos.jsx";
 import { use } from "react";
 import TablasContexto from "../context/TablasContext.jsx";
 import SelecCampos from "../pages/Impresion/SelecCampos.jsx";
+import { DatosModificar } from "./DatosModificar.jsx";
+import { DatosLeer } from "./DatosLeer.jsx";
+import { Tooltip } from "@mui/material";
 
-
+/*props viene de IndexTablas, que hace una lectura de los datos de las tablas, según
+el backend que se haya cargado en formdata de la tabla en si */
 
 export default function TablaMuestra(props) {
 	const { rows1, columns1, formdatos } = props;
@@ -133,80 +82,12 @@ export default function TablaMuestra(props) {
 	};
 
 	async function relee() {
-		if (formdatos.tablabase === "Transportes") {
-			const data = await leerTransporte();
-			setRows(data);
-		}
-		if (formdatos.tablabase === "Clientes") {
-			const data = await ClientesLeer();
-			setRows(data);
-		}
-		if (formdatos.tablabase === "Monedas") {
-			const data = await leerStkMonedas();
-			setRows(data);
-		}
-		if (formdatos.tablabase === "PresupConfTipo") {
-			const data = await PresupConfTipoLee();
-			setRows(data);
-		}
-		if (formdatos.tablabase === "PresupDetPie") {
-			const data = await PresupDetPieLee();
-			setRows(data);
-		}
-		if (formdatos.tablabase === "Proveedores") {
-			const data = await proveedoresleer();
-			setRows(data);
-		}
-		if (formdatos.tablabase === "StkGrupos") {
-			const data = await stkgrupolee();
-			setRows(data);
-		}
-		if (formdatos.tablabase === "StkRubros") {
-			const data = await stkrubroleermezcla();
-			setRows(data);
-		}
-		if (formdatos.tablabase === "StkItems") {
-			const data = await leeStkItemsDetalles();
-			setRows(data);
-		}
-		if (formdatos.tablabase === "UniMedidas") {
-			const data = await StkUnMedLee();
-			setRows(data);
-		}
+		const data = await DatosLeer(formdatos.nombackleer);
+		setRows(data);
 
-		if (formdatos.tablabase === "UbiFisica") {
-			const data = await StkUbFisicaLee();
-			setRows(data);
-		}
-
-		if (formdatos.tablabase === "ParamComp") {
-			const data = await ParamCompLeer();
-			setRows(data);
-		}
-
-		if (formdatos.tablabase === "OTCondPago") {
-			const data = await OTCondPagoLeer();
-			setRows(data);
-		}
-
-		if (formdatos.tablabase === "PBRubros") {
-			const data = await PBRubrosLee();
-			setRows(data);
-		}
-		if (formdatos.tablabase === "PBSubRubros") {
-			const data = await PBSubRubrosLeer();
-			setRows(data);
-		}
-		if (formdatos.tablabase === "PBComprobantes") {
-			const data = await PBComprobantesLeer();
-			setRows(data);
-		}
-		if (formdatos.tablabase === "CajaInterna") {
-			const data = await CajaInternaLeer();
-			setRows(data);
-		}
 
 	}
+	// async function handleClose() {
 	const handleClose = () => {
 		relee();
 		if (datoborrado !== 0)
@@ -220,31 +101,16 @@ export default function TablaMuestra(props) {
 			`Alta de ${formdatos.tablabase} (moverse por los campos con tab)`
 		);
 		setOpen(true);
-
 	};
 
+	const handleModifica = async (params) => {
 
-	const handleModifica = (params) => {
-		// setTimeout(() => {
-		if (formdatos.tablabase === "Transportes") TransporteModificar(params);
-		if (formdatos.tablabase === "Clientes") ClientesModificar(params);
-		if (formdatos.tablabase === "Monedas") StkMonedasModificar(params);
-		if (formdatos.tablabase === "PresupConfTipo")
-			PresupConfTipoModificar(params);
-		if (formdatos.tablabase === "PresupDetPie") PresupDetPieModificar(params);
-		if (formdatos.tablabase === "Proveedores") ProveedoresModificar(params);
-		if (formdatos.tablabase === "StkGrupos") StkGrupoModificar(params);
-		if (formdatos.tablabase === "StkRubros") StkRubroModificar(params);
-		if (formdatos.tablabase === "StkItems") StkItemsModificar(params);
-		if (formdatos.tablabase === "UniMedidas") StkUnMedModificar(params);
-		if (formdatos.tablabase === "ParamComp") ParamCompModificar(params);
-		if (formdatos.tablabase === "OTCondPago") OTCondPagoModificar(params);
-		if (formdatos.tablabase === "PBRubros") PBRubrosModificar(params);
-		if (formdatos.tablabase === "PBSubRubros") PBSubRubrosModificar(params);
-		if (formdatos.tablabase === "PBComprobantes") PBComprobantesModificar(params);
-		if (formdatos.tablabase === "CajaInterna") CajaInternaModificar(params);
-
-		relee();
+		let resultado;
+		resultado = await DatosModificar(params, formdatos.nombackmodificar);
+		if (resultado === 200) {
+			// 2. Solo después de la confirmación, refrescamos el DataGrid
+			await relee();
+		}
 		// }, 50);
 	};
 
@@ -299,13 +165,16 @@ export default function TablaMuestra(props) {
 	function CustomToolbar() {
 		return (
 			<GridToolbarContainer sx={estiloBoton}
-			// className={estilotabla.tablasgenerales}
 			>
 				<GridToolbarColumnsButton />
 				<GridToolbarFilterButton />
 				<GridToolbarDensitySelector />
-				<GridToolbarExport />
-
+				<Tooltip title="Cuando se exporta, en LibreCalc, las columnas con números, en Campos Tipo de Columna, elegir Inglés (US)" arrow>
+					<span> {/* El span asegura que el tooltip funcione incluso si el botón se deshabilita */}
+						<GridToolbarExport />
+					</span>
+				</Tooltip>
+				<GridToolbarQuickFilter placeholder="Buscar" />
 				{(formdatos.tablabase !== "MuestraPresupuesto" && (
 					<React.Fragment>
 						<AgregarIcon
@@ -351,16 +220,18 @@ export default function TablaMuestra(props) {
 					className={estilotabla.iconorecarga}
 					onClick={() => relee()}
 				/>
+
 			</GridToolbarContainer>
 		);
 	}
 	return (
 		// <div style={{ margin: 6, height: 600, width: "85%" }}>
 		<>
+			{/* <div style={{ height: 655, width: "100%" }}> */}
+
 			<DataGrid
 				rows={rows}
 				columns={columns}
-				localeText={esES}
 				processRowUpdate={processRowUpdate}
 				className={estilotabla.tablasgenerales}
 				onRowClick={handleRowSelect}
@@ -382,9 +253,14 @@ export default function TablaMuestra(props) {
 				}}
 				slots={{
 					toolbar: CustomToolbar,
-
+					csvOptions: {
+						fileName: 'datos_exportados',
+						delimiter: ';', // Cambiar separador CSV
+						includeHeaders: true,
+						utf8WithBom: true,
+					},
 				}}
-
+				localeText={esES.components.MuiDataGrid.defaultProps.localeText}
 				initialState={{
 					...rows.initialState,
 					pagination: {

@@ -1,32 +1,28 @@
 import express from "express";
 var router = express.Router();
 
-import { conexion } from '../../conexion.mjs';
+import { conexionpool } from '../../conexion.mjs';
 
 
-router.delete("/?:id", function (req, res, next) {
-  var indice = req.params.id;
+router.delete("/", async (req, res) => {
 
-  var q = [
-    'delete from StkUnMed where idStkUnMed = "' + indice + '"'
-  ].join(" ");
-  conexion.query(q, function (err, result) {
-    if (err) {
-      if (err.errno == 1451) {
-        return res
-          .status(411)
-          .send({
-            message: "error Código de Unidad de Medida usado en otra tabla"
-          });
-      }
-      {
-        console.log(err.errno);
-      }
-    } else {
-      res.json(result.rows);
-    }
+  const indice = req.query.id;
+  try {
+    const q = `delete from StkUnMed where idStkUnMed = ?`;
+    await conexionpool.query(q, [indice]);
+    return res.status(200).json({
+      leyenda: 'Unidad Medida eliminada correctamente',
+    });
+  } catch (err) {
+    console.error("Error en el proceso:", err);
+
+
+
+    return res.status(500).json({
+      leyenda: "Error interno del servidor",
+      error: err.message
+    });
   }
-  );
 });
 
 export default router;

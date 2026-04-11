@@ -1,22 +1,22 @@
 import express from 'express';
 
 var router = express.Router();
-import { conexion } from '../conexion.mjs';
+import { conexionpool } from '../conexion.mjs';
 
 
 
-router.get('/', function (req, res, next) {
-
-    let q1 = `SELECT idBilletes as value, BilletesValor as label, BilletesMoneda  FROM BaseCaja.Billetes order by BilletesValor desc`
-    conexion.query(q1,
-        function (err, result) {
-            if (err) {
-                console.log(err);
-
-            } else {
-                res.json(result);
-            }
+router.get('/', async (req, res) => {
+    try {
+        const q = `SELECT idBilletes as value, BilletesValor as label, BilletesMoneda  FROM BaseCaja.Billetes order by BilletesValor desc`;
+        const [result] = await conexionpool.query(q);
+        return res.json(result);
+    } catch (err) {
+        console.error("Error en el proceso:", err);
+        return res.status(500).json({
+            leyenda: "Error interno del servidor",
+            error: err.message
         });
+    }
 });
 
 export default router;

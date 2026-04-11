@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# variables para tablas
+formdata.js
+columns.jsx

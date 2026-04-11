@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Tooltip, Typography } from "@mui/material";
 import {
 
 	DataGrid,
 	GridToolbarContainer,
 	GridToolbarExport,
+	GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 
-import { esES } from '@mui/material/locale';
+import { esES } from '@mui/x-data-grid/locales';
 import estilotabla from "../../Styles/Tabla.module.css";
 
 import FitbitIcon from "@mui/icons-material/Fitbit";
@@ -91,32 +92,39 @@ export default function ListaPrecios() {
 	function CustomToolbar() {
 		return (
 			<GridToolbarContainer className={estilotabla.tablalistaprecios}>
+				<GridToolbarQuickFilter />
 				<LocalPrintshopRoundedIcon
 					onClick={() => setImprimirTF(true)}
 					style={{ color: blue[800] }}
 					fontSize="medium"
 					titleAccess="Imprimir"
 				/>
-				<GridToolbarExport style={{ color: green[800] }} />
+				<Tooltip title="Cuando se exporta, en LibreCalc, las columnas con números, en Campos Tipo de Columna, elegir Inglés (US)" arrow>
+					<span> {/* El span asegura que el tooltip funcione incluso si el botón se deshabilita */}
+						<GridToolbarExport style={{ color: green[800] }} />
+					</span>
+				</Tooltip>
+
 			</GridToolbarContainer >
 		);
 	}
 
 	return (
 		<>
+			<div style={{ height: 700, width: '100%' }}>
+				<DataGrid
+					rows={rows}
+					columns={columns}
+					title="Lista de Precios"
+					localeText={esES.components.MuiDataGrid.defaultProps.localeText}
 
-			<DataGrid
-				rows={rows}
-				columns={columns}
-				title="Lista de Precios"
-				localeText={esES}
-				slots={{
-					toolbar: CustomToolbar,
-				}}
-				getCellClassName={() => `super-app-theme--Open`}
-				getRowClassName={() => `super-app-theme--Open`} //son las propiedades de las filas
-			/>
-
+					slots={{
+						toolbar: CustomToolbar,
+					}}
+					getCellClassName={() => `super-app-theme--Open`}
+					getRowClassName={() => `super-app-theme--Open`} //son las propiedades de las filas
+				/>
+			</div>
 			<SelecCampos
 				columns={columns}
 				datos={rows}

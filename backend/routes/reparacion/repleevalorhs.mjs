@@ -1,37 +1,33 @@
 import express from 'express';
 var router = express.Router();
 
-import { conexion } from '../conexion.mjs';
+import { conexionpool } from '../conexion.mjs';
 
 
 var datosenvio = []
 
-router.get('/', (req, res, next) => {
-  var q
-  var costhora = 0.00, coefMOTmay = 0.00, coefMOTmin = 0.00, minlonanues = 0.00, minlonaafuera = 0.00
-
-  q = ['select * from BasePresup.PresupParam'].join(' ')
-  conexion.query(q,
-    function (err, result) {
-      if (err) {
-        console.log(err);
-      }
-
-      costhora = result[0].costoMOT / 60
-      coefMOTmay = result[0].coefMOTmay
-      coefMOTmin = result[0].coefMOTmin
-
-      minlonanues = (costhora + 1) * 60 * coefMOTmay //esto se hizo para que el valor sea el mismo que en el anexo
-      minlonaafuera = (costhora + 1) * 60 * coefMOTmin  //esto se hizo para que el valor sea el mismo que en el anexo
-
-      datosenvio.push(minlonanues)
-      datosenvio.push(minlonaafuera)
-
-      res.json(datosenvio)
-      datosenvio = []
-    })
+router.get("/", async (req, res) => {
+  let q = `select * from BasePresup.PresupParam`
+  try {
+    const [rows] = await conexionpool.query(q);
+    let costminuto = (Number(rows[0].costoMOT) / 60)
+    let coefMOTmay = (Number(rows[0].coefMOTmay))
+    let coefMOTmin = Number(rows[0].coefMOTmin)
+    console.log(costminuto)
+    console.log(coefMOTmay)
+    console.log(coefMOTmin)
+    let horalonanues = (parseInt((costminuto + 1) * coefMOTmay) * 60) //esto se hizo para que el valor sea el mismo que en el anexo
+    let horalonaafuera = (parseInt((costminuto + 1) * coefMOTmin) * 60) //esto se hizo para que el valor sea el mismo que en el anexo
+    datosenvio.push(horalonanues)
+    datosenvio.push(horalonaafuera)
+    res.json(datosenvio)
+  } catch (err) {
+    console.error("Error en la DB:", err);
+    res.status(500).json({
+      error: "Error al obtener los Valor de Hora",
+      details: err.message
+    });
+  }
 });
 
-
-conexion.end
 export default router;

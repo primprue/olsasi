@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .contenedor-campos {
+        display: flex;
+        /* Activa Flexbox */
+        gap: 10px;
+        /* Espacio entre campos */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<body>
+    <div class="contenedor-campos">
+        <h3>Orden de Trabajo N° {{numeroOT}}</h3>
+        <p>Tipo de orden: {{tipoorden}}</p>
+    </div>
+    <table> <!-- El borde se estiliza mejor con CSS -->
+        <tr>
+            <th>Cliente: {{dencliente}}</th>
+            <th>Telefono: {{telefono}}</th>
+
+        </tr>
+        <tr>
+            <td>Localidad: {{localidad}}</td>
+            <td>CUIT: {{cuit}}</td>
+
+        </tr>
+        {{#each productos}}
+        <tr>
+            <td>{{this.nombre}}</td>
+            <td>${{this.precio}}</td>
+        </tr>
+        {{/each}}
+    </table>
+
+
+</body>
+
+</html>

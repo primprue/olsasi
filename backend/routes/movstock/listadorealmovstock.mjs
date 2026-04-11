@@ -1,30 +1,24 @@
 import express from 'express';
 var router = express.Router();
 
-import { conexion } from '../conexion.mjs';
+import { conexionpool } from '../conexion.mjs';
 
-conexion.connect(function (err) {
-    if (!err) {
-        console.log("base de datos conectada en listadorealmovstock");
-    } else {
-        console.log("no se conecto en listadorealmovstock");
-    }
-});
 
-router.get('/', function (req, res, next) {
-    var indice = req.query.id;
 
-    let q = ['SELECT  StkItemsRubroAbr, StkItemsDesc, StkItemsCantidad - StkItemsCantDisp as StockReal ' +
-        ' FROM BaseStock.StkItems where StkItemsRubroAbr = "' + indice + '"'].join(' ')
-
-    conexion.query(q,
-        function (err, result) {
-            if (err) {
-                console.log(err);
-            } else {
-                res.json(result);
-            }
+router.get('/', async (req, res) => {
+    const indice = req.query.id;
+    try {
+        const q = `SELECT  StkItemsRubroAbr, StkItemsDesc, StkItemsCantidad - StkItemsCantDisp as StockReal 
+         FROM BaseStock.StkItems where StkItemsRubroAbr = ? `
+        const [result] = await conexionpool.query(q, [indice]);
+        return res.json(result);
+    } catch (err) {
+        console.error("Error en el proceso:", err);
+        return res.status(500).json({
+            leyenda: "Error interno del servidor",
+            error: err.message
         });
+    }
 });
 
 export default router;

@@ -21,10 +21,11 @@ import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import PlaylistAddCheckRoundedIcon from "@mui/icons-material/PlaylistAddCheckRounded";
 import PreviewTwoToneIcon from "@mui/icons-material/PreviewTwoTone";
 import { TablaMuestraRenglon } from "./TablaMuestraRenglon/index.jsx";
-import { PresupPreview } from "../PresupPreview";
-import { PresupNombre } from "./PresupNombre.jsx";
+// import { PresupPreview } from "../PresupPreview";
+// import { PresupNombre } from "./PresupNombre.jsx";
+import VisorPresupuesto from "./VisorPresupuesto.jsx";
 import { Route, useNavigate } from "react-router-dom";
-import { Box, Typography } from "@mui/material";
+
 export default function PresupMuestra() {
 	const { otdatos, setOTdatos } = use(OrdTrabajo);
 	const [rows, setRows] = React.useState([]);
@@ -35,11 +36,11 @@ export default function PresupMuestra() {
 	const [rowsel, setRowSel] = useState();
 	const [open, setOpen] = useState(false);
 	const [snackbar, setSnackbar] = React.useState(null);
-	// const handleCloseSnackbar = () => setSnackbar(null);
+
 	const handleProcessRowUpdateError = React.useCallback((error) => {
 		setSnackbar({ children: error.message, severity: "error" });
 	}, []);
-	// const [parampresupuesto, setParamPresupuesto] = useState(1);
+
 	const [ppreview, setPPreview] = useState({ ppreview: false });
 	const [origen, setOrigen] = useState("");
 	const [isOpen, setIsOpen] = useState(true);
@@ -67,7 +68,6 @@ export default function PresupMuestra() {
 	}
 
 	const handleRowSelect = ({ row }) => {
-		console.log('row  ', row)
 		setRowSel(row);
 	};
 
@@ -85,23 +85,34 @@ export default function PresupMuestra() {
 	};
 
 	const handleClose = () => {
-
-		dataFetch();
-		setOpen(!open);
+		//dataFetch();
 		if (otdatos.renglonespresup) {
+			setOpen(!open);
 			handleClose1();
 		}
 	};
 
-	async function armanombre(rowsel) {
-		console.log('rowsel  ', rowsel)
-		let resultrescatenombre = await PresupNombre(rowsel);
-		if (resultrescatenombre.text === '[{"error":1}]')
-			alert(`El presupuesto nro ${rowsel.id} no se encuentra`);
-		else
-			setPPreview({ ppreview: true });
-	}
+	// async function armanombre(rowsel) {
+	// 	let resultrescatenombre = await PresupNombre(rowsel);
+	// 	if (resultrescatenombre.text === '[{"error":1}]')
+	// 		alert(`El presupuesto nro ${rowsel.id} no se encuentra`);
+	// 	else
+	// 		setPPreview({ ppreview: true });
+	// }
+	// async function armanombre1(rowsel) {
+	// 	setPPreview({ ppreview: true });
+	// }
 
+	const [presupuestoSeleccionado, setPresupuestoSeleccionado] = useState(null);
+	const [abrirModal, setAbrirModal] = useState(false);
+
+	// Esta es la función que disparás al cliquear el ícono de la fila
+	const manejarClickPreview = (rowsel) => {
+		setPresupuestoSeleccionado({
+			rowsel
+		});
+		setAbrirModal(true);
+	};
 	useEffect(() => {
 		initialFetch();
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -119,8 +130,18 @@ export default function PresupMuestra() {
 						className={estilotabla.iconoordentrabao}
 						titleAccess="Ve datos Presupuesto"
 					/>
-					<PreviewTwoToneIcon
+					{/* <PreviewTwoToneIcon
 						onClick={() => armanombre(rowsel)}
+						className={estilotabla.iconomodificar}
+						titleAccess="Preview Presupuesto"
+					/> */}
+					{/* <PreviewTwoToneIcon
+						onClick={() => armanombre1(rowsel)}
+						className={estilotabla.iconomodificar}
+						titleAccess="Preview Presupuesto"
+					/> */}
+					<PreviewTwoToneIcon
+						onClick={() => manejarClickPreview(rowsel)}
 						className={estilotabla.iconomodificar}
 						titleAccess="Preview Presupuesto"
 					/>
@@ -136,7 +157,7 @@ export default function PresupMuestra() {
 	}
 
 	return (
-		<>
+		<div style={{ height: 600, width: '100%' }}>
 			{/* <Box
 				sx={{
 					width: "100%",
@@ -176,13 +197,21 @@ export default function PresupMuestra() {
 					origen={origen}
 				/>
 			)}
-			<PresupPreview
-				open={ppreview.ppreview}
-				setOpen={setPPreview}
-				rowsel={rowsel}
-			></PresupPreview>
+			{/* {rowsel !== undefined && (
+				<PresupPreview
+					open={ppreview.ppreview}
+					setOpen={setPPreview}
+					rowsel={rowsel}
+				></PresupPreview>)} */}
+			{abrirModal && (
+				<VisorPresupuesto
+					open={abrirModal}
+					datos={presupuestoSeleccionado}
+					alCerrar={() => setAbrirModal(false)}
+				/>
+			)}
 			{/* </Box> */}
-		</>
+		</div>
 	);
 }
 

@@ -25,14 +25,13 @@
 .botoncierradialogo {
 	display: inline-flex;
 	background: linear-gradient(50deg, #f8cec8 10%, #f101018e 90%);
-	width: 110px;
-	height: 40px;
+	width: 120px;
+	height: 30px;
 	color: #380f02;
-	font-size: 20px;
+	font-size: 15px;
 	font-family: Arial, Helvetica, sans-serif;
 	text-align: center;
-	text-indent: 20%;
-	/* text-size-adjust: 8%; */
+	text-indent: 2%;
 	position: relative;
 	border-radius: 8%;
 	border-color: #f8020e;
@@ -44,11 +43,15 @@
 .botoncierradialogo:hover {
 	background-color: rgb(252, 33, 4);
 	color: #fcf7f6;
-	transform: scale(1.2);
+	transform: scale(1.1);
 }
 
 .iconocierradialogo {
-	display: flex;
+	/* display: flex; */
+	display:inline;
+	width: 20px;
+	height: 20px;
+	padding: 4px;
 }
 
 .iconocierradialogo:hover {
@@ -230,4 +233,73 @@
 	color: rgba(252, 246, 246, 0.486);
 	font-size: 16px;
 	padding: 2;
+}
+
+
+
+.botonok {
+	display: inline-flex;
+	background: linear-gradient(50deg, #c7eefaf8 10%, #bad6db8e 90%);
+	width: 90px;
+	height: 30px;
+	color: #380f02;
+	font-size: 15px;
+	font-family: Arial, Helvetica, sans-serif;
+	text-align: center;
+	text-indent: 20%;
+	/* text-size-adjust: 8%; */
+	position: relative;
+	border-radius: 8%;
+	border-color: #bad6db8e;
+	transform: scale(1);
+	transition: background-color 2s, color 2s, transform 1s;
+	margin-right: 10px;
+}
+
+.botonok:hover {
+	background-color: #bad6db8e;
+	color: #5907f1;
+	transform: scale(1.2);
+}
+
+.iconobotonok {
+	display: flex;
+}
+
+.iconobotonok:hover {
+	color: #fcf7f6;
+	background-color:#bad6db8e;
+}
+
+
+.botoncerrar {
+	display: inline-flex;
+	background: linear-gradient(50deg, #c7eefaf8 10%, #bad6db8e 90%);
+	width: 90px;
+	height: 30px;
+	color: #380f02;
+	font-size: 15px;
+	font-family: Arial, Helvetica, sans-serif;
+	text-align: center;
+	position: relative;
+	border-radius: 8%;
+	border-color: #bad6db8e;
+	transform: scale(1);
+	transition: background-color 2s, color 2s, transform 1s;
+	margin-right: 10px;
+}
+
+.botoncerrar:hover {
+	background-color: #bad6db8e;
+	color: #5907f1;
+	transform: scale(1.2);
+}
+
+.iconobotoncerrar {
+	display: flex;
+}
+
+.iconobotoncerrar:hover {
+	color: #1c04f5;
+	background-color:#bad6db8e;
 }

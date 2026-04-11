@@ -31,7 +31,7 @@ router.get("/", async (req, res) => {
         ON p.PresupEncabCliente = c.idClientes
         OR p.PresupEncabCliente = c.ClientesDesc
       WHERE p.PresupEncabFecha >= ?
-      ORDER BY p.PresupEncabFecha DESC
+      ORDER BY p.PresupEncabFecha DESC, p.idPresupEncab DESC
     `;
 
     const rows = await queryAsync(query, [day]);

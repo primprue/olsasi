@@ -2,52 +2,29 @@ import express from "express";
 var router = express.Router();
 
 import moment from "moment";
-import { conexion } from '../conexion.mjs';
+import { conexionpool } from '../conexion.mjs';
 
 moment.locale("es");
-var nroot = 0;
 
 
-router.all("/", async function (req, res) {
+router.post('/', async (req, res) => {
 
-    var d = new Date();
+    const d = new Date();
     let finalDate = d.toISOString().split("T")[0];
-    var cliente = 0, clientenoreg = '', importtotal = 0.00, importsenia = 0.00, transporte, OTEncabOC, OTEncabDetalles
-    var i = 0;
-    var registro = {}
-    if (!req.body.otdatos.transporte || req.body.otdatos.transporte === undefined) {
-        transporte = '';
-    } else {
-        transporte = req.body.otdatos.transporte.TransporteDesc;
-    }
-    if (req.body.otdatos.datosencab.length > 1) {
-        cliente = req.body.otdatos.datosencab[1][0].idClientes;
-        clientenoreg = '';
-    } else {
-        cliente = 0;
-        clientenoreg = req.body.otdatos.datosencab[0][0].PresupEncabCliente;
-    }
-    if (req.body.otdatos.TotalPresupuesto === undefined)
-        importtotal = 0.00
-    else
-        importtotal = req.body.otdatos.TotalPresupuesto
+    const transporte = req.body.otdatos.transporte ? req.body.otdatos.transporte.TransporteDesc : '';
+    const connection = await conexionpool.getConnection();
+    const { datosencab } = req.body.otdatos;
+    const esRegistrado = datosencab.length > 1;
+    const cliente = esRegistrado ? datosencab[1][0].idClientes : 0;
+    const clientenoreg = esRegistrado ? '' : datosencab[0][0].PresupEncabCliente;
 
-    if (req.body.otdatos.OTEncabSenia === undefined)
-        importsenia = 0.00
-    else
-        importsenia = parseFloat(req.body.otdatos.ImporteSenia)
+    const importtotal = req.body.otdatos.TotalPresupuesto ? req.body.otdatos.TotalPresupuesto : 0.00;
+    const importsenia = req.body.otdatos.ImporteSenia ? parseFloat(req.body.otdatos.ImporteSenia) : 0.00;
+    const OTEncabOC = req.body.otdatos.OTEncabOC ? req.body.otdatos.OTEncabOC : '';
+    const OTEncabDetalles = req.body.otdatos.OTEncabDetalles ? req.body.otdatos.OTEncabDetalles : '';
 
-    if (!req.body.otdatos.OTEncabOC || req.body.otdatos.OTEncabOC === undefined) {
-        OTEncabOC = '';
-    } else {
-        OTEncabOC = req.body.otdatos.OTEncabOC;
-    }
-    if (!req.body.otdatos.OTEncabDetalles || req.body.otdatos.OTEncabDetalles === undefined) {
-        OTEncabDetalles = '';
-    } else {
-        OTEncabDetalles = req.body.otdatos.OTEncabDetalles;
-    }
-    registro = {
+
+    const registro = {
         OTEncabCliente: cliente,
         OTEncabEstado: 1,
         OTEncabClienteNoReg: clientenoreg,
@@ -60,22 +37,17 @@ router.all("/", async function (req, res) {
         OTEncabOC: OTEncabOC,
         OTEncabDetalles: OTEncabDetalles
     }
-    conexion.query("INSERT INTO BasesOrdenes.OTEncab SET ?", registro, function (err, result) {
-        if (err) {
-            if (err.errno == 1062) {
-                return res.status(409).send({ message: "error clave duplicada" });
-            } else {
-                console.log("ERROR en INSERT INTO BasesOrdenes.OTEncab");
-                console.log(err.errno);
-            }
-        } else {
-            console.log('insertó todo bien en BasesOrdenes.OTEncab')
-            res.json(result);
-            nroot = result.insertId
-        }
-        req.body.otdatos.renglonespresup.map(renglon => {
-            var registro1 = {
-                OTRenglonNro: i + 1,
+    try {
+        const q = `INSERT INTO BasesOrdenes.OTEncab SET ?`;
+        const [resultEncab] = await conexionpool.query(q, [registro]);
+
+
+        // Manejo de errores específicos de SQL
+
+        const nroot = resultEncab.insertId;
+        for (const [index, renglon] of req.body.otdatos.renglonespresup.entries()) {
+            const registroRenglon = {
+                OTRenglonNro: index + 1,
                 idOTRenglonNroOT: nroot,
                 OTRenglonCant: renglon[0].PresupRenglonCant,
                 OTRenglonDesc: renglon[0].PresupRenglonDesc,
@@ -84,30 +56,38 @@ router.all("/", async function (req, res) {
                 OTRenglonImpItem: renglon[0].PresupRenglonImpItem,
                 OTRenglonParamInt: renglon[0].PresupRenglonParamInt,
                 OTRenglonDetalles: JSON.stringify(req.body.otdatos.datosconfec)
-            }
-            conexion.query("INSERT INTO BasesOrdenes.OTRenglon SET ?", registro1,
-                function (err, result) {
-                    if (err) {
-                        console.log('err en back de otgraba ', err)
-                        if (err.errno == 1265) {
-                            return res.status(413).send({ message: "Faltan datos para leer información en tabl" });
-                        }
-                        else {
-                            console.log("ERROR en INSERT INTO BasesOrdenes.OTRenglon ");
-                            console.log(err.errno);
-                        }
-                    }
-                    else {
-                        console.log('insertó todo bien en el renglon de Orden de Trabajo')
-                        //   res.json('');
-                    }
-                });
+            };
 
-            i++
-        })
+            await conexionpool.query(
+                "INSERT INTO BasesOrdenes.OTRenglon SET ?",
+                registroRenglon
+            );
+        }
 
-    })
-})
+        // 5. Si todo salió bien, confirmamos los cambios
+        await connection.commit();
+        console.log('Orden de Trabajo y renglones insertados correctamente');
 
-conexion.end
+        res.json({ success: true, insertId: nroot });
+
+    } catch (err) {
+        // 6. Si hay CUALQUIER error, deshacemos todo
+        await connection.rollback();
+
+        console.error("ERROR en la transacción:", err);
+
+        if (err.errno === 1062) {
+            res.status(409).send({ message: "Error: clave duplicada" });
+        } else if (err.errno === 1265) {
+            res.status(413).send({ message: "Faltan datos o formato incorrecto en renglones" });
+        } else {
+            res.status(500).send({ message: "Error interno del servidor" });
+        }
+
+    } finally {
+        // 7. SIEMPRE liberar la conexión de vuelta al pool
+        connection.release();
+    }
+});
+
 export default router;

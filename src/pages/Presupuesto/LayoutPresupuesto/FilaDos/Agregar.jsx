@@ -18,9 +18,10 @@ const Agregar = async (
 		var importeanexo = 0.0;
 		var ImpItem = 0.0;
 		var datoimpunitario = 0.0;
+
+
 		if (datosrenglon1.length === 1) {
 			const array2D = datosrenglon1.map(x => [x]);
-
 			datosrenglon1 = array2D;
 		}
 		if (rubrosn === "S") {
@@ -82,17 +83,18 @@ const Agregar = async (
 			}
 
 			if (dcalculo[0].tipopresup === "BOLSON PARA TANQUE") {
-
 				ImpItem = ImpUnitario * PresupCantidadM;
 			}
 		}
 		//si no es algo que se necesita rubro
 		else {
+			//acá entra cuando es unidad
 			StkRubroDesc = detalle;
-			ImpUnitario = datosrenglon1[0] / dcalculo[0].cotdivisa;
-			ImpItem =
-				(datosrenglon1[0] / dcalculo[0].cotdivisa) * PresupCantidadM;
-
+			// ImpUnitario = Number(datosrenglon1[0].ImpUnitario) / Number(dcalculo[0].cotdivisa);
+			ImpUnitario = Number(datosrenglon1[0][0].ImpUnitario) / Number(dcalculo[0].cotdivisa);
+			ImpItem = ImpUnitario * PresupCantidadM;
+			// ImpItem =
+			// 	(datosrenglon1[0] / dcalculo[0].cotdivisa) * PresupCantidadM;
 		}
 
 		if (dcalculo[0].tipopresup === "MODIFICA MEDIDAS") {

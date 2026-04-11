@@ -1,16 +1,15 @@
 import express from 'express';
 var router = express.Router();
-import moment from 'moment';
-import { conexion } from '../../conexion.mjs';
-moment.locale('es');
+import { conexionpool } from '../../conexion.mjs';
 
 
-router.post('/', function (req, res) {
+
+router.post('/', async (req, res) => {
     const { OTDatosDesc, Vpdef, nroid } = req.body.newDatosSelect;
 
     const q = 'SELECT OTDatosOpciones FROM BasesOrdenes.OTDatos WHERE idOTDatos = ?';
 
-    conexion.query(q, [nroid], (err, result) => {
+    conexionpool.query(q, [nroid], (err, result) => {
         if (err) {
             console.log('Error en SELECT', err);
             return res.status(500).json({ error: 'Error en la base de datos' });
@@ -36,7 +35,7 @@ router.post('/', function (req, res) {
         const nuevoJSON = JSON.stringify(opcionesObj);
         const qUpdate = 'UPDATE BasesOrdenes.OTDatos SET OTDatosOpciones = ? WHERE idOTDatos = ?';
 
-        conexion.query(qUpdate, [nuevoJSON, nroid], (err2, result2) => {
+        conexionpool.query(qUpdate, [nuevoJSON, nroid], (err2, result2) => {
             if (err2) {
                 console.log('Error en UPDATE', err2);
                 return res.status(500).json({ error: 'Error al actualizar' });

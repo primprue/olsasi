@@ -4,18 +4,13 @@ import { CajaIELeer } from "./CajaIELeer.jsx";
 import { llenarcolumns } from "./columns.jsx";
 import { Box } from "@mui/material";
 import { CajaIEAgregar } from "./CajaIEAgregar.jsx";
-import AddToPhotosTwoToneIcon from "@mui/icons-material/AddToPhotosTwoTone";
-import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
-import BrowserUpdatedRoundedIcon from '@mui/icons-material/BrowserUpdatedRounded';
-import Filter9PlusRoundedIcon from '@mui/icons-material/Filter9PlusRounded';
-import GppBadRoundedIcon from '@mui/icons-material/GppBadRounded';
-import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
 import CajaCierre from "./CajaCierre.jsx";
 import estilotabla from "../../Styles/Tabla.module.css";
 import MueMovCIE from "./CajaIEConsultas/MueMovCIE.jsx";
 import CajaIEFecEst from "./CajaIEConsultas/CajaIEFecEst.jsx";
 import CajaInterna from "./CajaInterna/CajaInterna.jsx";
 import MuestraMensaje from "../../components/lib/MuestraMensaje.js";
+import { AgregaInsIcon, AgregarIcon, CierreCajaIcon, EstadIcons, GrabarIcon, HistorialIcon, TresProsVerIcons } from "../../components/comppropios/CustomIcons.jsx";
 export default function CajaIngresos() {
     const [rows, setRows] = useState([]);
     const [openCierre, setOpenCierre] = useState(false);
@@ -50,25 +45,9 @@ export default function CajaIngresos() {
         setLlamaCajaInterna(false);
     };
 
-    // async function handleAlta() {
-    //     console.log('rows', rows)
-    //     // CajaIECliente
-    //     // CajaIEConcepto
-    //     // CajaIEMT
-    //     // CajaIEMoneda
-    //     // CajaIEImporte
-    //     await CajaIEAgregar({ rows })
-    //     const data = await CajaIELeer();
-    //     setRows(data);
-    // };
+
     async function handleAlta() {
-        // 1. Definimos los campos obligatorios
-        // const camposRequeridos = [
-        //     'CajaIECliente',
-        //     'CajaIEConcepto',
-        //     'CajaIEMT',
-        //     'CajaIEMoneda',
-        // ];
+
         let filasIncompletas = [];
         filasIncompletas = rows.filter(row => {
             // 1. Campos que SIEMPRE deben estar (strings no vacíos)
@@ -105,6 +84,7 @@ export default function CajaIngresos() {
         try {
             // 4. Si pasó la validación, procedemos a guardar
             await CajaIEAgregar({ rows });
+
             const data = await CajaIELeer();
             setRows(data);
             //  MuestraMensaje(200);
@@ -115,22 +95,11 @@ export default function CajaIngresos() {
     const handleCierre = () => {
         setOpenCierre(true);
     };
-    // const abreBuscaIE = () => {
-    //     setOpenBuscaIE(true);
-    // };
-    // const cierraBuscaIE = () => {
-    //     setOpenBuscaIE(false);
-    // };
-    // async function vaBuscarIE() {
-    //     const data = await BuscaIE(fechaDesde, fechaHasta);
-    //     console.log(data);
-    //     setRows(data);
-    // }
+
 
 
     function CustomToolbar() {
         return (
-            // <GridToolbarContainer sx={{ ...estiloBoton, display: "flex", alignItems: "center", gap: 5 }}>
             <GridToolbarContainer
                 sx={{
                     color: '#141412f0',
@@ -141,83 +110,44 @@ export default function CajaIngresos() {
                     gap: 5
                 }}>
 
-                {/* <label>F4 - Agregar   F2 - Agrega instrumento de pago</label> */}
-                <AddToPhotosTwoToneIcon
-                    label="Agregar"
+                <AgregarIcon
                     titleAccess="Agregar"
-                    sx={{
-                        fontSize: '35px',
-                        color: '#0f7905f6',
-                        cursor: 'pointer',
-                        '&:hover': { color: '#0a7e02' } // color al pasar el mouse
-                    }}
+                    sx={{ width: 35, height: 35 }}
                     onClick={() => agregarFilaVacia()}
                 />
-                <Filter9PlusRoundedIcon
-                    label="Agrega instrumento de pago"
-                    sx={{
-                        fontSize: '35px',
-                        color: '#039ef8e6',
-                        cursor: 'pointer',
-                        '&:hover': { color: '#039ef8e6' } // color al pasar el mouse
-                    }}
+                <AgregaInsIcon
                     titleAccess="Agrega instrumento de pago"
+                    sx={{ width: 35, height: 35 }}
                     onClick={() => agregarFilaInstrumentoPago()}
                 />
-                <BrowserUpdatedRoundedIcon
+                <GrabarIcon
                     titleAccess="Grabar"
-                    sx={{
-                        fontSize: '35px',
-                        color: '#790566fb',
-                        cursor: 'pointer',
-                        '&:hover': { color: '#790566fb' } // color al pasar el mouse
-                    }}
+                    sx={{ width: 35, height: 35 }}
                     onClick={() => handleAlta()}
                 />
-                <GppBadRoundedIcon
+                <CierreCajaIcon
                     titleAccess="Cierre"
-                    sx={{
-                        fontSize: '35px',
-                        color: '#f50404fa',
-                        cursor: 'pointer',
-                        '&:hover': { color: '#f50404fa' } // color al pasar el mouse
-                    }}
+                    sx={{ width: 35, height: 35 }}
                     onClick={() => handleCierre()}
                 />
                 <label>Dólar: {dolar}</label>
-                <HistoryEduIcon
+                <HistorialIcon
                     titleAccess="Movimientos Históricos"
-                    sx={{
-                        fontSize: '35px',
-                        color: '#bdc009f9',
-                        cursor: 'pointer',
-                        '&:hover': { color: '#bdc009f9' } // color al pasar el mouse
-                    }}
+                    sx={{ width: 35, height: 35 }}
                     onClick={() => AbreMueMovCIE()}
-                />
-                <HistoryEduIcon
-                    titleAccess="Estadísticas"
-                    sx={{
-                        fontSize: '35px',
-                        color: '#4c05f1f9',
-                        cursor: 'pointer',
-                        '&:hover': { color: '#bdc009f9' } // color al pasar el mouse
-                    }}
-                    onClick={() => AbreCajaIEFecEst()}
                 />
                 {/* separador flexible */}
                 <Box sx={{ flexGrow: 1 }} />
+                <EstadIcons
+                    titleAccess="Estadísticas"
+                    sx={{ width: 35, height: 35 }}
+                    onClick={() => AbreCajaIEFecEst()}
+                />
 
                 {/* icono alineado a la derecha */}
-                <MoreVertTwoToneIcon
-                    fontSize='medium'
+                <TresProsVerIcons
                     titleAccess="Caja Interna"
-                    sx={{
-                        fontSize: '35px',
-                        color: '#0a0000',
-                        cursor: 'pointer',
-                        '&:hover': { color: '#0a0000' }
-                    }}
+                    sx={{ width: 35, height: 35 }}
                     onClick={() => AbreCajaInterna()}
                 />
             </GridToolbarContainer>

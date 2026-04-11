@@ -1,18 +1,21 @@
 import express from "express";
 var router = express.Router();
 
-import { conexion } from '../../conexion.mjs';
+import { conexionpool } from '../../conexion.mjs';
 
-router.get("/", function (req, res, next) {
+router.get("/", async (req, res) => {
   // var q = ["Select concat (PBidSubRubro, PBSubRubroIdRubro) as  value,  PBSubRubroDetalle as label from BasePreBalance.PBSubRubros"].join(" ");
-  var q = ["SELECT PBidSubRubro as value,  PBSubRubroDetalle as label FROM BasePreBalance.PBSubRubros"].join(" ");
-  conexion.query(q, function (err, result) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(result);
-    }
-  });
+  try {
+    const q = `SELECT PBidSubRubro as value,  PBSubRubroDetalle as label FROM BasePreBalance.PBSubRubros`
+    const [result] = await conexionpool.query(q);
+    return res.json(result);
+  } catch (err) {
+    console.error("Error en el proceso:", err);
+    return res.status(500).json({
+      leyenda: "Error interno del servidor",
+      error: err.message
+    });
+  }
 });
-conexion.end;
+
 export default router;

@@ -6,7 +6,6 @@ import { use } from "react";
 import { MovStockPantContext } from "../../MovStockPant";
 import TextFieldComun from "../../../../../components/comppropios/TextFieldComun";
 import MovStockLeeTipoConf from "./MovStockLeeTipoConf";
-import leePresupConfTipoLeeAnexo from "../../../../Presupuesto/leePresupConfTipoLeeAnexo";
 import TextFieldSelect from "../../../../../components/comppropios/TextFieldSelect";
 
 export default function SalidaDisponible({ onClick, ...other }) {

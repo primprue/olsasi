@@ -4,7 +4,7 @@ var router = express.Router();
 import { conexion } from '../../conexion.mjs';
 
 
-router.get("/?:codgrupo", function (req, res, next) {
+router.get("/:codgrupo", function (req, res, next) {
   var codgrupo = req.params.codgrupo;
 
   conexion.query("Select StkRubroDesc, StkRubroAbr from StkRubro where StkRubroCodGrp < " + codgrupo + "  order by StkRubroCodGrp", function (err, result) {

@@ -1,32 +1,53 @@
-import request from "superagent";
 
+import request from "superagent";
 import IpServidor from "../VariablesDeEntorno";
-var nroPresupuesto = 0;
-export const PresupGrabar = (
-	props,
-	ClienteMayMin,
+import MuestraMensaje from "../../components/lib/MuestraMensaje";
+
+/**
+ * Graba un presupuesto en el servidor.
+ * @param {Object} DatosPresup - Datos principales del presupuesto (props)
+ * @param {string} maymin - Tipo de cliente
+ * @param {string} nomCliente - Nombre del cliente
+ * @param {number|string} idClientes - ID del cliente
+ * @param {string} explicacionPresup - Descripción o notas
+ * @returns {Promise<number>} Número de presupuesto generado
+ */
+export const PresupGrabar = async (
+	DatosPresup,
+	maymin,
 	nomCliente,
 	idClientes,
 	explicacionPresup
 ) => {
+	const url = `${IpServidor}/presupgraba`;
 
-	return new Promise((resolve) => {
-		const url = IpServidor + "/presupgraba";
-		request
+	try {
+		const res = await request
 			.post(url)
 			.set("Content-Type", "application/json")
-			.send({ DatosPresup: props })
-			.send({ maymin: ClienteMayMin })
-			.send({ nomCliente: nomCliente })
-			.send({ idClientes: idClientes })
-			.send({ explicacionPresup: explicacionPresup })
 			.set("X-API-Key", "foobar")
-			.then((res) => {
-				const respuesta = JSON.parse(res.text);
-				nroPresupuesto = respuesta.nropresup;
-				resolve(nroPresupuesto);
+			.send({
+				DatosPresup,
+				maymin,
+				nomCliente,
+				idClientes,
+				explicacionPresup
 			});
-	}).catch(
-		(err) => console.log("codigo de error presupgrabar que no es error", err)
-	);
+
+		// Superagent ya parsea el JSON si el Content-Type de respuesta es correcto
+		// Si no, usamos JSON.parse(res.text)
+		const respuesta = typeof res.body === 'object' ? res.body : JSON.parse(res.text);
+		if (respuesta.ok) {
+			MuestraMensaje(
+				{ response: { status: 201, body: { leyenda: "Presupuesto grabado correctamente" } } }
+				, "Presupuesto grabado correctamente");
+		}
+		return respuesta.nropresup;
+
+	} catch (err) {
+		MuestraMensaje(err);
+		// Lanzamos el error para que el componente que llama a esta función 
+		// sepa que la grabación falló y pueda mostrar un mensaje al usuario.
+		throw err;
+	}
 };

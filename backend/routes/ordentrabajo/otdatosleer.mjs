@@ -1,30 +1,22 @@
 import express from 'express';
 var router = express.Router();
-import { conexion } from '../conexion.mjs';
+import { conexionpool } from '../conexion.mjs';
 
 
 
-router.get('/', async function (req, res) {
-    var datosrec = (req.query.datosaleer)
-    var q = ['SELECT *  FROM BasesOrdenes.OTDatos where OTDatosTipoConf = "' + datosrec + '" order by OTDatosOrdenAparicion'].join(' ')
-    conexion.query(q,
-        function (err, result) {
-            if (err) {
-                if (err.errno === 1064) {
-                    result = 0
-                    res.json(result);
-                }
-                else {
-                    console.log('ingreso al error  ', result)
-                    console.log(err);
-                }
-            }
-            else {
-                res.json(result);
-
-            }
+router.get("/", async (req, res) => {
+    try {
+        const datosrec = (req.query.datosaleer)
+        const q = `SELECT * FROM BasesOrdenes.OTDatos where OTDatosTipoConf = ?  order by OTDatosOrdenAparicion`;
+        const [result] = await conexionpool.query(q, [datosrec]);
+        return res.json(result);
+    } catch (err) {
+        console.error("Error en el proceso:", err);
+        return res.status(500).json({
+            leyenda: "Error interno del servidor",
+            error: err.message
         });
-})
+    }
+});
 
-conexion.end
 export default router;

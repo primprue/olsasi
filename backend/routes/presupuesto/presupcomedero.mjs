@@ -68,13 +68,12 @@ router.get('/', async (req, res, next) => {
       let coeficiente = 0;
       let coefMOT = 0;
       let tipoojal = '';
-
+      let ivasncal = minmay === "my" ? "CIVA" : ivasn;
       if (minmay == 'my') {
         coeficiente = p.coeficientemay;
         coefMOT = p.coefMOTmay
         tipoojal = p.abrojales28;
         ganancia = p.coefganmay
-        ivasn = 'CIVA'
       }
       else {
         coeficiente = p.coeficientemin;
@@ -159,8 +158,8 @@ router.get('/', async (req, res, next) => {
       costo = costo + (((costoMOTHs * coeficiente) / 60 / 60 * 30) * cantidadojales)
 
       costo = costo * coefimpuesto + ValorMOTtotal
-
-      if (ivasn === "CIVA") {
+      // al dividirlo por 10 se redondea a la derecha, en los 10 no en las unidades pe. 306632 pasa a 306640
+      if (ivasncal === "CIVA") {
         costo = Math.ceil(costo / 10) * 10;
       } else {
         costo = Math.ceil(costo / 1.21 / 10) * 10;

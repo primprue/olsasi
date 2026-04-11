@@ -58,21 +58,19 @@ router.get("/", async (req, res) => {
 
 
       let coefmaymin = 0;
-      let ivareal = ''
       let coefMOT = 0;
       let minutospmc = 10;
       const detojal = (tipoojale === "hz") ? " de hierro " : " de bronce ";
       let tipoojal = (tipoojale === "hz") ? p.abrojales3hz : p.abrojales3b;
+      let ivasncal = minmay === "my" ? "CIVA" : ivasn;
       if (minmay == 'my') {
         coefmaymin = Number(p.coeficientemay) || 0;
         tipoojal = p.abrojales28;
         coefMOT = Number(p.coefMOTmay) || 0;
-        ivareal = 'CIVA'
       }
       else {
         coefmaymin = Number(p.coeficientemin) || 0;
         coefMOT = Number(p.coefMOTmin) || 0;
-        ivareal = ivasn
       }
 
       let cantidadojales = largo * 2
@@ -102,14 +100,13 @@ router.get("/", async (req, res) => {
       const datos1 = await queryAsync(q1, paramojales);
       const ojales = datos1[0]
 
-      let detalle = detallep !== '' ? `${detallep} en :  ${mcuadcob.StkRubroDesc}` : `Lona enrollable para pileta, con fajas en las puntas, con ojales de ${detojal} reforzados, ${detdrenaje} en :  ${mcuadcob.StkRubroDesc}`;
-
+      let detalle = detallep !== '' ? `${detallep} en :  ${mcuadcob.StkRubroDesc}` : `Lona para pileta, con cortes para caños de aluminio, con ojales de ${detojal} reforzados, ${detdrenaje} en :  ${mcuadcob.StkRubroDesc}`;
       let costo = Number(mcuadcob.ImpUnitario) + Number(ojales.ValorOjales) + valorMOT
       // IVA / redondeo
-      if (ivasn === "CIVA") {
-        costo = Math.ceil(costo);
+      if (ivasncal === "CIVA") {
+        costo = Math.ceil(costo / 10) * 10;
       } else {
-        costo = Math.ceil(costo / 1.21);
+        costo = Math.ceil(costo / 1.21 / 10) * 10;
       }
       // ------------------------------------------------------------------
       // 5) ARMO RESULTADO DEL ÍTEM

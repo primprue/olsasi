@@ -14,8 +14,8 @@ router.get('/', async function (req, res, next) { // Añadimos async
     try {
         const { FechaDesde, FechaHasta } = req.query;
 
-        let q1 = `
-            SET @numero=0; 
+        let q1 =
+            `SET @numero=0;
             SELECT @numero:=@numero+1 as id, date_format(CajaIEFecha, "%d-%m-%Y") as CajaIEFecha, 
             CajaIECliente, CajaIEConcepto, CajaCPDesc, CajaIEMT,
             CajaIEMoneda, CajaIEImporte, CajaIECodIP, CajaIEImpIP, CajaIEGrabado 
@@ -25,7 +25,6 @@ router.get('/', async function (req, res, next) { // Añadimos async
 
         // Usamos await porque queryAsync es una promesa
         const resultados = await queryAsync(q1, [FechaDesde, FechaHasta]);
-
         // Como son múltiples sentencias, los datos reales están en el segundo índice [1]
         const result = resultados[1];
 

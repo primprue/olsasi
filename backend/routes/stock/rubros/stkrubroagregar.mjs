@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import { conexion } from '../../conexion.mjs';
+import { conexionpool } from '../../conexion.mjs';
 import { buscacodigo } from './stkgennrorubro.mjs';
 
 router.post("/", async (req, res) => {
@@ -36,7 +36,7 @@ router.post("/", async (req, res) => {
     };
 
     // Usamos conexion.query directamente (gracias a mysql2/promise)
-    await conexion.query("INSERT INTO StkRubro SET ?", [registroRubro]);
+    await conexionpool.query("INSERT INTO StkRubro SET ?", [registroRubro]);
 
     // PASO 3: Insertar en StkItems
     const registroItems = {
@@ -53,7 +53,7 @@ router.post("/", async (req, res) => {
       StkItemsMax: 2
     };
 
-    await conexion.query("INSERT INTO StkItems SET ?", [registroItems]);
+    await conexionpool.query("INSERT INTO StkItems SET ?", [registroItems]);
 
     // Respuesta exitosa
     return res.status(201).json({

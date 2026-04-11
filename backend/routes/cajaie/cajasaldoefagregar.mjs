@@ -1,23 +1,19 @@
-import express from 'express';
-import { conexion } from '../conexion.mjs';
 
 const router = express.Router();
-async function queryAsync(sql, params = []) {
-    const [rows] = await conexion.promise().query(sql, params);
-    return rows;
-}
+import express from 'express';
+import { conexionpool } from '../conexion.mjs';
 
 router.post("/", async (req, res) => {
-    const d = new Date();
-    const finalDate = d.toISOString().split("T")[0];
+    const finalDate = new Date().toISOString().split("T")[0];
     const datos = req.body.datoagrabar;
 
+    // Obtenemos una conexión del conexionpool para esta petición
+    const connection = await conexionpool.getConnection();
+
     try {
-        const resultados = [];
+        await connection.beginTransaction();
 
-        for (let i = 0; i < datos.length; i++) {
-            const dato = datos[i];
-
+        for (const dato of datos) {
             const registro = {
                 idCajaSaldoEfFecha: finalDate,
                 CajaSaldoEfImporte: dato.saldoqueda,
@@ -44,44 +40,26 @@ router.post("/", async (req, res) => {
                 CajaInternaTotalInstr: dato.totalInstrumentos
             };
 
-            await new Promise((resolve, reject) => {
-                conexion.beginTransaction(async err => {
-                    if (err) return reject({ fila: i, error: err.message });
-
-                    try {
-                        await queryAsync('INSERT INTO BaseCaja.CajaSaldoEf SET ?', registro);
-                        await queryAsync('INSERT INTO BaseCaja.CajaInterna SET ?', registroM);
-                        await queryAsync('INSERT INTO BaseCaja.CajaInterna SET ?', registroT);
-
-                        conexion.commit(err => {
-                            if (err) {
-                                return conexion.rollback(() =>
-                                    reject({ fila: i, error: err.message })
-                                );
-                            }
-                            resolve();
-                        });
-
-                    } catch (e) {
-                        conexion.rollback(() =>
-                            reject({ fila: i, error: e.message })
-                        );
-                    }
-                });
-            });
-
-            resultados.push({ fila: i, ok: true });
+            // Ejecutamos los inserts usando la conexión específica
+            await connection.query('INSERT INTO BaseCaja.CajaSaldoEf SET ?', registro);
+            await connection.query('INSERT INTO BaseCaja.CajaInterna SET ?', registroM);
+            await connection.query('INSERT INTO BaseCaja.CajaInterna SET ?', registroT);
         }
 
-        res.json({ ok: true, resultados });
+        // Si todo salió bien en el bucle, confirmamos
+        await connection.commit();
+        res.json({ ok: true });
 
     } catch (err) {
-        console.error("Error en inserciones en cajasaldoefagregar:", err);
-        res.status(500).json({
-            ok: false,
-            fila: err.fila,
-            mensaje: err.error
-        });
+        // Si algo falló, deshacemos todo
+        await connection.rollback();
+        console.error("Error en la transacción:", err);
+        res.status(500).json({ ok: false, error: err.message });
+
+    } finally {
+        // IMPORTANTÍSIMO: Liberar la conexión de vuelta al conexionpool
+        connection.release();
     }
 });
+
 export default router;
