@@ -1,6 +1,6 @@
 import 'dotenv/config';
 // const PORT = 4000;
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4001;
 import app from './backend.mjs';
 app.get('/', (req, res) => {
     res.send("¡Estás en la raíz del servidor!");

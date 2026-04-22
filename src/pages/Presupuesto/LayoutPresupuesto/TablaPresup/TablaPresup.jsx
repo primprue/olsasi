@@ -36,11 +36,18 @@ export default function TablaPresup(props) {
 	const { suma, setSuma } = use(PresupPant);
 
 	const BorraFila = () => {
-		if (rowSelectionModel.length !== 0) {
-			rowSelectionModel.map((row) =>
-				setDatosRenglon(datosrenglon.filter((rows) => rows.id !== row))
+		setDatosRenglon((prevDatos) => {
+			// 1. Filtramos todos los elementos que NO están en la selección
+			const nuevosDatos = prevDatos.filter(
+				(item) => !rowSelectionModel.includes(item.id)
 			);
-		}
+
+			// 2. Reasignamos el ID basado en el nuevo índice (+1 para que empiece en 1)
+			return nuevosDatos.map((item, index) => ({
+				...item,
+				id: index + 1
+			}));
+		});
 	};
 	useEffect(() => {
 		columnsFetch();

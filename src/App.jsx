@@ -104,6 +104,8 @@ function App() {
                                         <Route path="/tablas/PBSubRubros" element={<IndexTablas rutaRelativa="PBSubRubros" />} />
                                         <Route path="/tablas/PBItems" element={<IndexTablas rutaRelativa="PBItems" />} />
                                         <Route path="/tablas/PBComprobantes" element={<IndexTablas rutaRelativa="PBComprobantes" />} />
+                                        <Route path="/tablas/Bancos" element={<IndexTablas rutaRelativa="Bancos" />} />
+                                        <Route path="/tablas/Cheques" element={<IndexTablas rutaRelativa="Cheques" />} />
 
 
 

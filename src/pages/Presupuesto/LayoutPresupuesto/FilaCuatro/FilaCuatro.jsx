@@ -28,6 +28,7 @@ export default function FilaCuatro(props) {
 	const handleChange = (event) => {
 		const id = event.target.id;
 		setState({ ...state, [id]: event.target.value });
+
 	};
 	const CHARACTER_LIMIT = 300;
 	async function clientesleerdescrip() {
@@ -72,6 +73,9 @@ export default function FilaCuatro(props) {
 				condicioneseleg.push(leyenda);
 			}
 		});
+		if (otraCondicion.length !== 0) {
+			condicioneseleg.push(otraCondicion);
+		}
 		let totalpresupformateado = props.suma.toLocaleString("es-AR", {
 			style: "currency",
 			currency: "ARS",
@@ -105,7 +109,7 @@ export default function FilaCuatro(props) {
 			nomClienteElegE: nomClienteElegE,
 			idClienteElegE: idClienteElegE,
 			condiciones: condicioneseleg,
-			otracondicion: otraCondicion,
+			// otracondicion: otraCondicion,
 			operador: operador,
 			tipoleygral: tipoleygral,
 			explicacionPresup: state.ExplicaPresup,

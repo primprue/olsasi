@@ -47,7 +47,7 @@ router.get('/', async (req, res, next) => {
 
       const enteroancho = Math.trunc(anchocal / 1.50)
       const decimancho = (anchocal / 1.5) - enteroancho;
-      const anchotot = decimancho > 0 ? enteroancho + 1 : enteroancho;
+      const anchotot = decimancho < 0.5 ? enteroancho + 0.5 : enteroancho + 1;
 
 
 

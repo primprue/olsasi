@@ -25,6 +25,15 @@ router.post('/generarpdf', async (req, res) => {
                 datos.condiciones = [];
             }
         }
+        // // Por seguridad, si no existe o no es un array tras el parseo, lo inicializamos
+        // if (!Array.isArray(datos.condiciones)) {
+        //     datos.condiciones = [];
+        // }
+        // console.log('datos.otracondicion  ', datos.otracondicion)
+        // // 2. Verificamos 'otracondicion' y la agregamos si tiene contenido
+        // if (datos.otracondicion && String(datos.otracondicion).trim() !== "") {
+        //     datos.condiciones.push(datos.otracondicion);
+        // }
         if (datos.productos && typeof datos.productos === 'string') {
             try {
                 datos.productos = JSON.parse(datos.productos);
@@ -77,7 +86,6 @@ router.post('/generarpdf', async (req, res) => {
         //si es vista previa un Vista_PREVIA_Presupuesto.pdf nombre que viene desde GeneradorPresup o
         // sino el nombre del presupuesto final
         const pathDestino = path.join(RUTAPRESUP, datos.nombrepresup + '.pdf');
-
         try {
             fs.writeFileSync(pathDestino, pdfBuffer);
             console.log("Archivo guardado correctamente en:", pathDestino);

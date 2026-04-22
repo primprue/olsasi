@@ -207,12 +207,24 @@ export default function TablaMuestra(props) {
 					className={estilotabla.iconoimpresora}
 					titleAccess="Imprimir"
 				/>
-				<BorrarIcono
-					variant="contained"
-					titleAccess="Borrar"
-					className={estilotabla.iconoborrar}
-					onClick={() => handleDelete(rowsel)}
-				/>
+				{(formdatos.nombackborrar !== '' && (
+					<BorrarIcono
+						variant="contained"
+						titleAccess="Borrar"
+						className={estilotabla.iconoborrar}
+						onClick={() => handleDelete(rowsel)}
+					/>
+				)) ||
+					(formdatos.nombackborrar === '' && (
+						<BorrarIcono
+							variant="contained"
+							titleAccess="Borrar"
+							className={estilotabla.iconoborrardeshabilitado}
+						// onClick={() => handleDelete()}
+						/>
+					))
+				}
+
 				<RecargaIcon
 					variant="contained"
 					titleAccess="Recargar"

@@ -15,12 +15,14 @@ import {
 	GridToolbarFilterButton,
 	GridToolbarExport,
 	GridToolbarDensitySelector,
+	GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 
 import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import PlaylistAddCheckRoundedIcon from "@mui/icons-material/PlaylistAddCheckRounded";
 import PreviewTwoToneIcon from "@mui/icons-material/PreviewTwoTone";
 import { TablaMuestraRenglon } from "./TablaMuestraRenglon/index.jsx";
+import { esES } from '@mui/x-data-grid/locales';
 // import { PresupPreview } from "../PresupPreview";
 // import { PresupNombre } from "./PresupNombre.jsx";
 import VisorPresupuesto from "./VisorPresupuesto.jsx";
@@ -41,7 +43,6 @@ export default function PresupMuestra() {
 		setSnackbar({ children: error.message, severity: "error" });
 	}, []);
 
-	const [ppreview, setPPreview] = useState({ ppreview: false });
 	const [origen, setOrigen] = useState("");
 	const [isOpen, setIsOpen] = useState(true);
 	const navigate = useNavigate();
@@ -88,20 +89,12 @@ export default function PresupMuestra() {
 		//dataFetch();
 		if (otdatos.renglonespresup) {
 			setOpen(!open);
-			handleClose1();
+			handleClose1(); //va a la orden de trabajao
+		}
+		else {
+			setIsOpen(false);
 		}
 	};
-
-	// async function armanombre(rowsel) {
-	// 	let resultrescatenombre = await PresupNombre(rowsel);
-	// 	if (resultrescatenombre.text === '[{"error":1}]')
-	// 		alert(`El presupuesto nro ${rowsel.id} no se encuentra`);
-	// 	else
-	// 		setPPreview({ ppreview: true });
-	// }
-	// async function armanombre1(rowsel) {
-	// 	setPPreview({ ppreview: true });
-	// }
 
 	const [presupuestoSeleccionado, setPresupuestoSeleccionado] = useState(null);
 	const [abrirModal, setAbrirModal] = useState(false);
@@ -125,21 +118,12 @@ export default function PresupMuestra() {
 					<GridToolbarFilterButton className={estilotabla.coloropcioncol} />
 					<GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
 					<GridToolbarExport className={estilotabla.coloropcioncol} />
+					<GridToolbarQuickFilter placeholder="Buscar" />
 					<PlaylistAddCheckRoundedIcon
 						onClick={() => handleMuestraRenglon(rowsel.id)}
 						className={estilotabla.iconoordentrabao}
 						titleAccess="Ve datos Presupuesto"
 					/>
-					{/* <PreviewTwoToneIcon
-						onClick={() => armanombre(rowsel)}
-						className={estilotabla.iconomodificar}
-						titleAccess="Preview Presupuesto"
-					/> */}
-					{/* <PreviewTwoToneIcon
-						onClick={() => armanombre1(rowsel)}
-						className={estilotabla.iconomodificar}
-						titleAccess="Preview Presupuesto"
-					/> */}
 					<PreviewTwoToneIcon
 						onClick={() => manejarClickPreview(rowsel)}
 						className={estilotabla.iconomodificar}
@@ -187,6 +171,7 @@ export default function PresupMuestra() {
 							},
 						},
 					}}
+					localeText={esES.components.MuiDataGrid.defaultProps.localeText}
 				/>
 			)}
 			{rowsel !== undefined && (
@@ -197,12 +182,7 @@ export default function PresupMuestra() {
 					origen={origen}
 				/>
 			)}
-			{/* {rowsel !== undefined && (
-				<PresupPreview
-					open={ppreview.ppreview}
-					setOpen={setPPreview}
-					rowsel={rowsel}
-				></PresupPreview>)} */}
+
 			{abrirModal && (
 				<VisorPresupuesto
 					open={abrirModal}

@@ -9,7 +9,6 @@ import FilaUnoIzq from "../../Presupuesto/LayoutPresupuesto/FilaUno/FilaUnoIzq.j
 import { Box, Button, TextField } from '@mui/material';
 import formdata from "./formdata.js";
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
-import { set } from 'date-fns';
 import OTDatosAgregarForm from './OTDatosAgregarForm.jsx';
 // import { OTDatosAgregar } from './OTDatosAgregar.jsx';
 import FitbitIcon from "@mui/icons-material/Fitbit";
@@ -19,13 +18,10 @@ import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import AddToPhotosTwoToneIcon from "@mui/icons-material/AddToPhotosTwoTone";
 import CheckCircleTwoToneIcon from "@mui/icons-material/CheckCircleTwoTone";
 import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
-import PreviewTwoToneIcon from "@mui/icons-material/PreviewTwoTone";
 import estilotabla from "../../../Styles/Tabla.module.css";
 import { DialogoDatos } from '../../../components/DialogoDatos.jsx';
 import TablasContexto from '../../../context/TablasContext.jsx';
 import OrdTrabajo from '../../../context/OrdTrabajo.jsx';
-import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
 // import { OTDatosModificar } from './OTDatosModificar.jsx';
 import { DatosModificar } from '../../../components/DatosModificar.jsx';
 export default function OTDatosForm() {
@@ -56,18 +52,10 @@ export default function OTDatosForm() {
     }
     async function leeotdatos(descripcion) {
         setOTdatos(descripcion);
-
-        const result = await OTDatosLee(descripcion);
-        // if (result.length === 0)
-        //     return
-        if (result.length !== 0) {
-            // confcod.current = result[0].OTDatosConfCod
-            setRows(procesarDatos(result));
-        }
-
+        const result = await OTDatosLee(descripcion, formdata.nombackleer);
+        setRows(procesarDatos(result));
     }
     useEffect(() => {
-
         if (state.PresupConfTipoDesc !== '') {
             leeotdatos(state.PresupConfTipoDesc);
             setFormdatos({
@@ -222,7 +210,6 @@ export default function OTDatosForm() {
     };
 
     const handleModifica = (params) => {
-        // if (formdatos.tablabase === "OTDatos") OTDatosModificar(params);
         DatosModificar(params, formdata.nombackmodificar);
         relee();
     };
@@ -243,33 +230,11 @@ export default function OTDatosForm() {
     function CustomToolbar() {
         return (
             <GridToolbarContainer sx={estiloBoton}>
-                {/* <GridToolbarContainer className={estilotabla.tablasgenerales}>
-                <Box
-                    sx={{
-                        width: "100%",
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'left',
-                        padding: '8px 0px 8px 0px'
-                    }}
-                >
-                    <Box
-                        sx={{
-                            width: "80%",
-                            display: 'flex',
-                            justifyContent: 'right',
-                            alignItems: 'right',
-                            padding: '8px'
-                        }}
-                    > */}    <GridToolbarColumnsButton />
+                <GridToolbarColumnsButton />
                 <GridToolbarFilterButton />
                 <GridToolbarDensitySelector />
                 <GridToolbarExport />
 
-                {/* <GridToolbarColumnsButton className={estilotabla.coloropcioncol} />
-                        <GridToolbarFilterButton className={estilotabla.coloropcioncol} />
-                        <GridToolbarDensitySelector className={estilotabla.coloropcioncol} />
-                        <GridToolbarExport className={estilotabla.coloropcioncol} /> */}
                 <AddToPhotosTwoToneIcon
                     className={estilotabla.iconoagregar}
                     size="large"
@@ -294,17 +259,14 @@ export default function OTDatosForm() {
                     className={estilotabla.iconoborrar}
                     onClick={() => handleDelete(rowsel)}
                 />
-                {/* </Box>
-                </Box> */}
+
             </GridToolbarContainer>
         );
     }
 
     return (
-        // <div style={{ marginTop: "20px", marginLeft: "20px" }}>
         <>
             <FilaUnoIzq />
-            {/* {rows && rows.length > 0 && */}
             <DataGrid
                 rows={rows}
                 columns={columns}
@@ -339,21 +301,3 @@ export default function OTDatosForm() {
     )
 }
 
-/*    const procesarDatos = (data) => {
-    if (data !== '') {
-        return data.flatMap((item) =>
-            Object.entries(JSON.parse(item.OTDatosOpciones)).map(([clave, valor]) => ({
-                id: `${item.idOTDatos}-${clave}`, // ID único
-                idOTDatos: item.idOTDatos,
-                descripcion: item.OTDatosDesc,
-                codconf: item.OTDatosConfCod,
-                opcion: clave,
-                valor: valor,
-                aparicion: item.OTDatosOrdenAparicion,
-                tipo: item.OTDatosTipoPed,
-                requerido: item.OTDatosRequerido
-            }))
-
-        );
-    }
-};*/

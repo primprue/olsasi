@@ -27,6 +27,18 @@ import cajaiesumamov from "./routes/cajaie/cajaiesumamov.mjs";
 import buscaie from "./routes/cajaie/buscaie.mjs";
 import cajaieestadistica from "./routes/cajaie/cajaieestadistica.mjs";
 
+import bancosleer from "./routes/bancos/bancosleer.mjs";
+import bancosleercod from "./routes/bancos/bancosleercod.mjs";
+import bancosagregar from "./routes/bancos/bancosagregar.mjs";
+import bancosborrar from "./routes/bancos/bancosborrar.mjs";
+import bancosmodificar from "./routes/bancos/bancosmodificar.mjs";
+import bancosleercconcta from "./routes/bancos/bancosleercconcta.mjs";
+
+
+import chequesleer from "./routes/cajaie/cheques/chequesleer.mjs";
+import chequesleercod from "./routes/cajaie/cheques/chequesleercod.mjs";
+import chequesagregar from "./routes/cajaie/cheques/chequesagregar.mjs";
+import chequesmodificar from "./routes/cajaie/cheques/chequesmodificar.mjs";
 
 import cajainternaleer from "./routes/cajaie/cajainterna/cajainternaleer.mjs";
 import cajainternaagregar from "./routes/cajaie/cajainterna/cajainternaagregar.mjs";
@@ -196,7 +208,6 @@ import copiafact from "./routes/procinternos/copiafact.mjs";
 // //programas para ordenes de trabajo
 import otorigenpresupagregar from "./routes/ordentrabajo/otorigenpresupagregar.mjs";
 
-import otdatosleer from "./routes/ordentrabajo/otdatosleer.mjs";
 import otgraba from "./routes/ordentrabajo/otgraba.mjs";
 import otleeencab from "./routes/ordentrabajo/otleeencab.mjs";
 import otestadoleer from "./routes/ordentrabajo/otestadoleer.mjs";
@@ -210,7 +221,8 @@ import otcondpagoagregar from "./routes/otcondpago/otcondpagoagregar.mjs";
 import otcondpagomodificar from "./routes/otcondpago/otcondpagomodificar.mjs";
 import otcondpagoborrar from "./routes/otcondpago/otcondpagoborrar.mjs";
 
-import otdatoslee from "./routes/ordentrabajo/otdatos/otdatoslee.mjs";
+// import otdatoslee from "./routes/ordentrabajo/otdatos/otdatoslee.mjs";
+import otdatosleer from "./routes/ordentrabajo/otdatos/otdatosleer.mjs";
 import otdatosagregar from "./routes/ordentrabajo/otdatos/otdatosagregar.mjs";
 import otdatosagregaselec from "./routes/ordentrabajo/otdatos/otdatosagregaselec.mjs";
 import otdatosmodificar from "./routes/ordentrabajo/otdatos/otdatosmodificar.mjs";
@@ -287,6 +299,17 @@ app.use("/api/cajaiesumamov", cajaiesumamov);
 app.use("/api/buscaie", buscaie);
 app.use("/api/cajaieestadistica", cajaieestadistica);
 
+app.use("/api/bancosleer", bancosleer);
+app.use("/api/bancosagregar", bancosagregar);
+app.use("/api/bancosborrar", bancosborrar);
+app.use("/api/bancosmodificar", bancosmodificar);
+app.use("/api/bancosleercod", bancosleercod);
+app.use("/api/bancosleercconcta", bancosleercconcta);
+
+app.use("/api/chequesleer", chequesleer);
+app.use("/api/chequesleercod", chequesleercod);
+app.use("/api/chequesagregar", chequesagregar);
+app.use("/api/chequesmodificar", chequesmodificar);
 
 app.use("/api/cajainternaleer", cajainternaleer);
 app.use("/api/cajainternaagregar", cajainternaagregar);
@@ -478,7 +501,7 @@ app.use("/api/otcondpagoagregar", otcondpagoagregar);
 app.use("/api/otcondpagomodificar", otcondpagomodificar);
 app.use("/api/otcondpagoborrar", otcondpagoborrar);
 
-app.use("/api/otdatoslee", otdatoslee);
+// app.use("/api/otdatoslee", otdatoslee);
 app.use("/api/otdatosagregar", otdatosagregar);
 app.use("/api/otdatosagregaselec", otdatosagregaselec);
 

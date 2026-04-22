@@ -2,7 +2,7 @@ import React from "react";
 import { use } from "react";
 import PresupPant from "../../../../context/PresupPant";
 import Grid from "@mui/material/Grid";
-import TextFieldComun from "../../../../components/comppropios/TextFieldComun";
+import TextFieldMultilinea from "../../../../components/comppropios/TextFieldMultilinea";
 export default function FilaCargaDesc() {
 	const { state, setState } = use(PresupPant);
 
@@ -12,17 +12,18 @@ export default function FilaCargaDesc() {
 	return (
 		<>
 			<Grid container span={{ xs: 8 }}>
-				<Grid span={{ xs: 1 }}>
-					<TextFieldComun
-						id="DetallePresup"
-						type="number"
-						label="Descripción "
-						value={state.DetallePresup}
-						onChange={handleChange}
-						width="500px"
-						multiline={true}
-					/>
-				</Grid>
+				{/* <Grid span={{ xs: 1 }}> */}
+				<TextFieldMultilinea
+					id="DetallePresup"
+					type="text"
+					label="Descripción "
+					value={state.DetallePresup}
+					onChange={handleChange}
+					width="500px"
+					limite={300}
+					multiline={true}
+				/>
+				{/* </Grid> */}
 
 			</Grid>
 		</>

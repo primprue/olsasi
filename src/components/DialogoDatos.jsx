@@ -122,7 +122,7 @@ export function DialogoDatos(props) {
 			open={open}
 			onClose={handleClose}
 			fullWidth      // Ocupa el ancho máximo disponible
-			maxWidth="sm"  // Puedes cambiar a "md" si lo quieres aún más ancho
+			maxWidth="md"  // Puedes cambiar a "md" si lo quieres aún más ancho  // Puedes cambiar a "sm" si lo quieres aún más angosto
 		>
 			<DialogTitle>{titulodial}</DialogTitle>
 			<DialogContent>
@@ -134,12 +134,14 @@ export function DialogoDatos(props) {
 								typeof col.editable === "function"
 									? col.editable({ row: paramsbor || {} })
 									: normalizeBool(col.editable);
-
 							const isRequired =
 								typeof col.required === "function"
 									? (!isAlta ? col.required({ row: paramsbor }) : normalizeBool(col.required))
 									: normalizeBool(col.required);
-
+							const isDisabled =
+								typeof col.disabled === "function"
+									? (!isAlta ? col.disabled({ row: paramsbor }) : normalizeBool(col.disabled))
+									: normalizeBool(col.disabled);
 							const commonProps = {
 								id: col.field,
 								label: col.headerName,
@@ -150,6 +152,7 @@ export function DialogoDatos(props) {
 								// value: formState[col.field] || "",
 								required: isRequired,
 								readOnly: !isEditable,
+								disabled: isDisabled,
 								onChange: manejarCambio,
 								pattern: col.pattern,
 								maxLength: col.maxLength,
@@ -160,7 +163,6 @@ export function DialogoDatos(props) {
 								helperText: col.type === "singleSelect" ? col.helptext : "<Tab> pasa al siguiente campo",
 								type: col.type === "date" ? "date" : "text",
 							};
-
 							return (
 								<Grid item xs={12} key={col.field || index}>
 									{col.type === "singleSelect" ? (

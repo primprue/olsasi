@@ -132,7 +132,8 @@ const Agregar = async (
 				ImpUnitariof,
 				ImpItem,
 				ImpItemf,
-				dcalculo,
+				sDescripPresup,
+				dcalculo
 			},
 		];
 

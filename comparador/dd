@@ -1,0 +1,114 @@
+`OTDatos` (
+  `idOTDatos` int NOT NULL AUTO_INCREMENT,
+  `OTDatosTipoConf` varchar(45) DEFAULT NULL,
+  `OTDatosDesc` varchar(45) DEFAULT NULL,
+  `OTDatosOpciones` json DEFAULT NULL,
+  `OTDatosTipoPed` varchar(45) DEFAULT NULL,
+  `OTDatosRequerido` varchar(1) DEFAULT 'S',
+  `OTDatosOrdenAparicion` int DEFAULT NULL,
+  `OTDatosAncho` int DEFAULT NULL,
+  PRIMARY KEY (`idOTDatos`)
+)
+
+Para lograr esto con **React** y **MySQL**, el desafío principal no es solo el "Insert", sino la lógica de reordenamiento para que los valores de `OTDatosOrdenAparicion` se mantengan consistentes.
+
+Aquí tienes una estrategia profesional para abordar el problema:
+
+---
+
+## 1. Estrategia de Reordenamiento (Backend)
+
+Cuando un usuario mueve un ítem de la posición **A** a la **B**, o inserta uno nuevo en medio, lo más limpio es realizar una actualización masiva. 
+
+### El Enfoque de la "Ruta de Colisión"
+Si permites que los números se repitan temporalmente, puedes usar una transacción SQL para evitar inconsistencias. Sin embargo, la mejor práctica en el frontend es usar una librería como **`@dnd-kit`** o **`react-beautiful-dnd`**.
+
+### Lógica Sugerida en el Servidor (Node.js/Express ejemplo)
+Al recibir el nuevo orden, lo ideal es enviar un array de IDs ordenados y ejecutar un `CASE` en SQL para actualizar todos de un solo golpe:
+
+```sql
+UPDATE OTDatos 
+SET OTDatosOrdenAparicion = CASE idOTDatos
+    WHEN 10 THEN 1
+    WHEN 15 THEN 2
+    WHEN 12 THEN 3
+    END
+WHERE idOTDatos IN (10, 15, 12);
+```
+
+---
+
+## 2. Frontend en React: Implementación de Drag & Drop
+
+Para que el usuario pueda cambiar el orden visualmente, te recomiendo instalar `@dnd-kit/sortable`. Es moderno y ligero.
+
+### Componente de Lista Ordenable
+```jsx
+import React, { useState } from 'react';
+import { DndContext, closestCenter } from '@dnd-kit/core';
+import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { SortableItem } from './SortableItem'; // Componente hijo
+
+const ListaOT = ({ datosIniciales }) => {
+  const [items, setItems] = useState(datosIniciales);
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      setItems((items) => {
+        const oldIndex = items.findIndex(i => i.idOTDatos === active.id);
+        const newIndex = items.findIndex(i => i.idOTDatos === over.id);
+        
+        const nuevoOrden = arrayMove(items, oldIndex, newIndex);
+        
+        // AQUÍ: Llamas a tu API para guardar el nuevo orden
+        guardarNuevoOrden(nuevoOrden);
+        
+        return nuevoOrden;
+      });
+    }
+  };
+
+  return (
+    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      <SortableContext items={items.map(i => i.idOTDatos)} strategy={verticalListSortingStrategy}>
+        {items.map(dato => (
+          <SortableItem key={dato.idOTDatos} id={dato.idOTDatos} dato={dato} />
+        ))}
+      </SortableContext>
+    </DndContext>
+  );
+};
+```
+
+---
+
+## 3. Alta de Datos (Insert)
+
+Para el alta, tienes dos opciones respecto al campo `OTDatosOrdenAparicion`:
+
+1.  **Al final (Fácil):** Buscas el `MAX(OTDatosOrdenAparicion) + 1` e insertas.
+2.  **En una posición específica:** Si el usuario quiere insertar en la posición 2, debes ejecutar un `UPDATE` previo:
+    ```sql
+    UPDATE OTDatos 
+    SET OTDatosOrdenAparicion = OTDatosOrdenAparicion + 1 
+    WHERE OTDatosOrdenAparicion >= ?;
+    ```
+    Y luego el `INSERT` con el valor deseado.
+
+---
+
+## 4. Consideraciones para el campo JSON
+Como usas `OTDatosOpciones` tipo **JSON**, en React asegúrate de manejarlo como objeto y transformarlo a string antes de enviarlo:
+
+* **Lectura:** `JSON.parse(dato.OTDatosOpciones)`
+* **Escritura:** `JSON.stringify(opcionesObjeto)`
+
+### Resumen de pasos recomendados:
+1.  **Frontend:** Implementa una lista donde los elementos se puedan arrastrar.
+2.  **Evento:** Al soltar el elemento, genera un array con los IDs en el nuevo orden.
+3.  **API:** Envía ese array de IDs al backend.
+4.  **Base de Datos:** Recorre el array y asigna el índice como el nuevo `OTDatosOrdenAparicion`. Esto "limpia" cualquier número repetido automáticamente.
+
+¿Te gustaría que profundice en el código de la función `guardarNuevoOrden` o en el componente `SortableItem`?

@@ -2,7 +2,7 @@ import express from "express";
 var router = express.Router();
 import { conexion } from '../conexion.mjs';
 
-
+//presupuesto para lona para pileta con fajas para caños de aluminio y ojales
 
 // ------------------------------------------------------------------
 // FUNCIÓN: ejecuta una consulta MySQL en modo async

@@ -4,16 +4,17 @@ const REACT_APP_API_URL = import.meta.env.VITE_API_URL;
 export const GeneradorPresup = (datosParaEnvio, nroPresupuesto1) => {
     const {
         ClienteMayMin, nomClienteElegE, idClienteElegE, condiciones,
-        otracondicion, operador, tipoleygral, explicacionPresup,
+        operador, tipoleygral, explicacionPresup,
         productos, leyenda, leyendatanque, totalpresup, totalparacontrolar, nroPresupuesto
     } = datosParaEnvio;
+    // otracondicion,
     const form = document.createElement('form');
     form.method = 'POST';
     form.action = `${REACT_APP_API_URL}/generarpdf`;
     // CAMBIO CLAVE: Usa '_blank' para que tu app de React no se "congele" ni se pierda
     form.target = '_blank';
 
-
+    console.log('productos  ', productos)
     const agregarCampo = (nombre, valor) => {
         const input = document.createElement('input');
         input.type = 'hidden';
@@ -41,7 +42,7 @@ export const GeneradorPresup = (datosParaEnvio, nroPresupuesto1) => {
     agregarCampo('nomClienteElegE', nomClienteElegE);
     agregarCampo('idClienteElegE', idClienteElegE);
     agregarCampo('condiciones', condiciones); // El helper ya hace el stringify
-    agregarCampo('otracondicion', otracondicion);
+    // agregarCampo('otracondicion', otracondicion);
     agregarCampo('operador', operador);
     agregarCampo('tipoleygral', tipoleygral);
     agregarCampo('explicacionPresup', explicacionPresup);

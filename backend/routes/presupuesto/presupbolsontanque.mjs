@@ -152,7 +152,7 @@ router.get('/', async (req, res, next) => {
         let segcortarpp = 0
         let segunirpp = 0
         let metroscuadper = 0
-        if (alto > 1.50) {
+        if (altorec > 1.50) {
           calpaños = (perimetro % anchotela)
 
           if (calpaños < .50) {
@@ -162,8 +162,8 @@ router.get('/', async (req, res, next) => {
             cantpaños = Math.trunc(perimetro / anchotela) + 1
           }
           segcortarpp = (120 * cantpaños)
-          segunirpp = (150 * alto * (cantpaños - 1))
-          metroscuadper = cantpaños * alto * anchotela
+          segunirpp = (150 * altorec * (cantpaños - 1))
+          metroscuadper = cantpaños * altorec * anchotela
         }
         else {
           segcortarpp = segcortarpf

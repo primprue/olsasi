@@ -1,25 +1,22 @@
-
-
-
-import MuestraMensaje from "../../../components/lib/MuestraMensaje";
+import request from "superagent";
 import IpServidor from "../../VariablesDeEntorno";
 
-import request from "superagent";
+// Lee Rubro por codigo de gupo
 
-export async function OTDatosLee(props, ejecutorbackend) {
-	const url = `${IpServidor}/${ejecutorbackend}/?id=${props}`;
-
+export async function ChequesBancosCCSC(props) {
+	const { queleeo } = props;
+	const url = `${IpServidor}/bancosleercconcta/?leertono=${props}`;
 	try {
 		const res = await request
 			.get(url)
 			.set("Content-Type", "application/json")
 			.set("X-API-Key", "foobar")
 		// Superagent coloca el JSON parseado en res.body automáticamente
-		const otdatoslee = res.body || JSON.parse(res.text);
+		const resultadolectura = res.body || JSON.parse(res.text);
 		// Opcional: Mostrar mensaje de éxito
 		// MuestraMensaje(res);
 
-		return otdatoslee;
+		return resultadolectura;
 	} catch (err) {
 		MuestraMensaje(err);
 		throw err; // Es importante lanzar el error para que el llamador lo detecte

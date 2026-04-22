@@ -138,9 +138,13 @@ height: auto;
     border-bottom: 0.5px solid #eee; /* Una línea sutil entre condiciones */
     color: #007bff; 
     margin-right: 8px;
+}
+.item-otracondicion {
+   font-family: Arial, sans-serif;
+    font-size: 9px; /* Ideal para presupuestos */
+    color: #010a14; 
   
 }
-
 .leyenda {
   border: 2px solid #f1072e;    /* Grosor, estilo (sólido) y color */
   padding: 10px;             /* Espacio entre el texto y el borde */

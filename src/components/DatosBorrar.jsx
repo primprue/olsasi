@@ -6,9 +6,7 @@ import IpServidor from "../pages/VariablesDeEntorno";
 export async function DatosBorrar(params, ejecutorbackend) {
 	// const {id, ...datos} = paramsid;
 	const { id, ...datos } = params;
-	console.log('params  ', params)
-	console.log('datos  ', datos)
-	console.log('ejecutorbackend  ', ejecutorbackend)
+
 	const url = `${IpServidor}/${ejecutorbackend}/?id=${id}&&datos=${JSON.stringify(datos)}`;
 	// const url = `${IpServidor}/${ejecutorbackend}/?id=${paramsid}`;
 	try {
@@ -22,5 +20,4 @@ export async function DatosBorrar(params, ejecutorbackend) {
 		MuestraMensaje(err);
 		throw err; // Es importante lanzar el error para que el llamador lo detecte
 	}
-
 }

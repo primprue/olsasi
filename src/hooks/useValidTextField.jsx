@@ -7,7 +7,6 @@ export function ValidatedTextField(props) {
 	// Extraemos las props de validación que ahora sí llegan
 	const { pattern, required, maxLength, id, value, name, onChange, ...restProps } = props;
 	const [isDirty, setIsDirty] = useState(false);
-
 	const checkValidation = (val) => {
 		if (!val || val.toString().length === 0) return !required;
 		if (maxLength && val.length > maxLength) return false;

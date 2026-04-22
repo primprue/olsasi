@@ -34,6 +34,7 @@ import LowPriorityTwoToneIcon from '@mui/icons-material/LowPriorityTwoTone';
 import ShopTwoSharpIcon from '@mui/icons-material/ShopTwoSharp';
 import DeveloperBoardSharpIcon from '@mui/icons-material/DeveloperBoardSharp';
 import PercentIcon from '@mui/icons-material/Percent';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import BorderColorTwoToneIcon from '@mui/icons-material/BorderColorTwoTone';
 import BalanceIcon from '@mui/icons-material/Balance';
@@ -46,6 +47,8 @@ import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
 import { AppProvider } from "@toolpad/core/AppProvider";
 import StaticContext from './context/StaticContext';
 import { CajaIcons } from './components/comppropios/CustomIcons';
+import { CajaIconsLlena } from './components/comppropios/CustomIcons';
+import { LibroCheques } from './components/comppropios/CustomIcons';
 import { ListaIcons } from './components/comppropios/CustomIcons';
 import { HomeIcons } from './components/comppropios/CustomIcons';
 import { PresupIcons } from './components/comppropios/CustomIcons';
@@ -75,7 +78,16 @@ const menuItems = [
     ],
   },
   { text: 'Reparación', icon: <ReparacionIcons sx={{ fontSize: 40 }} />, path: '/Reparacion' },
-  { text: 'Caja', icon: <CajaIcons sx={{ fontSize: 40 }} />, path: '/CajaIE' },
+  {
+    text: 'Caja', icon: <CajaIcons sx={{ fontSize: 40 }} />,
+    children: [
+      {
+        text: 'Caja', icon: <CajaIconsLlena sx={{ fontSize: 40 }} />, path: '/CajaIE'
+      },
+      { text: 'Libro Cheques', icon: <LibroCheques sx={{ fontSize: 32, color: '#050463' }} />, path: '/tablas/Cheques' },
+
+    ],
+  },
 
 
   {
@@ -124,6 +136,7 @@ const menuItems = [
       { text: 'Monedas', icon: <PriceChangeTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/StkMonedas' },
       { text: 'Transporte', icon: <LocalShippingTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/Transporte' },
       { text: 'Porcentaje IVA', icon: <PercentIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/PorIVA' },
+      { text: 'Bancos', icon: <AccountBalanceIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/Bancos' },
       // { text: 'PreBalance Rubros', icon: <BalanceTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/PBRubros' },
 
       // {

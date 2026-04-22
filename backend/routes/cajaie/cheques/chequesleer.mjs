@@ -4,14 +4,13 @@ import { conexionpool } from '../../conexion.mjs';
 
 
 router.get('/', async (req, res) => {
-
     try {
-
-        const indice = req.query.id;
-        const q = `SELECT idOTDatos, OTDatosOrdenAparicion, OTDatosDesc, OTDatosOpciones,
-                    OTDatosTipoPed, OTDatosRequerido FROM BasesOrdenes.OTDatos
-                    where OTDatosTipoConf = ? order by OTDatosOrdenAparicion`;
-        const [result] = await conexionpool.query(q, [indice]);
+        const q = `SELECT idCheques as id, ChequesFechaEntrada,
+            ChequesLibrador, ChequesNro,
+            ChequesBanco, ChequesFechaPago, ChequesImporte, ChequesFechaSalida,
+            ChequesDepBanco, ChequesEndosadoA, ChequesOP, ChequesObservacion
+            from BaseCaja.Cheques order by idCheques`;
+        const [result] = await conexionpool.query(q);
         return res.json(result);
     } catch (err) {
         console.error("Error en el proceso:", err);

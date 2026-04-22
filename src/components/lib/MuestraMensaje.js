@@ -24,6 +24,7 @@ function MuestraMensaje(response, leyendaMens = "") {
     415: { tipo: "error", texto: leyendaMens || "Hay datos erróneos" },
     416: { tipo: "error", texto: leyendaMens || "Clave Errónea" },
     460: { tipo: "error", texto: leyendaMens || "Error: clave duplicada" },
+    461: { tipo: "error", texto: leyendaMens || "Error: No existe posibilidad de borrar" },
     515: { tipo: "warning", texto: leyendaMens || "Faltan datos" },
     100: { tipo: "success", texto: leyendaMens || "Seleccionados" },
     200: { tipo: "success", texto: leyendaMens || "Operación exitosa" },

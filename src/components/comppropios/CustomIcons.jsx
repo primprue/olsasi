@@ -1,6 +1,6 @@
 import React from 'react';
 import { createSvgIcon } from '@mui/material/utils';
-
+import AccessTimeFilledRoundedIcon from '@mui/icons-material/AccessTimeFilledRounded';
 // Icono 1: Reorder (el que ya tienes)
 export const RecargaIcon = createSvgIcon(
     <React.Fragment>
@@ -266,6 +266,57 @@ export const CajaIcons = createSvgIcon(
 );
 
 
+export const CajaIconsLlena = createSvgIcon(
+    <React.Fragment>
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <g
+
+            fill="none"
+            stroke='#fc00fc'
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M15 11v.01" />
+            <path d="M16 3l0 3.803a6.019 6.019 0 0 1 2.658 3.197h1.341a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-1.342a6.008 6.008 0 0 1 -1.658 2.473v2.027a1.5 1.5 0 0 1 -3 0v-.583a6.04 6.04 0 0 1 -1 .083h-4a6.04 6.04 0 0 1 -1 -.083v.583a1.5 1.5 0 0 1 -3 0v-2l0 -.027a6 6 0 0 1 4 -10.473h2.5l4.5 -3" />
+
+        </g>
+    </React.Fragment >,
+    'CajaIconsLlena'
+);
+
+// <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#eb05d8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-map-dollar">
+
+//     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+//     <path d="M13 19l-4 -2l-6 3v-13l6 -3l6 3l6 -3v6.5" />
+//     <path d="M9 4v13" />
+//     <path d="M15 7v5" />
+//     <path d="M21 15h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5" />
+//     <path d="M19 21v1m0 -8v1" />
+// </svg>
+
+export const LibroCheques = createSvgIcon(
+    <React.Fragment>
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <g
+
+            fill="none"
+            stroke='#fc00fc'
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M13 19l-4 -2l-6 3v-13l6 -3l6 3l6 -3v6.5" />
+            <path d="M9 4v13" />
+            <path d="M15 7v5" />
+            <path d="M21 15h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5" />
+            <path d="M19 21v1m0 -8v1" />
+        </g>
+    </React.Fragment >,
+    'LibroCheques'
+);
 
 
 

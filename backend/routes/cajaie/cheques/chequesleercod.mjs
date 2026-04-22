@@ -1,14 +1,14 @@
 import express from 'express';
 var router = express.Router();
-import { conexionpool } from '../conexion.mjs';
+
+import { conexionpool } from '../../conexion.mjs';
 
 
-
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
+    const indice = req.query.id;
     try {
-        const datosrec = (req.query.datosaleer)
-        const q = `SELECT * FROM BasesOrdenes.OTDatos where OTDatosTipoConf = ?  order by OTDatosOrdenAparicion`;
-        const [result] = await conexionpool.query(q, [datosrec]);
+        const q = `Select * from BaseCaja.Cheques where idCheques = ?`;
+        const [result] = await conexionpool.query(q, [indice]);
         return res.json(result);
     } catch (err) {
         console.error("Error en el proceso:", err);
@@ -18,5 +18,4 @@ router.get("/", async (req, res) => {
         });
     }
 });
-
 export default router;
