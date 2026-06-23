@@ -1,61 +1,39 @@
 import React, { useEffect } from "react";
 import { copiafact } from "./CopiaFact";
-
 import swal from 'sweetalert';
+import { Dialog } from "@mui/material";
 
+export default function BackupDiario(props) {
+    // 1. Recibimos las props correctas que envía el padre
+    const { open, handleClose } = props;
 
-export default function BackupDiario() {
-    // const [finsn, setFinsn] = useState(true);
-    // const [progress, setProgress] = React.useState(0);
-
-    useEffect(() => {
-        inicio()
-
-
-    });
-
-
-    const fechaComoCadena = Date()
+    const fechaComoCadena = Date();
     const numeroDia = new Date(fechaComoCadena).getDay();
-    const diasemana = ['DOMINGO', 'LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO']
-    const hoyes = diasemana[numeroDia]
+    const diasemana = ['DOMINGO', 'LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO'];
+    const hoyes = diasemana[numeroDia];
+
     async function copiafacturacion() {
         const result = await copiafact();
-        if (result === '""') {
-            swal({
+        if (result && result.status === 'success') {
+            await swal({
                 title: "Backup Realizado!",
-                text: "Retirar el PenDrive",
+                text: "Retirar el PenDrive de forma segura",
                 icon: "success",
                 button: "OK!",
-            })
-            // setOpen(false)
-        }
-        else {
-            swal({
+            });
+            handleClose(); // Cierra el modal/diálogo
+        } else {
+            // Si el backend respondió pero con error
+            await swal({
                 title: "Backup NO Realizado!",
-                text: "Atención NO SE HIZO EL BACKUP ",
-                text1: result,
+                text: result.message || "Atención, ocurrió un problema inesperado.",
                 icon: "error",
                 button: "OK!",
-            })
-
+            });
+            handleClose();
         }
 
     }
-    // const [open, setOpen] = useState(true);
-
-    // const handleClickOpen = () => {
-    //     setOpen(
-    //         true
-    //     );
-    // };
-    // const handleClose = () => {
-    //     setOpen(false);
-    // };
-
-    // const alertaNormal = () => {
-    //     alert("alerta normal");
-    // };
 
     const inicio = () => {
         swal({
@@ -63,37 +41,47 @@ export default function BackupDiario() {
             text: "Hoy es " + hoyes,
             icon: "info",
             dangerMode: true,
-            buttons: ["No", "SI"],  //el true es el de la derecha
+            buttons: ["No", "SI"],
         })
             .then(respuesta => {
                 if (respuesta) {
-                    console.log('esta en el si  ')
-                    copiafacturacion()
-                    // swal("Poof! Your imaginary file has been deleted!", {
-                    //     icon: "success",
-                    // });
+                    copiafacturacion();
+                } else {
+                    handleClose(); // 3. Si dice que NO, cerramos inmediatamente
                 }
-            })
-    }
+            });
+    };
+
+    // 4. CORRECCIÓN DEL USEEFFECT: Array de dependencias vacío [] bien cerrado
+    useEffect(() => {
+        inicio();
+    }, []);
 
     return (
-
-        <React.Fragment>
-            {/* {finsn === true && <HaceBackup></HaceBackup>} */}
-            {/* <Button className="btn btn-danger" onClick={inicio}>
-                Alerta
-            </Button> */}
-
-            {/* <Button className="btn btn-danger" onClick={handleClickOpen}>
-                Alerta
-            </Button> */}
-            {/*ventana emergente de borrado*/}
-            {/* <Dialog
+        <>
+            <Dialog
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="responsive-dialog-title"
             >
-                <DialogTitle id="responsive-dialog-title">
+                {/* Nota: Tu Dialog actualmente está vacío, 
+                    si quieres mostrar algo dentro de él además de SweetAlert, 
+                    deberías poner aquí los DialogTitle y DialogContent */}
+            </Dialog>
+        </>
+    );
+}
+
+{/* {finsn === true && <HaceBackup></HaceBackup>} */ }
+{/* <Button className="btn btn-danger" onClick={inicio}>
+                Alerta
+            </Button> */}
+
+{/* <Button className="btn btn-danger" onClick={handleClickOpen}>
+                Alerta
+            </Button> */}
+{/*ventana emergente de borrado*/ }
+{/*     <DialogTitle id="responsive-dialog-title">
                     {"Titulo de alerta"}
                 </DialogTitle>
                 <DialogContent>
@@ -106,10 +94,20 @@ export default function BackupDiario() {
                     <Button onClick={handleClose} className="btn btn-danger">
                         Cancelar
                     </Button>
-                </DialogActions>
-            </Dialog> */}
+                </DialogActions>*/}
 
-        </React.Fragment>
-    );
-}
+// }
+// const [open, setOpen] = useState(true);
 
+// const handleClickOpen = () => {
+//     setOpen(
+//         true
+//     );
+// };
+// const handleClose = () => {
+//     setOpen(false);
+// };
+
+// const alertaNormal = () => {
+//     alert("alerta normal");
+// };

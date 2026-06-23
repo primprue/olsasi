@@ -28,7 +28,6 @@ export default function ModificaPrecios() {
 			state.Importe,
 			state.Porcentaje
 		).then(() => {
-			console.log('estoy en el then  ')
 			// Esto se ejecuta SOLO cuando la petición termina con éxito
 			setState({
 				...state,
@@ -118,12 +117,6 @@ export default function ModificaPrecios() {
 
 		leerTodo();
 	}, []);
-	// useEffect(() => {
-	// 	proveedorleer();
-	// 	gruposleer();
-	// 	rubrosleer();
-	// }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
 
 	const [selectedValues, setSelectedValues] = useState('');
 	const handleSelectChange = (value, id) => {
@@ -132,7 +125,6 @@ export default function ModificaPrecios() {
 			...prev,
 			[id]: value,
 		}));
-		// setValorSeleccionado(value);
 
 	};
 
@@ -295,9 +287,6 @@ export default function ModificaPrecios() {
 					</Grid>
 				</Grid>
 			</form>
-			{/* {valorSeleccionado && (
-				<p>Valor seleccionado: {valorSeleccionado}</p>
-			)} */}
 		</div>
 	);
 }

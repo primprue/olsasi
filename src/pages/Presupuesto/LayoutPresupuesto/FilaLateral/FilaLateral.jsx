@@ -94,7 +94,6 @@ export default function FilaLateral() {
 	};
 
 	const handleChecked = (event) => {
-		console.log('eve   ', event)
 		// setColocacion(event);
 		setState({ ...state, colocacion: event });
 	}

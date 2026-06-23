@@ -6,6 +6,7 @@ import Mensaje from "./Mensaje";
  * @param {String} leyendaMens - Mensaje personalizado opcional
  */
 function MuestraMensaje(response, leyendaMens = "") {
+
   // 1. Extraemos el status. 
   // Intentamos obtenerlo de response.status (éxito/error directo)
   // o de response.response.status (típico en errores de Axios)
@@ -23,8 +24,10 @@ function MuestraMensaje(response, leyendaMens = "") {
     414: { tipo: "error", texto: leyendaMens || "Faltan datos para leer información en tabla" },
     415: { tipo: "error", texto: leyendaMens || "Hay datos erróneos" },
     416: { tipo: "error", texto: leyendaMens || "Clave Errónea" },
+    420: { tipo: "error", texto: leyendaMens || "Error: Hay más de un mes abierto" },
     460: { tipo: "error", texto: leyendaMens || "Error: clave duplicada" },
     461: { tipo: "error", texto: leyendaMens || "Error: No existe posibilidad de borrar" },
+    462: { tipo: "error", texto: leyendaMens || "Error: Fecha Desde mayor a Fecha Hasta" },
     515: { tipo: "warning", texto: leyendaMens || "Faltan datos" },
     100: { tipo: "success", texto: leyendaMens || "Seleccionados" },
     200: { tipo: "success", texto: leyendaMens || "Operación exitosa" },

@@ -37,12 +37,14 @@ router.delete("/", async (req, res) => {
 
     // 5. Borrado de Archivos
     try {
-      const directorio = variables.dirpresupdocumento;
-      const todosLosArchivos = await fs.readdir(directorio);
+      // const directorio = variables.dirpresupdocumento;
+      const RUTA_PUBLICOS = path.join(process.env.RUTA_EXTRENA_PRESUP) + '/';
+      // const todosLosArchivos = await fs.readdir(directorio);
+      const todosLosArchivos = await fs.readdir(RUTA_PUBLICOS);
       const archivosABorrar = todosLosArchivos.filter(n => n.startsWith(`Presupuesto nro ${indice}`));
 
       for (const archivo of archivosABorrar) {
-        await fs.unlink(path.join(directorio, archivo));
+        await fs.unlink(path.join(RUTA_PUBLICOS, archivo));
       }
     } catch (fileErr) {
       console.warn("Aviso: No se encontraron archivos físicos, pero se borró de la DB.");

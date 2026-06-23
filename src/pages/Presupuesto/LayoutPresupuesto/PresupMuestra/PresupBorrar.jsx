@@ -5,6 +5,7 @@ import MuestraMensaje from "../../../../components/lib/MuestraMensaje";
 
 export function PresupBorrar(props) {
 	const url = IpServidor + "/presupborrar/?id=" + props;
+	console.log('PresupBorrar  ', url);
 	request
 		.delete(url)
 		.set("Content-Type", "application/json")

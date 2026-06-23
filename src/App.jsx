@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Box } from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, IconButton } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 
 import Sidebar from './Sidebar';
@@ -19,27 +19,27 @@ const ModificaPrecios = lazy(() => import("./pages/ListaPrecios/ModificaPrecios.
 const OTrabajo = lazy(() => import("./pages/OrdenTrabajo/OTrabajo.jsx"));
 const OTMovimiento = lazy(() => import("./pages/OrdenTrabajo/OTMovimiento/index.jsx"));
 const OTDatos = lazy(() => import("./pages/OrdenTrabajo/OTDatos/index.jsx"));
-
-// import PBPorIVA from './pages/PreBalance/PBPorIVA/index.jsx';
-// const PBRubros = lazy(() => import("./pages/PreBalance/PBRubros/index.jsx"));
-// const PBSubRubros = lazy(() => import("./pages/PreBalance/PBSubRubros/index.jsx"));
-// const PBItems = lazy(() => import("./pages/PreBalance/PBItems/index.jsx"));
-// const PBComprobantes = lazy(() => import("./pages/PreBalance/PBComprobantes/index.jsx"));
-
+const PBListaMov = lazy(() => import("./pages/PreBalance/PBListaMov.jsx"));
+const PBListaPB = lazy(() => import("./pages/PreBalance/PBListaPB.jsx"));
+import CloudUploadTwoToneIcon from '@mui/icons-material/CloudUploadTwoTone';
+import { Backup } from '@mui/icons-material';
+import { useState } from 'react';
+const BackupDiario = lazy(() => import("./pages/ProcInternos/BackupDiario.jsx"));
+// const Scanear = lazy(() => import("./pages/Scanear/index.jsx"));
+const MedidasClientes = lazy(() => import("./pages/MedidasClientes/index.jsx"));
+const BuscadorMedidasClientes = lazy(() => import("./pages/MedidasClientes/BuscadorMedidasClientes.jsx"));
 
 const MovStockPant = lazy(() => import("./pages/Stock/MovStock/MovStockPant.jsx"));
-// const Inventario = lazy(() => import("./pages/Stock/MovStock/Inventario/index.jsx"));
-// const Inventario = lazy(() => import("./pages/Tablas/Inventario/index.jsx"));
 const Reparacion = lazy(() => import("./pages/Reparacion/index.jsx"));
 const CtasCtes = lazy(() => import("./pages/CtasCtes/index.jsx"));
 const ParamComp = lazy(() => import("./pages/CtasCtes/Tablas/ParamComp/index.jsx"));
 const CajaIE = lazy(() => import("./pages/CajaIE/index.jsx"));
-// const location = useLocation();
-
 
 
 function App() {
     const { valor } = use(StaticContext);
+    const [mostrarBackup, setMostrarBackup] = useState(false);
+
     return (
         // <Box sx={{ height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
         <>
@@ -61,15 +61,33 @@ function App() {
                             })}
                         </Typography>
                     </Box>
+                    <IconButton sx={{ ml: 10 }} onClick={() => setMostrarBackup(true)} >
+                        <CloudUploadTwoToneIcon
+                            sx={{ fontSize: 32, color: '#f86605', cursor: 'pointer' }}
+                            titleAccess="Hacer Backup"
+                        />
+                    </IconButton>
+
+                    {/* Ahora pasamos el booleano real y la función con el nombre correcto */}
+                    {mostrarBackup && (
+                        <Suspense fallback={<div>Cargando módulo de respaldo...</div>}>
+                            <BackupDiario
+                                open={mostrarBackup}
+                                handleClose={() => setMostrarBackup(false)}
+                            />
+                        </Suspense>
+                    )}
+                    {/* <IconButton>
+                        <CloudUploadTwoToneIcon sx={{ fontSize: 32, color: '#f86605' }} />
+                    </IconButton> */}
                     <Sidebar />
                 </Toolbar>
             </AppBar>
-            <Toolbar disableGutters sx={{ backgroundColor: '#c2f7f79b', color: '#fff', minHeight: 30 }} />
+            <Toolbar disableGutters sx={{ backgroundColor: '#c2f7f79b', color: '#fff', minHeight: 20 }} />
             <PresupPant>
                 <DatosTablas>
                     <OrdenTrabajo>
                         <CtaCteContext>
-                            {/* <Box sx={{ px: 8, py: 2 }}> */}
                             <Box sx={{ px: 8, py: 2, height: '100vh', display: 'flex', flexDirection: 'column' }}>
                                 <Suspense fallback={<div>Cargando...</div>}>
                                     <Routes>
@@ -82,6 +100,8 @@ function App() {
                                         <Route path="/ListaPrecios/ModificaPrecios" element={<ModificaPrecios />} />
                                         <Route path="/otrabajo/OTrabajo" element={<OTrabajo />} />
                                         <Route path="/otrabajo/OTMovimiento" element={<OTMovimiento />} />
+                                        <Route path="/pblistamov" element={<PBListaMov />} />
+                                        <Route path="/pblistapb" element={<PBListaPB />} />
                                         {/* <Route path="/tablas/Proveedores" element={<Proveedores />} /> */}
                                         {/* <Route path="/tablas/StkMonedas" element={<StkMonedas />} /> */}
                                         {/* a todos los que tienen /tablas le cambio el nombre de la ruta y el path
@@ -104,8 +124,10 @@ function App() {
                                         <Route path="/tablas/PBSubRubros" element={<IndexTablas rutaRelativa="PBSubRubros" />} />
                                         <Route path="/tablas/PBItems" element={<IndexTablas rutaRelativa="PBItems" />} />
                                         <Route path="/tablas/PBComprobantes" element={<IndexTablas rutaRelativa="PBComprobantes" />} />
+                                        <Route path="/tablas/PBIVAPag" element={<IndexTablas rutaRelativa="PBIVAPag" />} />
                                         <Route path="/tablas/Bancos" element={<IndexTablas rutaRelativa="Bancos" />} />
                                         <Route path="/tablas/Cheques" element={<IndexTablas rutaRelativa="Cheques" />} />
+                                        <Route path="/tablas/ProcEsp" element={<IndexTablas rutaRelativa="ProcEsp" />} />
 
 
 
@@ -114,6 +136,8 @@ function App() {
                                         <Route path="/MovStock" element={<MovStockPant />} />
                                         <Route path="/Inventario" element={<IndexTablas rutaRelativa="Inventario" />} />
                                         <Route path="/Reparacion" element={<Reparacion />} />
+                                        <Route path="/MedidasClientes" element={<MedidasClientes />} />
+                                        <Route path="/BuscadorMedidasClientes" element={<BuscadorMedidasClientes />} />
                                         <Route path="/CtasCtes" element={<CtasCtes />} />
                                         <Route path="/CtasCtes/ParamComp" element={<ParamComp />} />
                                     </Routes>

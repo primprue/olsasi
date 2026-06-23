@@ -21,12 +21,7 @@ router.post("/", function (req, res, next) {
         modificadisp = infingreso[0].tingreso;
         modificastock = infingreso[0].tingreso;
     }
-    // var q = [" UPDATE BaseStock.StkItems SET ",
-    //     "StkItemsCantidad = StkItemsCantidad + ", infingreso[0].tingreso,
-    //     ", StkItemsCantDisp = StkItemsCantDisp + ", infingreso[0].tingreso,
-    //     ", StkItemsFAct = '", finalDate,
-    //     "' WHERE (idStkItems = ", infingreso[0].indiceitem, ") and  (StkItemsRubroAbr = '", infingreso[0].abrevrubro, "')"
-    // ].join("");
+
     var q = [" UPDATE BaseStock.StkItems SET ",
         "StkItemsCantidad = StkItemsCantidad + ", modificastock,
         ", StkItemsCantDisp = StkItemsCantDisp + ", modificadisp,

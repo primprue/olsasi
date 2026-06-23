@@ -5,7 +5,9 @@ var router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
-        const q = `SELECT idProveedores as value, ProveedoresDesc as label FROM BasesGenerales.Proveedores`
+        const q = `SELECT idProveedores as value, ProveedoresDesc as label, 
+                    ProveedoresTipo FROM BasesGenerales.Proveedores
+                    order by ProveedoresDesc`;
         const [result] = await conexionpool.query(q);
         return res.json(result);
     } catch (err) {

@@ -55,6 +55,7 @@ router.get("/", async (req, res) => {
 
       let impunion = 0;
       let impcorte = 0;
+      let imprecorte = 0;
 
       if (cantidad % 1 > 0) {
         impunion =
@@ -65,8 +66,9 @@ router.get("/", async (req, res) => {
         impunion = (cantidad - 1) * largo * valorMOTmup;
         impcorte = cantidad * valorMOTcorte;
       }
+      imprecorte = largo * valorMOTcorte;
 
-      const importeMOTtotal = impunion + (impcorte * 2);
+      const importeMOTtotal = impunion + impcorte + imprecorte;
 
       // consulta principal
       const q = `
@@ -91,9 +93,8 @@ router.get("/", async (req, res) => {
       const data = r[0];
 
       // redondeo con o sin IVA
-      let impu = Number(data.ImpUnitario);
+      let impu = Math.ceil(data.ImpUnitario.toFixed(0));
       ivasncal == 'CIVA' ? impu = impu : impu = impu / 1.21;
-
       // armado de detalle
       const anchoreal = Number(largo).toFixed(2);
       const callargo = cantidad * data.Ancho;

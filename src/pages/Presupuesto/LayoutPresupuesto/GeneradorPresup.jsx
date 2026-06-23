@@ -5,7 +5,7 @@ export const GeneradorPresup = (datosParaEnvio, nroPresupuesto1) => {
     const {
         ClienteMayMin, nomClienteElegE, idClienteElegE, condiciones,
         operador, tipoleygral, explicacionPresup,
-        productos, leyenda, leyendatanque, totalpresup, totalparacontrolar, nroPresupuesto
+        productos, leyenda, leyendatanque, totalpresup, totalparacontrolar, nroPresupuesto, tipopresup, sDescripPresup
     } = datosParaEnvio;
     // otracondicion,
     const form = document.createElement('form');
@@ -14,7 +14,6 @@ export const GeneradorPresup = (datosParaEnvio, nroPresupuesto1) => {
     // CAMBIO CLAVE: Usa '_blank' para que tu app de React no se "congele" ni se pierda
     form.target = '_blank';
 
-    console.log('productos  ', productos)
     const agregarCampo = (nombre, valor) => {
         const input = document.createElement('input');
         input.type = 'hidden';
@@ -35,7 +34,13 @@ export const GeneradorPresup = (datosParaEnvio, nroPresupuesto1) => {
     const tituloPresup = nroPresupuesto1 !== 0
         ? `Presupuesto nro ${nroPresupuesto1} ${nombreLimpio} ${fechaFormateada}`
         : 'Vista_PREVIA_Presupuesto';
-
+    let espresupdesc = false;
+    if (tipopresup === 'CARGA DESCRIPCION') {
+        espresupdesc = true;
+    }
+    if (sDescripPresup !== null && sDescripPresup !== '') {
+        espresupdesc = true;
+    }
     agregarCampo('nombrepresup', tituloPresup);
     agregarCampo('fecha', fechaFormateada);
     agregarCampo('ClienteMayMin', ClienteMayMin);
@@ -53,6 +58,7 @@ export const GeneradorPresup = (datosParaEnvio, nroPresupuesto1) => {
     }
     agregarCampo('leyenda', leyenda);
     agregarCampo('leyendatanque', leyendatanque);
+    agregarCampo('espresupdesc', espresupdesc);
     agregarCampo('informacion', 'plantillapresup.html');
     document.body.appendChild(form);
 

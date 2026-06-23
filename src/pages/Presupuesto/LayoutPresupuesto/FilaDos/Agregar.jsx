@@ -6,7 +6,8 @@ const Agregar = async (
 	otramoneda,
 	sDescripPresup,
 	srenglonanexo,
-	dcalculo
+	dcalculo,
+	renglonanexodetalle
 ) => {
 	return new Promise((resolve) => {
 		// setTimeout(() => {
@@ -26,19 +27,11 @@ const Agregar = async (
 		}
 		if (rubrosn === "S") {
 			var unidmed = "";
-			// if (datosrenglon1.length === 1)
-			// 	unidmed = datosrenglon1[0].StkRubroUM + " "
-			// else
-			// 	unidmed = datosrenglon1[0][0].StkRubroUM + " ";
-
 
 			if (datosrenglon1[0][0].StkRubroUM) {
 				unidmed = datosrenglon1[0][0].StkRubroUM + " ";
 			}
-			// StkRubroDesc =
-			// 	unidmed +
-			// 	datosrenglon1[0][0].Detalle +
-			// 	datosrenglon1[0][0].StkRubroDesc;
+
 			StkRubroDesc =
 				unidmed +
 				datosrenglon1[0][0].Detalle;
@@ -120,7 +113,8 @@ const Agregar = async (
 			.replace(/€|USD|\$/g, "")
 			.trim();
 		ImpItemf = dcalculo[0].signomonet + " " + ImpItemf;
-
+		// dcalculo[0].anexos = (renglonanexodetalle.flat())
+		const datosanexos = (renglonanexodetalle.flat())
 		var datospresup = [
 			{
 				id: indicetp1, //agregado porque en tablapresup me exige un indice id
@@ -133,7 +127,8 @@ const Agregar = async (
 				ImpItem,
 				ImpItemf,
 				sDescripPresup,
-				dcalculo
+				dcalculo,
+				datosanexos
 			},
 		];
 

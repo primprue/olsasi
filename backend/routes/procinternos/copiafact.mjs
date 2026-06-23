@@ -1,71 +1,28 @@
 import express from 'express';
 var router = express.Router();
-
+const rutainterna = process.env.RUTA_INTERNA_DOC;
 
 import { execFile } from 'child_process';
 import { exec } from 'child_process';
 
 router.get("/", function (req, res, next) {
-    const fechaComoCadena = Date()
-    const numeroDia = new Date(fechaComoCadena).getDay();
-    const diasemana = ['DOMINGO', 'LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO']
-    var caminodesde = ' /home/sandra/ResgDiario/*.* '
-    var caminohacia = '/media/sandra/KINGSTON/Backdiario/' + diasemana[numeroDia] + '/'
-    var caminodesde1 = ' /home/sandra/BackUp/*.* '
-    var caminohacia1 = '/home/sandra/pruebaback1/' + diasemana[numeroDia] + '/'
-    // exec('cp -r -p ' + caminodesde + caminohacia, (error, stdout, stderr) => {
-    //     if (error) {
-    //         console.error(`error: ${error.message}`);
-    //         res.json(error.message)
-    //         return;
-    //     }
-    //     if (stderr) {
-    //         console.error(`stderr: ${stderr}`);
-    //         res.json(stderr)
-    //         return;
-    //     }
-    //     exec('cp -r -p ' + caminodesde1 + caminohacia1, (error, stdout, stderr) => {
-    //         if (error) {
-    //             console.error(`error: ${error.message}`);
-    //             res.json(error.message)
-    //             return;
-    //         }
-    //         if (stderr) {
-    //             console.error(`stderr: ${stderr}`);
-    //             res.json(stderr)
-    //             return;
-    //         }
-    //         res.json(stdout)
-    //     });
-    // });
-    //execFile(__dirname + '/copBases.sh', (error, stdout, stderr) => {
-    execFile('/home/sandra/SIOLSA/copBases.sh', (error, stdout, stderr) => {
+    execFile(rutainterna + '/copBases.sh', (error, stdout, stderr) => {
         if (error) {
-            console.error(`error: ${error.message}`);
-            res.json(`${error.message}`)
-            return;
+            console.error(`Error de ejecución: ${error}`);
+            return res.status(500).json({ status: "error", message: error.message });
         }
+        // 2. Analizar la salida del script
+        // Ojo: mysqldump a veces tira avisos menores en stderr. 
+        // Si tu script .sh termina con "exit 1" ante errores, el 'error' de arriba lo capturará.
+        if (stderr) {
+            console.warn(`Avisos de sistema (stderr): ${stderr}`);
+        }
+        return res.json({
+            status: "success",
+            message: "Backup realizado con éxito en Disco y PenDrive.",
+            log: stdout // Por si querés ver en el front los 'echo' que pusimos en el .sh
+        });
+    });
 
-        if (stderr) {
-            console.error(`stderr: ${stderr}`);
-            res.json(`${stderr}`)
-            return;
-        }
-    });
-    exec('cp -r -p ' + caminodesde + caminohacia, (error, stdout, stderr) => {
-        console.log('esta aca  ')
-        if (error) {
-            console.error(`error: ${error.message}`);
-            res.json(error.message)
-            return;
-        }
-        if (stderr) {
-            console.error(`stderr: ${stderr}`);
-            res.json(stderr)
-            return;
-        }
-        res.json(`${stdout}`)
-        console.log(`stdout:\n${stdout}`);
-    });
 })
 export default router;

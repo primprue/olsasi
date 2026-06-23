@@ -332,7 +332,6 @@ export default function Reparacion() {
 					setTMinMot2(minutosacum + newRow.minutmot2)
 				}
 			}
-
 			setInputValue('')
 			setInputValue2('')
 			inputRef.current.focus();
@@ -365,13 +364,15 @@ export default function Reparacion() {
 		if (event.target.value === "LN") {
 			importemot1 = valorhoramotN * minutosmot1 / 60
 			setSumaMot1(importemot1)
-			importemot2 = valorhoramotN * minutosmot2 / 60
+			importemot2 = valorhoramotN * 2 * minutosmot2 / 60 //se multiplica por 2 porque el tiempo es de dos personas
 			setSumaMot2(importemot2)
+
+
 		}
 		if (event.target.value === "LA") {
 			importemot1 = valorhoramotA * minutosmot1 / 60
 			setSumaMot1(importemot1)
-			importemot2 = valorhoramotA * minutosmot2 / 60
+			importemot2 = valorhoramotA * 2 * minutosmot2 / 60 //se multiplica por 2 porque el tiempo es de dos personas
 			setSumaMot2(importemot2)
 		}
 		const valorA = sumaParcheleg + importemot2 + importemot1 + sumaVarios + sumaChicotes

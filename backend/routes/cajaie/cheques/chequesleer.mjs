@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
             ChequesLibrador, ChequesNro,
             ChequesBanco, ChequesFechaPago, ChequesImporte, ChequesFechaSalida,
             ChequesDepBanco, ChequesEndosadoA, ChequesOP, ChequesObservacion
-            from BaseCaja.Cheques order by idCheques`;
+            from BaseCaja.Cheques order by ChequesFechaSalida`;
         const [result] = await conexionpool.query(q);
         return res.json(result);
     } catch (err) {

@@ -10,7 +10,7 @@ router.delete('/', async (req, res) => {
     const q = `DELETE FROM BasePresup.PresupExpCal WHERE idPresupExpCal = ?`;
     await conexionpool.query(q, [indice]);
     return res.status(200).json({
-      leyenda: 'Transporte eliminado correctamente',
+      leyenda: 'Presupuesto Exp Cal eliminado correctamente',
     });
   } catch (err) {
     console.error("Error en el proceso:", err);

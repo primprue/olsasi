@@ -1,11 +1,9 @@
 export const initial_state = {
   //Funcions agregaStock BEGIN ***//
-  // suma: 0,
   //FilaUno
   PresupMnMy: "mn",
   PresupIVA: "CIVA",
   PresupProducto: "PAE",
-  // PresupTipo: "UNIDAD",
   //FilaDos
   dolaressn: false, //
   cotdiv: 0.00,
@@ -53,6 +51,7 @@ export const initial_state = {
   DescripPresup: "",
   ImporteAnexo: 0.0,
   renglonanexo: [],
+  renglonanexodetalle: [],
   DetalleAnexo: "",
   stkrubro: [],
   stkrubrotbr: [],

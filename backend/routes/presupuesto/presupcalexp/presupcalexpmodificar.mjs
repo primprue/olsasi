@@ -1,15 +1,7 @@
 import express from "express";
 var router = express.Router();
-import { conexion } from '../../conexion.mjs';
+import { conexionpool } from '../../conexion.mjs';
 
-function queryAsync(sql, values) {
-  return new Promise((resolve, reject) => {
-    conexion.query(sql, values, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
-}
 
 router.post('/', async (req, res) => {
   /*idPresupExpCal, PresupExpCalTitulo, PresupExpCalDescripcion*/
@@ -17,11 +9,12 @@ router.post('/', async (req, res) => {
 
     // var indice = req.query.id;
     //   var PresupDetPieLeyenda = req.body.PresupDetPieLeyenda
-    const q = `UPDATE BasePresup.PresupExpCal SET PresupExpCalTitulo = ?, PresupExpCalDescripcion = ? WHERE idPresupExpCal = ?`;
-    const result = await queryAsync(q, [req.body.PresupDetPieLeyenda, req.query.id]);
+    const q = `UPDATE BasePresup.PresupExpCal SET PresupExpCalTitulo = ?, 
+          PresupExpCalDescripcion = ? WHERE idPresupExpCal = ?`;
+    await conexionpool.query(q, [req.body.PresupExpCalTitulo, req.body.PresupExpCalDescripcion, req.query.id]);
     return res.status(201).json({
       leyenda: 'Presupuesto Exp Cal modificado correctamente',
-      insertId: result.insertId
+      insertId: req.query.id
     });
   } catch (err) {
     if (err.errno === 1062) {

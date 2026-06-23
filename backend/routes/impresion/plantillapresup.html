@@ -29,48 +29,51 @@
         <table class="tabla-productos">
             <thead>
                 <tr>
-                    <th>Item</th>
-                    <th>Cant</th>
-                    <th>Descripción</th>
-                    <th>Largo</th>
-                    <th>Ancho</th>
-                    <th>Imp. Unidad</th>
-                    <th>Imp. Item</th>
+                    <th class="col-item">Item</th>
+                    <th class="col-cant">Cant</th>
+                    <th class="col-desc">Descripción</th>
+                    {{#if (eq espresupdesc "true")}}
+                    <!-- Si es "true": Oculta Largo y Ancho, los importes conservan sus clases fijas -->
+                    <th class="col-unit">Imp. Unidad</th>
+                    <th class="col-itemf">Imp. Item</th>
+                    {{else}}
+                    <!-- Si es "false": Muestra Largo y Ancho con sus clases -->
+                    <th class="col-medida">Largo</th>
+                    <th class="col-medida">Ancho</th>
+                    <th class="col-unit">Imp. Unidad</th>
+                    <th class="col-itemf">Imp. Item</th>
+                    {{/if}}
                 </tr>
             </thead>
             <tbody>
                 {{#each productos}}
                 <tr>
-                    <td>{{this.id}}</td>
-                    <td align="center">{{this.PresupCantidad}}</td>
-                    {{#if this.sDescripPresup}}
-                    <td colspan="3">{{this.StkRubroDesc}}</td>
+                    <td class="col-item">{{this.id}}</td>
+                    <td class="col-cant">{{this.PresupCantidad}}</td>
+                    <td class="col-desc">{{this.StkRubroDesc}}</td>
+
+                    {{#if (eq ../espresupdesc "true")}}
+                    <!-- No dibuja las celdas de medidas -->
                     {{else}}
-                    <td>{{this.StkRubroDesc}}</td>
-                    <td>{{this.PresupLargo}}</td>
-                    <td>{{this.PresupAncho}}</td>
+                    <td class="col-medida">{{this.PresupLargo}}</td>
+                    <td class="col-medida">{{this.PresupAncho}}</td>
                     {{/if}}
 
-                    <td>{{this.ImpUnitariof}}</td>
-                    <td>{{this.ImpItemf}}</td>
-                    <!-- <td>{{this.id}}</td>
-                    <td align="center">{{this.PresupCantidad}}</td>
-                    <td>{{this.StkRubroDesc}}</td>
-                    <td>{{this.PresupLargo}}</td>
-                    <td>{{this.PresupAncho}}</td>-->
-                    <td>{{this.ImpUnitariof}}</td>
-                    <td>{{this.ImpItemf}}</td>
-
+                    <td class="col-unit">{{this.ImpUnitariof}}</td>
+                    <td class="col-itemf">{{this.ImpItemf}}</td>
                 </tr>
                 {{/each}}
             </tbody>
 
-            <!-- {{! Eliminamos el ../ porque ya salimos del bucle each }} -->
             {{#if totalpresup}}
             <tfoot>
                 <tr>
+                    {{#if (eq espresupdesc "true")}}
+                    <td colspan="4" align="right"><strong>Total:</strong></td>
+                    {{else}}
                     <td colspan="6" align="right"><strong>Total:</strong></td>
-                    <td><strong>{{totalpresup}}</strong></td>
+                    {{/if}}
+                    <td class="col-itemf"><strong>{{totalpresup}}</strong></td>
                 </tr>
             </tfoot>
             {{/if}}

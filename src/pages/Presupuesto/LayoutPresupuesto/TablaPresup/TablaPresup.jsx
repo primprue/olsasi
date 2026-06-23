@@ -4,7 +4,7 @@ import {
 	GridToolbarContainer,
 	GridToolbarExport,
 } from "@mui/x-data-grid";
-import { esES } from '@mui/material/locale';
+import { esES } from '@mui/x-data-grid/locales';
 import estilotabla from "../../../../Styles/Tabla.module.css";
 import { llenarcolumns } from "./columns.jsx";
 import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded";
@@ -34,14 +34,18 @@ export default function TablaPresup(props) {
 		setColumns(() => col);
 	}
 	const { suma, setSuma } = use(PresupPant);
-
+	let queestilo = 'mn'
+	if (datosrenglon.length !== 0) {
+		queestilo = datosrenglon[0].dcalculo[0].minmay;
+	} else {
+		queestilo = 'mn';
+	}
 	const BorraFila = () => {
 		setDatosRenglon((prevDatos) => {
 			// 1. Filtramos todos los elementos que NO están en la selección
 			const nuevosDatos = prevDatos.filter(
 				(item) => !rowSelectionModel.includes(item.id)
 			);
-
 			// 2. Reasignamos el ID basado en el nuevo índice (+1 para que empiece en 1)
 			return nuevosDatos.map((item, index) => ({
 				...item,
@@ -49,14 +53,27 @@ export default function TablaPresup(props) {
 			}));
 		});
 	};
+
+	const Reindexar = () => {
+
+		// 2. Reasignamos el ID basado en el nuevo índice (+1 para que empiece en 1)
+		const Datosreindexados = datosrenglon.map((item, index) => ({
+			...item,
+			id: index + 1
+		}));
+		setDatosRenglon(Datosreindexados);
+		setFilacuatro({ filacuatro: true })
+	};
 	useEffect(() => {
 		columnsFetch();
 	}, [datosrenglon]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
+
 	function CustomToolbar() {
 		return (
-			<GridToolbarContainer className={estilotabla.tablapresupuestoslot}>
+			<GridToolbarContainer
+				className={queestilo === 'mn' ? estilotabla.tablapresupuestoslot : estilotabla.tablapresupuestoslot1}>
 				<Box
 					sx={{
 						width: "100%",
@@ -67,9 +84,9 @@ export default function TablaPresup(props) {
 					}}
 				>
 					<Typography
-						className={estilotabla.titulo}
+						className={queestilo === 'mn' ? estilotabla.titulo : estilotabla.titulomay}
 					>
-						Presupuesto
+						{queestilo === 'mn' ? 'MINORISTA' : 'MAYORISTA'}
 					</Typography>
 
 					<Box
@@ -99,7 +116,16 @@ export default function TablaPresup(props) {
 						<b></b>
 						<b></b>
 						<b></b>
-						<GridToolbarExport></GridToolbarExport>
+						{/* <GridToolbarExport></GridToolbarExport> */}
+						<GridToolbarExport
+							slotProps={{
+								tooltip: {
+									title: "Cuando se exporta, en LibreCalc, las columnas con números, en Campos Tipo de Columna, elegir Inglés (US)",
+									arrow: true
+									// Aquí MUI se encarga de que el tooltip se cierre automáticamente al abrir el menú
+								}
+							}}
+						/>
 						<DeleteForeverRoundedIcon
 							onClick={BorraFila}
 							style={{ color: red[500] }}
@@ -121,7 +147,7 @@ export default function TablaPresup(props) {
 							titleAccess="Anexos"
 						/>
 						<SaveAsTwoToneIcon
-							onClick={() => setFilacuatro({ filacuatro: true })}
+							onClick={Reindexar}
 							style={{ color: deepOrange[500] }}
 							fontSize="medium"
 							titleAccess="Vista Previa y Grabar"
@@ -164,11 +190,12 @@ export default function TablaPresup(props) {
 						onRowSelectionModelChange={(newRowSelectionModel) => {
 							setRowSelectionModel(newRowSelectionModel);
 						}}
-						localeText={esES}
 						shape="rounded"
 						slots={{
 							toolbar: CustomToolbar,
 						}}
+						getRowHeight={() => 'auto'}
+						localeText={esES.components.MuiDataGrid.defaultProps.localeText}
 						initialState={{
 							...datosrenglon.initialState,
 							pagination: {

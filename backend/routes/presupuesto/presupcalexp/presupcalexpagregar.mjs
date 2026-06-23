@@ -1,16 +1,8 @@
 import express from "express";
 var router = express.Router();
 
-import { conexion } from '../../conexion.mjs';
+import { conexionpool } from '../../conexion.mjs';
 
-function queryAsync(sql, values) {
-  return new Promise((resolve, reject) => {
-    conexion.query(sql, values, (err, result) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  });
-}
 
 router.post('/', async (req, res) => {
 
@@ -19,13 +11,11 @@ router.post('/', async (req, res) => {
       PresupExpCalTitulo: req.body.PresupExpCalTitulo,
       PresupExpCalDescripcion: req.body.PresupExpCalDescripcion
     };
-    const result = await queryAsync(
-      'INSERT INTO BasePresup.PresupExpCal SET ?',
-      registro
-    );
+    await conexionpool.query(
+      'INSERT INTO BasePresup.PresupExpCal SET ?', [registro]);
     return res.status(201).json({
       leyenda: 'Presupuesto Exp Cal creado correctamente',
-      insertId: result.insertId
+      insertId: req.body.PresupExpCalTitulo
     });
   } catch (err) {
     if (err.errno === 1062) {

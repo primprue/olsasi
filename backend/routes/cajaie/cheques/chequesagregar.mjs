@@ -5,7 +5,7 @@ import { conexionpool } from '../../conexion.mjs';
 
 
 router.post('/', async (req, res) => {
-    console.log(req.body);
+
     const fechaentrada = req.body.ChequesFechaEntrada.split('T')[0];
     const fechapago = req.body.ChequesFechaPago.split('T')[0];
     const fechasalida = req.body.ChequesFechaSalida
@@ -65,10 +65,16 @@ router.post('/', async (req, res) => {
     }
     try {
         const q = `INSERT INTO BaseCaja.Cheques SET ?`;
-        await conexionpool.query(q, [registro]);
+        const [resultado] = await conexionpool.query(q, [registro]);
+        // El id autoincremental estará en resultado.insertId
+        const nuevoId = resultado.insertId;
+
         return res.status(201).json({
-            leyenda: 'Cheques creado correctamente',
+            leyenda: `Cheques creado con éxito, con el nro interno ${nuevoId}`,
+            // leyenda: 'Cheques creado correctamente',
+            // id_generado: nuevoId // <--- Aquí lo tienes
         });
+
     } catch (err) {
         console.error("Error en el proceso:", err);
         // Manejo de errores específicos de SQL

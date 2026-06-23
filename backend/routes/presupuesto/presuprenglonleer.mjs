@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
   try {
     let q1 = `SET @numero=0; SELECT @numero:=@numero+1 as id, idPresupRenglon, PresupRenglonNroPresup,
       PresupRenglonCant, PresupRenglonDesc, PresupRenglonLargo, PresupRenglonAncho, PresupRenglonImpUnit,
-      PresupRenglonImpItem, PresupRenglonParamInt from BasePresup.PresupRenglon
+      PresupRenglonImpItem, PresupRenglonParamInt, PresupRenglonAnexos from BasePresup.PresupRenglon
       where PresupRenglonNroPresup like '%${req.query.id}%' order by PresupRenglonNroPresup asc`;
     const resultados = await queryAsync(q1);
     res.json(resultados[1]);

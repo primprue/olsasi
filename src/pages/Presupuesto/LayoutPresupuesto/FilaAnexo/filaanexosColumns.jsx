@@ -42,6 +42,10 @@ export async function filaanexosColumns() {
 						{/* Agrega el signo monetario */}
 					</div>
 				),
+				format: (field) => field.valor.toLocaleString("es-AR", {
+					style: "currency",
+					currency: moneda.id,
+				}),
 				// disable: true,
 			},
 			{
@@ -59,6 +63,10 @@ export async function filaanexosColumns() {
 						{/* Agrega el signo monetario */}
 					</div>
 				),
+				format: (field) => field.valor.toLocaleString("es-AR", {
+					style: "currency",
+					currency: moneda.id,
+				}),
 				// disable: true,
 			},
 			{

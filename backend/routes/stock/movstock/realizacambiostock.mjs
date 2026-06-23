@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 
-import { conexion } from '../../conexion.mjs';
+import { conexionpool } from '../../conexion.mjs';
 import { itemdescripcion } from './leeitemdesc.mjs';
 
 function queryAsync(sql, values) {
@@ -15,97 +15,126 @@ function queryAsync(sql, values) {
 
 router.post("/", async (req, res) => {
     const datosmodstock = req.body.infingreso
+    const clientemov = req.body.clientemov
+
     const d = new Date();
+    let agregadifdisp = 0
+    let totalvendido = 0
     const finalDate = d.toISOString().split("T")[0];
+    for (let i = 0; i < datosmodstock.length; i++) {
+        totalvendido = totalvendido + datosmodstock[i].tingreso
+    }
+    let agregadifvtadisp = totalvendido - datosmodstock[0].vendido
+    // let regmovvendido = `V ${totalvendido}`
     try {
-        const itemdesco = await itemdescripcion(datosmodstock[0].abrevrubroo, datosmodstock[0].indiceitemo)
-        let itemdesccambio = ''
-        if (datosmodstock[0].cambiatela === 'S') {
-            itemdesccambio = await itemdescripcion(datosmodstock[0].abrevrubrocambio, datosmodstock[0].indiceitemocambio)
-        }
+        for (let i = 0; i < datosmodstock.length; i++) {
+            const itemdesco = await itemdescripcion(datosmodstock[i].abrevrubroo, datosmodstock[i].indiceitemo)
+            let itemdesccambio = ''
+            if (datosmodstock[i].cambiatela === 'S') {
+                itemdesccambio = await itemdescripcion(datosmodstock[i].abrevrubrocambio, datosmodstock[i].indiceitemocambio)
+            }
 
+            // datosmodstock[i].cambiatela === 'N' ?
+            //     agregadifdisp = datosmodstock[i].vendido - datosmodstock[i].tingreso : agregadifdisp = 0
 
+            var cambioconf = ''
+            datosmodstock[i].cambiatela === 'S' ?
+                cambioconf = ' Cambio ' : cambioconf = 'Confirma';
 
-        var cambioconf = ''
-        datosmodstock[0].cambiatela === 'S' ?
-            cambioconf = ' Cambio ' : cambioconf = 'Confirma';
-
-        //modifica disponible y stock de la nueva tela y agrega en el disponible de la anterior
-        let q = ` UPDATE BaseStock.StkItems SET 
+            //modifica disponible y stock de la nueva tela y agrega en el disponible de la anterior
+            let q = ` UPDATE BaseStock.StkItems SET 
             StkItemsCantidad = StkItemsCantidad - ?,
             StkItemsCantDisp = StkItemsCantDisp - ?,
             StkItemsFAct = ?
             WHERE (idStkItems = ?) and  (StkItemsRubroAbr = ?)`
-        const paramsq = [
-            datosmodstock[0].tingreso,
-            datosmodstock[0].tingreso,
-            finalDate,
-            datosmodstock[0].indiceitemocambio,
-            datosmodstock[0].abrevrubrocambio
-        ];
-        let q1 = ` UPDATE BaseStock.StkItems SET 
+            const paramsq = [
+                datosmodstock[i].tingreso,
+                datosmodstock[i].tingreso,
+                finalDate,
+                datosmodstock[i].indiceitemocambio,
+                datosmodstock[i].abrevrubrocambio
+            ];
+            let q1 = ` UPDATE BaseStock.StkItems SET 
             StkItemsCantDisp = StkItemsCantDisp + ?,
             StkItemsFAct = ?
             WHERE (idStkItems = ?) and  (StkItemsRubroAbr = ?)`
-        const paramsq1 = [
-            datosmodstock[0].tingreso,
-            finalDate,
-            datosmodstock[0].indiceitemo,
-            datosmodstock[0].abrevrubroo
-        ];
+            const paramsq1 = [
+                //datosmodstock[i].vendido,
+                datosmodstock[i].tingreso,
+                finalDate,
+                datosmodstock[i].indiceitemo,
+                datosmodstock[i].abrevrubroo
+            ];
 
 
-        let q2 = ` INSERT INTO BaseStock.StkMov SET 
+            let q2 = ` INSERT INTO BaseStock.StkMov SET 
             StkMovFecha = ?, StkMovTotal = ?,
             StkMovRubroAbr = ?, StkMovItemDesc = ?,
-            StkMovCliente = ?`
-        const paramsq2 = [
-            finalDate,
-            datosmodstock[0].tingreso,
-            datosmodstock[0].abrevrubroo,
-            itemdesco + " x " + itemdesccambio,
-            datosmodstock[0].abrevrubrocambio + " " + cambioconf
-        ];
+            StkMovCliente = ?, StkMovNroRef = ?`
+            const paramsq2 = [
+                finalDate,
+                datosmodstock[i].tingreso,
+                datosmodstock[i].abrevrubroo,
+                itemdesco + " x " + itemdesccambio,
+                clientemov,
+                datosmodstock[i].abrevrubrocambio + " " + cambioconf,
+            ];
 
-        // }
-        // else {
-        let q3 = ` UPDATE BaseStock.StkItems SET 
+            // }
+            // else {
+            let q3 = ` UPDATE BaseStock.StkItems SET 
             StkItemsCantidad = StkItemsCantidad - ?,
+            StkItemsCantDisp = StkItemsCantDisp + ?,
             StkItemsFAct = ?
             WHERE (idStkItems = ?) and  (StkItemsRubroAbr = ?)`
-        const paramsq3 = [
-            datosmodstock[0].tingreso,
-            finalDate,
-            datosmodstock[0].indiceitemo,
-            datosmodstock[0].abrevrubroo
-        ];
-        let q4 = ` INSERT INTO BaseStock.StkMov SET 
+            const paramsq3 = [
+                datosmodstock[i].tingreso,
+                agregadifvtadisp,
+                finalDate,
+                datosmodstock[i].indiceitemo,
+                datosmodstock[i].abrevrubroo
+            ];
+            let q4 = ` INSERT INTO BaseStock.StkMov SET 
             StkMovFecha = ?, StkMovTotal = ?,
             StkMovRubroAbr = ?, StkMovItemDesc = ?,
-            StkMovCliente = ?`
-        const paramsq4 = [
-            finalDate,
-            datosmodstock[0].tingreso,
-            datosmodstock[0].abrevrubrocambio,
-            itemdesco,
-            datosmodstock[0].abrevrubrocambio + " " + cambioconf
-        ];
+            StkMovCliente = ?, StkMovNroRef = ?`
+            const paramsq4 = [
+                finalDate,
+                datosmodstock[i].tingreso,
+                datosmodstock[i].abrevrubrocambio,
+                itemdesco,
+                clientemov,
+                datosmodstock[i].abrevrubrocambio + " " + cambioconf
+            ];
 
 
 
-        if (datosmodstock[0].cambiatela === 'S') {
-            const datos1 = await queryAsync(q, paramsq);
-            const datos2 = await queryAsync(q1, paramsq1);
-            const datos3 = await queryAsync(q2, paramsq2);
+            if (datosmodstock[i].cambiatela === 'S') {
+                const datos1 = await conexionpool.query(q, paramsq);
+                const datos2 = await conexionpool.query(q1, paramsq1);
+                const datos3 = await conexionpool.query(q2, paramsq2);
+            }
+            else {
+                const datos4 = await conexionpool.query(q3, paramsq3);
+                const datos5 = await conexionpool.query(q4, paramsq4);
+
+            }
         }
-        else {
-            const datos4 = await queryAsync(q3, paramsq3);
-            const datos5 = await queryAsync(q4, paramsq4);
 
-        }
+        // let q6 = `UPDATE BaseStock.StkMov SET 
+        //     StkMovNroRef = ?
+        //     WHERE (idStkMov = ?)`
+
+        // const paramsq6 = [
+        //     regmovvendido,
+        //     indicemodStkMov
+        // ];
+
+        // const datos6 = await conexionpool.query(q6, paramsq6);
+
         res.status(201).json({
             leyenda: 'Movimiento registrado correctamente',
-            idGenerado: datosmodstock[0].indiceitemocambio
+            // idGenerado: datosmodstock[i].indiceitemocambio
         });
     } catch (err) {
         console.error("Error en el proceso:", err);

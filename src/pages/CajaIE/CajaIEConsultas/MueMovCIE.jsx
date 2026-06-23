@@ -25,8 +25,8 @@ export default function MueMovCIE({ open, handleClose }) {
         var col = await llenarcolumns();
         setColumns(() => col);
     }
-    async function dataFetch() {
 
+    async function dataFetch() {
         const data = await BuscaIE({ FechaDesde, FechaHasta });
         setRows(data);
     }

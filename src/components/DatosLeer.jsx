@@ -13,7 +13,6 @@ export async function DatosLeer(ejecutorbackend) {
 		const resultadolectura = res.body || JSON.parse(res.text);
 		// Opcional: Mostrar mensaje de éxito
 		// MuestraMensaje(res);
-
 		return resultadolectura;
 	} catch (err) {
 		MuestraMensaje(err);

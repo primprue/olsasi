@@ -11,7 +11,6 @@ export const LeeParamRep = () => {
 			.set("Content-Type", "application/json")
 			.then((res) => {
 				const paramrep = JSON.parse(res.text);
-				console.log('paramrep  ', paramrep)
 				resolve(paramrep);
 			})
 			.catch((err) => MuestraMensaje(err));

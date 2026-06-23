@@ -1,5 +1,6 @@
 import request from "superagent";
 import IpServidor from "../../VariablesDeEntorno";
+import MuestraMensaje from "../../../components/lib/MuestraMensaje";
 
 // Lee Rubro por codigo de gupo
 

@@ -161,9 +161,13 @@ export default function FilaDos() {
 				// otramoneda.current,
 				state.DescripPresup,
 				state.renglonanexo,
-				dcalculo
+				dcalculo,
+				state.renglonanexodetalle
 			);
 			if (state.renglonanexo.length !== 0) {
+				// console.log('state.renglonanexodetalle filados ', state.renglonanexodetalle)
+				// console.log(' state.renglonanexodetalle.length  ', state.renglonanexodetalle.length)
+				// console.log('datospresup[0] filados tiene el id del renglon de la tabla + 1 ', datospresup[0].id)
 				setDatosRenglon([...datosrenglon, state.renglonanexo]);
 				setDatosRenglon([...datosrenglon, datospresup[0]]);
 			} else {
@@ -318,7 +322,7 @@ export default function FilaDos() {
 				{presuptipo === "PILETA CAÑOS ALUMINIO" && (
 					<FilaPiletasEnr></FilaPiletasEnr>
 				)}
-				{presuptipo === "PILETA CAÑOS Y SOLAPA" && (
+				{presuptipo === "PILETA CAÑOS ALUMINIO C/SOLAPA" && (
 					<FilaPiletasEnr></FilaPiletasEnr>
 				)}
 				{presuptipo === "TOLDO BARRACUADRA" && <FilaToldosExt></FilaToldosExt>}

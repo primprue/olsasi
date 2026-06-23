@@ -17,9 +17,7 @@ export const actionsColumn = (props) => {
 
 	const handleModifica = (params) => {
 		console.log("params handleModifica  ", params.row);
-		// setTimeout(() => {
-		// 	StkGrupoModificar(params.row);
-		// }, 1000);
+
 	};
 
 	const handleDelete = (params) => {

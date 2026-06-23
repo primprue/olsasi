@@ -44,6 +44,7 @@ import BrightnessHighRoundedIcon from '@mui/icons-material/BrightnessHighRounded
 import GradientIcon from '@mui/icons-material/Gradient';
 import SavingsTwoToneIcon from '@mui/icons-material/SavingsTwoTone';
 import SavingsRoundedIcon from '@mui/icons-material/SavingsRounded';
+import ReduceCapacityIcon from '@mui/icons-material/ReduceCapacity';
 import { AppProvider } from "@toolpad/core/AppProvider";
 import StaticContext from './context/StaticContext';
 import { CajaIcons } from './components/comppropios/CustomIcons';
@@ -57,6 +58,13 @@ import { StockIcons } from './components/comppropios/CustomIcons';
 import { OrdTrabIcons } from './components/comppropios/CustomIcons';
 import { BalanceIcons } from './components/comppropios/CustomIcons';
 import { TablasIcons } from './components/comppropios/CustomIcons';
+import { ListaPBSubRubros } from './components/comppropios/CustomIcons';
+import { ListaPrebalance } from './components/comppropios/CustomIcons';
+import { CompBalance } from './components/comppropios/CustomIcons';
+import { ItemsBalance } from './components/comppropios/CustomIcons';
+import { IVAPag } from './components/comppropios/CustomIcons';
+import { MedidasClientes } from './components/comppropios/CustomIcons';
+import { Scanear } from './components/comppropios/CustomIcons';
 const drawerWidthExpanded = 240; // Ancho cuando el menú está expandido
 const drawerWidthCollapsed = 70; // Ancho cuando el menú está colapsado
 
@@ -119,10 +127,13 @@ const menuItems = [
     text: 'PreBalance',
     icon: <BalanceIcons sx={{ fontSize: 40 }} />,
     children: [
-      { text: 'PreBalance Rubros', icon: <BrightnessLowRoundedIcon sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/tablas/PBRubros' },
-      { text: 'PreBalance SubRubros', icon: <BrightnessMediumRoundedIcon sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/tablas/PBSubRubros' },
-      { text: 'PreBalance Items', icon: <BrightnessHighRoundedIcon sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/tablas/PBItems' },
-      { text: 'Comprobantes', icon: <BrightnessHighRoundedIcon sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/tablas/PBComprobantes' },
+      { text: 'Items', icon: <ItemsBalance sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/tablas/PBItems' },
+      { text: 'Lista Movimientos', icon: <ListaPBSubRubros sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/pblistamov' },
+      { text: 'Lista PreBalance', icon: <ListaPrebalance sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/pblistapb' },
+      { text: 'IVA Pagado', icon: <IVAPag sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/tablas/PBIVAPag' },
+      { text: 'Rubros', icon: <BrightnessLowRoundedIcon sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/tablas/PBRubros' },
+      { text: 'SubRubros', icon: <BrightnessMediumRoundedIcon sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/tablas/PBSubRubros' },
+      { text: 'Comprobantes', icon: <CompBalance sx={{ fontSize: 32, color: '#07c2a9cc' }} />, path: '/tablas/PBComprobantes' },
 
     ],
   },
@@ -137,6 +148,8 @@ const menuItems = [
       { text: 'Transporte', icon: <LocalShippingTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/Transporte' },
       { text: 'Porcentaje IVA', icon: <PercentIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/PorIVA' },
       { text: 'Bancos', icon: <AccountBalanceIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/Bancos' },
+      { text: 'Proc. Esp. Clientes', icon: <ReduceCapacityIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/ProcEsp' },
+
       // { text: 'PreBalance Rubros', icon: <BalanceTwoToneIcon sx={{ fontSize: 32, color: '#c52c11' }} />, path: '/tablas/PBRubros' },
 
       // {
@@ -150,7 +163,14 @@ const menuItems = [
     ],
   },
 
-
+  {
+    text: 'Medidas de Clientes',
+    icon: <MedidasClientes sx={{ fontSize: 32, color: '#028128' }} />,
+    children: [
+      { text: 'Busca-Agrega Medidas', icon: <Scanear sx={{ fontSize: 32, color: '#028128' }} />, path: '/BuscadorMedidasClientes' },
+      // { text: 'Scanear', icon: <Scanear sx={{ fontSize: 32, color: '#028128' }} />, path: '/Scanear' },
+    ],
+  },
   {
     text: 'Cuentas Corrientes',
     icon: <SettingsIcon sx={{ fontSize: 32, color: '#f8d405' }} />,

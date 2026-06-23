@@ -53,9 +53,10 @@ router.get("/", async (req, res) => {
       let ImpUnitario = 0
       vlrMOT === 0 ? ImpUnitario = vlrMAT : ImpUnitario = parseInt((vlrMOT + vlrMAT) * coefgcia);
       let impu = Number(ImpUnitario).toFixed(2);
-      ivasncal == 'CIVA' ? impu = Number(impu) : impu = Number(impu) / 1.21;
+      ivasncal === 'CIVA' ? impu = Number(impu) : impu = Number(impu) / 1.21;
+
       resultados.push({
-        ImpUnitario: Number(ImpUnitario),
+        ImpUnitario: Number(impu),
         ImprimeSN: ImprimeSN,
 
       });

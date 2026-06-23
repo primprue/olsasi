@@ -134,11 +134,6 @@ router.get('/', async (req, res, next) => {
         }
         else { detalle = `${detalle} en :  ${di.StkRubroDesc} ` }
       }
-      if (ivasncal === 'CIVA') {
-        impunitario = Math.ceil(impunitario / 10) * 10;
-      } else {
-        impunitario = Math.ceil(impunitario / 1.21 / 10) * 10;
-      }
 
       // ------------------------------------------------------------------
       // 5) ARMO RESULTADO DEL ÍTEM

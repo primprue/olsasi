@@ -9,21 +9,37 @@ router.get("/", async (req, res) => {
   var q1
   if (req.query.tipolist === 'C') {
     q1 = `
-  SELECT 
-    idStkMov AS id, 
-    DATE_FORMAT(StkMovFecha, "%d-%m-%Y") AS StkMovFecha,
-    StkMovLargo, 
-    StkMovAncho, 
-    StkMovTotal, 
-    StkMovRubroAbr, 
-    StkMovItemDesc,
-    StkMovCliente, 
-    BasesGenerales.Proveedores.ProveedoresDesc AS Proveedor, 
-    StkMovNroRef
-  FROM BaseStock.StkMov 
-  LEFT JOIN BasesGenerales.Proveedores 
-    ON StkMovProv = idProveedores
-  WHERE StkMovFecha BETWEEN ? AND ?`;
+ SELECT
+    original.idStkMov AS id,
+    DATE_FORMAT(original.StkMovFecha, "%d-%m-%Y") AS StkMovFecha,
+    original.StkMovLargo,
+    original.StkMovAncho,
+    original.StkMovTotal,
+    original.StkMovRubroAbr,
+    original.StkMovItemDesc,
+
+    -- AQUÍ LA LÓGICA: Si no hay proveedor y la referencia es numérica (mayor a 0),
+    -- muestra el cliente del movimiento referenciado; si no, el cliente original.
+    CASE
+        WHEN (prov.ProveedoresDesc IS NULL OR prov.ProveedoresDesc = '')
+             AND original.StkMovNroRef REGEXP '^[0-9]+$'
+        THEN ref.StkMovCliente
+        ELSE original.StkMovCliente
+    END AS StkMovCliente,
+
+    prov.ProveedoresDesc AS Proveedor,
+    original.StkMovNroRef
+FROM BaseStock.StkMov AS original
+
+-- Tu JOIN original para los proveedores
+LEFT JOIN BasesGenerales.Proveedores AS prov
+    ON original.StkMovProv = prov.idProveedores
+
+-- NUEVO JOIN: Conectamos la tabla consigo misma usando la referencia
+LEFT JOIN BaseStock.StkMov AS ref
+    ON original.StkMovNroRef = ref.idStkMov
+
+WHERE original.StkMovFecha BETWEEN  ? AND ?`;
   }
   else {
     q1 = ` SELECT

@@ -10,7 +10,7 @@ router.use(express.json());
 router.all("/", async (req, res) => {
   // const conn = await conexionpool.promise().getConnection();
   const conn = await conexionpool.getConnection();
-
+  console.log('req.body.DatosPresup  ', req.body.DatosPresup)
   try {
     // ⭐ INICIAR TRANSACCIÓN
     await conn.beginTransaction();
@@ -42,17 +42,21 @@ router.all("/", async (req, res) => {
     // ⭐ INSERT RENGLONES
     for (let i = 0; i < req.body.DatosPresup.datos.length; i++) {
       const renglon = req.body.DatosPresup.datos[i];
+      let largo = renglon.PresupLargo === '-' ? 0 : renglon.PresupLargo;
+      let ancho = renglon.PresupAncho === '-' ? 0 : renglon.PresupAncho;
+
 
       const registroReng = {
         idPresupRenglon: i + 1,
         PresupRenglonNroPresup: nropresup,
         PresupRenglonCant: renglon.PresupCantidad,
         PresupRenglonDesc: renglon.StkRubroDesc,
-        PresupRenglonLargo: renglon.PresupLargo,
-        PresupRenglonAncho: renglon.PresupAncho,
+        PresupRenglonLargo: largo,
+        PresupRenglonAncho: ancho,
         PresupRenglonImpUnit: Number(renglon.ImpUnitario).toFixed(2),
         PresupRenglonImpItem: Number(renglon.ImpItem).toFixed(2),
         PresupRenglonParamInt: JSON.stringify(renglon.dcalculo[0]),
+        PresupRenglonAnexos: JSON.stringify(renglon.datosanexos)
       };
 
       await conn.query(

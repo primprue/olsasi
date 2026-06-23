@@ -121,15 +121,30 @@
 	justify-content: flex-end;
 
 }
-
+.tablasotdatos {
+	/* background-color: rgba(245, 246, 252, 0.432); */
+	background-color: var(--mi-color);
+	display: flex;
+	justify-content: flex-start;
+	width: 100%;
+	/* height: 55px; */
+}
 .tablasgenerales {
 	/* background-color: rgba(245, 246, 252, 0.432); */
 	background-color: var(--mi-color);
 	display: flex;
 	justify-content: flex-start;
+	width: 90%;
 	/* height: 55px; */
 }
-
+.tablassalidastock {
+	/* background-color: rgba(245, 246, 252, 0.432); */
+	background-color: var(--mi-color);
+	display:flex;
+	justify-content: flex-start;
+	width: 90%;
+	/* height: 55px; */
+}
 .tooltip {
 	background-color: blue;
 	color: aliceblue;
@@ -260,7 +275,6 @@
 
 .iconomodificar:hover {
 	color: rgb(248, 5, 139);
-
 	font-size: 35px;
 }
 
@@ -286,6 +300,27 @@
 }
 .iconorecarga:hover {
 	color: rgba(7, 4, 185, 0.76);
+	font-size: 35px;
+}
+.iconoreordenar {
+	color: rgb(5, 253, 25);
+	margin-left: 35px;
+	font-size: 30px;
+}
+
+.iconoreordenar:hover {
+	color: rgb(23, 243, 60);
+	font-size: 35px;
+}
+
+.iconoimpresiones {
+	color:rgba(5, 191, 248, 0.678);
+	margin-left: 35px;
+	font-size: 30px;
+}
+
+.iconoimpresiones:hover {
+	color: rgba(5, 240, 248, 0.521);
 	font-size: 35px;
 }
 .iconoordentrabao {
@@ -356,10 +391,19 @@
 
 
 .titulo {
-	/* font-size: 24px; */
+	font-size: 24px;
     font-weight: bold;
 	font-style: italic;
 	font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 	color: rgb(248, 21, 5);
 	
+}
+
+.titulomay {
+	font-size: 24px;
+    font-weight: bold;
+	font-style: italic;
+	font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+	color: rgba(5, 50, 248, 0.959);
+
 }

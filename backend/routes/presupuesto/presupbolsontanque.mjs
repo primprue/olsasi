@@ -79,7 +79,7 @@ router.get('/', async (req, res, next) => {
 
 
       let altoconpared = altorec + anchoparedcal
-      detalle = detalle + ' con pared de ' + anchopared + ' mts. y un alto de ' + (altodesc * 1).toFixed(2) + ' mts. (incluye sobrante para doblar), '
+      detalle = detalle + ' con pared de ' + anchopared + ' cm. y un alto de ' + (altodesc * 1).toFixed(2) + ' mts. (incluye sobrante para doblar), '
 
       let altocalculo = 1.5
       if (StkRubroAbrP === 'POL19') {
@@ -180,7 +180,6 @@ router.get('/', async (req, res, next) => {
 
 
         SegundosMOT = SegundosMOT + segcortarpf + segunirpf + segcortarpp + segunirpp + segspisofondo + segcortefondo
-
 
         let seghacercortes = 0
         let mcuadradosfaldon = 0
@@ -315,11 +314,7 @@ router.get('/', async (req, res, next) => {
       else {
         impunitario = Math.ceil((impunitario + MOTarmadoAd + importesogaper + importecriquetper) / 10) * 10
       }
-      if (ivasnuso === 'CIVA') {
-        impunitario = Math.ceil(impunitario / 10) * 10;
-      } else {
-        impunitario = Math.ceil(impunitario / 1.21 / 10) * 10;
-      }
+
 
       // ------------------------------------------------------------------
       // 5) ARMO RESULTADO DEL ÍTEM

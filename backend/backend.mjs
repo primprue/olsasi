@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import logger from "morgan";
 import cookieParser from "cookie-parser";
-
+const ruta = process.env.RUTA_EXTERNA_MEDCLI;
+import scans from "./routes/scanear/scans.mjs";
 //el mensaje que larga al ejecutarse el backend es el de la pimer linea del requiere en este caso proveedoresleer
 import verificaclave from "./routes/controlusuarios/verificaclave.mjs";
 
@@ -39,6 +40,7 @@ import chequesleer from "./routes/cajaie/cheques/chequesleer.mjs";
 import chequesleercod from "./routes/cajaie/cheques/chequesleercod.mjs";
 import chequesagregar from "./routes/cajaie/cheques/chequesagregar.mjs";
 import chequesmodificar from "./routes/cajaie/cheques/chequesmodificar.mjs";
+import cheqencart from "./routes/cajaie/cheques/cheqencart.mjs";
 
 import cajainternaleer from "./routes/cajaie/cajainterna/cajainternaleer.mjs";
 import cajainternaagregar from "./routes/cajaie/cajainterna/cajainternaagregar.mjs";
@@ -61,6 +63,12 @@ import clientestraenuevos from "./routes/clientes/clientestraenuevos.mjs";
 import clientescobol from "./routes/clientes/clientescobol.mjs";
 import clientesleerencabot from "./routes/clientes/clientesleerencabot.mjs";
 import clientesleerdescod from "./routes/clientes/clientesleerdescod.mjs";
+
+import medclileercodfac from "./routes/medidasclientes/medclileercodfac.mjs";
+
+import buscaigualarcli from "./routes/procesp/buscaigualarcli.mjs";
+import modificclientedc from "./routes/procesp/modificclientedc.mjs";
+import clientescambnom from "./routes/procesp/clientescambnom.mjs";
 
 import transporteleer from "./routes/transporte/transporteleer.mjs";
 
@@ -136,6 +144,7 @@ import modprecios from "./routes/listaprecios/modprecios.mjs";
 import movstockagregar from "./routes/stock/movstock/movstockagregar.mjs";
 import movstockleer from "./routes/stock/movstock/movstockleer.mjs";
 import movstockleetipoconf from "./routes/stock/movstock/movstockleetipoconf.mjs";
+import movstockleemovele from "./routes/stock/movstock/movstockleemovele.mjs";
 
 
 //Movimiento Stock
@@ -176,7 +185,7 @@ import presupencableer from "./routes/presupuesto/presupencableer.mjs";
 import presupencableenro from "./routes/presupuesto/presupencableenro.mjs";
 import presuprenglonleer from "./routes/presupuesto/presuprenglonleer.mjs";
 // import presupnombre from "./routes/presupuesto/presupnombre.mjs";
-// import presupborrar from "./routes/presupuesto/presupborrar.mjs";
+import presupborrar from "./routes/presupuesto/presupborrar.mjs";
 // import presupborrarenpreview from "./routes/presupuesto/presupborrarenpreview.mjs";
 
 import presupconftipoleer from "./routes/presupuesto/presupconftipo/presupconftipoleer.mjs";
@@ -226,6 +235,7 @@ import otdatosleer from "./routes/ordentrabajo/otdatos/otdatosleer.mjs";
 import otdatosagregar from "./routes/ordentrabajo/otdatos/otdatosagregar.mjs";
 import otdatosagregaselec from "./routes/ordentrabajo/otdatos/otdatosagregaselec.mjs";
 import otdatosmodificar from "./routes/ordentrabajo/otdatos/otdatosmodificar.mjs";
+import otdatosreordentabla from "./routes/ordentrabajo/otdatos/otdatosreordentabla.mjs";
 //para ctacte
 // var conectaafip = require("./routes/afip/conectaafip"
 
@@ -250,10 +260,15 @@ import pbsubrubrosborrar from "./routes/prebalance/subrubros/pbsubrubrosborrar.m
 import pbsubrubrosvalueleer from "./routes/prebalance/subrubros/pbsubrubrosvalueleer.mjs";
 import pbitemsleer from "./routes/prebalance/items/pbitemsleer.mjs";
 import pbitemsagregar from "./routes/prebalance/items/pbitemsagregar.mjs";
+import pbitemsmodificar from "./routes/prebalance/items/pbitemsmodificar.mjs";
+import pbitemsborrar from "./routes/prebalance/items/pbitemsborrar.mjs";
+import pblistamovpsubrubro from "./routes/prebalance/pblistamovpsubrubro.mjs";
 
 import pbcomprobantesleer from "./routes/prebalance/pbcomprobantes/pbcomprobantesleer.mjs";
 import pbcomprobantesborrar from "./routes/prebalance/pbcomprobantes/pbcomprobantesborrar.mjs";
 import pbcomprobantesmodificar from "./routes/prebalance/pbcomprobantes/pbcomprobantesmodificar.mjs";
+import pbcomprobantesleervalue from "./routes/prebalance/pbcomprobantes/pbcomprobantesleervalue.mjs";
+import pblistaprebalance from "./routes/prebalance/pblistaprebalance.mjs";
 
 import porivaleer from "./routes/poriva/porivaleer.mjs";
 import porivaagregar from "./routes/poriva/porivaagregar.mjs";
@@ -261,11 +276,21 @@ import porivamodificar from "./routes/poriva/porivamodificar.mjs";
 import porivaborrar from "./routes/poriva/porivaborrar.mjs";
 import porivavalueleer from "./routes/poriva/porivavalueleer.mjs";
 
+import pbivapagleer from "./routes/prebalance/pbivapag/pbivapagleer.mjs";
+import pbivapagagregar from "./routes/prebalance/pbivapag/pbivapagagregar.mjs";
+import pbivapagmodificar from "./routes/prebalance/pbivapag/pbivapagmodificar.mjs";
+import pbivapagborrar from "./routes/prebalance/pbivapag/pbivapagborrar.mjs";
+
+import pbvtasleeabierto from "./routes/prebalance/pbvtas/pbvtasleeabierto.mjs";
+import pbvtasmodificar from "./routes/prebalance/pbvtas/pbvtasmodificar.mjs";
+import pbvtasmodifcierre from "./routes/prebalance/pbvtas/pbvtasmodifcierre.mjs";
+import pbvtasmodivta from "./routes/prebalance/pbvtas/pbvtasmodivta.mjs";
+
 import genimppresup from "./routes/impresion/genimppresup.mjs";
 import generarpdfpresup from "./routes/impresion/generarpdfpresup.mjs";
-
+// import genpdfprebalance from "./routes/impresion/genpdfprebalance.mjs";
+// import { pblismov } from "./routes/impresion/pblismov.mjs";
 // import enviowa from "./routes/comuicacionexterna/enviowa.mjs";
-
 
 var app = express();
 app.use(cors());
@@ -273,9 +298,13 @@ app.use(logger("dev"));
 app.use(express.json()); // Reemplaza a bodyParser
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
 app.use("/api", genimppresup);
 app.use("/api", generarpdfpresup);
+app.use('/archivos', express.static(ruta));
+app.use("/api/scans", scans);
+// app.use("/api", genpdfprebalance);
+// app.use("/api", pblismov);
+
 app.use("/api/verificaclave", verificaclave);
 
 
@@ -310,6 +339,7 @@ app.use("/api/chequesleer", chequesleer);
 app.use("/api/chequesleercod", chequesleercod);
 app.use("/api/chequesagregar", chequesagregar);
 app.use("/api/chequesmodificar", chequesmodificar);
+app.use("/api/cheqencart", cheqencart);
 
 app.use("/api/cajainternaleer", cajainternaleer);
 app.use("/api/cajainternaagregar", cajainternaagregar);
@@ -332,6 +362,12 @@ app.use("/api/clientestraenuevos", clientestraenuevos);
 app.use("/api/clientescobol", clientescobol);
 app.use("/api/clientesleerencabot", clientesleerencabot);
 app.use("/api/clientesleerdescod", clientesleerdescod);
+
+app.use("/api/medclileercodfac", medclileercodfac);
+
+app.use("/api/buscaigualarcli", buscaigualarcli);
+app.use("/api/modificclientedc", modificclientedc);
+app.use("/api/clientescambnom", clientescambnom);
 
 app.use("/api/transporteleer", transporteleer);
 app.use("/api/transporteleercod", transporteleercod);
@@ -411,6 +447,7 @@ app.use("/api/realizacambiostock", realizacambiostock);
 app.use("/api/movstockagregar", movstockagregar);
 app.use("/api/movstockleer", movstockleer);
 app.use("/api/movstockleetipoconf", movstockleetipoconf);
+app.use("/api/movstockleemovele", movstockleemovele);
 
 // app.use('/imprime1', imprime1);
 // app.use("/api/stkmovvtaagregar", stkmovvtaagregar);
@@ -453,7 +490,7 @@ app.use("/api/presupencableer", presupencableer);
 app.use("/api/presupencableenro", presupencableenro);
 app.use("/api/presuprenglonleer", presuprenglonleer);
 // app.use("/api/presupnombre", presupnombre);
-// app.use("/api/presupborrar", presupborrar);
+app.use("/api/presupborrar", presupborrar);
 // app.use("/api/presupborrarenpreview", presupborrarenpreview);
 
 
@@ -492,7 +529,7 @@ app.use("/api/otestadoleer", otestadoleer);
 app.use("/api/otrengleerpot", otrengleerpot);
 app.use("/api/otguardapdf", otguardapdf);
 app.use("/api/otdatosmodificar", otdatosmodificar);
-
+app.use("/api/otdatosreordentabla", otdatosreordentabla);
 
 
 app.use("/api/otcondpagoleer", otcondpagoleer);
@@ -529,10 +566,15 @@ app.use("/api/pbsubrubrosborrar", pbsubrubrosborrar);
 app.use("/api/pbsubrubrosvalueleer", pbsubrubrosvalueleer);
 app.use("/api/pbitemsleer", pbitemsleer);
 app.use("/api/pbitemsagregar", pbitemsagregar);
+app.use("/api/pbitemsmodificar", pbitemsmodificar);
+app.use("/api/pbitemsborrar", pbitemsborrar);
+app.use("/api/pblistamovpsubrubro", pblistamovpsubrubro);
 
 app.use("/api/pbcomprobantesleer", pbcomprobantesleer);
 app.use("/api/pbcomprobantesborrar", pbcomprobantesborrar);
 app.use("/api/pbcomprobantesmodificar", pbcomprobantesmodificar);
+app.use("/api/pbcomprobantesleervalue", pbcomprobantesleervalue);
+app.use("/api/pblistaprebalance", pblistaprebalance);
 
 app.use("/api/porivaleer", porivaleer);
 app.use("/api/porivaagregar", porivaagregar);
@@ -540,9 +582,21 @@ app.use("/api/porivamodificar", porivamodificar);
 app.use("/api/porivaborrar", porivaborrar);
 app.use("/api/porivavalueleer", porivavalueleer);
 
+app.use("/api/pbivapagleer", pbivapagleer);
+app.use("/api/pbivapagagregar", pbivapagagregar);
+app.use("/api/pbivapagmodificar", pbivapagmodificar);
+app.use("/api/pbivapagborrar", pbivapagborrar);
+
+app.use("/api/pbvtasleeabierto", pbvtasleeabierto);
+app.use("/api/pbvtasmodificar", pbvtasmodificar);
+app.use("/api/pbvtasmodifcierre", pbvtasmodifcierre);
+app.use("/api/pbvtasmodivta", pbvtasmodivta);
+
 app.use("/api/", proveedoresleer);
 
 // app.use("/api/enviowa", enviowa);
 
-
+// app.listen(PORT, () => {
+//     console.log(`Servidor unificado corriendo en http://localhost:${PORT}`);
+// });
 export default app;

@@ -43,6 +43,28 @@ export const BorrarIcono = createSvgIcon(
     'BorrarIcono'
 );
 
+
+export const ImpresionEsp = createSvgIcon(
+    <React.Fragment>
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <g
+
+            fill="none"
+            stroke='#00b5fc'
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M17 17h2a2 2 0 0 0 2 -2v-4a2 2 0 0 0 -2 -2h-14a2 2 0 0 0 -2 2v4a2 2 0 0 0 2 2h2" />
+            <path d="M17 9v-4a2 2 0 0 0 -2 -2h-6a2 2 0 0 0 -2 2v4" />
+            <path d="M7 15a2 2 0 0 1 2 -2h6a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-6a2 2 0 0 1 -2 -2l0 -4" />
+        </g>
+    </React.Fragment >,
+    'ImpresionEsp'
+);
+
+
 // Icono 3: Ejemplo (supongamos un icono de Alerta)
 export const CustomAlertIcon = createSvgIcon(
     <React.Fragment>
@@ -515,4 +537,204 @@ export const TablasIcons = createSvgIcon(
         </g>
     </React.Fragment>,
     'TablasIcons'
+);
+
+
+export const ListaPBSubRubros = createSvgIcon(
+    <React.Fragment>
+        <g
+
+            fill="none"
+            stroke='#07c2a9cc'
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M8.487 21h7.026a4 4 0 0 0 3.808 -5.224l-1.706 -5.306a5 5 0 0 0 -4.76 -3.47h-1.71a5 5 0 0 0 -4.76 3.47l-1.706 5.306a4 4 0 0 0 3.808 5.224" />
+            <path d="M15 3q -1 4 -3 4t -3 -4l6 0" />
+            <path d="M14 11h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5" />
+            <path d="M12 10v1" />
+            <path d="M12 17v1" />
+        </g>
+    </React.Fragment>,
+    'ListaPBSubRubros'
+);
+export const ListaPrebalance = createSvgIcon(
+    <React.Fragment>
+        <g
+
+            fill="none"
+            stroke='#07c2a9cc'
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path d="M10 19h-6a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1h6a2 2 0 0 1 2 2a2 2 0 0 1 2 -2h6a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-6a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2" />
+            <path d="M12 5v16" />
+            <path d="M7 7h1" />
+            <path d="M7 11h1" />
+            <path d="M16 7h1" />
+            <path d="M16 11h1" />
+            <path d="M16 15h1" />
+        </g>
+    </React.Fragment>,
+    'ListaPrebalance'
+);
+export const CompBalance = createSvgIcon(
+    <React.Fragment>
+        <g
+
+            fill="none"
+            stroke='#07c2a9cc'
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M4.53 17.05l6.15 -11.72h-.02c.38 -.74 1.28 -1.02 2.01 -.63c.26 .14 .48 .36 .62 .62l1.06 2.01" />
+            <path d="M15.47 6.45c.58 -.59 1.53 -.59 2.11 -.01c.22 .22 .36 .5 .41 .81l1.5 9.11c.1 .62 -.2 1.24 -.76 1.54l-6.07 2.9c-.46 .25 -1.01 .26 -1.46 0l-6.02 -2.92c-.55 -.31 -.85 -.92 -.75 -1.54l1.96 -12.04c.12 -.82 .89 -1.38 1.7 -1.25c.46 .07 .87 .36 1.09 .77l1.24 1.76" />
+            <path d="M4.57 17.18l10.93 -10.68" />
+        </g>
+    </React.Fragment>,
+    'CompBalance'
+);
+export const ItemsBalance = createSvgIcon(
+    <React.Fragment>
+        <g
+
+            fill="none"
+            stroke='#07c2a9cc'
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M4 17v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-1" />
+            <path d="M8 16h8" />
+            <path d="M8.322 12.582l7.956 .836" />
+            <path d="M8.787 9.168l7.826 1.664" />
+            <path d="M10.096 5.764l7.608 2.472" />
+        </g>
+    </React.Fragment>,
+    'ItemsBalance'
+);
+
+export const IVAPag = createSvgIcon(
+    <React.Fragment>
+        <g
+
+            fill="none"
+            stroke='#07c2a9cc'
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+            <path d="M12 18h-7a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v4.5" />
+            <path d="M18 12h.01" />
+            <path d="M6 12h.01" />
+            <path d="M16 19h6" />
+            <path d="M19 16l-3 3l3 3" />
+        </g>
+    </React.Fragment>,
+    'IVAPag'
+);
+
+export const IconCerrar = createSvgIcon(
+    <React.Fragment>
+        <g
+
+            fill="none"
+            stroke='#ff0000fd'
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M19 2h-14a3 3 0 0 0 -3 3v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3 -3v-14a3 3 0 0 0 -3 -3zm-9.387 6.21l.094 .083l2.293 2.292l2.293 -2.292a1 1 0 0 1 1.497 1.32l-.083 .094l-2.292 2.293l2.292 2.293a1 1 0 0 1 -1.32 1.497l-.094 -.083l-2.293 -2.292l-2.293 2.292a1 1 0 0 1 -1.497 -1.32l.083 -.094l2.292 -2.293l-2.292 -2.293a1 1 0 0 1 1.32 -1.497z" />
+        </g>
+    </React.Fragment>,
+    'IconCerrar'
+);
+
+export const IconEnviar = createSvgIcon(
+    <React.Fragment>
+        <g
+
+            fill="none"
+            stroke='#0c08fffc'
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4" />
+
+        </g>
+    </React.Fragment>,
+    'IconEnviar'
+);
+
+export const IconBorrar = createSvgIcon(
+    <React.Fragment>
+        <g
+
+            fill="none"
+            stroke='#ff0808fb'
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M20 6a1 1 0 0 1 .117 1.993l-.117 .007h-.081l-.919 11a3 3 0 0 1 -2.824 2.995l-.176 .005h-8c-1.598 0 -2.904 -1.249 -2.992 -2.75l-.005 -.167l-.923 -11.083h-.08a1 1 0 0 1 -.117 -1.993l.117 -.007zm-10 4a1 1 0 0 0 -1 1v6a1 1 0 0 0 2 0v-6a1 1 0 0 0 -1 -1m4 0a1 1 0 0 0 -1 1v6a1 1 0 0 0 2 0v-6a1 1 0 0 0 -1 -1" />
+            <path d="M14 2a2 2 0 0 1 2 2a1 1 0 0 1 -1.993 .117l-.007 -.117h-4l-.007 .117a1 1 0 0 1 -1.993 -.117a2 2 0 0 1 1.85 -1.995l.15 -.005z" />
+        </g>
+    </React.Fragment>,
+    'IconBorrar'
+);
+
+export const MedidasClientes = createSvgIcon(
+    <React.Fragment>
+        <g
+
+            fill="none"
+            stroke='#215304fb'
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M5 4h14a1 1 0 0 1 1 1v5a1 1 0 0 1 -1 1h-7a1 1 0 0 0 -1 1v7a1 1 0 0 1 -1 1h-5a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1" />
+            <path d="M4 8l2 0" />
+            <path d="M4 12l3 0" />
+            <path d="M4 16l2 0" />
+            <path d="M8 4l0 2" />
+            <path d="M12 4l0 3" />
+            <path d="M16 4l0 2" />
+        </g>
+    </React.Fragment>,
+    'MedidasClientes'
+);
+
+export const Scanear = createSvgIcon(
+    <React.Fragment>
+        <g
+
+            fill="none"
+            stroke='#215304fb'
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M18 16v.01" />
+            <path d="M6 16v.01" />
+            <path d="M12 5v.01" />
+            <path d="M12 12v.01" />
+            <path d="M12 1a4 4 0 0 1 2.001 7.464l.001 .072a3.998 3.998 0 0 1 1.987 3.758l.22 .128a3.978 3.978 0 0 1 1.591 -.417l.2 -.005a4 4 0 1 1 -3.994 3.77l-.28 -.16c-.522 .25 -1.108 .39 -1.726 .39c-.619 0 -1.205 -.14 -1.728 -.391l-.279 .16l.007 .231a4 4 0 1 1 -2.212 -3.579l.222 -.129a3.998 3.998 0 0 1 1.988 -3.756l.002 -.071a4 4 0 0 1 -1.995 -3.265l-.005 -.2a4 4 0 0 1 4 -4" />
+        </g>
+    </React.Fragment>,
+    'Scanear'
 );

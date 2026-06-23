@@ -6,7 +6,7 @@ import { columnasdi } from "./columnasdi.jsx";
 import { stkrubrolee } from "./LeeRubro.jsx";
 import { stkgrupoleer } from "./LeeGrupos.jsx";
 import { datosingreso } from "./LayoutMovStock/Ingreso/DatosIngreso.js";
-import { Button, TextField } from "@mui/material";
+import { Button, Grid, TextField, Typography } from "@mui/material";
 import { DataGrid, renderActionsCell } from "@mui/x-data-grid";
 import { esES } from '@mui/material/locale';
 import { blue, green, red, yellow, orange } from "@mui/material/colors";
@@ -34,6 +34,7 @@ export default function PantallaInicial() {
 	const [canting, setCanting] = useState(0);
 	let abrrrubro;
 	let agregaingreso = "";
+	// const [acumulacambios, setAcumulacambios] = useState([]);
 	const [LlamaPI, setLlamaPI] = useState(false);
 	const [LlamaPE, setLlamaPE] = useState(false);
 	const [LlamaPC, setLlamaPC] = useState(false);
@@ -135,6 +136,7 @@ export default function PantallaInicial() {
 	};
 
 	async function botonokPC() {
+
 		var mtsmodifica = state.cantidad * state.largo
 		var infingreso = [
 			{
@@ -143,17 +145,30 @@ export default function PantallaInicial() {
 				abrevrubroo: state.StkRubroAbr,
 				indiceitemo: state.selectRow.idStkItems,
 				abrevrubrocambio: state.idStkRubroCambio,
-				indiceitemocambio: state.idStkItemsCambio
+				indiceitemocambio: state.idStkItemsCambio,
+				vendido: state.totalvendido
 			},
 		];
-		agregaingreso = await RealizaCambioStock(infingreso);
+
+		setState({ ...state, acumulacambios: state.acumulacambios.concat(infingreso) })
+
+		// agregaingreso = await RealizaCambioStock(infingreso);
+		// const result = await datosingreso(state.StkRubroAbr);
+		// setData(result);
+		// const col = await columnasdi();
+		// setColumns(() => col);
+		// CierraPC();
+	}
+	const botoncambio = async () => {
+		console.log('state.clientemov botoncambio  ', state.clientemov)
+		agregaingreso = await RealizaCambioStock(state.acumulacambios, state.clientemov);
+		setState({ ...state, acumulacambios: [], indicemodStkMov: 0 })
 		const result = await datosingreso(state.StkRubroAbr);
 		setData(result);
 		const col = await columnasdi();
 		setColumns(() => col);
 		CierraPC();
 	}
-
 	async function botonok(value, cantpres, canting) {
 		// setState({ ...state, totaling: cantpres * canting });
 		var vienede = ''
@@ -309,7 +324,7 @@ export default function PantallaInicial() {
 				</Button>
 			</div>
 
-			<div style={{ display: 'flex', height: 400, width: '100%' }}>
+			<div style={{ display: 'flex', height: 500, width: '100%' }}>
 				<DataGrid
 					key={trigger}
 					rows={data}
@@ -322,6 +337,7 @@ export default function PantallaInicial() {
 					processRowUpdate={handleProcessRowUpdate}
 				/>
 
+				<Button onClick={botoncambio}>Final</Button>
 				{Object.keys(state.selectRow).length > 0 && (
 					LlamaPI ? (
 						<PantallaIngreso onClick={botonok} />
@@ -329,7 +345,6 @@ export default function PantallaInicial() {
 						<SalidaDisponible onClick={botonok} />
 					) : LlamaPC ? (
 						<SalidaStock datositems={data} onClick={botonokPC} />
-
 					) : null
 
 				)}

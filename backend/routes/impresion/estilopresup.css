@@ -29,55 +29,41 @@ h1 {
   table-layout: fixed;
   border-collapse: collapse;
 }
-
+/* 
 /* 1. Centrar todos los títulos de la cabecera */
+/* 1. Centrar todos los títulos de la cabecera (Queda igual) */
 .tabla-productos th {
   text-align: center;
   padding: 8px;
-   font-size: 12px;
-  background-color: #f2f2f2; /* Opcional: para resaltar el encabezado */
+  font-size: 12px;
+  background-color: #f2f2f2;
   border-bottom: 2px solid #ddd;
 }
 
-/* 2. Configuración de anchos (se definen en los th) */
-.tabla-productos th:nth-child(1) { width: 5%;  } /* It */
-.tabla-productos th:nth-child(2) { width: 7%;  } /* Cant */
-.tabla-productos th:nth-child(3) { width: 44%; } /* Descripción */
-.tabla-productos th:nth-child(4) { width: 7%;  } /* Ancho */
-.tabla-productos th:nth-child(5) { width: 7%;  } /* Largo */
-.tabla-productos th:nth-child(6) { width: 15%; } /* Imp. Unidad */
-.tabla-productos th:nth-child(7) { width: 15%; } /* Imp. Item */
+/* 2. Configuración de anchos y alineaciones por CLASES */
+.col-item   { width: 4%;   text-align: center; }
+.col-cant   { width: 7%;   text-align: center; }
+.col-desc   { width: 50%;  text-align: left; } /* Subió un poco para absorber el espacio si falta largo/ancho */
+.col-medida { width: 9%;   text-align: right; }
+.col-unit   { width: 19%;  text-align: right; }
+.col-itemf  { width: 21%;  text-align: right; }
 
-/* 3. Alineación del contenido de las celdas */
+/* 3. Estilo general de las celdas */
 .tabla-productos td {
   padding: 8px;
   vertical-align: middle;
 }
 
-/* Alineamos a la derecha específicamente las columnas de medidas e importes */
-.tabla-productos td:nth-child(4),
-.tabla-productos td:nth-child(5),
-.tabla-productos td:nth-child(6),
-.tabla-productos td:nth-child(7) {
-  text-align: right;
-}
+/* Aplicar alineaciones también a los td que tengan estas clases */
+.tabla-productos td.col-item, .tabla-productos  { text-align: center; }
+.tabla-productos td.col-desc { text-align: left; }
+.tabla-productos td.col-medida, td.col-cant, .tabla-productos td.col-unit, .tabla-productos td.col-itemf { text-align: right; }
 
-/* Centramos el ID y la Cantidad */
-.tabla-productos td:nth-child(1),
-.tabla-productos td:nth-child(2) {
-  text-align: center;
-}
-/* Estilos para el pie de la tabla */
+/* Estilos para el pie de la tabla (Queda igual) */
 .tabla-productos tfoot tr td {
-    padding: 10px 8px; /* Un poco más de espacio arriba y abajo */
-    border-top: 2px solid #333; /* Una línea más gruesa para separar el total */
-    font-size: 1.1em; /* Un poquito más grande para que resalte */
-}
-
-/* El texto "Total:" (la celda con colspan) */
-.tabla-productos tfoot tr td:first-child {
-    text-align: right;
-    text-transform: uppercase; /* Opcional: "TOTAL" en mayúsculas */
+    padding: 10px 8px;
+    border-top: 2px solid #333;
+    font-size: 1.1em;
 }
 
 /* El valor del total (la última celda) */

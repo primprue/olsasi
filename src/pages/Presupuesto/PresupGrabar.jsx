@@ -17,10 +17,10 @@ export const PresupGrabar = async (
 	maymin,
 	nomCliente,
 	idClientes,
-	explicacionPresup
+	explicacionPresup,
+	renglonanexodetalle
 ) => {
 	const url = `${IpServidor}/presupgraba`;
-
 	try {
 		const res = await request
 			.post(url)
@@ -31,7 +31,8 @@ export const PresupGrabar = async (
 				maymin,
 				nomCliente,
 				idClientes,
-				explicacionPresup
+				explicacionPresup,
+				renglonanexodetalle
 			});
 
 		// Superagent ya parsea el JSON si el Content-Type de respuesta es correcto

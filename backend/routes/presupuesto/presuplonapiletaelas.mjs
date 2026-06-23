@@ -45,7 +45,9 @@ router.get("/", async (req, res) => {
       let sogachicote = '';
       let ivareal = ''
       let coefmaymin = 0;
+      let coefMOT = 0;
       let costomincolchi = 2 * costoHMOT / 60
+      let costomincolgancho = 2 * costoHMOT / 60
 
       const detojal = (tipoojale === "hz") ? " de hierro " : " de bronce ";
       tipoojal = (tipoojale === "hz") ? p.abrojales3hz : p.abrojales3b;
@@ -55,22 +57,22 @@ router.get("/", async (req, res) => {
         tipoojal = p.abrojales28;
         ganancia = Number(p.coefganmay) || 0;
         ivareal = 'CIVA'
+        coefMOT = Number(p.coefMOTmay) || 0;
       }
       else {
         coefmaymin = Number(p.coeficientemin) || 0;
         ivareal = ivasn
+        coefMOT = Number(p.coefMOTmin) || 0;
       }
 
       let minutosdren = 0
       let costoMOTDren = 0
       const detdrenaje = (drenajesn === 'cd') ? " con drenaje " : " sin drenaje ";
-      if (drenajesn == 'cd') {
-        minutosdren = ((largocal / 1.50) * 12)
-        costoMOTDren = Number(costoHMOT) / 60 * minutosdren
-        //* coefmaymin
+      if (drenajesn === 'cd') {
+        minutosdren = (Math.ceil(largocal / 1.50) * 12)
+        costoMOTDren = p.costoMOT * coefMOT / 60 * minutosdren
         /* 12 minutos por drenaje*/
       }
-
 
       let minutosunion = anchocal * largocal * 5;
       // let sogadobladillo = Number(p.sogadobladillo) || 0;
@@ -87,7 +89,8 @@ router.get("/", async (req, res) => {
                 (r4.StkRubroCosto * m4.StkMonedasCotizacion) AS CostoGancho,
                 (r5.StkRubroCosto * m5.StkMonedasCotizacion / 144) AS CostoOjalM2,
                 (m6.StkMonedasCotizacion) AS Cotizacion,
-                (r7.StkRubroDesc) AS StkRubroDesc
+                (r7.StkRubroDesc) AS StkRubroDesc,
+                (r8.StkRubroCosto * m8.StkMonedasCotizacion * 0.20 / 11) AS CostoRefuerzo
 
                 FROM BaseStock.StkRubro r1
                 JOIN BaseStock.StkMonedas m1 ON r1.StkRubroTM = m1.idStkMonedas
@@ -107,12 +110,15 @@ router.get("/", async (req, res) => {
                 JOIN BaseStock.StkMonedas m6 ON m6.idStkMonedas = '${p.codmoneda}'
                 JOIN BaseStock.StkRubro r7 ON r7.StkRubroAbr = '${StkRubroAbr}'
 
+                 JOIN BaseStock.StkRubro r8
+                JOIN BaseStock.StkMonedas m8 ON r8.StkRubroTM = m8.idStkMonedas
                 WHERE
                 r1.StkRubroAbr = '${StkRubroAbr}'
                 AND r2.StkRubroAbr = '${sogachicote}'
                 AND r3.StkRubroAbr = '${p.sogadobladillo}'
                 AND r4.StkRubroAbr = '${p.ganchorulo}'
-                AND r5.StkRubroAbr = '${tipoojal}';
+                AND r5.StkRubroAbr = '${tipoojal}'
+                AND r8.StkRubroAbr = '${StkRubroAbr}';
                       `;
 
       const datos1 = await queryAsync(sql);
@@ -130,35 +136,43 @@ router.get("/", async (req, res) => {
       const costoOjalM2 = Number(d.CostoOjalM2) || 0;
       const costoFleteMot = Cotizacion * (flete + MOT);
 
-      console.log('Cotizacion  ', Cotizacion)
-      console.log('CostoCobMC  ', CostoCobMC)
-      console.log('CostoRefuerzo  ', CostoRefuerzo)
-      console.log('CostoGancho  ', CostoGancho)
-      console.log('CostoMSChicote  ', CostoMSChicote)
-      console.log('CostoMSDobladillo  ', CostoMSDobladillo)
-      console.log('costoOjalM2  ', costoOjalM2)
-      console.log('costoFleteMot  ', costoFleteMot)
-      let costo =
-        CostoCobMC +
+      // let costo =
+      //   CostoCobMC +
+      //   CostoRefuerzo +
+      //   CostoGancho +
+      //   CostoMSChicote +
+      //   CostoMSDobladillo +
+      //   costoOjalM2 +
+      //   costomincolchi +
+      //   costomincolgancho +
+      //   costoFleteMot;
+
+      // const metrosCuad = largoreal * anchoreal;
+
+      // costo = costo * ganancia * Number(p.coefimpuestos);
+
+
+      // costo = (costo * metrosCuad);
+      let costo1 =
         CostoRefuerzo +
+        costoOjalM2 +
+        CostoCobMC +
+        CostoMSDobladillo +
+        costoFleteMot;
+
+      let costo2 =
         CostoGancho +
         CostoMSChicote +
-        CostoMSDobladillo +
-        costoOjalM2 +
-        costoMOTDren +
         costomincolchi +
-        costoFleteMot;
+        costomincolgancho;
+      let costo3 = costo2 * (Math.ceil(largoreal * 2 + anchoreal * 2)) / 0.70;
       const metrosCuad = largoreal * anchoreal;
-      console.log('costo = CostoCobMC + CostoRefuerzo + CostoGancho + CostoMSChicote + CostoMSDobladillo + costoOjalM2 + costoMOTDren + costomincolchi + costoFleteMot;  ', costo)
+
+      let costo = (costo1 * metrosCuad) + costo3;
       costo = costo * ganancia * Number(p.coefimpuestos);
-      console.log('p.coef  ', p.coefimpuestos)
-      console.log('costo = costo * ganancia * p.coefimpuestos;  ', costo)
 
 
-
-
-      costo = costo * metrosCuad;
-      console.log('costo', costo);
+      costo = costo + costoMOTDren;
       // soga para abolinar (ciclos)
       let ciclo = 0;
       if (metrosCuad < 12) ciclo = 3;
@@ -168,7 +182,6 @@ router.get("/", async (req, res) => {
       for (let i = 0; i < ciclo; i++) {
         costo *= 1.0325;
       }
-
 
       // IVA / redondeo
       if (ivasn === "CIVA") {

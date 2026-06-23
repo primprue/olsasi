@@ -84,16 +84,11 @@ router.get('/', async (req, res, next) => {
 
       if (tipoojale == 'hz') {
         tipoojal = 'OHCOL'
-        detalle = `${detalle} c/ojales de hierro cada ${ojalescada} mts. en : `
       }
       else {
         tipoojal = 'OBCOL'
-        detalle = `${detalle} c/ojales de bronce cada ${ojalescada} mts. en : `
       }
-      if (detallep != '') {
-        detalle = ''
-        detalle = `${detallep} en : `
-      }
+
 
 
       let sogadobladillo = p.sogadobladillo;
@@ -118,8 +113,9 @@ router.get('/', async (req, res, next) => {
             (r3.StkRubroCosto * m3.StkMonedasCotizacion * ?) AS ValorGrsOjal,
 
             -- cotización
-            m4.StkMonedasCotizacion AS Cotizacion
-
+            m4.StkMonedasCotizacion AS Cotizacion,
+            -- descripción material
+            (r5.StkRubroDesc) AS StkRubroDesc
         FROM BaseStock.StkRubro r1
             JOIN BaseStock.StkMonedas m1 ON r1.StkRubroTM = m1.idStkMonedas,
 
@@ -129,12 +125,14 @@ router.get('/', async (req, res, next) => {
             BaseStock.StkRubro r3
             JOIN BaseStock.StkMonedas m3 ON r3.StkRubroTM = m3.idStkMonedas,
 
-            BaseStock.StkMonedas m4
+            BaseStock.StkMonedas m4,
+            BaseStock.StkRubro r5
 
         WHERE r1.StkRubroAbr = ?
           AND r2.StkRubroAbr = ?
           AND r3.StkRubroAbr = ?
           AND m4.idStkMonedas = ?
+          AND r5.StkRubroAbr = ?
           `;
 
       const params = [
@@ -144,10 +142,22 @@ router.get('/', async (req, res, next) => {
         StkRubroAbr,
         sogadobladillo,
         tipoojal,
-        codmoneda
+        codmoneda,
+        StkRubroAbr
       ];
       const datos = await queryAsync(sql, params);
       const d = datos[0];
+
+      if (tipoojale == 'hz') {
+        detalle = `${detalle} c/ojales de hierro cada ${ojalescada} mts. en : ${d.StkRubroDesc}`
+      }
+      else {
+        detalle = `${detalle} c/ojales de bronce cada ${ojalescada} mts. en : ${d.StkRubroDesc}`
+      }
+      if (detallep != '') {
+        detalle = ''
+        detalle = `${detallep} en : ${d.StkRubroDesc}`
+      }
       let costo = 0;
       costo = Number(d.ValorCobML) * cantidadcob
 

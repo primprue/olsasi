@@ -58,8 +58,7 @@ router.get("/", async (req, res) => {
 
       const metroscuad = cantpaños * anchoTela * anchocal;
       const detdrenaje = (drenajesn === 'cd') ? " con drenaje " : " sin drenaje ";
-      const minutosdren = (drenajesn === 'cd') ? ((largocal / 1.50) + 2) * 12 : 0;
-
+      const minutosdren = (drenajesn === 'cd') ? (Math.ceil(largocal / 1.50) + 2) * 12 : 0;
 
       let coefmaymin = 0;
       let coefMOT = 0;
@@ -76,8 +75,7 @@ router.get("/", async (req, res) => {
       }
       const detojal = (tipoojale === "hz") ? " de hierro " : " de bronce ";
       tipoojal = (tipoojale === "hz") ? p.abrojales3hz : p.abrojales3b;
-      let cantidadojales = largo * 2
-
+      let cantidadojales = largocal * 2
       let valorMOT = p.costoMOT * coefMOT / 60 * ((metroscuad * minutospmc) + minutosdren)
 
       const q = `Select
@@ -108,6 +106,7 @@ router.get("/", async (req, res) => {
       let detalle = detallep !== '' ? `${detallep} en :  ${mcuadcob.StkRubroDesc}` : `Lona enrollable para pileta, con fajas en las puntas, con ojales de ${detojal}, ${detdrenaje} en :  ${mcuadcob.StkRubroDesc}`;
 
       let costo = Number(mcuadcob.ImpUnitario) + Number(ojales.ValorOjales) + valorMOT
+
       // IVA / redondeo
       if (ivasncal === "CIVA") {
         costo = Math.ceil(costo);

@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
 
 import { DialogContent, Dialog, DialogTitle } from "@mui/material";
-// Dialogfrom, , Slide
 import {
 	DataGrid,
 
 } from "@mui/x-data-grid";
 import { stkitemsred } from "./StkItemsRed";
 import BotonEstilo from "../../Styles/Boton.module.css";
-// const Transition = React.forwardRef(function Transition(props, ref) {
-// 	return <Slide direction="up" ref={ref} {...props} />;
-// });
+
 
 export default function TablaMuestraStock(props) {
 	const { open, handleClose, Grupo, Rubro } = props;

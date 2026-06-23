@@ -11,6 +11,7 @@ router.get('/', async (req, res) => {
     where OTDatosTipoConf = ? order by OTDatosOrdenAparicion`;
     try {
         const [result] = await conexionpool.query(q, [indice]);
+
         res.json(result);
     } catch (err) {
         console.error("Error en el proceso:", err);

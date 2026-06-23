@@ -5,7 +5,14 @@ import { conexionpool } from '../conexion.mjs';
 
 router.get("/", async (req, res) => {
     try {
-        const q = `Select PBPorcIVA as value,  PBPorcIVA as label from BasePreBalance.PBPorIVA`;
+        const q = `
+        SELECT 
+            CAST(ROW_NUMBER() OVER () AS CHAR) as id, 
+            PBPorcIVA as value, 
+            CONCAT(PBPorcIVA, '%') as label 
+        FROM BasePreBalance.PBPorIVA
+    `;
+
         const [result] = await conexionpool.query(q);
         return res.json(result);
     } catch (err) {

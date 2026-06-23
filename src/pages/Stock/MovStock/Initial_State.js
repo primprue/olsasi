@@ -18,6 +18,11 @@ export const initial_state = {
     idStkRubroCambio: "",
     idStkItemsCambio: 0,
     clienteorden: '',
-    MovNroRef: ''
+    MovNroRef: '',
+    controlvendido: 0,
+    totalvendido: 0,
+    acumulacambios: [],
+    indicemodStkMov: 0,
+    clientemov: ''
 
 };

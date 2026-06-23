@@ -129,7 +129,37 @@ export default function OTFilasConf(props) {
 
 
 				))}
+				<div
+					style={{
+						display: 'grid',
+						gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+						gap: '16px',
+						width: '100%',
+						padding: '8px'
+					}}
+				>
+					{datosrestantes.map((dato, index) => (
+						<div key={index} style={{ display: 'flex', flexDirection: 'column' }}>
+							{dato.tipocomponete === "select" && (
+								<TextFieldSelectObject dato={dato} onChange={handleChangeG} />
+							)}
+							{dato.tipocomponete === "textfield" && (
+								<TextFieldComun
+									disabled={largo === "N"}
+									id={dato.nombre}
+									type="string"
+									value={otdatos.OTDatosDesc}
+									onChange={handleChangeG}
+									width="100%" // <-- Cambiado a 100% para que use el ancho de la celda
+									helperText={dato.requerido === "S" ? "Requerido" : "-----"}
+									placeholder={dato.nombre}
+								/>
+							)}
+						</div>
+					))}
+				</div>
 
+				{/* 
 				{datosrestantes.map((dato, index) => (
 
 					<div key={index}>
@@ -151,7 +181,7 @@ export default function OTFilasConf(props) {
 
 						)}{" "}
 					</div>
-				))}
+				))} */}
 				<Button onClick={Terminocarga} className={estilos.botonfincargadatos}>
 					Fin de Carga
 				</Button>

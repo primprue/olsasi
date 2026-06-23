@@ -6,7 +6,7 @@ import { useState } from "react";
 import { use } from "react";
 import PresupPant from "../../../context/PresupPant.jsx";
 import FilaUnoIzq from "../../Presupuesto/LayoutPresupuesto/FilaUno/FilaUnoIzq.jsx";
-import { Box, Button, TextField } from '@mui/material';
+import { Alert, Box, Button, TextField } from '@mui/material';
 import formdata from "./formdata.js";
 import { DataGrid, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 import OTDatosAgregarForm from './OTDatosAgregarForm.jsx';
@@ -18,12 +18,20 @@ import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
 import AddToPhotosTwoToneIcon from "@mui/icons-material/AddToPhotosTwoTone";
 import CheckCircleTwoToneIcon from "@mui/icons-material/CheckCircleTwoTone";
 import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
+import ExpandIcon from '@mui/icons-material/Expand';
 import estilotabla from "../../../Styles/Tabla.module.css";
 import { DialogoDatos } from '../../../components/DialogoDatos.jsx';
 import TablasContexto from '../../../context/TablasContext.jsx';
 import OrdTrabajo from '../../../context/OrdTrabajo.jsx';
 // import { OTDatosModificar } from './OTDatosModificar.jsx';
 import { DatosModificar } from '../../../components/DatosModificar.jsx';
+
+
+// import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import IconButton from '@mui/material/IconButton';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import OTDatosReorden from './OTDatosReorden.jsx';
 export default function OTDatosForm() {
     const { formdatos, setFormdatos } = use(TablasContexto);
     const { otdatos, setOTdatos } = use(OrdTrabajo);
@@ -37,6 +45,8 @@ export default function OTDatosForm() {
     const [titulodial, setTituloDial] = useState("");
     const [paramsbor, setParamsBor] = useState(0);
     const [open, setOpen] = useState(false);
+    const [reordenar, setReordenar] = useState(false);
+    const [datosreorden, setDatosReorden] = useState([]);
     const estiloBoton = {
         backgroundColor: formdatos.color,
         '& .MuiButton-root': {
@@ -54,6 +64,7 @@ export default function OTDatosForm() {
         setOTdatos(descripcion);
         const result = await OTDatosLee(descripcion, formdata.nombackleer);
         setRows(procesarDatos(result));
+        setDatosReorden(result);
     }
     useEffect(() => {
         if (state.PresupConfTipoDesc !== '') {
@@ -69,6 +80,7 @@ export default function OTDatosForm() {
     useEffect(() => {
         setFormdatos(formdata);
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
 
     const procesarDatos = (data) => {
         if (data !== '') {
@@ -99,6 +111,7 @@ export default function OTDatosForm() {
     const columns = [
         // { field: "id", type: "text", headerName: "id", width: 200, editable: false },
         { field: "idOTDatos", type: "text", headerName: "id datos", width: 200, editable: false },
+        { field: "OTDatosTipoConf", type: "text", headerName: "Tipo de Confección", width: 200, editable: false, value: state.PresupConfTipoDesc },
         { field: "OTDatosOrdenAparicion", type: "text", headerName: "Orden de Aparición", width: 200, editable: true },
         {
             field: "OTDatosDesc", type: "text", headerName: "descripcion", width: 200, editable: true,
@@ -136,7 +149,6 @@ export default function OTDatosForm() {
         }
 
     ];
-
     const openApp = (params) => {
         setParams(params.row)
         setAbreagregarItem(true)
@@ -259,32 +271,75 @@ export default function OTDatosForm() {
                     className={estilotabla.iconoborrar}
                     onClick={() => handleDelete(rowsel)}
                 />
+                <ExpandIcon
+                    variant="contained"
+                    titleAccess="Reordenar"
+                    className={estilotabla.iconoreordenar}
+                    onClick={() => abrereordenar(rows)}
+                />
 
+                {/* <LocalPrintshopRoundedIcon
+                    variant="contained"
+                    titleAccess="reorden tabla"
+                    className={estilotabla.iconoimpresora}
+                    onClick={() => TablaOrdenable()}
+                /> */}
             </GridToolbarContainer>
         );
     }
 
+    const moveRow = (id, direction) => {
+        const currentIndex = rows.findIndex((row) => row.id === id);
+        const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+
+        // Evita salirte de los límites del arreglo
+        if (targetIndex < 0 || targetIndex >= rows.length) return;
+
+        const updatedRows = [...rows];
+        // Intercambia las posiciones de las filas
+        const temp = updatedRows[currentIndex];
+        updatedRows[currentIndex] = updatedRows[targetIndex];
+        updatedRows[targetIndex] = temp;
+
+        setRows(updatedRows);
+    };
+
+    const abrereordenar = (rows) => {
+        setReordenar(true);
+        // setDatosreorden(rows);
+    };
+
+    const cierrareordenar = () => {
+        setReordenar(false);
+    };
     return (
-        <>
+        <div style={{ height: 700, width: 1500 }}>
             <FilaUnoIzq />
+
+            {/* {rows.length > 0 && */}
             <DataGrid
                 rows={rows}
                 columns={columns}
                 processRowUpdate={processRowUpdate}
-                className={estilotabla.tablasgenerales}
-                onRowClick={handleRowSelect}
+                className={estilotabla.tablasotdatos}
+                // onRowClick={handleRowSelect}
+                disableRowSelectionOnClick
                 pageSize={5}
                 slots={{
                     toolbar: CustomToolbar,
+                    // row: (props) => {
+                    //     // Buscamos el índice real de la fila para pasárselo a Draggable
+                    //     const index = rows.findIndex((r) => r.id_campo === props.id);
+                    //     return <DraggableRow {...props} index={index} />;
+                    // },
                 }}
                 columnHeaderHeight={35}
-                pageSizeOptions={[25]}
+                pageSizeOptions={[15]}
             />
-            {/* // } */}
+            {/* } */}
 
             {abreagregar && <OTDatosAgregarForm open={abreagregar} handleClose={handleClickOpen} />}
             {abreagregaritem && <OTDatosAgrOpc open={abreagregaritem} params={params} handleClose={() => setAbreagregarItem(false)} />}
-
             <DialogoDatos
                 open={open}
                 columns={columns}
@@ -295,9 +350,16 @@ export default function OTDatosForm() {
             // PresupConfTipoDesc={state.PresupConfTipoDesc}
             // confcod={confcod.current}
             />
+            {reordenar && datosreorden && datosreorden.length > 0 && (
+                <OTDatosReorden
+                    open={abrereordenar}
+                    handleClose={cierrareordenar}
+                    datosreorden={datosreorden}
+                />
+            )}
 
-            {/* // </div> */}
-        </>
+        </div>
+
     )
 }
 

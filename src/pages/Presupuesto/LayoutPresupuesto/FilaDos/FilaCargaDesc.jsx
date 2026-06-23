@@ -20,7 +20,7 @@ export default function FilaCargaDesc() {
 					value={state.DetallePresup}
 					onChange={handleChange}
 					width="500px"
-					limite={300}
+					limite={500}
 					multiline={true}
 				/>
 				{/* </Grid> */}

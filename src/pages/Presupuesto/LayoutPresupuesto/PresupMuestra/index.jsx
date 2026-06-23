@@ -92,7 +92,7 @@ export default function PresupMuestra() {
 			handleClose1(); //va a la orden de trabajao
 		}
 		else {
-			setIsOpen(false);
+			setOpen(false);
 		}
 	};
 

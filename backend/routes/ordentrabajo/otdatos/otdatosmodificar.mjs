@@ -12,8 +12,15 @@ router.post("/", async (req, res) => {
   const OTDatosRequerido = req.body.OTDatosRequerido;
   const OTDatosOrdenAparicion = req.body.OTDatosOrdenAparicion;
   const OTDatosAncho = req.body.OTDatosAncho;
-  const idOTDatos = req.query.id;
+  const idOTDatos = req.body.idOTDatos;
 
+  console.log('OTDatosDesc  ', OTDatosDesc)
+  console.log('OTDatosOpciones  ', OTDatosOpciones)
+  console.log('OTDatosTipoPed  ', OTDatosTipoPed)
+  console.log('OTDatosRequerido  ', OTDatosRequerido)
+  console.log('OTDatosOrdenAparicion  ', OTDatosOrdenAparicion)
+  console.log('OTDatosAncho  ', OTDatosAncho)
+  console.log('idOTDatos  ', idOTDatos)
   const q = `UPDATE BasesOrdenes.OTDatos SET  
     OTDatosDesc =  ?, 
     OTDatosOpciones = ?, 

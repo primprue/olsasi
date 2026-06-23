@@ -1,11 +1,15 @@
 import 'dotenv/config';
-// const PORT = 4000;
+import path from 'path';
+import express from 'express';
+import app from './backend.mjs'; // Tu lógica de API está aquí
+
 const PORT = process.env.PORT || 4001;
-import app from './backend.mjs';
+
 app.get('/', (req, res) => {
-    res.send("¡Estás en la raíz del servidor!");
+    res.send("¡Servidor Funcionando!");
 });
 
 app.listen(PORT, () => {
-    console.log(`Servidor en puerto ${PORT}`);
+    console.log(`Servidor corriendo en: http://localhost:${PORT}`);
+
 });

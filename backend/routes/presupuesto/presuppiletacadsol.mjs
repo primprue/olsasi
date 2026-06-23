@@ -53,7 +53,7 @@ router.get("/", async (req, res) => {
       const metroscuad = cantpaños * anchoTela * anchocal;
       const detdrenaje = (drenajesn === 'cd') ? " con drenaje " : " sin drenaje ";
       const minutosdren = (drenajesn === 'cd') ? ((largocal / 1.50) + 2) * 12 : 0;
-      const minutossolapainversa = Number(ancho) * 5;
+      const minutossolapainversa = Number(ancho) * 20;
 
 
       let coefmaymin = 0;
@@ -64,7 +64,7 @@ router.get("/", async (req, res) => {
       let ivasncal = minmay === "my" ? "CIVA" : ivasn;
       if (minmay == 'my') {
         coefmaymin = Number(p.coeficientemay) || 0;
-        tipoojal = p.abrojales28;
+        tipoojal = (tipoojale === "hz") ? p.abrojales28 : p.abrojales3b;
         coefMOT = Number(p.coefMOTmay) || 0;
       }
       else {

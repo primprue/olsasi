@@ -1,19 +1,33 @@
-import { useState, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import Estilos from "../Ingreso/Ingreso.module.css";
-import { Card, CardContent, Button, Typography } from "@mui/material";
+import { Card, CardContent, Button, Typography, Box } from "@mui/material";
 import Grid from "@mui/material/Grid";
 // Context
 import { use } from "react";
+import { DataGrid } from "@mui/x-data-grid";
+import { esES } from '@mui/material/locale';
 import { MovStockPantContext } from "../../MovStockPant";
 import { datosingreso } from "../Ingreso/DatosIngreso";
+import { MovStockLeeMovEle } from "./MovStockLeeMovEle";
+import { llenarcolumns } from "./columns.jsx";
 import TextFieldComun from "../../../../../components/comppropios/TextFieldComun";
 import TextFieldSelect from "../../../../../components/comppropios/TextFieldSelect";
 import CustomSwitch from "../../../../../components/comppropios/CustomSwitch";
-
+import estilotabla from "../../../../../Styles/Tabla.module.css";
+import DetalleMateriales from "./DetalleMateriales.jsx";
 export default function SalidaStock({ datositems, onClick, ...other }) {
 	const { state, setState } = use(MovStockPantContext);
-	let abrrrubro;
+	const [modalOpen, setModalOpen] = useState(true);
 
+	const [columns, setColumns] = useState([]);
+	const [datosmov, setDatosMov] = useState([]);
+	const [totalvendidol, setTotalVendidol] = useState(0);
+
+	async function columnsFetch() {
+		const col = await llenarcolumns();
+		setColumns(() => col);
+	}
+	let abrrrubro;
 	const [cantidad, setCantidad] = useState(0);
 	const [largo, setLargo] = useState(0);
 
@@ -31,34 +45,48 @@ export default function SalidaStock({ datositems, onClick, ...other }) {
 
 	};
 
-	let textdatar = [
-		{
-			id: "StkRubroAbr",
-			label: "Rubro",
-			value: '',
-			options: state.stkrubro.map((option) => ({
-				value: option.StkRubroAbr,
-				label: option.StkRubroDesc
-			}))
-		}
 
-	];
-	let textdatai = [];
-	if (state.stkitems !== undefined) {
-		if (state.stkitems.length > 0) {
-			textdatai = [
-				{
-					id: "idStkItems",
-					label: "Items",
-					value: state.idStkItems,
-					options: state.stkitems.map((option) => ({
-						value: option.idStkItems,
-						label: option.StkItemsDesc
-					}))
-				}
-			];
-		}
+	async function dataFetch() {
+		const result = await MovStockLeeMovEle(state.StkRubroAbr, state.selectRow.StkItemsDesc);
+		setDatosMov(result);
 	}
+
+	async function initialFetch() {
+		columnsFetch();
+		dataFetch();
+	}
+
+	useEffect(() => {
+		initialFetch();
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
+	// let textdatar = [
+	// 	{
+	// 		id: "StkRubroAbr",
+	// 		label: "Rubro",
+	// 		value: '',
+	// 		options: state.stkrubro.map((option) => ({
+	// 			value: option.StkRubroAbr,
+	// 			label: option.StkRubroDesc
+	// 		}))
+	// 	}
+
+	// ];
+	// let textdatai = [];
+	// if (state.stkitems !== undefined) {
+	// 	if (state.stkitems.length > 0) {
+	// 		textdatai = [
+	// 			{
+	// 				id: "idStkItems",
+	// 				label: "Items",
+	// 				value: state.idStkItems,
+	// 				options: state.stkitems.map((option) => ({
+	// 					value: option.idStkItems,
+	// 					label: option.StkItemsDesc
+	// 				}))
+	// 			}
+	// 		];
+	// 	}
+	// }
 
 	const [selectedValues, setSelectedValues] = useState({});
 	async function handleSelectChange(value, id) {
@@ -73,7 +101,6 @@ export default function SalidaStock({ datositems, onClick, ...other }) {
 			setState({ ...state, stkitems: result, idStkRubroCambio: value });
 		}
 		if (id === "idStkItems") {
-
 			setState({ ...state, idStkItemsCambio: value });
 
 		}
@@ -86,11 +113,26 @@ export default function SalidaStock({ datositems, onClick, ...other }) {
 	};
 
 
+	const [selectionModel, setSelectionModel] = useState([]);
+
+	const handleSelectionModelChange = (selectionModel) => {
+		const filaselec = selectionModel.map((row, i) =>
+			datosmov.filter((rows) => rows.id == row)
+		);
+		let totalvendidocalc = 0
+		for (let i = 0; i < filaselec.length; i++) {
+			totalvendidocalc = (filaselec[i][0].StkMovTotal * -1) + totalvendidocalc
+		}
+		setTotalVendidol(totalvendidocalc);
+		setState({ ...state, totalvendido: totalvendidocalc, indicemodStkMov: selectionModel[0], clientemov: filaselec[0][0].StkMovCliente });
+		setSelectionModel(filaselec);
+	};
+
 	return (
 		<div style={{ display: 'flex', gap: '10px', marginBottom: '2px' }}>
 			{state.selectRow &&
-				<Card className={Estilos.card1}>
-					{/* <CardContent className={Estilos.card1}> */}
+
+				< Card className={Estilos.card1}>
 					<CardContent>
 						<label> Confirmación de salida </label>
 
@@ -116,97 +158,39 @@ export default function SalidaStock({ datositems, onClick, ...other }) {
 								</span>
 							</Typography>
 						</Grid>
+						<Box sx={{ maxHeight: '350px', overflowY: 'auto', marginTop: "2px" }}>
+							<DataGrid
+								rows={datosmov}
+								columns={columns}
+								checkboxSelection
+								onRowSelectionModelChange={handleSelectionModelChange}
+								selectionModel={selectionModel}
+								localeText={esES}
+								className={estilotabla.tablassalidastock}
+							/>
+						</Box>
+						{selectionModel && selectionModel.length > 0 && (
+							<Grid sx={{ marginTop: "2px" }}>
+								<Typography variant="body1" color="text.primary">
+									Se había descontado :
+									<span style={{ color: 'blue', fontWeight: 'bold' }}>
+										{' '}{totalvendidol}
+									</span>
 
-
-						<Grid sx={{ marginTop: "2px" }}>
-							<CustomSwitch
-								value={selectedOption}
-								onChange={handleOptionChange}
-								opcion1={'N'}
-								opcion2={'S'}
-								titulo1={'No'}
-								titulo2={'Si'}
-								tithelpertext={'Cambia Tela : '} />
-
-						</Grid>
-						{state.CambiaTela === "S" && (
-							<>
-
-								{textdatar.length > 0 &&
-
-									textdatar.map(({ id, label, value, options }, index) => (
-
-										<TextFieldSelect
-											key={index}
-											id={id}
-											label={label}
-											value={selectedValues[id] ?? value ?? ''}
-											onChange={handleSelectChange}
-											options={options}
-											width="400px"
-										/>
-									))}
-
-								{textdatai.length > 0 &&
-									textdatai.map(({ id, label, value, options }, index) => (
-										<TextFieldSelect
-											key={index}
-											id={id}
-											label={label}
-											value={selectedValues[id] ?? value ?? ''}
-											onChange={handleSelectChange}
-											options={options}
-											width="400px"
-										/>
-									))}
-							</>
+								</Typography>
+							</Grid>
 						)}
-
-						<div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginTop: '8px' }}>
-							<TextFieldComun
-								inputRef={textInput}
-								id="cantidad"
-								size="small"
-								type="number"
-								label="Cantidad de paños"
-								value={cantidad}
-								onChange={handleChange}
-								width="100px"
-								autoFocus
-								onKeyDown={(e1) => {
-									if (e1.key === "Enter") {
-										setTimeout(() => {
-											textInput1.current.focus();
-										}, 100);
-									}
-								}}
-							/>
-
-							<TextFieldComun
-								inputRef={textInput1}
-								size="small"
-								type="number"
-								id="largo"
-								width="100px"
-								label="Largo"
-								onChange={handleChange}
-								value={largo}
-
-							/>
-						</div>
-						<Button
-							onClick={(event) => {
-								onClick(cantidad, largo);
-							}}
-						>
-							TOTAL A DESCONTAR :{cantidad * largo}
-						</Button>
+						<DetalleMateriales
+							open={modalOpen}
+							handleClose={() => setModalOpen(false)}
+							onClick={onClick}
+							totalvendidol={totalvendidol}
+						/>
 					</CardContent>
 				</Card>
 			}
-		</div>
+		</div >
 
 	);
 }
-
 

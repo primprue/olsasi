@@ -5,7 +5,7 @@ import request from "superagent";
 export const OTDatosLeer = (props) => {
 	const datosde = props;
 	return new Promise((resolve) => {
-		const url = IpServidor + "/otdatosleer/?datosaleer=" + datosde;
+		const url = IpServidor + "/otdatosleer/?id=" + datosde;
 		request
 			.get(url)
 			.set("Content-Type", "application/json")

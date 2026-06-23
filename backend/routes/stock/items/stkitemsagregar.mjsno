@@ -1,0 +1,56 @@
+import express from "express";
+var router = express.Router();
+
+import moment from "moment";
+import { conexionpool } from '../../conexion.mjs';
+
+
+moment.locale("es");
+
+
+router.post("/", async (req, res) => {
+    let d = new Date();
+    let finalDate = d.toISOString().split("T")[0];
+
+    let ItemDescripcion = req.body.StkItemsDesc === undefined ? '' : req.body.StkItemsDesc.toUpperCase()
+
+    try {
+        const registro = {
+            idStkItems: req.body.idStkItems,
+            StkItemsGrupo: req.body.StkItemsGrupo,
+            StkItemsRubro: req.body.StkItemsRubro,
+            StkItemsRubroAbr: (req.body.StkItemsRubroAbr || '').toUpperCase(),
+            StkItemsDesc: (ItemDescripcion || '').toUpperCase(),
+            StkItemsOTD: (req.body.StkItemsOTD).toUpperCase(),
+            StkItemsCantidad: Number(req.body.StkItemsCantidad || 0),
+            StkItemsCantDisp: Number(req.body.StkItemsCantDisp || 0),
+            StkItemsFAct: finalDate,
+            StkItemsMin: Number(req.body.StkItemsMin || 0),
+            StkItemsMax: Number(req.body.StkItemsMax || 0),
+        };
+        await conexionpool.query("INSERT INTO StkItems SET ?", [registro]);
+
+        return res.status(201).json({
+            leyenda: 'Item creados correctamente',
+        });
+
+    } catch (err) {
+        console.error("Error en el proceso:", err);
+
+        // Manejo de errores específicos de SQL
+        if (err.errno === 1062) {
+            return res.status(460).json({ message: "Clave duplicada" });
+        }
+        if (err.errno === 1406) {
+            return res.status(410).json({ message: "Dato demasiado largo para una columna" });
+        }
+
+        return res.status(500).json({
+            leyenda: "Error interno del servidor",
+            error: err.message
+        });
+    }
+});
+
+export default router;
+

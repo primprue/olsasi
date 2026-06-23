@@ -4,7 +4,7 @@ import { useState } from "react";
 import CheckCircleTwoToneIcon from "@mui/icons-material/CheckCircleTwoTone";
 import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
 import PreviewTwoToneIcon from "@mui/icons-material/PreviewTwoTone";
-import { RecargaIcon, BorrarIcono, AgregarIcon } from "../components/comppropios/CustomIcons.jsx";
+import { RecargaIcon, BorrarIcono, AgregarIcon, ImpresionEsp } from "../components/comppropios/CustomIcons.jsx";
 import estilotabla from "../Styles/Tabla.module.css";
 //https://www.youtube.com/watch?v=1zYf4Yw1jqs usa custom hooks y en el ejemplo maneja promesas y errores
 import {
@@ -18,7 +18,6 @@ import {
 	GridToolbarQuickFilter,
 } from "@mui/x-data-grid";
 import { esES } from '@mui/x-data-grid/locales';
-// import { esES } from '@mui/material/locale';
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { DialogoDatos } from "./DialogoDatos.jsx";
@@ -28,6 +27,7 @@ import SelecCampos from "../pages/Impresion/SelecCampos.jsx";
 import { DatosModificar } from "./DatosModificar.jsx";
 import { DatosLeer } from "./DatosLeer.jsx";
 import { Tooltip } from "@mui/material";
+import { ImpresionesEsp } from "./ImpresionesEsp.jsx";
 
 /*props viene de IndexTablas, que hace una lectura de los datos de las tablas, según
 el backend que se haya cargado en formdata de la tabla en si */
@@ -54,6 +54,7 @@ export default function TablaMuestra(props) {
 			},
 		}
 	}
+
 
 	useEffect(() => {
 		initialFetch();
@@ -98,11 +99,15 @@ export default function TablaMuestra(props) {
 	const handleAlta = () => {
 		setNombreBoton("Enviar");
 		setTituloDial(
-			`Alta de ${formdatos.tablabase} (moverse por los campos con tab)`
+			`Alta de ${formdatos.tablabase}`
 		);
 		setOpen(true);
+		// }
 	};
 
+	const impresionesespeciales = () => {
+		ImpresionesEsp(formdatos.impresionesp);
+	};
 	const handleModifica = async (params) => {
 
 		let resultado;
@@ -161,7 +166,6 @@ export default function TablaMuestra(props) {
 	const handleProcessRowUpdateError = React.useCallback((error) => {
 		setSnackbar({ children: error.message, severity: "error" });
 	}, []);
-
 	function CustomToolbar() {
 		return (
 			<GridToolbarContainer sx={estiloBoton}
@@ -169,11 +173,16 @@ export default function TablaMuestra(props) {
 				<GridToolbarColumnsButton />
 				<GridToolbarFilterButton />
 				<GridToolbarDensitySelector />
-				<Tooltip title="Cuando se exporta, en LibreCalc, las columnas con números, en Campos Tipo de Columna, elegir Inglés (US)" arrow>
-					<span> {/* El span asegura que el tooltip funcione incluso si el botón se deshabilita */}
-						<GridToolbarExport />
-					</span>
-				</Tooltip>
+				<GridToolbarExport
+					slotProps={{
+						tooltip: {
+							title: "Cuando se exporta, en LibreCalc, las columnas con números, en Campos Tipo de Columna, elegir Inglés (US)",
+							arrow: true
+							// Aquí MUI se encarga de que el tooltip se cierre automáticamente al abrir el menú
+						}
+					}}
+				/>
+
 				<GridToolbarQuickFilter placeholder="Buscar" />
 				{(formdatos.tablabase !== "MuestraPresupuesto" && (
 					<React.Fragment>
@@ -233,14 +242,26 @@ export default function TablaMuestra(props) {
 					onClick={() => relee()}
 				/>
 
+				{(formdatos.impresionesp && (
+					<ImpresionEsp
+						variant="contained"
+						titleAccess={formdatos.impresiontitulo}
+						className={estilotabla.iconoimpresiones}
+						onClick={() => impresionesespeciales()}
+					/> || <ImpresionEsp
+						variant="contained"
+						titleAccess="Impresiones"
+						className={estilotabla.iconoimpresionesdeshabilitado}
+					/>
+				))}
 			</GridToolbarContainer>
 		);
 	}
 	return (
 		// <div style={{ margin: 6, height: 600, width: "85%" }}>
-		<>
-			{/* <div style={{ height: 655, width: "100%" }}> */}
-
+		<div style={{ margin: 6, height: 600, width: "100vw", flexDirection: 'column' }} >
+			{/* div style={{ height: '90vh', width: '100vw', display: 'flex', flexDirection: 'column' }} */}
+			{/* <div style={{ flex: 1, width: '100%' }}> */}
 			<DataGrid
 				rows={rows}
 				columns={columns}
@@ -248,7 +269,7 @@ export default function TablaMuestra(props) {
 				className={estilotabla.tablasgenerales}
 				onRowClick={handleRowSelect}
 				onProcessRowUpdateError={handleProcessRowUpdateError}
-				columnHeaderHeight={35}
+				columnHeaderHeight={30}
 				sx={{
 					'& .MuiDataGrid-row:hover': {
 						backgroundColor: '#1976d2a4', // azul fuerte
@@ -277,12 +298,12 @@ export default function TablaMuestra(props) {
 					...rows.initialState,
 					pagination: {
 						paginationModel: {
-							pageSize: 25,
+							pageSize: 10,
 						},
 					},
 
 				}}
-				pageSizeOptions={[25]}
+				pageSizeOptions={[10]}
 
 			/>
 
@@ -311,7 +332,7 @@ export default function TablaMuestra(props) {
 					<Alert {...snackbar} variant="filled" onClose={handleCloseSnackbar} />
 				</Snackbar>
 			)}
-
-		</>
+			{/* </div> */}
+		</div>
 	);
 }

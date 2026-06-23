@@ -25,15 +25,7 @@ router.post('/generarpdf', async (req, res) => {
                 datos.condiciones = [];
             }
         }
-        // // Por seguridad, si no existe o no es un array tras el parseo, lo inicializamos
-        // if (!Array.isArray(datos.condiciones)) {
-        //     datos.condiciones = [];
-        // }
-        // console.log('datos.otracondicion  ', datos.otracondicion)
-        // // 2. Verificamos 'otracondicion' y la agregamos si tiene contenido
-        // if (datos.otracondicion && String(datos.otracondicion).trim() !== "") {
-        //     datos.condiciones.push(datos.otracondicion);
-        // }
+
         if (datos.productos && typeof datos.productos === 'string') {
             try {
                 datos.productos = JSON.parse(datos.productos);
@@ -42,12 +34,9 @@ router.post('/generarpdf', async (req, res) => {
             }
         }
         // 1. Cargar imagen y template
-        // const imagePath = path.join(__dirname, 'routes', 'impresion', 'encabpresup.jpg');
         const imagePath = path.join(__dirname, 'encabpresup.jpg');
         const imageBase64 = fs.readFileSync(imagePath, { encoding: 'base64' });
         datos.logoBase64 = `data:image/jpeg;base64,${imageBase64}`;
-
-        // const htmlTemplate = fs.readFileSync(path.join(__dirname, 'routes', 'impresion', datos.informacion), 'utf8');
 
         // --- REGISTRO DE HELPERS PARA HANDLEBARS ---
         Handlebars.registerHelper('eq', function (a, b) {
@@ -73,7 +62,6 @@ router.post('/generarpdf', async (req, res) => {
 
         // Inyectamos el CSS
         await page.addStyleTag({
-            // path: path.join(__dirname, 'routes', 'impresion', 'estilopresup.css')
             path: path.join(__dirname, 'estilopresup.css')
         });
         const pdfBuffer = await page.pdf({
@@ -82,7 +70,6 @@ router.post('/generarpdf', async (req, res) => {
             preferCSSPageSize: true,
             margin: { top: '10mm', bottom: '10mm', left: '10mm', right: '10mm' }
         });
-        // const pathDestino = path.join(variables.caminoolsafrecuente, datos.nombrepresup + '.pdf'); y es OLSAFrecuentes, ahí crea 
         //si es vista previa un Vista_PREVIA_Presupuesto.pdf nombre que viene desde GeneradorPresup o
         // sino el nombre del presupuesto final
         const pathDestino = path.join(RUTAPRESUP, datos.nombrepresup + '.pdf');

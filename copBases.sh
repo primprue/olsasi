@@ -1,0 +1,154 @@
+
+
+
+#!/bin/bash
+# ==========================================
+# VERIFICACIÓN DE CREDENCIALES (.my.cnf)
+# ==========================================
+echo "Comprobando conexión a la base de datos..."
+
+# mysqladmin ping devuelve un estado de salida 0 si conecta, o 1 si falla.
+# Redirigimos la salida a /dev/null para que no ensucie la pantalla.
+if mysqladmin ping &>/dev/null; then
+    echo "✔ Conexión exitosa. El archivo .my.cnf se está leyendo correctamente."
+else
+    echo "❌ ERROR Crítico: No se pudo conectar a la base de datos."
+    echo "Asegúrate de que:"
+    echo "  1. El archivo ~/.my.cnf existe."
+    echo "  2. Tiene los permisos correctos (run: chmod 600 ~/.my.cnf)."
+    echo "  3. El usuario y contraseña dentro del archivo son válidos."
+    exit 1
+fi
+echo "--------------------------------------------"
+# ==========================================
+# CONFIGURACIÓN (Modifica esto según tu caso)
+# ==========================================
+DB_NAME="--all-databases" # Usa --all-databases si quieres todas
+# ==========================================
+# CONFIGURACIÓN DE RUTAS
+# ==========================================
+# Capturar el día de la semana en minúsculas (ej: lunes, martes, miercoles...)
+# Usamos 'LC_ALL=es_AR.UTF-8' para asegurarnos de que salga en español
+DIA_SEMANA=$(LC_ALL=es_AR.UTF-8 date +"%A" | tr '[:upper:]' '[:lower:]' | sed 's/[áéíóú]/&/g' | sed 's/árcoles/ercoles/')
+# Nota: El sed es por si tu sistema agrega acentos (ej: miércoles -> miercoles)
+DIA_SEMANA=$(echo "$DIA_SEMANA" | sed 's/miércoles/miercoles/g')
+
+# Definición de carpetas destino incluyendo el día
+DIR_LOCAL="/home/usuario/ResDiario/${DIA_SEMANA}"
+DIR_PENDRIVE="/media/usuario/F910-C6B9/Backupdiario/${DIA_SEMANA}"
+
+# echo "====== Iniciando Respaldo del día: ${DIA_SEMANA^^} ======"
+# echo "Fecha y hora actual: $(date)"
+
+
+# Formato de fecha para el nombre del archivo (Ej: backup_2026-06-02_0945.sql.gz)
+FECHA=$(date +"%Y-%m-%d_%H%M")
+NOMBRE_ARCHIVO="backup_${DB_NAME}.sql.gz"
+
+# ==========================================
+# PROCESO DE BACKUP
+# ==========================================
+
+echo "====== Iniciando proceso de copia de seguridad: $(date) ======"
+
+# 1. Crear los directorios si no existen
+mkdir -p "$DIR_LOCAL"
+#!/bin/bash
+
+# --- CONFIGURACIÓN GENERAL ---
+
+# --- FUNCIÓN DE RESPALDO ---
+# $1: Host/Servidor (ej. localhost, 192.168.1.50)
+# $2: Identificador para el nombre del archivo (ej. local, server2)
+respaldar_servidor() {
+    echo "========================================"
+    echo "Iniciando respaldo de: $2 ($1)"
+    echo "========================================"
+
+    if [ -n "$3" ]; then
+        echo "DEBUG: Extrayendo credenciales desde $3..."
+        
+        # Extraemos el usuario e ignoramos duplicados
+        USUARIO_CNF=$(grep -m 1 '^user=' "$3" | cut -d'=' -f2 | tr -d '[:space:]' | tr -d '"' | tr -d "'")
+        # Extraemos la contraseña e ignoramos duplicados
+        CLAVE_CNF=$(grep -m 1 '^password=' "$3" | cut -d'=' -f2 | tr -d '[:space:]' | tr -d '"' | tr -d "'")
+
+        echo "DEBUG: Conectando a $1 con el usuario [$USUARIO_CNF]..."
+        
+        # Le pasamos -u y -p explícitamente usando las variables extraídas
+        BASES_DE_DATOS=$(mysql -h "$1" -u "$USUARIO_CNF" -p"$CLAVE_CNF" --connect-timeout=5 -e "SHOW DATABASES;" | grep -Ev "(Database|information_schema|performance_schema|mysql|sys)")
+    else
+        echo "DEBUG: Intentando conectar a $1 de forma local..."
+        BASES_DE_DATOS=$(mysql -h "$1" -e "SHOW DATABASES;" | grep -Ev "(Database|information_schema|performance_schema|mysql|sys)")
+    fi
+
+    if [ $? -ne 0 ] || [ -z "$BASES_DE_DATOS" ]; then
+        echo "❌ ERROR: No se pudo conectar o no se encontraron bases de datos en $2 ($1)."
+        return 1
+    fi
+
+    for BD in $BASES_DE_DATOS; do
+        NOMBRE_ARCHIVO="backup_${2}_${BD}.sql.gz"
+        echo "• Exportando: $BD -> $NOMBRE_ARCHIVO"
+        
+        if [ -n "$3" ]; then
+            # Aquí también le pasamos las credenciales explícitas a mysqldump
+            mysqldump -h "$1" -u "$USUARIO_CNF" -p"$CLAVE_CNF" --no-tablespaces "$BD" | gzip > "${DIR_LOCAL}/${NOMBRE_ARCHIVO}"
+        else
+            mysqldump -h "$1" --no-tablespaces "$BD" | gzip > "${DIR_LOCAL}/${NOMBRE_ARCHIVO}"
+        fi
+        
+        if [ $? -eq 0 ]; then
+            echo "  ✔ Guardado en disco local."
+        else
+            echo "  ❌ ERROR al respaldar: $BD"
+        fi
+    done
+rsync -avzP sandra@192.168.2.11:/home/sandra/Documentos/OLSAFrecuentes/CONTABLE/. ${DIR_LOCAL}/CONTABLE/ || true
+rsync -avzP sandra@192.168.2.11:/home/sandra/Documentos/OLSAFrecuentes/CajaHistorial/. ${DIR_LOCAL}/CajaHistorial/ || true
+rsync -avzP sandra@192.168.2.11:/home/sandra/Documentos/OLSAFrecuentes/ConciliaciónBancaria/. ${DIR_LOCAL}/ConciliaciónBancaria/ || true
+rsync -avzP sandra@192.168.2.11:/home/sandra/Documentos/OLSAFrecuentes/Claves.ods ${DIR_LOCAL}/ || true
+rsync -avzP sandra@192.168.2.11:/home/sandra/Documentos/OLSAFrecuentes/PedidosSA.ods ${DIR_LOCAL}/ || true
+rsync -avzP sandra@192.168.2.11:/home/sandra/Documentos/OLSAFrecuentes/control-colores.xls ${DIR_LOCAL}/ || true
+rsync -avzP sandra@192.168.2.11:/media/factura/drive_c/RESGUARS/*.rar  ${DIR_LOCAL}/ResgOLS/ || true 
+rsync -avz --update sandra@192.168.2.11:/home/sandra/Documentos/OLSAFrecuentes/ usuario@192.168.2.106:/home/usuario/backupserv11/OLSAFrecuentes/
+
+}
+# --- 1. EJECUCIÓN DE RESPALDOS ---
+
+# Servidor 1 (Local): No le pasamos el tercer parámetro para que use tu .my.cnf por defecto de siempre
+respaldar_servidor "localhost" "servidor1"
+
+# Servidor 2 (Remoto): Le pasamos la IP y el archivo exclusivo con el nuevo usuario
+respaldar_servidor "192.168.2.11" "servidor2" "/home/usuario/.my_remoto.cnf"
+
+
+# --- 2. COPIAR AL PENDRIVE ---
+echo "--------------------------------------------"
+echo "3. Detectando Pendrive y copiando archivos..."
+
+if [ -d "$DIR_PENDRIVE" ] || mkdir -p "$DIR_PENDRIVE"; then
+    cp ${DIR_LOCAL}/*.sql.gz "$DIR_PENDRIVE/"
+    cp -r ${DIR_LOCAL}/CONTABLE/. "$DIR_PENDRIVE/CONTABLE/." || true
+    cp -r ${DIR_LOCAL}/CajaHistorial/. "$DIR_PENDRIVE/CajaHistorial/." || true
+    cp -r ${DIR_LOCAL}/ConciliaciónBancaria/. "$DIR_PENDRIVE/ConciliaciónBancaria/." || true
+    cp -r ${DIR_LOCAL}/Claves.ods "$DIR_PENDRIVE/Claves.ods" || true
+    cp -r ${DIR_LOCAL}/PedidosSA.ods "$DIR_PENDRIVE/PedidosSA.ods" || true
+    cp -r ${DIR_LOCAL}/control-colores.xls "$DIR_PENDRIVE/control-colores.xls" || true
+    cp -r ${DIR_LOCAL}/ResgOLS/. "$DIR_PENDRIVE/ResgOLS/." || true
+    if [ $? -eq 0 ]; then
+        echo "✔ Todos los archivos se copiaron al Pendrive con éxito."
+        sync
+        echo "Puede retirar el PenDrive de forma segura."
+    else
+        echo "❌ ERROR: Falló la copia de archivos al Pendrive."
+        exit 1
+    fi
+else
+    echo "❌ ERROR: El Pendrive no está conectado."
+    exit 1
+fi
+
+echo "====== Proceso finalizado con éxito: $(date) ======"
+
+

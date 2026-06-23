@@ -80,7 +80,8 @@ export default function FilaAnexo(props) {
 				ImpItemAnexo: (importetotal),
 			},
 		];
-		setState({ ...state, renglonanexo: datospresup[0] });
+
+		setState({ ...state, renglonanexo: datospresup[0], renglonanexodetalle: rows });
 		//  cierraanexos();
 	}
 
@@ -141,7 +142,6 @@ export default function FilaAnexo(props) {
 					value={sumaanexo}
 					className={EstTF.tfcurrency}
 				></CurrencyTextField>
-				{/* <IconButton onClick={cierraanexos}> */}
 				<RuleFolderIcon
 					onClick={cierraanexos}
 					style={{ color: green[500] }}

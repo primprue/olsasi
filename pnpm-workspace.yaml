@@ -1,0 +1,6 @@
+allowBuilds:
+  argon2: true
+  canvas: true
+  core-js: true
+  core-js-pure: true
+  esbuild: true

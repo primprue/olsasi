@@ -20,11 +20,8 @@ export default function FilaCuatro(props) {
 	const selectedOption = useMemo(() => state.VPGVI || "Vista Previa", [state.VPGVI]);
 	// Función para actualizar la opción seleccionada
 	const handleOptionChange = (newOption) => {
-		// setState({ ...state, mecanismo: newOption });
 		setState({ ...state, VPGVI: newOption });
-
 	};
-
 	const handleChange = (event) => {
 		const id = event.target.id;
 		setState({ ...state, [id]: event.target.value });
@@ -46,7 +43,7 @@ export default function FilaCuatro(props) {
 		var descrip = state.DescripPresup;
 		var otraCondicion = state.otraCondicion;
 		var explicacionPresup = state.ExplicaPresup;
-
+		console.log('state.renglonanexodetalle FilaCuatro ', state.renglonanexodetalle)
 		if (state.idClientes === 0 || state.idClientes === "") {
 			idClienteElegE = 0;
 			nomClienteElegE = state.nomCliente;
@@ -99,7 +96,7 @@ export default function FilaCuatro(props) {
 				if (element1.tipopresup === 'BOLSON PARA TANQUE') {
 					leyendatanque = `	El bolsón cotizado es una lámina impermeable, no es, un contenedor de líquido.
                 Por tal motivo, debe quedar apoyado sobre una superficie lisa que no tenga porosidad o rugosidad ya que ese tipo de superficie lo perforaría. 
-                 El agua en el fondo del tanque, una vez lleno, ejerce un peso mayor en la parte más profunda (piso y pared), y van disminuyendo 
+                El agua en el fondo del tanque, una vez lleno, ejerce un peso mayor en la parte más profunda (piso y pared), y van disminuyendo 
                 los kilos de presión hacia la parte superior.`
 				}
 			})
@@ -118,7 +115,9 @@ export default function FilaCuatro(props) {
 			leyendatanque: leyendatanque,
 			totalpresup: totalpresupformateado,
 			totalparacontrolar: props.suma,
-			nroPresupuesto: state.NroPresupuesto
+			nroPresupuesto: state.NroPresupuesto,
+			tipopresup: props.datos[0].dcalculo[0].tipopresup,
+			sDescripPresup: props.datos[0].sDescripPresup
 		};
 
 		if (state.VPGVI === 'VistaPrevia') {
@@ -132,24 +131,15 @@ export default function FilaCuatro(props) {
 				ClienteMayMin,
 				nomClienteElegE,
 				idClienteElegE,
-				explicacionPresup
+				explicacionPresup,
+				state.renglonanexodetalle
 			);
 			setState({ ...state, NroPresupuesto: nroPresupuesto1 });
 			if (state.NroPresupuesto1 !== 0) {
 				GeneradorPresup(datosParaEnvio, nroPresupuesto1);
 			}
-			// setDatosParaEnvio(datosParaEnvio1);
 		}
-		// cierrafilacuatro();
 	}
-
-
-	// useEffect(() => {
-	// 	if (state.NroPresupuesto !== 0) {
-	// 		GeneradorPresup(datosParaEnvio);
-	// 	}
-	// }, [state.NroPresupuesto]); // Se ejecuta cada vez que NroPresupuesto cambia
-
 
 	function cierrafilacuatro() {
 		props.setOpen({ filacuatro: false });

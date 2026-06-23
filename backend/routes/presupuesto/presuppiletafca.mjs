@@ -65,7 +65,8 @@ router.get("/", async (req, res) => {
       let ivasncal = minmay === "my" ? "CIVA" : ivasn;
       if (minmay == 'my') {
         coefmaymin = Number(p.coeficientemay) || 0;
-        tipoojal = p.abrojales28;
+        tipoojal = (tipoojale === "hz") ? p.abrojales28 : p.abrojales3b;
+        // tipoojal = p.abrojales28;
         coefMOT = Number(p.coefMOTmay) || 0;
       }
       else {
@@ -102,6 +103,7 @@ router.get("/", async (req, res) => {
 
       let detalle = detallep !== '' ? `${detallep} en :  ${mcuadcob.StkRubroDesc}` : `Lona para pileta, con cortes para caños de aluminio, con ojales de ${detojal} reforzados, ${detdrenaje} en :  ${mcuadcob.StkRubroDesc}`;
       let costo = Number(mcuadcob.ImpUnitario) + Number(ojales.ValorOjales) + valorMOT
+
       // IVA / redondeo
       if (ivasncal === "CIVA") {
         costo = Math.ceil(costo / 10) * 10;
@@ -122,7 +124,7 @@ router.get("/", async (req, res) => {
     res.json(resultados);
 
   } catch (err) {
-    console.log("Error en /presuppiletafca", err);
+    console.log("Error en /presuppiletaenr", err);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 });

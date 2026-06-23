@@ -38,6 +38,7 @@ router.get("/", async (req, res) => {
         coeficiente = result[0].coeficientemin;
         sogachicote = p.sogachicotemin;
       }
+      let ivasncal = minmay === "my" ? "CIVA" : ivasn;
 
       tipoojal = p.abrojales3h;
       sogadobladillo = p.sogadobladillo;
@@ -131,7 +132,7 @@ router.get("/", async (req, res) => {
 
 
       // IVA / redondeo
-      if (ivasn === "CIVA") {
+      if (ivasncal === "CIVA") {
         costo = Math.ceil(costo / 10) * 10;
       } else {
         costo = Math.ceil(costo / 1.21 / 10) * 10;
