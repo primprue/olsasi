@@ -7,9 +7,6 @@ export const OTRenglonLeer = (NroOT) => {
 	return new Promise((resolve) => {
 		setTimeout(() => {
 			const url = IpServidor + "/otrengleerpot/?id=" + NroOT;
-			// +
-			// "&t=" +
-			// new Date().getTime(); // Esto garantiza que cada solicitud sea única y no sea cacheada
 			request
 				.get(url)
 				.set("Content-Type", "application/json")

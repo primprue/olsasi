@@ -4,11 +4,9 @@ import IpServidor from "../pages/VariablesDeEntorno";
 
 
 export async function DatosBorrar(params, ejecutorbackend) {
-	// const {id, ...datos} = paramsid;
 	const { id, ...datos } = params;
 
 	const url = `${IpServidor}/${ejecutorbackend}/?id=${id}&&datos=${JSON.stringify(datos)}`;
-	// const url = `${IpServidor}/${ejecutorbackend}/?id=${paramsid}`;
 	try {
 		const res = await request
 			.delete(url)

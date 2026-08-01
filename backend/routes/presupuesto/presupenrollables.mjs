@@ -118,21 +118,27 @@ router.get('/', async (req, res, next) => {
       const di = datosimporte[0]
 
       let impunitario = Number(di.ImpUnitario)
+      if (tamcristal !== 'NOPVC') {
+        impunitario = impunitario + Number(dcristal.ArmadoCristal)
+      }
       if (ivasncal === 'CIVA') {
         impunitario = Math.ceil(impunitario / 10) * 10;
       } else {
         impunitario = Math.ceil(impunitario / 1.21 / 10) * 10;
       }
       let detalle = detallep !== '' ? `${detallep} en :  ${di.StkRubroDesc}` : `Lona enrollable `;
-      if (tamcristal != 'NOPVC') {
-        detalle = `${detalle} ${fajade} Cristal de ${dcristal.anchocristal}, marco de ${sobrantemarco} cm. en los costados, 
+      if (detallep === '') {
+        if (tamcristal !== 'NOPVC') {
+          detalle = `${detalle} ${fajade} Cristal de ${dcristal.anchocristal}, marco de ${sobrantemarco} cm. en los costados, 
                   y volado de ${altovolado} cm. en : ${di.StkRubroDesc} :`
-        impunitario = impunitario + Number(dcristal.ArmadoCristal)
-      } else {
-        if (altovolado != 0) {
-          detalle = `${detalle} con volado de ${altovolado} cm. en :  ${di.StkRubroDesc} `
+        } else {
+          if (altovolado !== 0) {
+            detalle = `${detalle} con volado de ${altovolado} cm. en :  ${di.StkRubroDesc} `
+          }
+          else {
+            detalle = `${detalle} en :  ${di.StkRubroDesc} `
+          }
         }
-        else { detalle = `${detalle} en :  ${di.StkRubroDesc} ` }
       }
 
       // ------------------------------------------------------------------

@@ -35,7 +35,8 @@ router.post('/', async (req, res) => {
         OTEncabconIVA: req.body.otdatos.OTEncabconIVA,
         OTEncabTransporte: transporte,
         OTEncabOC: OTEncabOC,
-        OTEncabDetalles: OTEncabDetalles
+        OTEncabDetalles: OTEncabDetalles,
+        OTEncabNroPresup: req.body.otdatos.datosencab[0][0].idPresupEncab
     }
     try {
         const q = `INSERT INTO BasesOrdenes.OTEncab SET ?`;
@@ -54,7 +55,7 @@ router.post('/', async (req, res) => {
                 OTRenglonLargo: renglon[0].PresupRenglonLargo,
                 OTRenglonAncho: renglon[0].PresupRenglonAncho,
                 OTRenglonImpItem: renglon[0].PresupRenglonImpItem,
-                OTRenglonParamInt: renglon[0].PresupRenglonParamInt,
+                // OTRenglonParamInt: renglon[0].PresupRenglonParamInt,
                 OTRenglonDetalles: JSON.stringify(req.body.otdatos.datosconfec)
             };
 
@@ -66,9 +67,15 @@ router.post('/', async (req, res) => {
 
         // 5. Si todo salió bien, confirmamos los cambios
         await connection.commit();
-        console.log('Orden de Trabajo y renglones insertados correctamente');
+        res.json({
+            ok: true,
+            message: "Presupuesto grabado correctamente",
+            nroot,
+        });
 
-        res.json({ success: true, insertId: nroot });
+        // res.status(201).json({
+        //     leyenda: "Orden de Trabajo grabada correctamente"
+        // });
 
     } catch (err) {
         // 6. Si hay CUALQUIER error, deshacemos todo

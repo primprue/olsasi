@@ -266,7 +266,11 @@
 	color: rgb(1, 112, 16);
 	font-size: 35px;
 }
-
+.iconoagregardeshabilitado {
+	color: rgba(1, 112, 16, 0.137);
+	margin-left: 35px;
+	font-size: 30px;
+}
 .iconomodificar {
 	color:rgb(248, 5, 139, 0.678);
 	margin-left: 35px;
@@ -276,6 +280,11 @@
 .iconomodificar:hover {
 	color: rgb(248, 5, 139);
 	font-size: 35px;
+}
+.iconomodificardeshabilitado {
+	color:rgba(248, 5, 139, 0.274);
+	margin-left: 35px;
+	font-size: 30px;
 }
 
 .iconoborrar {
@@ -406,4 +415,41 @@
 	font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 	color: rgba(5, 50, 248, 0.959);
 
+}
+
+
+.otestadoenturno {
+	background-color: rgba(124, 252, 65, 0.432);
+	height: 100%;
+	width: 100%;
+}
+.otestadoenparque {
+	background-color: rgba(77, 246, 252, 0.432);
+	height: 100%;
+	width: 100%;
+}
+.otestadoenruta {
+	background-color: rgba(228, 247, 122, 0.432);
+	height: 100%;
+	width: 100%;
+}
+.otestadoterminada {
+	background-color: rgba(71, 43, 230, 0.432);
+	height: 100%;
+	width: 100%;
+}
+.otestadoentregada {
+	background-color: rgba(247, 215, 129, 0.432);
+	height: 100%;
+	width: 100%;
+}
+.otestadoentregadaafacturar{
+	background-color: rgba(240, 120, 83, 0.432);
+	height: 100%;
+	width: 100%;
+}
+.otestadoentregadafacturada{
+	background-color: rgba(40, 241, 57, 0.432);
+	height: 100%;
+	width: 100%;
 }

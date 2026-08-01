@@ -26,10 +26,11 @@ const TextFieldSelectObject = ({ dato, onChange }) => {
             style={{
                 background:
                     dato.requerido === "S" ? "#7a7af318" : "#94fcd42b",
-                width: ancho, // ancho dinámico aplicado aquí
+                // ancho dinámico aplicado aquí
             }}
 
             sx={{
+                width: `${ancho}%`,
                 input: { color: "#00000f" },
                 '& .MuiInputBase-root': {
                     height: '35px',

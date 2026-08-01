@@ -65,6 +65,10 @@ import clientesleerencabot from "./routes/clientes/clientesleerencabot.mjs";
 import clientesleerdescod from "./routes/clientes/clientesleerdescod.mjs";
 
 import medclileercodfac from "./routes/medidasclientes/medclileercodfac.mjs";
+import medcliagregar from "./routes/medidasclientes/medcliagregar.mjs";
+import medcliimagen from "./routes/medidasclientes/medcliimagen.mjs";
+import medclileerultot from "./routes/medidasclientes/medclileerultot.mjs";
+import medcliconvertidor from "./routes/medidasclientes/medcliconvertidor.mjs";
 
 import buscaigualarcli from "./routes/procesp/buscaigualarcli.mjs";
 import modificclientedc from "./routes/procesp/modificclientedc.mjs";
@@ -219,9 +223,9 @@ import otorigenpresupagregar from "./routes/ordentrabajo/otorigenpresupagregar.m
 
 import otgraba from "./routes/ordentrabajo/otgraba.mjs";
 import otleeencab from "./routes/ordentrabajo/otleeencab.mjs";
-import otestadoleer from "./routes/ordentrabajo/otestadoleer.mjs";
 import otrengleerpot from "./routes/ordentrabajo/otrengleerpot.mjs";
 import otguardapdf from "./routes/ordentrabajo/otguardapdf.mjs";
+import otmodificaestado from "./routes/ordentrabajo/otmodificaestado.mjs";
 
 
 import otcondpagoleer from "./routes/otcondpago/otcondpagoleer.mjs";
@@ -230,10 +234,18 @@ import otcondpagoagregar from "./routes/otcondpago/otcondpagoagregar.mjs";
 import otcondpagomodificar from "./routes/otcondpago/otcondpagomodificar.mjs";
 import otcondpagoborrar from "./routes/otcondpago/otcondpagoborrar.mjs";
 
+import otestadoleer from "./routes/otestado/otestadoleer.mjs";
+import otestadomodificar from "./routes/otestado/otestadomodificar.mjs";
+import otestadoborrar from "./routes/otestado/otestadoborrar.mjs";
+import otestadoagregar from "./routes/otestado/otestadoagregar.mjs";
+import otestadoleercod from "./routes/otestado/otestadoleercod.mjs";
+
 // import otdatoslee from "./routes/ordentrabajo/otdatos/otdatoslee.mjs";
 import otdatosleer from "./routes/ordentrabajo/otdatos/otdatosleer.mjs";
 import otdatosagregar from "./routes/ordentrabajo/otdatos/otdatosagregar.mjs";
+import otdatosborrar from "./routes/ordentrabajo/otdatos/otdatosborrar.mjs";
 import otdatosagregaselec from "./routes/ordentrabajo/otdatos/otdatosagregaselec.mjs";
+import otdatosborrarselec from "./routes/ordentrabajo/otdatos/otdatosborrarselec.mjs";
 import otdatosmodificar from "./routes/ordentrabajo/otdatos/otdatosmodificar.mjs";
 import otdatosreordentabla from "./routes/ordentrabajo/otdatos/otdatosreordentabla.mjs";
 //para ctacte
@@ -364,6 +376,10 @@ app.use("/api/clientesleerencabot", clientesleerencabot);
 app.use("/api/clientesleerdescod", clientesleerdescod);
 
 app.use("/api/medclileercodfac", medclileercodfac);
+app.use("/api/medcliagregar", medcliagregar);
+app.use("/api/medcliimagen", medcliimagen);
+app.use("/api/medclileerultot", medclileerultot);
+app.use("/api/medcliconvertidor", medcliconvertidor);
 
 app.use("/api/buscaigualarcli", buscaigualarcli);
 app.use("/api/modificclientedc", modificclientedc);
@@ -525,11 +541,11 @@ app.use("/api/otorigenpresupagregar", otorigenpresupagregar);
 app.use("/api/otdatosleer", otdatosleer);
 app.use("/api/otgraba", otgraba);
 app.use("/api/otleeencab", otleeencab);
-app.use("/api/otestadoleer", otestadoleer);
 app.use("/api/otrengleerpot", otrengleerpot);
 app.use("/api/otguardapdf", otguardapdf);
 app.use("/api/otdatosmodificar", otdatosmodificar);
 app.use("/api/otdatosreordentabla", otdatosreordentabla);
+app.use("/api/otmodificaestado", otmodificaestado);
 
 
 app.use("/api/otcondpagoleer", otcondpagoleer);
@@ -538,9 +554,17 @@ app.use("/api/otcondpagoagregar", otcondpagoagregar);
 app.use("/api/otcondpagomodificar", otcondpagomodificar);
 app.use("/api/otcondpagoborrar", otcondpagoborrar);
 
+app.use("/api/otestadoleer", otestadoleer);
+app.use("/api/otestadomodificar", otestadomodificar);
+app.use("/api/otestadoborrar", otestadoborrar);
+app.use("/api/otestadoagregar", otestadoagregar);
+app.use("/api/otestadoleercod", otestadoleercod);
+
 // app.use("/api/otdatoslee", otdatoslee);
 app.use("/api/otdatosagregar", otdatosagregar);
+app.use("/api/otdatosborrar", otdatosborrar);
 app.use("/api/otdatosagregaselec", otdatosagregaselec);
+app.use("/api/otdatosborrarselec", otdatosborrarselec);
 
 
 //temas ctacte

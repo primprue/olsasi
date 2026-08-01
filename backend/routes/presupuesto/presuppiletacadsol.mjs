@@ -99,7 +99,7 @@ router.get("/", async (req, res) => {
       const datos1 = await queryAsync(q1, paramojales);
       const ojales = datos1[0]
 
-      let detalle = detallep !== '' ? `${detallep} en :  ${mcuadcob.StkRubroDesc}` : `Lona para pileta, con cortes para caños de aluminio y solapas, con ojales de ${detojal} reforzados, ${detdrenaje} en :  ${mcuadcob.StkRubroDesc}`;
+      let detalle = detallep !== '' ? `${detallep} en :  ${mcuadcob.StkRubroDesc}` : `Lona para pileta, con cortes para caños de aluminio y solapas, con ojales ${detojal} reforzados, ${detdrenaje} en :  ${mcuadcob.StkRubroDesc}`;
 
       let costo = Number(mcuadcob.ImpUnitario) + Number(ojales.ValorOjales) + valorMOT
       // IVA / redondeo

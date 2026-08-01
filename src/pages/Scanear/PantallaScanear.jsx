@@ -42,8 +42,6 @@ export default function PantallaScanear() {
 
     const [selectedValues, setSelectedValues] = useState({});
     const handleSelectChange = (value, id) => {
-        console.log('value  ', value)
-        console.log('id  ', id)
 
     };
     const classes = useStyles;

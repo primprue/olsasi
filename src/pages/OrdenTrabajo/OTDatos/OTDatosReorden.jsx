@@ -9,7 +9,6 @@ import formdata from "./formdata.js";
 import estilotabla from "../../../Styles/Tabla.module.css";
 import { llenarcolumns } from './colreorden.jsx';
 import { OTDatosReordenTabla } from './OTDatosReordenTabla.jsx';
-
 export default function OTDatosReorden(props) {
     const { open, handleClose, datosreorden } = props;
     // const { otdatos, setOTdatos } = use(OrdTrabajo);
@@ -122,7 +121,7 @@ export default function OTDatosReorden(props) {
                                     backgroundColor: indiceArrastrado === index ? '#f0f0f0' : 'white',
                                     opacity: indiceArrastrado === index ? 0.5 : 1,
                                     borderBottom: '1px solid #eee',
-                                    transition: 'background-color 0.2s'
+                                    transition: 'background-color 0.2s',
                                 }}
                             >
                                 <td style={{ padding: '10px' }}>{campo.idOTDatos}</td>

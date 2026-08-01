@@ -7,6 +7,8 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogTitle,
+	Alert,
+	Snackbar
 } from "@mui/material";
 import { DataGrid, GridToolbarContainer } from "@mui/x-data-grid";
 import { presuprenglonleer } from "./PresupRenglonLeer.jsx";
@@ -14,9 +16,12 @@ import { llenarcolumns } from "./columns.jsx";
 import { PresupBorrar } from "../PresupBorrar.jsx";
 import { use } from "react";
 import OrdTrabajo from "../../../../../context/OrdTrabajo.jsx";
+import MuestraMensaje from "../../../../../components/lib/MuestraMensaje";
 
 
 export function TablaMuestraRenglon(props) {
+	const [snackbar, setSnackbar] = useState(null);
+	const handleCloseSnackbar = () => setSnackbar(null);
 	const { otdatos, setOTdatos } = use(OrdTrabajo);
 	const { open, handleClose, Presup, origen } = props;
 	const [renglon, setRenglon] = useState([]);
@@ -35,9 +40,20 @@ export function TablaMuestraRenglon(props) {
 		//campos de la orden de trabajo original
 		//idOTRenglon, OTRenglonNroPresup, OTRenglonCant, OTRenglonDesc, OTRenglonLargo, OTRenglonAncho, OTRenglonImpUnit, OTRenglonImpItem, OTRenglonParamInt
 		//los mando por Context a la OT
-		setOTdatos({ ...otdatos, renglonespresup: selectionModel });
 
+		if (selectionModel.length !== 0)
+			setOTdatos({
+				...otdatos,
+				renglonespresup: selectionModel,
+			})
+		else {
+			setSnackbar({
+				children: "Por favor, seleccione un renglón",
+				severity: "error",
+			});
+		}
 	}
+
 
 	// En tu componente:
 	useEffect(() => {
@@ -46,6 +62,7 @@ export function TablaMuestraRenglon(props) {
 			handleClose();
 		}
 	}, [otdatos]); // Se dispara cada vez que otdatos cambia
+
 	const Cierra = () => {
 		handleClose();
 	};
@@ -135,6 +152,17 @@ export function TablaMuestraRenglon(props) {
 						)}
 				</DialogActions>
 			</Dialog>
+			{!!snackbar && (
+				<Snackbar
+					open
+					anchorOrigin={{ vertical: "top", horizontal: "center" }}
+					onClose={handleCloseSnackbar}
+					autoHideDuration={5200}
+					sx={{ width: '100%' }}
+				>
+					<Alert {...snackbar} variant="filled" onClose={handleCloseSnackbar} />
+				</Snackbar>
+			)}
 		</div>
 	);
 }

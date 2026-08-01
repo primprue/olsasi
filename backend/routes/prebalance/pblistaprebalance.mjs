@@ -5,12 +5,20 @@ import { conexionpool } from '../conexion.mjs';
 
 
 router.get("/", async (req, res) => {
-    const fechahoy = new Date();
-    const aniohoy = fechahoy.getFullYear();
-    const meshoy = String(fechahoy.getMonth() + 1).padStart(2, '0');
-    const diahoy = String(fechahoy.getDate()).padStart(2, '0'); //para que tenga dos dígitos
+    // const fechahoy = new Date();
+
+    const fechahoy = new Date(req.query.fechaActual); // 2026-06-30
+    const aniohoy = fechahoy.getUTCFullYear();
+    const meshoy = String(fechahoy.getUTCMonth() + 1).padStart(2, '0');
+    const diahoy = String(fechahoy.getUTCDate()).padStart(2, '0');
+
     const fechahoyn = `${aniohoy}-${meshoy}-${diahoy}`;
 
+    // Resultado: "2026-06-30" ✅
+    // const aniohoy = fechahoy.getFullYear();
+    // const meshoy = String(fechahoy.getMonth() + 1).padStart(2, '0');
+    // const diahoy = String(fechahoy.getDate()).padStart(2, '0'); //para que tenga dos dígitos
+    // const fechahoyn = `${aniohoy}-${meshoy}-${diahoy}`;
     const impVentas = req.query.impVentas;
 
     //     try {
@@ -28,7 +36,8 @@ router.get("/", async (req, res) => {
     // const fechaDesde = meshoy < 4 ? `${aniohoy - 1}-03-31` : `${aniohoy}-03-31`;
     // const fechaHasta = meshoy < 4 ? `${aniohoy}-04-01` : fechahoy;
     const fechaDesde = meshoy < 4 ? `${aniohoy - 1}-04-01` : `${aniohoy}-04-01`;
-    const fechaHasta = meshoy < 4 ? `${aniohoy}-04-01` : fechahoyn;
+    // const fechaHasta = meshoy < 4 ? `${aniohoy}-04-01` : fechahoyn;
+    const fechaHasta = meshoy < 4 ? `${aniohoy}-03-31` : fechahoyn;
     const cerrado = 'N'
     try {
         // const modificaventas =
@@ -69,7 +78,7 @@ router.get("/", async (req, res) => {
                     ON BasePreBalance.PBSubRubros.PBidSubRubro = BasePreBalance.PBItems.PBItemsSubRubro
                 JOIN BasePreBalance.PBComprobantes
                     ON BasePreBalance.PBComprobantes.PBCompAbre = BasePreBalance.PBItems.PBItemsTipoComp
-                WHERE PBItemsFecha >= ? AND PBItemsFecha < ?
+                WHERE PBItemsFecha >= ? AND PBItemsFecha <= ?
                 GROUP BY 
                     PBItemsSubRubro, 
                     mes, 
@@ -114,6 +123,11 @@ router.get("/", async (req, res) => {
             const mes = item.mes;
             const iva = parseFloat(item.totalIVA);
             totalIVACpras.meses[mes] += iva;
+            // if (mes === 6) {
+            //     console.log('item.PBSubRubroDetalle ', item.PBSubRubroDetalle)
+            //     console.log('iva ', iva)
+            //     console.log('totalIVACpras.meses[mes] ', totalIVACpras.meses[mes])
+            // }
             totalIVACpras.total += iva;
         });
         // 2. Calcular el TOTAL Ventas por mes

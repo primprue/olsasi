@@ -70,20 +70,20 @@ export default function ImpReparacion(props) {
 		doc.setFont("times", "italic");
 		doc.text(nomCliente, 27, 10);
 		doc.setFontSize(11);
-		doc.line(8, 12, 58, 12);
+		doc.line(8, 13, 58, 13);
 		// doc.rect(62, 6, 60, 6, "S");
-		doc.text(`Importe c/IVA :`.padEnd(20, " ") + ` ${formatCurrency(ImpTotalRep)}`, 80, 10);
+		doc.text(`Importe c/IVA :`.padEnd(20, " ") + ` ${formatCurrency(ImpTotalRep)}`, 80, 14);
 
-		doc.line(79, 12, 129, 12);
-		doc.text(`Importe s/IVA :`.padEnd(20, " ") + ` ${formatCurrency(ImpTotalRep / 1.21)}`, 143, 10);
-		doc.line(142, 12, 192, 12);
+		doc.line(79, 15, 129, 15);
+		doc.text(`Importe s/IVA :`.padEnd(20, " ") + ` ${formatCurrency(ImpTotalRep / 1.21)}`, 143, 14);
+		doc.line(142, 15, 192, 15);
 		// Establecer el color del borde (RGB)
 		doc.setDrawColor(0, 0, 0); // Negro
 
 		doc.setFont("arial", "bold");
 		//	x mueve horizontal es como la x de un gráfico
 		doc.setFontSize(8);
-		let y = 17;
+		let y = 18;
 		let x = 0
 		let ancho = 60; // Ancho del recuadro
 		let alto = 4;

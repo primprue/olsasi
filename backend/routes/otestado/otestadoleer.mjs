@@ -7,7 +7,7 @@ import { conexionpool } from '../conexion.mjs';
 
 router.get("/", async (req, res) => {
     try {
-        const q = `SELECT idOTEstado as value, OTEstadoDesc as label  FROM BasesOrdenes.OTEstado`;
+        const q = `SELECT idOTEstado as id, OTEstadoDesc, OTEstadoColor  FROM BasesOrdenes.OTEstado`;
         const [result] = await conexionpool.query(q);
         return res.json(result);
     } catch (err) {
@@ -20,3 +20,4 @@ router.get("/", async (req, res) => {
 });
 
 export default router;
+

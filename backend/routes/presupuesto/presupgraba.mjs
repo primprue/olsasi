@@ -8,9 +8,7 @@ moment.locale("es");
 router.use(express.json());
 
 router.all("/", async (req, res) => {
-  // const conn = await conexionpool.promise().getConnection();
   const conn = await conexionpool.getConnection();
-  console.log('req.body.DatosPresup  ', req.body.DatosPresup)
   try {
     // ⭐ INICIAR TRANSACCIÓN
     await conn.beginTransaction();

@@ -21,7 +21,7 @@ router.post("/", async function (req, res, next) {
     `;
     await conexionpool.query(q, [mesmod, aniomod, importemod, fechamod, cierraabre]); // Aquí se pasa el valor de la columna que se quiere actualizar
     return res.status(200).json({
-      leyenda: 'Items actualizados correctamente',
+      leyenda: 'Prebalance Ventas actualizado correctamente',
     });
   } catch (err) {
     console.error("Error en el proceso:", err);

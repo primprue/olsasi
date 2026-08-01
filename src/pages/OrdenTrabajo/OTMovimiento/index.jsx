@@ -9,12 +9,14 @@ import { use } from "react";
 import TablasContexto from "../../../context/TablasContext.jsx";
 import CtasCtesContext from "../../../context/CtasCtesContext.jsx";
 import FitbitIcon from "@mui/icons-material/Fitbit";
+import ScannerIcon from '@mui/icons-material/Scanner';
 import DescriptionTwoToneIcon from "@mui/icons-material/DescriptionTwoTone";
 import FindInPageTwoToneIcon from "@mui/icons-material/FindInPageTwoTone";
 import PreviewTwoToneIcon from "@mui/icons-material/PreviewTwoTone";
 import {
 	common,
 	deepOrange,
+	purple,
 	green,
 	yellow,
 	pink,
@@ -27,10 +29,14 @@ import { TablaMuestraRenglon } from "./TablaMuestraRenglon/index.jsx";
 import { ClientesLeerDesCod } from "../../Tablas/Clientes/ClientesLeerDesCod.jsx";
 import { Route, useNavigate } from "react-router-dom";
 import OrdTrabajo from "../../../context/OrdTrabajo.jsx";
+import { OTRenglonLeer } from "./TablaMuestraRenglon/OTRenglonLeer.jsx";
+import PantallaScanear from "../../Scanear/PantallaScanear.jsx";
+import Scanear from "../../Scanear/index.jsx";
 export default function OTMovimiento() {
 	const { formdatos, setFormdatos } = use(TablasContexto);
 	const { fcdatos, setFCdatos } = use(CtasCtesContext);
 	const { otdatos, setOTdatos } = use(OrdTrabajo);
+	const [datosMedida, setDatosMedida] = useState([]);
 	const [rows, setRows] = useState([]);
 	const [pdfUrl, setPdfUrl] = useState(null);
 	const [columns, setColumns] = useState([]);
@@ -42,6 +48,7 @@ export default function OTMovimiento() {
 
 	async function columnsFetch() {
 		var col = await llenarcolumns();
+		col.push(actionsScaneo);
 		col.push(actionsColumn);
 		col.push(actionsColumn1);
 		col.push(actionsColumn2);
@@ -66,6 +73,16 @@ export default function OTMovimiento() {
 	const handleClose1 = () => {
 		setOpen1(!open1);
 	};
+
+
+	async function fcionscaneo(event) {
+		console.log(event.row);
+		const detalle = await OTRenglonLeer(event.row.id);
+		console.log(detalle);
+		setDatosMedida(detalle);
+		Scanear(detalle);
+	}
+
 	async function fcionotrosdatos(event) {
 		setNroordeleg(event.row.id);
 		setOpen(true);
@@ -119,6 +136,20 @@ export default function OTMovimiento() {
 		socket.onerror = (error) => {
 			console.error("Error en WebSocket:", error);
 		};
+	};
+	const actionsScaneo = {
+		field: "scanear",
+		headerName: "Scanear",
+		width: 100,
+		headerClassName: "encabcolumns",
+		renderCell: (params) => (
+			<Button
+				variant="text"
+				style={{ color: purple[500] }}
+				onClick={() => fcionscaneo(params)}
+				startIcon={<ScannerIcon />}
+			/>
+		),
 	};
 	const actionsColumn = {
 		field: "actions",
@@ -178,6 +209,7 @@ export default function OTMovimiento() {
 			/>
 		),
 	};
+
 	return (
 		<>
 			<TablaMuestra

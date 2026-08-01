@@ -23,8 +23,6 @@ import PlaylistAddCheckRoundedIcon from "@mui/icons-material/PlaylistAddCheckRou
 import PreviewTwoToneIcon from "@mui/icons-material/PreviewTwoTone";
 import { TablaMuestraRenglon } from "./TablaMuestraRenglon/index.jsx";
 import { esES } from '@mui/x-data-grid/locales';
-// import { PresupPreview } from "../PresupPreview";
-// import { PresupNombre } from "./PresupNombre.jsx";
 import VisorPresupuesto from "./VisorPresupuesto.jsx";
 import { Route, useNavigate } from "react-router-dom";
 
@@ -108,6 +106,7 @@ export default function PresupMuestra() {
 	};
 	useEffect(() => {
 		initialFetch();
+		setOTdatos('');
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	function CustomToolbar() {
@@ -142,15 +141,6 @@ export default function PresupMuestra() {
 
 	return (
 		<div style={{ height: 600, width: '100%' }}>
-			{/* <Box
-				sx={{
-					width: "100%",
-					align: "center",
-					justifycontent: "center",
-					boxShadow: 5,
-					padding: 5,
-				}}
-			> */}
 			{isOpen && (
 				<DataGrid
 					rows={rows}
@@ -190,7 +180,6 @@ export default function PresupMuestra() {
 					alCerrar={() => setAbrirModal(false)}
 				/>
 			)}
-			{/* </Box> */}
 		</div>
 	);
 }

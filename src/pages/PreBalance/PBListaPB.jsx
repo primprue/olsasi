@@ -1,12 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { format } from "date-fns";
+import { format, endOfMonth } from 'date-fns';
 import PideFechas from '../../components/comppropios/PideFechas';
 import { PBListaPrebalance } from './PBListaPrebalance';
 import TextFieldComun from '../../components/comppropios/TextFieldComun';
 // MODIFICADO: Importamos Radio para la selección del período
 import { Alert, Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, Snackbar, Typography, Radio } from '@mui/material';
 import { DatosLeer } from '../../components/DatosLeer';
-import MuestraMensaje from '../../components/lib/MuestraMensaje';
 import { DatosModificar } from '../../components/DatosModificar';
 
 export default function PBListaPB() {
@@ -17,12 +16,46 @@ export default function PBListaPB() {
     const [mesabierto, setMesabierto] = useState([]);
 
     const [fechaActual, setFechaActual] = useState(format(new Date(), "yyyy-MM-dd"));
+    // const [fechaultimodia, setFechaUltimoDia] = useState('')
+    // const [fechaActual, setFechaActual] = useState(
+    //     format(endOfMonth(new Date()), "yyyy-MM-dd")
+    // );
     const [impVentas, setImpVentas] = useState(0);
     const [pereleg, setPereleg] = useState(false);
 
     // MODIFICADO: Estado para guardar el período seleccionado por el usuario
     const [periodoSeleccionado, setPeriodoSeleccionado] = useState(null);
+    async function crearPeriodo() {
+        const fechaOriginal = periodoSeleccionado.PBFechaV;
 
+        // 1. Parsear la fecha original (DD-MM-YYYY)
+        const [dia, mes, anio] = fechaOriginal.split('-').map(Number);
+
+        // Nota: Los meses en JavaScript van de 0 (enero) a 11 (diciembre).
+        // El mes siguiente numérico sería exactamente el valor de 'mes' (si junio es 6, pasamos 6 que equivale a julio)
+        const añoSiguiente = mes === 12 ? anio + 1 : anio;
+        const mesSiguienteIndex = mes === 12 ? 0 : mes;
+
+        // 2. Obtener el último día del mes siguiente
+        // Pasamos el índice del mes subsiguiente y el día 0 para que retroceda al último día del mes que queremos
+        const ultimoDiaObjeto = new Date(añoSiguiente, mesSiguienteIndex + 1, 0);
+        const ultimoDia = String(ultimoDiaObjeto.getDate()).padStart(2, '0');
+
+        // 3. Obtener el mes siguiente (en número con dos dígitos, o en texto si lo prefieres)
+        const mesSiguienteNumero = String(mesSiguienteIndex + 1).padStart(2, '0');
+
+        const datos = {
+            id: fechaActual,
+            impVentas: 0,
+            anioV: añoSiguiente, // <--- Aquí tienes el año elegido
+            mesV: mesSiguienteNumero     // <--- Aquí tienes el mes elegido
+        }
+        const resultado = await DatosModificar(datos, 'pbvtasmodivta');
+        if (resultado === 200) {
+            MiraMesAbierto()
+        }
+
+    }
     async function handleConsultar() {
         // MODIFICADO: Validación por si intenta consultar sin elegir un período
         if (!periodoSeleccionado) {
@@ -32,19 +65,23 @@ export default function PBListaPB() {
             });
             return;
         }
+        if (periodoSeleccionado.PBAnioV !== null || periodoSeleccionado.PBMesV !== null) {
+            const fechames = periodoSeleccionado.PBAnioV + '-' + periodoSeleccionado.PBMesV + '-' + 15;
+            const fechaultimodia = format(endOfMonth(fechames), "yyyy-MM-dd");
+            //setFechaUltimoDia(format(endOfMonth(fechames), "yyyy-MM-dd"))
 
-        const [año, mes, dia] = fechaActual.split('-');
-
-        // MODIFICADO: Ahora puedes mandar los datos del período seleccionado a la API
-        const datos = {
-            id: fechaActual,
-            impVentas,
-            anioV: periodoSeleccionado.PBAnioV, // <--- Aquí tienes el año elegido
-            mesV: periodoSeleccionado.PBMesV     // <--- Aquí tienes el mes elegido
+            const [año, mes, dia] = fechaActual.split('-');
+            // MODIFICADO: Ahora puedes mandar los datos del período seleccionado a la API
+            const datos = {
+                id: fechaultimodia,
+                impVentas,
+                anioV: periodoSeleccionado.PBAnioV, // <--- Aquí tienes el año elegido
+                mesV: periodoSeleccionado.PBMesV     // <--- Aquí tienes el mes elegido
+            }
+            const nuevoimpvta = await DatosModificar(datos, 'pbvtasmodivta');
+            // const rows = await PBListaPrebalance(fechaActual, impVentas, 'pblistaprebalance');
+            const rows = await PBListaPrebalance(fechaultimodia, impVentas, 'pblistaprebalance');
         }
-
-        const nuevoimpvta = await DatosModificar(datos, 'pbvtasmodivta');
-        const rows = await PBListaPrebalance(fechaActual, impVentas, 'pblistaprebalance');
     };
 
     const handleChange = (value) => {
@@ -67,7 +104,6 @@ export default function PBListaPB() {
         if (mesabiertoleido.length > 0 && !periodoSeleccionado) {
             setPeriodoSeleccionado(mesabiertoleido[0]);
         }
-
         if (mesabiertoleido.length > 2) {
             setSnackbar({
                 children: "Hay más de un mes abierto",
@@ -105,8 +141,13 @@ export default function PBListaPB() {
                     >
                         Consultar
                     </Button>
+                    <Button
+                        variant="contained"
+                        onClick={crearPeriodo}
+                    >
+                        Crear Período
+                    </Button>
                 </Box>
-
                 {/* MODIFICADO: Texto informativo para saber qué período se está afectando */}
                 {periodoSeleccionado && (
                     <Typography variant="body2" color="primary" sx={{ mb: 2, fontWeight: 'bold' }}>

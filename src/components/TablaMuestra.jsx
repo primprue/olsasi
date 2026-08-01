@@ -4,7 +4,7 @@ import { useState } from "react";
 import CheckCircleTwoToneIcon from "@mui/icons-material/CheckCircleTwoTone";
 import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
 import PreviewTwoToneIcon from "@mui/icons-material/PreviewTwoTone";
-import { RecargaIcon, BorrarIcono, AgregarIcon, ImpresionEsp } from "../components/comppropios/CustomIcons.jsx";
+import { RecargaIcon, BorrarIcono, AgregarIcon, ImpresionEsp, ActividadEsp } from "../components/comppropios/CustomIcons.jsx";
 import estilotabla from "../Styles/Tabla.module.css";
 //https://www.youtube.com/watch?v=1zYf4Yw1jqs usa custom hooks y en el ejemplo maneja promesas y errores
 import {
@@ -28,6 +28,7 @@ import { DatosModificar } from "./DatosModificar.jsx";
 import { DatosLeer } from "./DatosLeer.jsx";
 import { Tooltip } from "@mui/material";
 import { ImpresionesEsp } from "./ImpresionesEsp.jsx";
+import { ActividadesEsp } from "./ActividadesEsp.jsx";
 
 /*props viene de IndexTablas, que hace una lectura de los datos de las tablas, según
 el backend que se haya cargado en formdata de la tabla en si */
@@ -108,6 +109,10 @@ export default function TablaMuestra(props) {
 	const impresionesespeciales = () => {
 		ImpresionesEsp(formdatos.impresionesp);
 	};
+	const activdadesesepeciales = (rowsel) => {
+
+		ActividadesEsp(rowsel, formdatos.otraactividad);
+	};
 	const handleModifica = async (params) => {
 
 		let resultado;
@@ -186,23 +191,40 @@ export default function TablaMuestra(props) {
 				<GridToolbarQuickFilter placeholder="Buscar" />
 				{(formdatos.tablabase !== "MuestraPresupuesto" && (
 					<React.Fragment>
-						<AgregarIcon
-							className={estilotabla.iconoagregar}
-							size="large"
-							titleAccess="Agregar"
-							onClick={() => handleAlta()}
-						/>
-						<CheckCircleTwoToneIcon
-							variant="contained"
-							titleAccess="Confirma Modificación"
-							className={estilotabla.iconomodificar}
-							onClick={() => handleModifica(rown)}
-						/>
+						{(formdatos.nombackagregar !== '' && (
+							<AgregarIcon
+								className={estilotabla.iconoagregar}
+								size="large"
+								titleAccess="Agregar"
+								onClick={() => handleAlta()}
+							/>)) ||
+							(formdatos.nombackagregar === '' && (
+								<AgregarIcon
+									variant="contained"
+									titleAccess="Agregar"
+									className={estilotabla.iconoagregardeshabilitado}
+								/>
+							))
+						}
+						{(formdatos.nombackmodificar !== '' && (
+							<CheckCircleTwoToneIcon
+								variant="contained"
+								titleAccess="Confirma Modificación"
+								className={estilotabla.iconomodificar}
+								onClick={() => handleModifica(rown)}
+							/>)) ||
+							(formdatos.nombackmodificar === '' && (
+								<CheckCircleTwoToneIcon
+									variant="contained"
+									titleAccess="Confirma Modificación"
+									className={estilotabla.iconomodificardeshabilitado}
+								/>))}
 					</React.Fragment>
 
 				)) ||
 					(formdatos.tablabase === "MuestraPresupuesto" &&
 						(
+
 							<PreviewTwoToneIcon
 								onClick={() => handleModifica(rowsel.id)}
 								className={estilotabla.iconomodificar}
@@ -249,6 +271,18 @@ export default function TablaMuestra(props) {
 						className={estilotabla.iconoimpresiones}
 						onClick={() => impresionesespeciales()}
 					/> || <ImpresionEsp
+						variant="contained"
+						titleAccess="Impresiones"
+						className={estilotabla.iconoimpresionesdeshabilitado}
+					/>
+				))}
+				{(formdatos.otraactividad && (
+					<ActividadEsp
+						variant="contained"
+						titleAccess={formdatos.titulootraactividad}
+						className={estilotabla.iconoimpresiones}
+						onClick={() => activdadesesepeciales(rowsel)}
+					/> || <ActividadEsp
 						variant="contained"
 						titleAccess="Impresiones"
 						className={estilotabla.iconoimpresionesdeshabilitado}

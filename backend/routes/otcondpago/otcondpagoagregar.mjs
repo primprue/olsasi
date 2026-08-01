@@ -1,18 +1,15 @@
 import express from 'express';
 var router = express.Router();
-import moment from 'moment';
 import { conexion } from '../conexion.mjs';
-
-moment.locale('es');
-
 
 
 router.post('/', function (req, res) {
+    console.log(req.body);
     var registro = {
-        OTCondPagoDesc: req.body.otcondpagodesc,
+        OTCondPagoDesc: req.body.OTCondPagoDesc,
 
     }
-
+    console.log(registro);
     conexion.query('INSERT INTO  BasesOrdenes.OTCondPago SET ?', registro,
         function (err, result) {
             if (err) {

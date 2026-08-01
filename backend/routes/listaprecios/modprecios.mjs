@@ -50,7 +50,7 @@ router.post('/', async (req, res) => {
         }
         // EJECUCIÓN DIRECTA
         const result = await queryAsync(query, params);
-        // console.log(`Update exitoso en ${column}:`, result);
+
 
         // Enviamos respuesta al frontend
         res.json({

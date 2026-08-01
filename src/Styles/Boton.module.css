@@ -183,7 +183,25 @@
 	color: rgb(252, 249, 249);
 }
 
+.botonocultoactivaconmouse {
+  font-size:8px;
+  font-family:Arial;
+  width:10px;
+  height:10px;
+  border-width:1px;
+  color:rgba(0, 0, 0, 1);
+  border-color:rgb(74, 226, 112);
+  border-top-left-radius:1px;
+  border-top-right-radius:1px;
+  border-bottom-left-radius:1px;
+  border-bottom-right-radius:1px;
+ 
+}
 
+.botonocultoactivaconmouse:hover {
+  background: rgba(74, 226, 112, 0.33)
+}
+        
 
 .botonfincargadatos {
   font-size:15px;

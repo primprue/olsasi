@@ -42,7 +42,8 @@ export default function OTRecRenglon() {
 		const dateValue = new Date(otdatos.datosencab[0][0].PresupEncabFecha);
 		const formattedDate = dateValue.toLocaleDateString();
 		return (
-			<div style={{ width: 2000, padding: 20 }}>
+			// <div style={{ width: 2000, padding: 20 }}>
+			<div style={{ width: 1500, padding: 20 }}>
 				{/* <Stack spacing={{ xs: 1, sm: 2 }}
 					direction="row"
 					useFlexGap
@@ -60,7 +61,7 @@ export default function OTRecRenglon() {
 					sx={{ border: "2px solid grey" }}
 				>
 					<Item className={estilos.items}>
-						Número de Presupuesto: {otdatos.datosencab[0][0].idPresupEncab}
+						Presupuesto N°: {otdatos.datosencab[0][0].idPresupEncab}
 					</Item>
 					{/* <Item>Fecha: {otdatos.datosencab[0][0].PresupEncabFecha}</Item> */}
 					<Item className={estilos.items}>Fecha: {formattedDate}</Item>
@@ -175,104 +176,7 @@ export default function OTRecRenglon() {
 			</div>
 		);
 	}
-	// else {
-	// 	return "";
-	// }
-}
-{
-	/* </TableContainer> */
-}
-{
-	/* {fields.map((field, index) => (
-					<input
-						key={field.id} // important to include key with field's id
-						{...register(`test.${index}.value`)}
-					/>
-				))} */
-}
-// <Box
-// 	sx={{
-// 		width: "100%",
-// 		height: "500px",
-// 		align: "center",
-// 		justifycontent: "center",
-// 		boxShadow: 5,
-// 	}}
-// >
-// 	<DataGrid
-// 		autoHeight
-// 		sx={{
-// 			width: "100%",
-// 			"& .encabcolumns": {
-// 				backgroundColor: "rgba(235, 240, 241, 0.3)",
-// 				textJustify: "center",
-// 				fontSize: "15px",
-// 				fontWeight: "bold",
-// 				color: "rgba(15, 6, 145)",
-// 				borderRadius: 1,
-// 				boxShadow: 3,
-// 				bgcolor: "rgba(235, 240, 241, 0.3)",
-// 				height: 10,
-// 			},
-// 		}}
-// 		rows={otdatos.renglonespresup}
-// 		columns={columns}
-// 		title="Renglon Orden de Trabajo"
-// 		// localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-// 		// slots={{
-// 		// 	toolbar: CustomToolbar,
-// 		// }}
-// 		// getCellClassName={() => `super-app-theme--Open`}
-// 		// getRowClassName={() => `super-app-theme--Open`} //son las propiedades de las filas
-// 	/>
-// </Box>
 
-// let clientenuevo = [
-// 	{
-// 		idClientes: 0,
-// 		ClientesDesc: clientepresup,
-// 		ClientesDomicilio: "",
-// 		ClientesCodPos: "",
-// 		ClientesLoc: "",
-// 		ClientesPcia: "",
-// 		ClientesTel: "",
-// 		ClientesMail: "",
-// 		ClientesIVA: 0,
-// 		ClientesCUIT: "",
-// 		ClientesTipo: 0,
-// 		ClientesContacto: "",
-// 		ClientesCategoria: " ",
-// 		ClientesObserv1: "",
-// 		ClientesObserv2: "",
-// 		ClientesFecha: 0,
-// 	},
-// ];
-{
-	/* {nivel1.map((nivel2) => (
-										<div key={nivel2.id}>
-											<p>{nivel2.id}</p>
-											<p>{nivel2.PresupRenglonCant}</p>
-											<p>{nivel2.PresupRenglonDesc}</p>
-											<p>{nivel2.PresupRenglonImpUnit}</p>
-											<p>{nivel2.PresupRenglonImpItem}</p> */
 }
-{
-	/* <Table>
-					<TableBody>
-						<TableRow>
-							{otdatos.renglonespresup.map((nivel1, index1) => (
-								<div key={index1}>
-									{nivel1.map((item) => {
-										const paramObjeto = JSON.parse(item.PresupRenglonParamInt);
-										return Object.entries(paramObjeto).map(([campo, valor]) => (
-											<li key={campo}>
-												<strong>{campo}:</strong> {valor}
-											</li>
-										));
-									})}
-								</div>
-							))}
-						</TableRow>
-					</TableBody>
-				</Table> */
-}
+
+

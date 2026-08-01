@@ -8,7 +8,11 @@ router.get('/', async (req, res) => {
     try {
         const q = `SELECT idOTEncab  as id, OTEncabCliente, OTEncabClienteNoReg, OTEncabEstado,
     date_format(OTEncabFecha, "%d-%m-%Y") as OTEncabFecha,
-    date_format(OTEncabFechaPromesa, "%d-%m-%Y") as OTEncabFechaPromesa, OTEncabImpTotal, OTEncabSenia, OTEncabconIVA, OTEncabTransporte from BasesOrdenes.OTEncab order by idOTEncab desc `;
+    date_format(OTEncabFechaPromesa, "%d-%m-%Y") as OTEncabFechaPromesa, OTEncabImpTotal, OTEncabSenia, OTEncabconIVA, OTEncabTransporte,
+    BasesOrdenes.OTEstado.OTEstadoColor as color
+    from BasesOrdenes.OTEncab 
+    LEFT JOIN BasesOrdenes.OTEstado ON OTEncabEstado = idOTEstado
+    order by idOTEncab desc`;
         const [result] = await conexionpool.query(q);
         return res.json(result);
     } catch (err) {

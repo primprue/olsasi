@@ -347,12 +347,12 @@ export default function FilaDos() {
 				</Grid>
 			</Grid>
 
-			{presuptipo !== "UNIDAD" && rubrosn === "S" ? (
-				<FilaDetDesc presuptipo={presuptipo}></FilaDetDesc>
-			) : (
+			{/* {presuptipo !== "UNIDAD" && rubrosn === "S" ? ( */}
+			<FilaDetDesc presuptipo={presuptipo}></FilaDetDesc>
+			{/* ) : (
 				<></>
 			)
-			}
+			} */}
 
 			<Grid >
 				<IconButton onClick={() => agregar()} color="primary">

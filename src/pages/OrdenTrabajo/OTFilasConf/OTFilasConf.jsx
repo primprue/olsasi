@@ -9,9 +9,11 @@ import { StkItemsLeeAbrRub } from "../../Tablas/StkItems/StkItemsLeeAbrRub";
 import estilos from "../../../Styles/Boton.module.css";
 import { OTDatosLeer } from "../OTVarios/OTDatosLeer";
 import TextFieldSelectObject from "../../../components/comppropios/TextFieldSelectObject";
+import CustomSwitch from "../../../components/comppropios/CustomSwitch";
 export default function OTFilasConf(props) {
 	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
 	const { datosgenot, setDatosgenot } = useContext(OrdTrabajo);
+
 	const { datospot } = props;
 	const [items, setItems] = useState([]);
 	let coloreleg;
@@ -21,6 +23,7 @@ export default function OTFilasConf(props) {
 			...datosgenot,
 			idrenglon: datospot.idrenglon,
 			Material: datospot.StkRubroAbr,
+			HayMedidas: 'S'
 		});
 		const result = await OTDatosLeer(datospot.tipopresup);
 		const datos = result.map((row) => ({
@@ -112,29 +115,50 @@ export default function OTFilasConf(props) {
 		}));
 
 	};
+
+	const selectedOption = useMemo(() => datosgenot.HayMedidas || "S", [datosgenot.HayMedidas]);
+	// Función para actualizar la opción seleccionada
+	const handleOptionChange = (newOption) => {
+		setDatosgenot({ ...datosgenot, HayMedidas: newOption });
+	};
+
 	return (
 		<div>
 			<Grid container spacing={2} alignItems="center">
+
 				{/* acá muestra opción de colores */}
-				{textdataI.map(({ id, label, value, options }, index) => (
-					<TextFieldSelect
-						key={index}
-						id={id}
-						label={label}
-						value={selectedValues[id] ?? value ?? ''}
-						onChange={handleSelectChange}
-						options={options}
-						width="200px"
+				<Grid item style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+					{textdataI.map(({ id, label, value, options }, index) => (
+						<TextFieldSelect
+							key={id || index}
+							id={id}
+							label={label}
+							value={selectedValues[id] ?? value ?? ''}
+							onChange={handleSelectChange}
+							options={options}
+							width="200px"
+						/>
+					))}
+				</Grid>
+
+				{/* Sección del Switch */}
+				<Grid item style={{ display: 'flex', alignItems: 'center' }}>
+					<CustomSwitch
+						value={selectedOption}
+						onChange={handleOptionChange}
+						opcion1={'S'}
+						opcion2={'N'}
+						titulo1={'Si'}
+						titulo2={'No'}
+						tithelpertext={'Hay Medidas? '}
 					/>
-
-
-				))}
+				</Grid>
 				<div
 					style={{
 						display: 'grid',
 						gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
 						gap: '16px',
-						width: '100%',
+						width: '80%',
 						padding: '8px'
 					}}
 				>
@@ -159,33 +183,10 @@ export default function OTFilasConf(props) {
 					))}
 				</div>
 
-				{/* 
-				{datosrestantes.map((dato, index) => (
-
-					<div key={index}>
-						{dato.tipocomponete === "select" && (
-							<TextFieldSelectObject dato={dato} onChange={handleChangeG} />
-						)}
-						{dato.tipocomponete === "textfield" && (
-							<TextFieldComun
-								disabled={largo === "N"}
-								id={dato.nombre}
-								type="string"
-								// label={dato.nombre}
-								value={otdatos.OTDatosDesc}
-								onChange={handleChangeG}
-								width="120px"
-								helperText={dato.requerido === "S" ? "Requerido" : "-----"}
-								placeholder={dato.nombre}
-							/>
-
-						)}{" "}
-					</div>
-				))} */}
 				<Button onClick={Terminocarga} className={estilos.botonfincargadatos}>
 					Fin de Carga
 				</Button>
 			</Grid>
-		</div>
+		</div >
 	);
 }

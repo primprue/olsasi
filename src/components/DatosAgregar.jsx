@@ -10,7 +10,7 @@ export async function DatosAgregar(props, ejecutorbackend) {
 			.set("Content-Type", "application/json")
 			.send(props)
 			.set("X-API-Key", "foobar")
-		console.log('res  ', res)
+
 		MuestraMensaje(res);
 		return res.statusCode; // Esto resuelve la promesa
 	} catch (err) {

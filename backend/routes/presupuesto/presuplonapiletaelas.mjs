@@ -110,7 +110,7 @@ router.get("/", async (req, res) => {
                 JOIN BaseStock.StkMonedas m6 ON m6.idStkMonedas = '${p.codmoneda}'
                 JOIN BaseStock.StkRubro r7 ON r7.StkRubroAbr = '${StkRubroAbr}'
 
-                 JOIN BaseStock.StkRubro r8
+                JOIN BaseStock.StkRubro r8
                 JOIN BaseStock.StkMonedas m8 ON r8.StkRubroTM = m8.idStkMonedas
                 WHERE
                 r1.StkRubroAbr = '${StkRubroAbr}'
@@ -136,23 +136,7 @@ router.get("/", async (req, res) => {
       const costoOjalM2 = Number(d.CostoOjalM2) || 0;
       const costoFleteMot = Cotizacion * (flete + MOT);
 
-      // let costo =
-      //   CostoCobMC +
-      //   CostoRefuerzo +
-      //   CostoGancho +
-      //   CostoMSChicote +
-      //   CostoMSDobladillo +
-      //   costoOjalM2 +
-      //   costomincolchi +
-      //   costomincolgancho +
-      //   costoFleteMot;
 
-      // const metrosCuad = largoreal * anchoreal;
-
-      // costo = costo * ganancia * Number(p.coefimpuestos);
-
-
-      // costo = (costo * metrosCuad);
       let costo1 =
         CostoRefuerzo +
         costoOjalM2 +

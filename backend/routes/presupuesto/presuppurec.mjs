@@ -51,7 +51,6 @@ router.get("/", async (req, res) => {
 
       const valorMOTcorte =
         (p.costoMOT * coefMOT * p.segpurecorte) / 3600;
-      // const valorMOTrecorte = valorMOTcorte
 
       let impunion = 0;
       let impcorte = 0;

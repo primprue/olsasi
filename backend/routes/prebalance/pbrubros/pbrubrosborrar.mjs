@@ -8,7 +8,6 @@ router.delete('/', async function (req, res) {
   var q = ["delete", ' from BasePreBalance.PBRubros where idPBRubros = "', indice, '"'].join(
     ""
   );
-  console.log('q', q);
   conexion.query(q, function (err, result) {
     if (err) {
       if (err.errno == 1451) {

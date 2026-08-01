@@ -95,7 +95,6 @@ router.get("/", async (req, res) => {
 
             const datos1 = await queryAsync(sql, params);
 
-            //const datos1 = await queryAsync(sql);
             const d = datos1[0];
             detalle = detallep !== '' ? `${detallep} en :  ${d.StkRubroDesc}` : `Lona con ojales de ${detojal} reforzados, chicotes, ${detconf} soga en dobladillo en :  ${d.StkRubroDesc}`;
 

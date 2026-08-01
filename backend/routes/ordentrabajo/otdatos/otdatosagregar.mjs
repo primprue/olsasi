@@ -4,16 +4,25 @@ import { conexionpool } from '../../conexion.mjs';
 
 router.post('/', async (req, res) => {
     const nuevoValor = { "": 0 };
-    const registro = {
-        OTDatosTipoConf: req.body.OTDatosTipoConf,
-        OTDatosDesc: req.body.OTDatosDesc,
-        OTDatosOpciones: JSON.stringify(nuevoValor),
-        OTDatosTipoPed: req.body.OTDatosTipoPed,
-        OTDatosRequerido: req.body.OTDatosRequerido,
-        OTDatosOrdenAparicion: req.body.OTDatosOrdenAparicion,
-        OTDatosAncho: req.body.OTDatosAncho
-    }
+    let ordenaparicion = 0;
     try {
+        const q1 = `SELECT MAX(OTDatosOrdenAparicion) as orden FROM BasesOrdenes.OTDatos WHERE OTDatosTipoConf  =  ?`;
+        const [rows] = await conexionpool.query(q1, req.body.OTDatosTipoConf);
+        if (rows === undefined) {
+            ordenaparicion = 1
+        }
+        else {
+            ordenaparicion = rows[0].orden + 1;
+        }
+        const registro = {
+            OTDatosTipoConf: req.body.OTDatosTipoConf,
+            OTDatosDesc: req.body.OTDatosDesc,
+            OTDatosOpciones: JSON.stringify(nuevoValor),
+            OTDatosTipoPed: req.body.OTDatosTipoPed,
+            OTDatosRequerido: req.body.OTDatosRequerido,
+            OTDatosOrdenAparicion: ordenaparicion,
+            OTDatosAncho: req.body.OTDatosAncho
+        }
         const q = `INSERT INTO BasesOrdenes.OTDatos SET ?`;
         await conexionpool.query(q, [registro]);
         return res.status(201).json({

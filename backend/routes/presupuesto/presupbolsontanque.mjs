@@ -319,8 +319,7 @@ router.get('/', async (req, res, next) => {
       // ------------------------------------------------------------------
       // 5) ARMO RESULTADO DEL ÍTEM
       // ------------------------------------------------------------------
-      // Largo: Number(largo).toFixed(2),
-      //   Ancho: Number(ancho).toFixed(2),
+
       detalle = detalle + di.StkRubroDesc
       resultados.push({
         ImpUnitario: impunitario,

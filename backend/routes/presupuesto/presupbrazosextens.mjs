@@ -90,6 +90,7 @@ router.get('/', async (req, res, next) => {
       */
       const q1 = `
           SELECT
+          StkRubroDesc,
             StkRubroAbr,
             (StkRubroCosto * StkMonedasCotizacion * ?) AS ValorToldoBarrac,
             StkRubroCosto,
@@ -122,7 +123,7 @@ router.get('/', async (req, res, next) => {
       const valtoldbarrac = Number(datos1[0].ValorToldoBarrac)
       const datos2 = await queryAsync(q2, params1);
       const valimpuntil = Number(datos2[0].ImpUnitario)
-
+      const descripciontoldo = datos1[0].StkRubroDesc
 
 
 
@@ -162,7 +163,7 @@ router.get('/', async (req, res, next) => {
       let detalle = ""
 
       if (detallep == '') {
-        detalle = "Toldo Barracuadra "
+        detalle = `Toldo ${descripciontoldo} (medida de estructura)`
       }
       else {
         detalle = detallep + ''

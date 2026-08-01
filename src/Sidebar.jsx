@@ -32,6 +32,7 @@ import CastForEducationIcon from '@mui/icons-material/CastForEducation';
 import CurrencyExchangeTwoToneIcon from '@mui/icons-material/CurrencyExchangeTwoTone';
 import LowPriorityTwoToneIcon from '@mui/icons-material/LowPriorityTwoTone';
 import ShopTwoSharpIcon from '@mui/icons-material/ShopTwoSharp';
+import ZoomInMapRoundedIcon from '@mui/icons-material/ZoomInMapRounded';
 import DeveloperBoardSharpIcon from '@mui/icons-material/DeveloperBoardSharp';
 import PercentIcon from '@mui/icons-material/Percent';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
@@ -82,17 +83,17 @@ const menuItems = [
       { text: 'Tabla Detalle Pie', icon: <ArrowCircleDownTwoToneIcon sx={{ fontSize: 32, color: '##f51808f4' }} />, path: '/tablas/PresupDetPie' },
       { text: 'Tabla Config Tipo', icon: <ChecklistRtlTwoToneIcon sx={{ fontSize: 32, color: '##f51808f4' }} />, path: '/tablas/PresupConfTipo' },
       { text: 'Tabla Explicación Cálculos', icon: <CastForEducationIcon sx={{ fontSize: 32, color: '##f51808f4' }} />, path: '/tablas/PresupCalExp' },
-      { text: 'Tabla Carga JSON', icon: <CastForEducationIcon sx={{ fontSize: 32, color: '##f51808f4' }} />, path: '/presupuesto/PresupCargaJson' },
+      // { text: 'Tabla Carga JSON', icon: <CastForEducationIcon sx={{ fontSize: 32, color: '##f51808f4' }} />, path: '/presupuesto/PresupCargaJson' },
     ],
   },
   { text: 'Reparación', icon: <ReparacionIcons sx={{ fontSize: 40 }} />, path: '/Reparacion' },
   {
-    text: 'Caja', icon: <CajaIcons sx={{ fontSize: 40 }} />,
+    text: 'Caja', icon: <CajaIcons sx={{ fontSize: 32 }} />,
     children: [
       {
-        text: 'Caja', icon: <CajaIconsLlena sx={{ fontSize: 40 }} />, path: '/CajaIE'
+        text: 'Caja', icon: <CajaIconsLlena sx={{ fontSize: 32 }} />, path: '/CajaIE'
       },
-      { text: 'Libro Cheques', icon: <LibroCheques sx={{ fontSize: 32, color: '#050463' }} />, path: '/tablas/Cheques' },
+      { text: 'Libro Cheques', icon: <LibroCheques sx={{ fontSize: 32 }} />, path: '/tablas/Cheques' }
 
     ],
   },
@@ -105,6 +106,7 @@ const menuItems = [
       { text: 'Movimiento Orden de Trabajo', icon: <ManageHistorySharpIcon sx={{ fontSize: 32, color: '#050463' }} />, path: '/otrabajo/OTMovimiento' },
       { text: 'Condiciones Pago', icon: <LowPriorityTwoToneIcon sx={{ fontSize: 32, color: '#050463' }} />, path: '/tablas/OTCondPago' },
       { text: 'Otros Datos', icon: <ShopTwoSharpIcon sx={{ fontSize: 32, color: '#050463' }} />, path: '/tablas/OTDatos' },
+      { text: 'Estados', icon: <ZoomInMapRoundedIcon sx={{ fontSize: 32, color: '#050463' }} />, path: '/tablas/OTEstado' },
       { text: 'Generador', icon: <ShopTwoSharpIcon sx={{ fontSize: 32, color: '#050463' }} />, path: 'OrdenTrabajo/GeneradorOT' },
 
     ],
@@ -167,7 +169,7 @@ const menuItems = [
     text: 'Medidas de Clientes',
     icon: <MedidasClientes sx={{ fontSize: 32, color: '#028128' }} />,
     children: [
-      { text: 'Busca-Agrega Medidas', icon: <Scanear sx={{ fontSize: 32, color: '#028128' }} />, path: '/BuscadorMedidasClientes' },
+      { text: 'Busca-Agrega Medidas', icon: <Scanear />, path: '/BuscadorMedidasClientes' },
       // { text: 'Scanear', icon: <Scanear sx={{ fontSize: 32, color: '#028128' }} />, path: '/Scanear' },
     ],
   },

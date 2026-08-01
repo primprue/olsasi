@@ -1,29 +1,25 @@
 import request from "superagent";
 import IpServidor from "../../VariablesDeEntorno";
-var nroOrdTrab = 0;
-export const OTGrabar = (otdatos) => {
-	return new Promise((resolve) => {
-		const url = IpServidor + "/otgraba";
-		request
+import MuestraMensaje from "../../../components/lib/MuestraMensaje";
+export async function OTGrabar(otdatos) {
+	const url = `${IpServidor}/otgraba`;
+	try {
+		const res = await request
 			.post(url)
 			.set("Content-Type", "application/json")
 			.set("X-API-Key", "foobar")
 			.send({ otdatos: otdatos })
 
-			// .post(url)
-			// .set("Content-Type", "application/json")
-			// .send({ datosconfec: datosconfec })
-			// .send({ renglonespresup: renglonespresup })
-			// .send({ datosencab: datosencab })
+		const respuesta = typeof res.body === 'object' ? res.body : JSON.parse(res.text);
+		if (respuesta.ok) {
+			MuestraMensaje(
+				{ response: { status: 201, body: { leyenda: "Orden de Trabajo grabada correctamente" } } }
+				, "Orden de Trabajo grabada correctamente");
+		}
+		return respuesta.nroot;
 
-			.set("X-API-Key", "foobar")
-			.then((res) => {
-				const respuesta = JSON.parse(res.text);
-				nroOrdTrab = respuesta.insertId;
-				resolve(nroOrdTrab);
-			});
-	}).catch(
-		(err) => console.log("codigo de error presupgrabar que no es error", err)
-		// CodigoError(err)
-	);
+	} catch (err) {
+		MuestraMensaje(err);
+		throw err; // Es importante lanzar el error para que el llamador lo detecte
+	}
 };

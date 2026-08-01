@@ -1,0 +1,17 @@
+import request from "superagent";
+import IpServidor from "../VariablesDeEntorno";
+import MuestraMensaje from "../../components/lib/MuestraMensaje";
+
+export const MedCliLeeMed = (clienteeleg) => {
+    return new Promise((resolve) => {
+        const url = IpServidor + "/medclileercodfac/?id=" + clienteeleg;
+        request
+            .get(url)
+            .set("Content-Type", "application/json")
+            .then((res) => {
+                const listaprecios = JSON.parse(res.text);
+                resolve(listaprecios);
+            })
+            .catch((err) => MuestraMensaje(err));
+    });
+};

@@ -6,7 +6,6 @@ import MuestraMensaje from '../../components/lib/MuestraMensaje';
 export async function PBListaPrebalance(fechaActual, impVentas, ejecutorbackend) {
     // 1. Generar la URL
     const url = `${IpServidor}/${ejecutorbackend}/?fechaActual=${fechaActual}&&impVentas=${impVentas}`;
-
     swal({
         title: "Aguarde",
         text: "Generando Pre-Balance",
@@ -45,22 +44,3 @@ export async function PBListaPrebalance(fechaActual, impVentas, ejecutorbackend)
 };
 
 
-// return new Promise((resolve, reject) => {
-//     request
-//         .get(url)
-//         .then((res) => {
-//             // res.body.archivo tiene el nombre: "prebalance_12345.pdf"
-//             const nombreArchivo = res.body.archivo;
-
-//             // Construimos la URL pública que configuramos en el punto 1
-//             // const urlFinal = `${IpServidor}/reportes/${nombreArchivo}`;
-//             const urlFinal = `${IpServidor}/reportes/${nombreArchivo}`;
-//             // Abrimos directamente la ruta
-//             window.open(urlFinal, '_blank');
-//             resolve(true);
-//         })
-//         .catch((err) => {
-//             MuestraMensaje("Error al obtener la ruta del PDF");
-//             reject(err);
-//         });
-// });

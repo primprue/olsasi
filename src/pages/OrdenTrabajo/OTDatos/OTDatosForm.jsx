@@ -14,10 +14,9 @@ import OTDatosAgregarForm from './OTDatosAgregarForm.jsx';
 import FitbitIcon from "@mui/icons-material/Fitbit";
 import { deepOrange, red, blue, green, purple } from "@mui/material/colors";
 import OTDatosAgrOpc from './OTDatosAgrOpc.jsx';
-import DeleteSharpIcon from "@mui/icons-material/DeleteSharp";
-import AddToPhotosTwoToneIcon from "@mui/icons-material/AddToPhotosTwoTone";
 import CheckCircleTwoToneIcon from "@mui/icons-material/CheckCircleTwoTone";
 import LocalPrintshopRoundedIcon from "@mui/icons-material/LocalPrintshopRounded";
+import { RecargaIcon, BorrarIcono, AgregarIcon, ImpresionEsp, ActividadEsp, BorraItem } from "../../../components/comppropios/CustomIcons.jsx";
 import ExpandIcon from '@mui/icons-material/Expand';
 import estilotabla from "../../../Styles/Tabla.module.css";
 import { DialogoDatos } from '../../../components/DialogoDatos.jsx';
@@ -34,12 +33,14 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import OTDatosReorden from './OTDatosReorden.jsx';
 export default function OTDatosForm() {
     const { formdatos, setFormdatos } = use(TablasContexto);
+    const { datoborrado, setDatoborrado } = use(TablasContexto);
     const { otdatos, setOTdatos } = use(OrdTrabajo);
     const { state, setState } = use(PresupPant);
     const [abreagregar, setAbreagregar] = useState(false);
     const [abreagregaritem, setAbreagregarItem] = useState(false);
     const [datosacargar, setDatosaCargar] = useState('');
     const [params, setParams] = useState();
+    const [accion, setAccion] = useState();
     const [rows, setRows] = useState([]);
     const [nombreboton, setNombreBoton] = useState("");
     const [titulodial, setTituloDial] = useState("");
@@ -71,7 +72,8 @@ export default function OTDatosForm() {
             leeotdatos(state.PresupConfTipoDesc);
             setFormdatos({
                 ...formdatos,
-                OTDatosTipoConf: state.PresupConfTipoDesc,
+                // OTDatosTipoConf: state.PresupConfTipoDesc,
+                datocampo: state.PresupConfTipoDesc, //esto se carga en formdata para que lo use en DialogoDatos
             });
         }
 
@@ -80,7 +82,6 @@ export default function OTDatosForm() {
     useEffect(() => {
         setFormdatos(formdata);
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
 
     const procesarDatos = (data) => {
         if (data !== '') {
@@ -91,6 +92,7 @@ export default function OTDatosForm() {
                     idOTDatos: item.idOTDatos,
                     OTDatosDesc: item.OTDatosDesc,
                     // OTDatosConfCod: item.OTDatosConfCod,
+                    OTDatosTipoConf: item.OTDatosTipoConf,
                     opcion: clave,
                     OTDatosOpciones: valor,
                     OTDatosOrdenAparicion: item.OTDatosOrdenAparicion,
@@ -104,17 +106,18 @@ export default function OTDatosForm() {
     };
 
     const tipocampo = [
-        { value: "select", label: "Select" },
-        { value: "textfield", label: "Texto" },
+        { value: "select", label: "Seleccionar" },
+        { value: "textfield", label: "Cargar Texto" },
     ];
 
     const columns = [
         // { field: "id", type: "text", headerName: "id", width: 200, editable: false },
-        { field: "idOTDatos", type: "text", headerName: "id datos", width: 200, editable: false },
-        { field: "OTDatosTipoConf", type: "text", headerName: "Tipo de Confección", width: 200, editable: false, value: state.PresupConfTipoDesc },
-        { field: "OTDatosOrdenAparicion", type: "text", headerName: "Orden de Aparición", width: 200, editable: true },
+        // { field: "idOTDatos", type: "text", headerName: "id datos", width: 200, editable: false, disabled: true, required: false },
+        { field: "OTDatosTipoConf", type: "text", headerName: "Tipo de Confección", width: 200, editable: false, disabled: true, visible: false, required: false },
+        // value: state.PresupConfTipoDesc,
+        // { field: "OTDatosOrdenAparicion", type: "text", headerName: "Orden de Aparición", width: 200, editable: false, disabled: true, required: false },
         {
-            field: "OTDatosDesc", type: "text", headerName: "descripcion", width: 200, editable: true,
+            field: "OTDatosDesc", type: "text", headerName: "descripcion", width: 200, editable: true, disabled: false, required: true,
             renderCell: (params) => {
                 const rowIndex = params.api.getAllRowIds().indexOf(params.id);
                 // Si no es la primera vez que aparece la categoría, la celda queda vacía
@@ -124,35 +127,69 @@ export default function OTDatosForm() {
                 return <strong>{params.value}</strong>;
             },
         },
-        { field: "OTDatosTipoPed", type: "singleSelect", headerName: "tipo", width: 100, editable: true, valueOptions: tipocampo },
-        { field: "opcion", type: "text", headerName: "Opción Campo Select", width: 150, editable: false },
-        { field: "OTDatosOpciones", type: "text", headerName: "Valor por Defecto Campo Text", width: 100, editable: false },
+        { field: "OTDatosTipoPed", type: "singleSelect", headerName: "Tipo de Ped", width: 150, editable: true, valueOptions: tipocampo },
+        // { field: "opcion", type: "text", headerName: "Opción Campo Select", width: 250, editable: false, required: false },
         { field: "OTDatosRequerido", type: "singleSelect", headerName: "requerido", width: 100, editable: true, valueOptions: [{ value: "S", label: "S" }, { value: "N", label: "N" }] },
-        { field: "OTDatosAncho", type: "text", headerName: "Ancho", width: 100, editable: true },
+        { field: "OTDatosAncho", type: "text", headerName: "Ancho", width: 100, editable: true, required: true },
         {
             field: "actions",
             headerName: "+ Opciones",
             type: "text",
             width: 100,
             editable: false,
+            required: false,
+            disableColumnMenu: true,
             headerClassName: "encabcolumns",
             renderCell: (params) => (
                 <Button
                     variant="text"
                     style={{ color: deepOrange[800] }}
-                    placeholder="Ver Stock"
+                    placeholder="Agregar Opción"
                     fontSize="large"
-                    onClick={() => openApp(params)}
+                    onClick={() => openApp(params, 'agrega')}
                     startIcon={<FitbitIcon />}
                 />
             ),
+        },
+        {
+            field: "actions1",
+            headerName: "Borrar Opción",
+            type: "text",
+            width: 100,
+            editable: false,
+            required: false,
+            disableColumnMenu: true,
+            headerClassName: "encabcolumns",
+            renderCell: (params) => {
+                // 1. Obtenemos el valor de la columna que queremos evaluar
+                // (Reemplaza 'estado' por el nombre real de tu campo/columna en la base de datos)
+                const valorDeOtraColumna = params.row.opcion;
+
+                // 2. Definimos la condición para deshabilitar
+                // Por ejemplo, deshabilitar si el estado es 'Bloqueado' o si una propiedad 'activo' es false
+                const botonDeshabilitado = valorDeOtraColumna === "";
+
+                return (
+                    <Button
+                        variant="text"
+                        placeholder="Borra"
+                        fontSize="large"
+                        onClick={() => openApp(params, 'borra')}
+                        startIcon={<BorraItem />}
+                        // 3. Pasamos la condición al atributo disabled
+                        disabled={botonDeshabilitado}
+                    />
+                );
+            },
         }
 
     ];
-    const openApp = (params) => {
+    const openApp = (params, accion) => {
         setParams(params.row)
+        setAccion(accion)
         setAbreagregarItem(true)
     };
+
     const handleProcessRowUpdate = (updatedRow) => {
         setRows(rows.map((row) => (row.id === updatedRow.id ? updatedRow : row)));
         return updatedRow;
@@ -171,6 +208,15 @@ export default function OTDatosForm() {
                     : item
             )
         );
+    };
+
+    const handleDelete = () => {
+        setDatoborrado(0);
+        setNombreBoton("Borrar");
+        setTituloDial("BORRA ESTE DATO!!!!!");
+        rowsel.id = rowsel.idOTDatos
+        setParamsBor(rowsel);
+        setOpen(true);
     };
     const handleAlta = () => {
         setNombreBoton("Enviar");
@@ -222,17 +268,17 @@ export default function OTDatosForm() {
     };
 
     const handleModifica = (params) => {
-        DatosModificar(params, formdata.nombackmodificar);
-        relee();
+        const paramsModificados = {
+            ...params,
+            idOriginal: params.id, // Guardamos el "40-" en una nueva propiedad
+            id: params.idOTDatos   // Pisamos el id viejo con el valor de idOTDatos (40)
+        };
+        DatosModificar(paramsModificados, formdata.nombackmodificar);
+        leeotdatos(state.PresupConfTipoDesc);
     };
-    async function relee() {
-        const data = await OTDatosLee();
-        setRows(data);
-    }
 
     const handleClose = () => {
         leeotdatos(state.PresupConfTipoDesc);
-
         setOpen(false);
     };
 
@@ -247,7 +293,7 @@ export default function OTDatosForm() {
                 <GridToolbarDensitySelector />
                 <GridToolbarExport />
 
-                <AddToPhotosTwoToneIcon
+                <AgregarIcon
                     className={estilotabla.iconoagregar}
                     size="large"
                     titleAccess="Agregar"
@@ -265,7 +311,7 @@ export default function OTDatosForm() {
                     className={estilotabla.iconoimpresora}
                     titleAccess="Imprimir"
                 />
-                <DeleteSharpIcon
+                <BorrarIcono
                     variant="contained"
                     titleAccess="Borrar"
                     className={estilotabla.iconoborrar}
@@ -277,7 +323,13 @@ export default function OTDatosForm() {
                     className={estilotabla.iconoreordenar}
                     onClick={() => abrereordenar(rows)}
                 />
-
+                <RecargaIcon
+                    variant="contained"
+                    titleAccess="Recargar"
+                    sx={{ color: '#0954ec' }}
+                    className={estilotabla.iconorecarga}
+                    onClick={() => leeotdatos(state.PresupConfTipoDesc)}
+                />
                 {/* <LocalPrintshopRoundedIcon
                     variant="contained"
                     titleAccess="reorden tabla"
@@ -287,22 +339,6 @@ export default function OTDatosForm() {
             </GridToolbarContainer>
         );
     }
-
-    const moveRow = (id, direction) => {
-        const currentIndex = rows.findIndex((row) => row.id === id);
-        const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
-
-        // Evita salirte de los límites del arreglo
-        if (targetIndex < 0 || targetIndex >= rows.length) return;
-
-        const updatedRows = [...rows];
-        // Intercambia las posiciones de las filas
-        const temp = updatedRows[currentIndex];
-        updatedRows[currentIndex] = updatedRows[targetIndex];
-        updatedRows[targetIndex] = temp;
-
-        setRows(updatedRows);
-    };
 
     const abrereordenar = (rows) => {
         setReordenar(true);
@@ -316,30 +352,24 @@ export default function OTDatosForm() {
         <div style={{ height: 700, width: 1500 }}>
             <FilaUnoIzq />
 
-            {/* {rows.length > 0 && */}
             <DataGrid
                 rows={rows}
                 columns={columns}
                 processRowUpdate={processRowUpdate}
                 className={estilotabla.tablasotdatos}
-                // onRowClick={handleRowSelect}
                 disableRowSelectionOnClick
+                onRowClick={handleRowSelect}
                 pageSize={5}
                 slots={{
                     toolbar: CustomToolbar,
-                    // row: (props) => {
-                    //     // Buscamos el índice real de la fila para pasárselo a Draggable
-                    //     const index = rows.findIndex((r) => r.id_campo === props.id);
-                    //     return <DraggableRow {...props} index={index} />;
-                    // },
                 }}
                 columnHeaderHeight={35}
                 pageSizeOptions={[15]}
             />
-            {/* } */}
+
 
             {abreagregar && <OTDatosAgregarForm open={abreagregar} handleClose={handleClickOpen} />}
-            {abreagregaritem && <OTDatosAgrOpc open={abreagregaritem} params={params} handleClose={() => setAbreagregarItem(false)} />}
+            {abreagregaritem && <OTDatosAgrOpc open={abreagregaritem} params={params} accion={accion} handleClose={() => setAbreagregarItem(false)} />}
             <DialogoDatos
                 open={open}
                 columns={columns}
@@ -347,8 +377,7 @@ export default function OTDatosForm() {
                 nombrebtn={nombreboton}
                 paramsbor={paramsbor}
                 titulodial={titulodial}
-            // PresupConfTipoDesc={state.PresupConfTipoDesc}
-            // confcod={confcod.current}
+
             />
             {reordenar && datosreorden && datosreorden.length > 0 && (
                 <OTDatosReorden

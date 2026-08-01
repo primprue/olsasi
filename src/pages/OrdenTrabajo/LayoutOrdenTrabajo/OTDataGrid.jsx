@@ -78,10 +78,8 @@ export default function OTDataGrid() {
 
 	async function fcionotrosdatos(event) {
 		//tomo la fila en la que se hizo click, tiene un id que es el nro de fila
-		// if (indicenounidad[event.row.id - 1] === event.row.id) {
 		if (indicenounidad[event.row.id] === event.row.id) {
 			var datorenglon = event.row;
-
 			let paramObjeto = JSON.parse(datorenglon.PresupRenglonParamInt);
 			paramObjeto.idrenglon = datorenglon.id;
 			setPresuptipo(paramObjeto.tipopresup);
@@ -141,7 +139,9 @@ export default function OTDataGrid() {
 	const sumaimporte = () => {
 		let TotalPresupuesto = 0;
 		let TotalPresupuestoSIVA = 0;
+		let IVASN = '';
 		// if (rown === undefined)
+
 		otdatos.renglonespresup.map((renglon) => {
 			//TotalPresupuesto += renglon[0].PresupRenglonImpItem;
 			if (tieneiva === "CIVA") {
@@ -150,12 +150,14 @@ export default function OTDataGrid() {
 					2
 				);
 				TotalPresupuesto += Math.round(renglon[0].PresupRenglonImpItem);
+				IVASN = 'S';
 			} else {
 				TotalPresupuesto += Math.round(
 					renglon[0].PresupRenglonImpItem * 1.21,
 					2
 				);
 				TotalPresupuestoSIVA += Math.round(renglon[0].PresupRenglonImpItem, 2);
+				IVASN = 'N';
 			}
 		});
 
@@ -163,7 +165,7 @@ export default function OTDataGrid() {
 			...otdatos,
 			TotalPresupuesto,
 			TotalPresupuestoSIVA,
-			OTEncabconIVA: "N",
+			OTEncabconIVA: IVASN,
 		});
 	};
 
@@ -236,20 +238,19 @@ export default function OTDataGrid() {
 
 	const processRowUpdate = React.useCallback(
 		async (newRow, oldRow) => {
-			if (oldRow.PresupRenglonLargo !== 0 || oldRow.PresupRenglonAncho !== 0)
-				newRow.PresupRenglonImpUnit = Math.round(
-					(oldRow.PresupRenglonImpUnit /
-						oldRow.PresupRenglonLargo /
-						oldRow.PresupRenglonAncho) *
-					newRow.PresupRenglonLargo *
-					newRow.PresupRenglonAncho,
-					2
-				);
+			// if (oldRow.PresupRenglonLargo !== 0 || oldRow.PresupRenglonAncho !== 0)
+			// 	newRow.PresupRenglonImpUnit = Math.round(
+			// 		(oldRow.PresupRenglonImpUnit /
+			// 			oldRow.PresupRenglonLargo /
+			// 			oldRow.PresupRenglonAncho) *
+			// 		newRow.PresupRenglonLargo *
+			// 		newRow.PresupRenglonAncho,
+			// 		2
+			// 	);
 			newRow.PresupRenglonImpItem = Math.round(
 				newRow.PresupRenglonImpUnit * newRow.PresupRenglonCant,
 				2
 			);
-			// }
 
 			setRown(newRow);
 			setRowv(oldRow);
@@ -280,7 +281,7 @@ export default function OTDataGrid() {
 			<GridToolbarContainer className={estilotabla.tablapresupuestoslot}>
 				<Box
 					sx={{
-						width: "100%",
+						width: "80%",
 						display: 'flex',
 						justifyContent: 'center',
 						alignItems: 'left',
@@ -301,10 +302,7 @@ export default function OTDataGrid() {
 							gap: 3,
 						}}
 					>
-						<b></b>
-						<b></b>
-						<b></b>
-						<b></b>
+
 						<GridToolbarExport></GridToolbarExport>
 						<AddShoppingCartIcon
 							onClick={sumaimporte}
@@ -346,7 +344,6 @@ export default function OTDataGrid() {
 						className={EstTF.tfcurrencyI}
 					></CurrencyTextField>
 				</Grid>
-				{/* )}{" "} */}
 				<Grid >
 					<h5>Importe s/IVA</h5>
 					<CurrencyTextField
@@ -386,7 +383,9 @@ export default function OTDataGrid() {
 				key={gridKey}
 				rows={renglonot}
 				columns={columns}
+				getRowHeight={() => 'auto'}
 				processRowUpdate={processRowUpdate}
+				dynamicRowHeight //para que la altura de las filas cambie
 				pageSize={5}
 				rowsPerPageOptions={[5]}
 				getCellClassName={() => `super-app-theme--Open`}

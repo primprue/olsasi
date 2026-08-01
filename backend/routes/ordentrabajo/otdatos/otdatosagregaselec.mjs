@@ -5,45 +5,30 @@ import { conexionpool } from '../../conexion.mjs';
 
 
 router.post('/', async (req, res) => {
-    const { OTDatosDesc, Vpdef, nroid } = req.body.newDatosSelect;
+    const { DetaOpcion, Vpdef, nroid } = req.body.newDatosSelect;
 
-    const q = 'SELECT OTDatosOpciones FROM BasesOrdenes.OTDatos WHERE idOTDatos = ?';
+    // 1. Armamos el path dinámico para el JSON de MySQL. Ejemplo: '$."5mm"'
+    const jsonPath = `$."${DetaOpcion}"`;
 
-    conexionpool.query(q, [nroid], (err, result) => {
+    // 2. Ejecutamos el UPDATE directamente usando JSON_SET
+    const updateQuery = `
+    UPDATE BasesOrdenes.OTDatos
+    SET OTDatosOpciones = JSON_SET(OTDatosOpciones, ?, ?) 
+    WHERE idOTDatos  = ?
+`;
+
+    await conexionpool.query(updateQuery, [jsonPath, Vpdef, nroid], (err, result) => {
         if (err) {
-            console.log('Error en SELECT', err);
-            return res.status(500).json({ error: 'Error en la base de datos' });
-        }
-
-        if (!result || result.length === 0) {
-            return res.status(404).json({ error: 'Registro no encontrado' });
-        }
-
-        const opcionesStr = result[0].OTDatosOpciones;
-        let opcionesObj;
-
-        try {
-            opcionesObj = JSON.parse(opcionesStr);
-        } catch (e) {
-            console.error('Error al parsear JSON', e);
-            opcionesObj = {};
-        }
-
-        // Agregamos nueva opción
-        opcionesObj[OTDatosDesc] = Number(Vpdef);
-
-        const nuevoJSON = JSON.stringify(opcionesObj);
-        const qUpdate = 'UPDATE BasesOrdenes.OTDatos SET OTDatosOpciones = ? WHERE idOTDatos = ?';
-
-        conexionpool.query(qUpdate, [nuevoJSON, nroid], (err2, result2) => {
-            if (err2) {
-                console.log('Error en UPDATE', err2);
-                return res.status(500).json({ error: 'Error al actualizar' });
+            if (err.errno == 1062) {
+                return res.status(409).send({ message: "error clave duplicada" });
+            } else {
+                console.log(err.errno);
             }
-
-            return res.json({ success: true, updated: opcionesObj });
-        });
+        } else {
+            res.json(result.rows);
+        }
     });
 });
+
 export default router;
 

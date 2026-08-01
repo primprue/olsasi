@@ -12,7 +12,7 @@ import { CtaCteContext } from './context/CtasCtesContext.jsx';
 const IndexTablas = lazy(() => import("./components/IndexTablas.jsx"));
 const ListaPrecios = lazy(() => import("./pages/ListaPrecios/index.jsx"));
 const Presupuesto = lazy(() => import("./pages/Presupuesto/index.jsx"));
-const PresupCargaJson = lazy(() => import("./pages/Presupuesto/CargaJson/PresupCargaJson.jsx"));
+// const PresupCargaJson = lazy(() => import("./pages/Presupuesto/CargaJson/PresupCargaJson.jsx"));
 const GeneradorOT = lazy(() => import("./pages/OrdenTrabajo/LayoutOrdenTrabajo/GeneradorOT.jsx"));
 const PresupMuestra = lazy(() => import("./pages/Presupuesto/LayoutPresupuesto/PresupMuestra/index.jsx"));
 const ModificaPrecios = lazy(() => import("./pages/ListaPrecios/ModificaPrecios.jsx"));
@@ -95,7 +95,7 @@ function App() {
                                         <Route path="/ListaPrecios" element={<ListaPrecios />} />
                                         <Route path="/presupuesto/Presupuesto" element={<Presupuesto />} />
                                         <Route path="/presupuesto/PresupMuestra" element={<PresupMuestra />} />
-                                        <Route path="/presupuesto/PresupCargaJson" element={<PresupCargaJson />} />
+                                        {/* <Route path="/presupuesto/PresupCargaJson" element={<PresupCargaJson />} /> */}
                                         <Route path="OrdenTrabajo/GeneradorOT" element={<GeneradorOT />} />
                                         <Route path="/ListaPrecios/ModificaPrecios" element={<ModificaPrecios />} />
                                         <Route path="/otrabajo/OTrabajo" element={<OTrabajo />} />
@@ -128,10 +128,11 @@ function App() {
                                         <Route path="/tablas/Bancos" element={<IndexTablas rutaRelativa="Bancos" />} />
                                         <Route path="/tablas/Cheques" element={<IndexTablas rutaRelativa="Cheques" />} />
                                         <Route path="/tablas/ProcEsp" element={<IndexTablas rutaRelativa="ProcEsp" />} />
-
+                                        <Route path="/tablas/MedCli" element={<IndexTablas rutaRelativa="MedCli" />} />
 
 
                                         <Route path="/tablas/OTDatos" element={<OTDatos />} />
+                                        <Route path="/tablas/OTEstado" element={<  IndexTablas rutaRelativa="OTEstado" />} />
                                         <Route path="/CajaIE" element={<CajaIE />} />
                                         <Route path="/MovStock" element={<MovStockPant />} />
                                         <Route path="/Inventario" element={<IndexTablas rutaRelativa="Inventario" />} />

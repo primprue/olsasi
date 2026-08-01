@@ -73,7 +73,6 @@ router.get('/', async (req, res, next) => {
 
       const datos = await queryAsync(sql, params);
 
-      // const datos = await queryAsync(q);
       const d = datos[0]
       let detalle = ""
 

@@ -195,6 +195,7 @@ export default function TablaPresup(props) {
 							toolbar: CustomToolbar,
 						}}
 						getRowHeight={() => 'auto'}
+						dynamicRowHeight //para que la altura de las filas cambie
 						localeText={esES.components.MuiDataGrid.defaultProps.localeText}
 						initialState={{
 							...datosrenglon.initialState,

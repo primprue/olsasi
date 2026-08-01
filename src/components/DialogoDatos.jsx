@@ -29,9 +29,12 @@ export function DialogoDatos(props) {
 			} else {
 				fila[col.field] = "";
 			}
-			if (formdatos.tablabase === "OTDatos" && col.field === "OTDatosTipoConf") {
-				fila[col.field] = formdatos.OTDatosTipoConf;
+			if (formdatos.campocondato) {
+				if (col.field === formdatos.campocondato) {
+					fila[col.field] = formdatos.datocampo;
+				}
 			}
+
 		});
 		return fila;
 	};
@@ -150,7 +153,6 @@ export function DialogoDatos(props) {
 			}
 		} else {
 			// Lógica de borrado (se mantiene igual)
-
 			let valorresuelto = onRowDelete(paramsbor, formdatos);
 			setDatoborrado(valorresuelto);
 			handleClose();
@@ -205,14 +207,7 @@ export function DialogoDatos(props) {
 						>
 							<IconCerrar />
 						</IconButton>
-						{/* <Button
-							onClick={handleClose}
-							variant="outlined"
-							className={estilos.botoncierracargadatos}
-						// fullWidth
-						>
-							Cerrar
-						</Button> */}
+
 						{columns.map((col, index) => {
 							const isAlta = !paramsbor;
 							const isEditable =
@@ -319,17 +314,6 @@ export function DialogoDatos(props) {
 						>
 							{nombrebtn === "Enviar" ? <IconEnviar sx={{ fontSize: '40px', m: 3 }} /> : <IconBorrar sx={{ fontSize: '40px', m: 3 }} />}
 						</IconButton>
-						{/* <Button
-								type="submit"
-								variant="contained"
-								className={estilos.botonfincargadatos}
-								fullWidth
-							>
-								{nombrebtn}
-							</Button> */}
-
-
-						{/* </Grid> */}
 					</Grid>
 				</form>
 			</DialogContent>

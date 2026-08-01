@@ -65,6 +65,29 @@ export const ImpresionEsp = createSvgIcon(
 );
 
 
+export const ActividadEsp = createSvgIcon(
+    <React.Fragment>
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <g
+
+            fill="none"
+            stroke='#fc004c'
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M4 6a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2l0 -12" />
+            <path d="M12 4v2.5a.5 .5 0 0 1 -.5 .5a1.5 1.5 0 0 0 0 3a.5 .5 0 0 1 .5 .5v1.5" />
+            <path d="M12 12v1.5a.5 .5 0 0 0 .5 .5a1.5 1.5 0 0 1 0 3a.5 .5 0 0 0 -.5 .5v2.5" />
+            <path d="M20 12h-2.5a.5 .5 0 0 1 -.5 -.5a1.5 1.5 0 0 0 -3 0a.5 .5 0 0 1 -.5 .5h-1.5" />
+            <path d="M12 12h-1.5a.5 .5 0 0 0 -.5 .5a1.5 1.5 0 0 1 -3 0a.5 .5 0 0 0 -.5 -.5h-2.5" />
+        </g>
+    </React.Fragment >,
+    'ActividadEsp'
+);
+
+
 // Icono 3: Ejemplo (supongamos un icono de Alerta)
 export const CustomAlertIcon = createSvgIcon(
     <React.Fragment>
@@ -322,7 +345,6 @@ export const LibroCheques = createSvgIcon(
     <React.Fragment>
         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
         <g
-
             fill="none"
             stroke='#fc00fc'
             strokeWidth="1.5"
@@ -737,4 +759,42 @@ export const Scanear = createSvgIcon(
         </g>
     </React.Fragment>,
     'Scanear'
+);
+
+export const Convertidor = createSvgIcon(
+    <React.Fragment>
+        <g
+
+            fill="none"
+            stroke='#215304fb'
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 6a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+            <path d="M21 11v-3a2 2 0 0 0 -2 -2h-6l3 3m0 -6l-3 3" />
+            <path d="M3 13v3a2 2 0 0 0 2 2h6l-3 -3m0 6l3 -3" />
+            <path d="M15 18a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+        </g>
+    </React.Fragment>,
+    'Convertidor'
+);
+
+
+export const BorraItem = createSvgIcon(
+    <React.Fragment>
+        <g
+
+            fill="none"
+            stroke='#f80505ff'
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path d="M12 2l.117 .007a1 1 0 0 1 .876 .876l.007 .117v4l.005 .15a2 2 0 0 0 1.838 1.844l.157 .006h4l.117 .007a1 1 0 0 1 .876 .876l.007 .117v9a3 3 0 0 1 -2.824 2.995l-.176 .005h-10a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-14a3 3 0 0 1 2.824 -2.995l.176 -.005zm3 11h-6a1 1 0 0 0 0 2h6a1 1 0 0 0 0 -2" />
+            <path d="M19 7h-4l-.001 -4.001z" />
+        </g>
+    </React.Fragment>,
+    'BorraItem'
 );

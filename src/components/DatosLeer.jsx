@@ -3,6 +3,7 @@ import IpServidor from "../pages/VariablesDeEntorno";
 
 import request from "superagent";
 export async function DatosLeer(ejecutorbackend) {
+
 	const url = `${IpServidor}/${ejecutorbackend}`;
 	try {
 		const res = await request

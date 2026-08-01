@@ -1,594 +1,319 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import OrdTrabajo from "../../../context/OrdTrabajo.jsx";
 import { Button, Dialog, DialogContent } from "@mui/material";
-import { format } from "date-fns";
+import { format, parse } from "date-fns";
 import { OTGrabar } from "./OTGrabar.jsx";
-import { parse } from "date-fns";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
-import { useEffect } from "react";
+import html2pdf from "html2pdf.js";
 
 export default function OTGenera(props) {
-	const { open, handleClose, datospot, renglondef } = props; //trae PresupRenglonParamInt separado
-	const { otdatos, setOTdatos } = useContext(OrdTrabajo);
-	//trae las caracteristicas de lo que se presupuesto y los renglonespresup
-	const { inicializaOT } = useContext(OrdTrabajo);
-	const [pdfData, setPdfData] = useState(null);
+	const { open, handleClose, datospot } = props;
+	const { otdatos } = useContext(OrdTrabajo);
+	const [pdfUrl, setPdfUrl] = useState(null);
 	const [numeroOT, setNumeroOT] = useState(0);
-	let colorfondo = "";
-	const arreglodef = [];
-	const arregloencab = [];
-	let i = 0;
+	const reportTemplateRef = useRef(null);
+
 	const formatCurrency = (value) => {
 		return new Intl.NumberFormat("es-AR", {
 			style: "currency",
 			currency: "ARS",
-		}).format(value);
+		}).format(value || 0);
 	};
 
-	for (i = 0; i < otdatos.renglonespresup.length; i++) {
-		arreglodef.push(otdatos.renglonespresup[i][0]);
-		if (otdatos.datosconfec) {
-			if (otdatos.datosconfec.idrenglon === otdatos.renglonespresup[i][0].id) {
+	const arreglodef = [];
+	if (otdatos && otdatos.renglonespresup) {
+		for (let i = 0; i < otdatos.renglonespresup.length; i++) {
+			arreglodef.push(otdatos.renglonespresup[i][0]);
+			if (otdatos.datosconfec && otdatos.datosconfec.idrenglon === otdatos.renglonespresup[i][0].id) {
 				arreglodef.push(otdatos.datosconfec);
 			}
 		}
 	}
-
-	const fechaUtc = parse(otdatos.FechaPromesa, "yyyy-MM-dd", new Date(), {
-		timeZone: "UTC",
-	});
-
-	// Formatear la fecha
+	const fechaUtc = otdatos?.FechaPromesa ? parse(otdatos.FechaPromesa, "yyyy-MM-dd", new Date()) : new Date();
 	const FechaProm = format(fechaUtc, "dd/MM/yyyy");
 	const FechaHoy = format(new Date(), "dd/MM/yyyy");
 
-	const tipoorden =
-		(otdatos.datosencab[0][0].PresupEncabMayMin === "mn" && "   Minorista  ") ||
-		"   Mayorista  ";
+	const tipoorden = otdatos?.datosencab?.[0]?.[0]?.PresupEncabMayMin === "mn" ? "   Minorista  " : "   Mayorista  ";
+	const arregloencab = otdatos?.datosencab && otdatos.datosencab.length > 1 ? otdatos.datosencab[1][0] : otdatos?.datosencab?.[0]?.[0] || {};
 
-	if (otdatos.datosencab.length > 1) {
-		arregloencab.push(otdatos.datosencab[1][0]);
-	} else {
-		arregloencab.push(otdatos.datosencab[0][0]);
-	}
-	let red;
-	let green;
-	let blue;
-
-	if (datospot.minmay === "my") {
-		red = 191;
-		green = 216;
-		blue = 242;
-	} else {
-		if (datospot.minmay === "mn" && datospot.tipopresup !== "CONFECCIONADA") {
-			// colorfondo = "#ffffa6ca";
-
-			red = 235;
-			green = 244;
-			blue = 129;
-		} else if (
-			datospot.minmay === "mn" &&
-			datospot.tipopresup === "CONFECCIONADA"
-		) {
-			// colorfondo = "#f1f1ef4c";
-			red = 252;
-			green = 252;
-			blue = 252;
-		}
+	let headerBgColor = "#ffffff";
+	if (datospot?.minmay === "my") {
+		headerBgColor = "rgb(191, 216, 242)";
+	} else if (datospot?.minmay === "mn" && datospot?.tipopresup !== "CONFECCIONADA") {
+		headerBgColor = "rgb(235, 244, 129)";
 	}
 
+	const textoImpI = "Importe c/IVA";
+	const textoImp = "Importe s/IVA";
+	let valorImpI = formatCurrency(0);
+	let valorImp = formatCurrency(0);
+
+	if (otdatos?.OTEncabconIVA === "N") {
+		valorImp = formatCurrency(otdatos?.TotalPresupuestoSIVA);
+	} else {
+		if (otdatos?.TotalPresupuesto) valorImpI = formatCurrency(otdatos.TotalPresupuesto);
+		if (otdatos?.TotalPresupuestoSIVA) valorImp = formatCurrency(otdatos.TotalPresupuestoSIVA);
+	}
+
+	const textoSeniaI = "Importe Seña";
+	const valorSeniaI = otdatos?.ImporteSenia ? formatCurrency(otdatos.ImporteSenia) : formatCurrency(0);
+	const arreglorenglon = arreglodef.filter((elemento) =>
+		// Object.keys(elemento).some((prop) => prop.startsWith("PresupRenglon") || prop.startsWith("idrenglon"))
+		Object.keys(elemento).some((prop) => prop.startsWith("PresupRenglon"))
+		// || prop.startsWith("idrenglon"))
+	);
 	async function OTGraba() {
 		const nroOT = await OTGrabar(otdatos);
 		setNumeroOT(nroOT);
-		// Convertir el PDF a un blob
 	}
-	var textoImp = "";
-	var valorImp = formatCurrency(0.00);
-	var textoImpI = "";
-	var valorImpI = formatCurrency(0.00);
-	if (otdatos.OTEncabconIVA === "N") {
-		textoImpI = "Importe c/IVA";
-		valorImpI = formatCurrency(0.00);
-		textoImp = "Importe s/IVA";
-		valorImp = formatCurrency(otdatos.TotalPresupuestoSIVA);
-	} else {
-		textoImpI = "Importe c/IVA";
-		textoImp = "Importe s/IVA";
-		if (otdatos.TotalPresupuesto !== 0 && otdatos.TotalPresupuesto !== undefined) {
-			valorImpI = formatCurrency(otdatos.TotalPresupuesto);
-		}
-		if (otdatos.TotalPresupuestoSIVA !== 0 && otdatos.TotalPresupuestoSIVA !== undefined) {
-			valorImp = formatCurrency(otdatos.TotalPresupuestoSIVA);
-		}
-	}
-	var textoSeniaI = "Importe Seña";
-	var valorSeniaI = formatCurrency(0.0);
-	if (otdatos.ImporteSenia !== 0 && otdatos.ValorSenia !== undefined) {
-		valorSeniaI = formatCurrency(otdatos.ImporteSenia);
-	}
-	const sendPDFViaWebSocket = (pdfData, nombrearch) => {
 
+	const agregarCeros = (numero, digitos) => {
+		return numero.toString().padStart(digitos, "0");
+	};
+
+	async function creaPDF() {
+		const element = reportTemplateRef.current;
+
+		const opt = {
+			margin: 0,
+			filename: `OT_Nro_${numeroOT}.pdf`,
+			image: { type: 'jpeg', quality: 0.98 },
+			html2canvas: { scale: 2, useCORS: true, logging: false },
+			jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+		};
+
+		html2pdf().set(opt).from(element).outputPdf('blob').then((blob) => {
+			if (pdfUrl) URL.revokeObjectURL(pdfUrl);
+			const url = URL.createObjectURL(blob);
+			setPdfUrl(url);
+
+			if (numeroOT !== 0) {
+				const clienteNombre = arregloencab.PresupEncabCliente || arregloencab.ClientesDesc || "Cliente";
+				const numeroOTcero = agregarCeros(numeroOT, 6);
+				const nombrearch = `OT Nro ${numeroOTcero} ${clienteNombre.trim()}.pdf`;
+				sendPDFViaWebSocket(blob, nombrearch);
+			}
+		});
+	}
+
+	const sendPDFViaWebSocket = (blobData, nombrearch) => {
 		const socket = new WebSocket("ws://localhost:3000");
 		const payload = {
 			action: "save",
 			nombrearch: nombrearch,
-			pdfData: pdfData,
+			pdfData: blobData,
 		};
 		socket.onopen = () => {
 			socket.send(JSON.stringify(payload));
 		};
-		socket.onmessage = (event) => {
+		socket.onmessage = () => {
 			socket.close();
 		};
 	};
-	const agregarCeros = (numero, digitos) => {
-		return numero.toString().padStart(digitos, "0");
-	};
-	async function creaPDF() {
 
-		// const creaPDF = () => {
-		var rows = [];
-		var rows1 = [];
-		var doc = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
-
-		// Obtener las dimensiones de la página
-		const pageWidth = doc.internal.pageSize.getWidth();
-		const pageHeight = doc.internal.pageSize.getHeight();
-
-		// Texto que formará el borde
-
-		doc.setFontSize(14);
-		doc.text(`Orden de Trabajo Nro  ${numeroOT}`, 10, 10);
-		doc.setFillColor(red, green, blue);
-		// Establecer el color del borde (RGB)
-		doc.setDrawColor(0, 0, 0); // Negro
-
-		// doc.rect(182, 5, 25, 8, "FD");
-		doc.text(`${tipoorden}`, 180, 10);
-		//	x mueve horizontal es como la x de un gráfico
-		doc.setFontSize(10);
-		let y = 7;
-		let ancho = 40; // Ancho del recuadro
-		let alto = 4;
-		var columns = ["    Cliente  ", "Telefono", "Localidad", "CUIT"];
-		if (arregloencab[0].idClientes) {
-			let dencliente = arregloencab[0].idClientes;
-			var data = [
-				[
-					"(" + dencliente + ")" + " " + arregloencab[0].ClientesDesc,
-					arregloencab[0].ClientesTel,
-					arregloencab[0].ClientesLoc,
-					arregloencab[0].ClientesCUIT,
-				],
-			];
-		}
-		else {
-
-			var data = [
-				[
-					"(" + '     ' + ")" + " " + arregloencab[0].PresupEncabCliente
-
-				],
-			];
-		}
-		let x = 0;
-		y += 8;
-		doc.autoTable({
-			startY: y,
-			head: [columns],
-			body: data,
-			tableWidth: 190,
-			theme: "grid",
-			margin: { top: 5, left: 9, right: 4 },
-			styles: {
-				textColor: [0, 0, 0], // Color del texto
-				fillColor: [255, 255, 255], //Color de fondo para las celdas
-				cellPadding: 1, // Tamaño de fuente en la cabecera
-				lineWidth: 0.1, // Ancho de las líneas (bordes)
-				lineColor: [0, 0, 0],
-				minCellHeight: 2, // Altura mínima de cada celda
-				fontSize: 9.5, // Ajustar el tamaño de la fuente
-			},
-			bodyStyles: {
-				lineWidth: 0.1, // Línea delgada en el body
-				lineColor: [0, 0, 0, 0.5], // Color negro para las líneas
-			},
-			headStyles: {
-				textColor: [0, 0, 0], // Color del texto
-				fillColor: [255, 255, 255], //Color de fondo para las celdas
-				cellPadding: 1, // Tamaño de fuente en la cabecera
-				lineWidth: 0.1, // Ancho de las líneas (bordes)
-				lineColor: [0, 0, 0],
-				fontSize: 8,
-				fontStyle: "bold", // Estilo de la fuente en la cabecera
-			},
-		});
-		// Obtén la posición actual
-		const lastY = doc.lastAutoTable?.finalY;
-		doc.setFontSize(10);
-		y += 15;
-		x = 9;
-		alto = 5;
-		if (!otdatos.transporte || otdatos.transporte === undefined) {
-			doc.text(`Transporte :                   `, x, y);
-		} else {
-			let textoOriginal = otdatos.transporte.TransporteDesc;
-			let textoLimitado = textoOriginal.substring(0, 20); // O puedes usar slice(0, 30)
-
-			doc.text(`Transporte : ${textoLimitado}`, x, y);
-		}
-		x += 68;
-		doc.text(`Presup. Nro : ${otdatos.datosencab[0][0].idPresupEncab}`, x, y);
-		x += 45;
-
-		doc.text(`Fecha : ${FechaHoy}`, x + 2, y);
-		x += 40;
-
-		doc.text(` Promesa : ${FechaProm}`, x + 2, y);
-		y += 5;
-		x = 9;
-
-		if (!otdatos.OTEncabOC || otdatos.OTEncabOC === undefined) {
-			doc.text(`O.C. : `, x, y);
-		} else {
-			doc.text(`O.C. : ${otdatos.OTEncabOC}`, x, y);
-		}
-		x += 50;
-		if (!otdatos.OTEncabDetalles || otdatos.OTEncabDetalles === undefined) {
-			doc.text(`Detalles : `, x, y);
-		} else {
-			doc.text(`Detalles : ${otdatos.OTEncabDetalles}`, x, y);
-		}
-		alto = 12;
-		ancho = 27;
-
-		y += 8;
-		x = 9;
-		doc.rect(x, y - 5, ancho, alto, "S");
-		doc.text(`${textoImpI} `, x + 2, y - 1);
-		doc.text(`${valorImpI}`, x + 2, y + 4);
-		x += 27;
-		doc.rect(x, y - 5, ancho, alto, "S");
-		doc.text(`${textoImp} `, x + 2, y - 1);
-		doc.text(`${valorImp}`, x + 2, y + 4);
-		x += 27;
-		doc.rect(x, y - 5, ancho, alto, "S");
-		doc.text(`${textoSeniaI} `, x + 2, y - 1);
-		doc.text(`${valorSeniaI}`, x + 2, y + 4);
-		x += 27;
-		doc.rect(x, y - 5, ancho, alto, "S");
-		doc.text("Remito", x + 2, y - 1);
-		x += 27;
-		doc.rect(x, y - 5, ancho, alto, "S");
-		doc.text("Fact.Cta.Cte.", x + 2, y - 1);
-		x += 27;
-		doc.rect(x, y - 5, ancho, alto, "S");
-		doc.text("Fact.Contado", x + 2, y - 1);
-		x += 27;
-		doc.rect(x, y - 5, ancho, alto, "S");
-		doc.text("Recibo", x + 2, y - 1);
-		x = 9;
-		y += 12;
-
-		alto = 8;
-		ancho = 189;
-		doc.rect(x, y - 5, ancho, alto, "S");
-		doc.text("Pago :", x + 2, y - 1);
-		y += 6;
-
-		var colconf = [
-			{ title: "Cant", halign: "left" },
-			{ title: "Descripción", halign: "left" },
-			{ title: "Largo", halign: "left" },
-			{ title: "Ancho", halign: "left" },
-			{ title: "Imp.Unit", halign: "right" },
-		];
-
-		var arreglorenglon = arreglodef.filter((elemento, index1) => {
-			// Agrega aquí la condición para saltar filas. Por ejemplo, saltar filas con un valor específico en una propiedad.
-			// return elemento.nombrePropiedad !== 'valorParaSaltar';
-			// Ejemplo: saltar filas donde una propiedad 'skip' sea verdadera
-			return Object.keys(elemento).some((prop) =>
-				prop.startsWith("PresupRenglon" || prop.startsWith("idrenglon"))
-			);
-			// return!elemento.skip; // Puedes ajustar esta condición según tu necesidad
-		});
-		//
-
-		doc.autoTable({
-			startY: y,
-			head: [colconf],
-			// body: rows,
-			body: arreglorenglon.map((row) => [
-				{ content: row.PresupRenglonCant, styles: { halign: "left" } }, // Alineación a la izquierda
-				{ content: row.PresupRenglonDesc, styles: { halign: "left" } }, // Alineación a la derecha
-				{ content: row.PresupRenglonLargo, styles: { halign: "right" } }, // Alineación a la derecha
-				{ content: row.PresupRenglonAncho, styles: { halign: "right" } }, // Alineación a la derecha
-				{
-					content: formatCurrency(row.PresupRenglonImpUnit),
-					styles: { halign: "right" },
-				}, // Alineación a la derecha
-			]),
-			theme: "grid", // O prueba con otros temas si es necesario
-			styles: {
-				textColor: [0, 0, 0], // Color del texto
-				fillColor: [255, 255, 255], //Color de fondo para las celdas
-				overflow: "linebreak", // Ajustar el texto largo
-				cellPadding: 1, // Ajustar el relleno de las celdas
-				fontSize: 10, // Ajustar el tamaño de la fuente
-			},
-			headStyles: {
-				textColor: [0, 0, 0], // Color del texto
-				fillColor: [255, 255, 255], //Color de fondo para las celdas
-				cellPadding: 1, // Ajustar el relleno de las celdas
-				lineWidth: 0.1, // Ancho de las líneas (bordes)
-				lineColor: [0, 0, 0],
-				fontStyle: "bold", // Estilo de la fuente en la cabecera
-			},
-			margin: { top: 10, left: 10, right: 10, bottom: 10 }, // Ajustar márgenes si es necesario
-		});
-
-		const elementosSinPresupRenglon = arreglodef.filter(
-			(elemento) =>
-				!Object.keys(elemento).some((prop) => prop.startsWith("PresupRenglon"))
-		);
-		var coldetalles = [];
-		var i = 1;
-		var sumcaracteres = 0;
-		var cuentaentrada = 0;
-
-		var ytabladet = y + arreglorenglon.length * 12;
-		elementosSinPresupRenglon.map((elemento, index1) => {
-			const nombresPropiedades = Object.keys(elemento);
-			const datosPropiedades = Object.values(elemento);
-			while (i <= nombresPropiedades.length) {
-				coldetalles.push(nombresPropiedades[i]);
-				rows1.push([datosPropiedades[i]]);
-				if (nombresPropiedades[i] !== undefined) {
-					if (datosPropiedades[i].length >= nombresPropiedades[i].length)
-						sumcaracteres = sumcaracteres + datosPropiedades[i].length;
-					else sumcaracteres = sumcaracteres + nombresPropiedades[i].length;
-
-					if (sumcaracteres > 80 || i + 1 === nombresPropiedades.length) {
-						doc.autoTable({
-							startY: ytabladet,
-							head: [coldetalles],
-							body: [rows1],
-							theme: "grid", // O prueba con otros temas si es necesario
-							styles: {
-								textColor: [0, 0, 0],
-								fillColor: [255, 255, 255], //Color de fondo para las celdas
-								overflow: "linebreak", // Ajustar el texto largo
-								cellPadding: 1, // Ajustar el relleno de las celdas
-								fontSize: 10, // Ajustar el tamaño de la fuente
-							},
-							headStyles: {
-								textColor: [0, 0, 0], // Color del texto
-								fillColor: [255, 255, 255], //Color de fondo para las celdas
-								fontSize: 8, // Tamaño de fuente en la cabecera
-								lineWidth: 0.05, // Ancho de las líneas (bordes)
-								lineColor: [0, 0, 0],
-								cellPadding: 0.5,
-								fontStyle: "bold", // Estilo de la fuente en la cabecera
-							},
-							margin: { top: 10, left: 10, right: 10, bottom: 10 }, // Ajustar márgenes si es necesario
-						});
-						coldetalles = []; //
-						rows1 = []; //
-						ytabladet = ytabladet + 15;
-						cuentaentrada++;
-						sumcaracteres = 0;
-					}
-				}
-				i++;
-			}
-		});
-		var colmat = ["Cant", "MATERIALES UTILIZADOS", "Importe"];
-		let columnStyles = {
-			0: { cellWidth: 20 }, // Ancho de la primera columna
-			1: { cellWidth: 130 }, // Ancho de la segunda columna
-			2: { cellWidth: 40 }, // Ancho de la tercera columna
-		};
-		var calcularrengblancos = 0;
-		if (ytabladet > 136) {
-			calcularrengblancos = Math.trunc((ytabladet - 136) / 9);
-		}
-		let numberOfRows = 15 - calcularrengblancos;
-		let numberOfColumns = 3; // Por ejemplo, 3 columnas
-		// Crear las filas con celdas vacías
-		let datav = Array.from({ length: numberOfRows }, () =>
-			Array(numberOfColumns).fill("")
-		);
-		y = ytabladet;
-		doc.autoTable({
-			startY: y,
-			tableWidth: 190,
-			head: [colmat],
-			body: datav,
-			columnStyles: columnStyles,
-			theme: "grid", // O prueba con otros temas si es necesario
-			styles: {
-				textColor: [0, 0, 0], // Color del texto
-				fillColor: [255, 255, 255], //Color de fondo para las celdas
-				lineColor: [0, 0, 0],
-				overflow: "linebreak", // Ajustar el texto largo
-				cellPadding: 2, // Ajustar el relleno de las celdas
-				fontSize: 10, // Ajustar el tamaño de la fuente
-			},
-			headStyles: {
-				textColor: [0, 0, 0], // Color del texto
-				fillColor: [255, 255, 255], //Color de fondo para las celdas
-				fontSize: 8, // Tamaño de fuente en la cabecera
-				lineWidth: 0.1, // Ancho de las líneas (bordes)
-				lineColor: [0, 0, 0],
-				cellPadding: 0.5,
-				fontStyle: "bold", // Estilo de la fuente en la cabecera
-			},
-			margin: { top: 10, left: 10, right: 10, bottom: 10 },
-		});
-		//pie de la orden de trabajo
-		colmat = [
-			"Otros",
-			"Embaló",
-			"Plaqueta",
-			"Letras",
-			"Ojales",
-			"Dobladillo",
-			"Chicotes",
-			"Refuerzos",
-			"Unir Paños",
-			"Cor.Paños",
-		];
-		columnStyles = {
-			0: { cellWidth: 20 }, // Ancho de la primera columna
-			1: { cellWidth: 20 }, // Ancho de la segunda columna
-			2: { cellWidth: 20 }, // Ancho de la tercera columna
-			3: { cellWidth: 20 }, // Ancho de la cuarta columna
-			4: { cellWidth: 20 }, // Ancho de la quinta columna
-			5: { cellWidth: 20 }, // Ancho de la sexta columna
-			6: { cellWidth: 20 }, // Ancho de la septima columna
-			7: { cellWidth: 20 }, // Ancho de la octava columna
-			8: { cellWidth: 20 }, // Ancho de la novena columna
-			9: { cellWidth: 20 },
-		}; // Ancho de la decima columna
-		y = y + numberOfRows * 9;
-		numberOfRows = 1;
-		numberOfColumns = 10; // Por ejemplo, 3 columnas
-
-		// Crear las filas con celdas vacías
-		datav = Array.from({ length: numberOfRows }, () =>
-			Array(numberOfColumns).fill("")
-		);
-		doc.autoTable({
-			startY: y,
-			tableWidth: 200,
-			head: [colmat],
-			//body: datav,
-			columnStyles: columnStyles,
-			//theme: "grid",
-			styles: {
-				textColor: [0, 0, 0], // Color del texto
-				fillColor: [255, 255, 255], // Color de fondo para las celdas
-				overflow: "linebreak", // Ajustar el texto largo
-				cellPadding: 2, // Ajustar el relleno de las celdas
-				fontSize: 10, // Ajustar el tamaño de la fuente
-				angle: 90,
-				align: "center",
-				baseline: "middle",
-			},
-			headStyles: {
-				textColor: [255, 255, 255], // Hacer invisible el texto predeterminado
-				fillColor: [255, 255, 255], // Mantener el fondo
-				fontSize: 8, // Tamaño de fuente en la cabecera
-				// lineWidth: 0.1, // Ancho de las líneas (bordes)
-				//	lineColor: [0, 0, 0],
-				cellPadding: 0.5,
-				fontStyle: "bold",
-			},
-			didDrawCell: (data) => {
-				if (data.section === "head") {
-					data.cell.text = [];
-					const text = data.cell.raw;
-					const x = data.cell.x + data.cell.width / 2;
-					const y = data.cell.y + data.cell.height / 2;
-					// Dibujar el texto rotado
-					doc.setTextColor(0, 0, 0);
-					doc.saveGraphicsState();
-					doc.text(text, x, y, {
-						angle: -90,
-						align: "center",
-						baseline: "middle",
-					});
-					doc.restoreGraphicsState();
-				}
-			},
-			margin: { top: 10, left: 10, right: 10, bottom: 10 },
-		});
-		// Genera el PDF como Data URI y lo envía a pdfdata que si exite se muestra en el iframe
-		// var Cliente = arregloencab[0].ClientesDesc;
-		var Cliente = arregloencab[0].PresupEncabCliente
-		console.log('arregloencab ', arregloencab)
-		var largocli = Cliente.length;
-		while (
-			(Cliente.substr(largocli, 1) == " " ||
-				Cliente.substr(largocli, 1) == "") &&
-			largocli >= 0
-		) {
-			largocli--;
-		}
-
-		Cliente = Cliente.substr(0, largocli + 1);
-		// En lugar de .output("datauristring")
-		const blob = doc.output("blob");
-		const url = URL.createObjectURL(blob);
-
-		setPdfData(url); // Ahora pdfData será algo como "blob:http://localhost:3000/..."
-		// const dataUri = doc.output("datauristring");
-		// setPdfData(dataUri);
-		// if (numeroOT !== 0) {
-		// 	var numeroOTcero = agregarCeros(numeroOT, 6);
-		// 	const pdfData = doc.output("datauristring");
-		// 	const nombrearch = `OT Nro ${numeroOTcero} ${Cliente}.pdf`;
-		// 	sendPDFViaWebSocket(pdfData, nombrearch);
-		// }
-		if (numeroOT !== 0) {
-			const numeroOTcero = agregarCeros(numeroOT, 6);
-			const nombrearch = `OT Nro ${numeroOTcero} ${Cliente}.pdf`;
-
-			// Opción A: Si tu WebSocket acepta el archivo binario (Blob) directamente
-			// Es lo más rápido y eficiente en consumo de datos.
-			sendPDFViaWebSocket(blob, nombrearch);
-
-			/* Opción B: Si tu WebSocket/Backend espera estrictamente un String (Base64)
-			   Usamos FileReader para convertir el Blob a texto de forma segura.
-			*/
-			/*
-			const reader = new FileReader();
-			reader.readAsDataURL(blob); 
-			reader.onloadend = () => {
-				const base64data = reader.result; // Esto es el "datauristring" corregido
-				sendPDFViaWebSocket(base64data, nombrearch);
-			};
-			*/
-		}
-		// doc.save("./prueba1.pdf");
-	}
-
-	// doc.save("./prueba1.pdf");
 	useEffect(() => {
-		return () => {
-			if (pdfData && pdfData.startsWith('blob:')) {
-				URL.revokeObjectURL(pdfData);
-			}
-		};
-	}, [pdfData]);
+		return () => { if (pdfUrl) URL.revokeObjectURL(pdfUrl); };
+	}, [pdfUrl]);
+
 	return (
-		<>
-			<Dialog
-				open={open}
-				onClose={handleClose}
-				// fullScreen
-				maxWidth={false}
-				fullWidth={true}
-				sx={{
-					backgroundColor: colorfondo,
-				}}
-			>
-				<DialogContent>
-					<Button onClick={OTGraba}>Graba</Button>
-					<Button onClick={creaPDF}>Genera</Button>
-					<Button onClick={handleClose}>Cierra</Button>
-					{pdfData && (
-						<embed
-							src={pdfData}
-							type="application/pdf"
-							width="100%"
-							height="1200px"
-						/>
-					)}
-				</DialogContent>
-			</Dialog>
-		</>
+		<Dialog open={open} onClose={handleClose} maxWidth={false} fullWidth={true}>
+			<DialogContent>
+				<div style={{ marginBottom: "15px", display: "flex", gap: "10px" }}>
+					<Button variant="contained" onClick={OTGraba}>Graba</Button>
+					<Button variant="contained" color="secondary" onClick={creaPDF}>Genera PDF</Button>
+					<Button variant="outlined" onClick={handleClose}>Cierra</Button>
+				</div>
+
+				{/* CONTENEDOR GENERADOR CON ALTO TOTAL REDUCIDO PARA PREVENIR 2DA HOJA */}
+				<div style={{ position: 'absolute', left: '-9999px', top: '0' }}>
+					<div ref={reportTemplateRef} style={{
+						boxSizing: 'border-box',
+						padding: '10mm 15mm 0mm 15mm', // Removido el padding inferior para ganar recorrido real abajo
+						fontFamily: 'Arial, sans-serif',
+						width: '210mm',
+						height: '293mm', // Reducido levemente de 297 a 293 para eliminar el salto fantasma de html2pdf
+						position: 'relative',
+						backgroundColor: '#fff',
+						color: '#000',
+						fontSize: '11px'
+					}}>
+
+						{/* ENCABEZADOS Y DATOS */}
+						<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: headerBgColor, padding: '6px', border: '1px solid #000', marginBottom: '8px' }}>
+							<h2 style={{ margin: 0, fontSize: '15px' }}>Orden de Trabajo Nro: {numeroOT}</h2>
+							<h3 style={{ margin: 0, fontSize: '13px' }}>{tipoorden}</h3>
+						</div>
+
+						<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '8px', fontSize: '12px' }}>
+							<thead>
+								<tr style={{ backgroundColor: '#f2f2f2' }}>
+									<th style={{ border: '1px solid #000', padding: '4px', textAlign: 'left' }}>Cliente</th>
+									<th style={{ border: '1px solid #000', padding: '4px', textAlign: 'left' }}>Telefono</th>
+									<th style={{ border: '1px solid #000', padding: '4px', textAlign: 'left' }}>Localidad</th>
+									<th style={{ border: '1px solid #000', padding: '4px', textAlign: 'left' }}>CUIT</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td style={{ border: '1px solid #000', padding: '4px' }}>
+										{arregloencab.idClientes ? `(${arregloencab.idClientes}) ${arregloencab.ClientesDesc}` : `(     ) ${arregloencab.PresupEncabCliente || ''}`}
+									</td>
+									<td style={{ border: '1px solid #000', padding: '4px' }}>{arregloencab.ClientesTel || ''}</td>
+									<td style={{ border: '1px solid #000', padding: '4px' }}>{arregloencab.ClientesLoc || ''}</td>
+									<td style={{ border: '1px solid #000', padding: '4px' }}>{arregloencab.ClientesCUIT || ''}</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px', fontSize: '12px', marginBottom: '8px', border: '1px solid #000', padding: '5px' }}>
+							<div><strong>Transporte:</strong> {otdatos?.transporte?.TransporteDesc ? otdatos.transporte.TransporteDesc.substring(0, 20) : ''}</div>
+							<div><strong>Presup. Nro:</strong> {otdatos?.datosencab?.[0]?.[0]?.idPresupEncab || ''}</div>
+							<div><strong>Fecha:</strong> {FechaHoy}</div>
+							<div><strong>Promesa:</strong> {FechaProm}</div>
+							<div><strong>O.C.:</strong> {otdatos?.OTEncabOC || ''}</div>
+							<div><strong>Detalles:</strong> {otdatos?.OTEncabDetalles || ''}</div>
+						</div>
+
+						<div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '1px', marginBottom: '8px', fontSize: '11px', textAlign: 'center' }}>
+							<div style={{ border: '1px solid #000', padding: '3px' }}><strong>{textoImpI}</strong><br />{valorImpI}</div>
+							<div style={{ border: '1px solid #000', padding: '3px' }}><strong>{textoImp}</strong><br />{valorImp}</div>
+							<div style={{ border: '1px solid #000', padding: '3px' }}><strong>{textoSeniaI}</strong><br />{valorSeniaI}</div>
+							<div style={{ border: '1px solid #000', padding: '3px', display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>Remito</div>
+							<div style={{ border: '1px solid #000', padding: '3px', display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>Fact.Cta.Cte.</div>
+							<div style={{ border: '1px solid #000', padding: '3px', display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>Fact.Contado</div>
+							<div style={{ border: '1px solid #000', padding: '3px', display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>Recibo</div>
+						</div>
+
+						{/* CUERPO DINÁMICO */}
+						<table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '6px', fontSize: '10px' }}>
+							<tbody>
+								{arreglorenglon.map((row, idx) =>
+									<tr key={idx}>
+										<td style={{ border: '1px solid #000', padding: '4px' }}>{row.PresupRenglonCant}</td>
+										<td style={{ border: '1px solid #000', padding: '4px' }}>{row.PresupRenglonDesc}</td>
+										<td style={{ border: '1px solid #000', padding: '4px', textAlign: 'right' }}>{row.PresupRenglonLargo}</td>
+										<td style={{ border: '1px solid #000', padding: '4px', textAlign: 'right' }}>{row.PresupRenglonAncho}</td>
+										<td style={{ border: '1px solid #000', padding: '4px', textAlign: 'right' }}>{formatCurrency(row.PresupRenglonImpUnit)}</td>
+									</tr>
+
+								)}
+							</tbody>
+						</table>
+
+						{/* BLOQUE DINÁMICO DE DATOSCONFEC */}
+						{otdatos?.datosconfec && (
+							<div style={{ marginBottom: '8px', padding: '5px', border: '1px solid #000', fontSize: '11px', backgroundColor: '#fcfcfc' }}>
+								<div style={{ fontWeight: 'bold', marginBottom: '3px', borderBottom: '1px dashed #000', paddingBottom: '2px' }}>Detalles de Confección:</div>
+								<div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '4px' }}>
+									{Object.entries(otdatos.datosconfec).map(([key, value]) => {
+										if (key === 'idrenglon') return null;
+										return (
+											<div key={key}>
+												<strong>{key}:</strong> {value}
+											</div>
+										);
+									})}
+								</div>
+							</div>
+						)}
+						<table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '10px', marginBottom: '4px' }}>
+							<thead>
+								<tr style={{ backgroundColor: '#e6e6e6' }}>
+									<th style={{ border: '1px solid #000', padding: '3px', width: '100%', textAlign: 'canter' }}>Otros</th>
+								</tr>
+							</thead>
+							<tbody>
+								{Array.from({ length: 3 }).map((_, i) => (
+									<tr key={i}>
+										<td style={{ height: '20px', border: '0.1px solid #000' }}></td>
+										<td style={{ border: '0.1px solid #000' }}></td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+						{/* Cuadrícula de Materiales Utilizados */}
+						<table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '10px', marginBottom: '4px' }}>
+							<thead>
+								<tr style={{ backgroundColor: '#e6e6e6' }}>
+									<th style={{ border: '1px solid #000', padding: '3px', width: '5%', textAlign: 'canter' }}>Cant</th>
+									<th style={{ border: '1px solid #000', padding: '3px', width: '85%', textAlign: 'canter' }}>MATERIALES UTILIZADOS</th>
+									<th style={{ border: '1px solid #000', padding: '3px', width: '10%', textAlign: 'canter' }}>Importe</th>
+								</tr>
+							</thead>
+							<tbody>
+								{Array.from({ length: 15 }).map((_, i) => (
+									<tr key={i}>
+										<td style={{ height: '20px', border: '0.1px solid #000' }}></td>
+										<td style={{ border: '0.1px solid #000' }}></td>
+										<td style={{ border: '0.1px solid #000' }}></td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+
+
+						{/* PIE DE PÁGINA CLAVADO EN EL FONDO ABSOLUTO (SIN MÁRGENES EXTRA) */}
+						<div style={{
+							position: 'absolute',
+							bottom: '0mm', // Pegado completamente al final físico para encajar en el fichador
+							left: '15mm',
+							right: '15mm'
+						}}>
+							{/* <div style={{ border: '1px solid #000', padding: '5px', fontSize: '10px', marginBottom: '4px' }}>
+								<strong>Pago :</strong>
+							</div> */}
+
+							{/* GRILLA DE FICHADO: Abierta abajo (sin bordes inferiores) */}
+							<div style={{
+								display: 'grid',
+								gridTemplateColumns: 'repeat(10, 1fr)',
+								borderTop: '1px solid #000',
+								borderLeft: '1px solid #000',
+								borderRight: '1px solid #000',
+								fontSize: '11px',
+								// backgroundColor: '#f9f9f9'
+							}}>
+								{["Otros", "Embaló", "Plaqueta", "Letras", "Ojales", "Dobladillo", "Chicotes", "Refuerzos", "Unir Paños", "Cor.Paños"].map((item, index) => (
+									<div key={index} style={{
+										borderRight: index < 9 ? '1px solid #000' : 'none',
+										display: 'flex',
+										flexDirection: 'column',
+										height: '125px', // Altura perfecta para la ranura del reloj marcador
+										boxSizing: 'border-box',
+										position: 'relative'
+									}}>
+										{/* Texto alineado estrictamente a la derecha del carril */}
+										<div style={{
+											position: 'absolute',
+											top: '10px', // Altura media del recorrido
+											right: '0.1px', // Clavado en el lateral derecho de la columna
+											width: '20px',
+											display: 'flex',
+											justifyContent: 'left'
+										}}>
+											<span style={{
+												fontStyle: 'italic',
+												whiteSpace: 'nowrap',
+												transform: 'rotate(90deg)',
+												transformOrigin: 'left center',
+												fontSize: '9px',
+												textAlign: 'left'
+											}}>
+												{item}
+											</span>
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				{/* VISTA PREVIA */}
+				{pdfUrl && (
+					<embed src={pdfUrl} type="application/pdf" width="100%" height="700px" style={{ marginTop: '10px' }} />
+				)}
+			</DialogContent>
+		</Dialog>
 	);
 }

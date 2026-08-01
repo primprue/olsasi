@@ -11,8 +11,6 @@ moment.locale("es");
 
 router.delete("/", function (req, res, next) {
   var respuesta = []
-  // var nombrepresup = req.query.nombrepresup;
-  // var comando = 'rm ' + variables.caminoynombrearch + nombrepresup
   var comando = 'rm ' + variables.caminoynombrearch + "/Presupuesto*.*"
   exec(comando, (error, stdout, stderr) => {
     if (error) {

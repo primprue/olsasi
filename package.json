@@ -26,6 +26,7 @@
     "argon2": "^0.44.0",
     "date-fns": "^4.1.0",
     "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.14.0",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.4",
     "moment": "^2.30.1",

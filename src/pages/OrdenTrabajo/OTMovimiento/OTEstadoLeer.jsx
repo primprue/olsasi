@@ -5,7 +5,7 @@ import request from "superagent";
 export function OTEstadoLeer() {
 	return new Promise(function (resolve) {
 		setTimeout(() => {
-			const url = IpServidor + "/otestadoleer";
+			const url = IpServidor + "/otestadoleercod";
 			request
 				.get(url)
 				.set("Content-Type", "application/json")

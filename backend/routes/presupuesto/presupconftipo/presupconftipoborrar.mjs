@@ -21,24 +21,3 @@ router.delete("/:id", async (req, res) => {
   }
 });
 export default router;
-
-//   var q = ["delete", ' from BasePresup.PresupConfTipo where idPresupConfTipo = "', indice, '"'].join(
-//     " "
-//   );
-//   conexion.query(q, function (err, result) {
-//     if (err) {
-//       if (err.errno == 1451) {
-//         return res
-//           .status(411)
-//           .send({ message: "error Código de Confeccion Tipo usado en otra tabla" });
-//       }
-//       {
-//         console.log(err);
-//       }
-//     } else {
-//       res.json(result.rows);
-//     }
-//   });
-// });
-// conexion.end;
-// export default router;

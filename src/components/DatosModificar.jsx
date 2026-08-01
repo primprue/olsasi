@@ -4,7 +4,6 @@ import IpServidor from "../pages/VariablesDeEntorno";
 import request from "superagent";
 export async function DatosModificar(props, ejecutorbackend) {
 	const { id, ...datos } = props;
-
 	const url = `${IpServidor}/${ejecutorbackend}/?id=${id}`;
 
 	try {

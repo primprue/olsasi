@@ -13,8 +13,9 @@ router.get("/", async (req, res) => {
     const datosRec = JSON.parse(req.query.datoscalculo);
     const parametros = await queryAsync(`SELECT * FROM BasePresup.PresupParam`);
     const p = parametros[0];
-
     const resultados = [];
+
+
 
     for (const item of datosRec) {
       const StkRubroAbrP = item.StkRubroAbr;
@@ -27,21 +28,23 @@ router.get("/", async (req, res) => {
       let anchoreal = (item.ancho * 1)
       let detalle = "", ganancia = 0, tipoojal = "", sogachicote = "", sogadobladillo = "";
 
-      // definimos variables locales
-
+      let coeficiente = 0;
       ganancia = p.coefgancsoga;
+      tipoojal = p.abrojales3hz;
+      sogadobladillo = p.sogadobladillo;
+
+      // definimos variables locales
       if (minmay === "my") {
         tipoojal = p.abrojales28;
         sogachicote = p.sogachicotemay;
         ganancia = p.coefganmay;
       } else {
-        coeficiente = result[0].coeficientemin;
+        coeficiente = p.coeficientemin;
         sogachicote = p.sogachicotemin;
       }
       let ivasncal = minmay === "my" ? "CIVA" : ivasn;
 
-      tipoojal = p.abrojales3h;
-      sogadobladillo = p.sogadobladillo;
+
       const sql = `
                 SELECT
                     -- costo lona
@@ -89,7 +92,6 @@ router.get("/", async (req, res) => {
         StkRubroAbrP       // r1
       ];
       const datos1 = await queryAsync(sql, params);
-
       //const datos1 = await queryAsync(sql);
       const d = datos1[0];
       detalle = detallep !== '' ? `${detallep} en :  ${d.StkRubroDesc}` : `Poncho para riego confeccionado en:  ${d.StkRubroDesc}`;

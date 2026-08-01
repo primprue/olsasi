@@ -9,8 +9,7 @@ export default function OTDatos() {
 	return (
 		<>
 			<OTDatosForm />
-			{/* <FormBuilder /> */}
-			{/* <CanvasFormBuilder /> */}
+
 		</>
 	);
 }

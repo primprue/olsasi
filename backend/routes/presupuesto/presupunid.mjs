@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
     const p = parametros[0];
 
     const resultados = [];
-
+    console.log('datosrec', datosrec)
     for (const item of datosrec) {
       const {
         cantidad,

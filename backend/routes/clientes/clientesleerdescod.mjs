@@ -6,7 +6,7 @@ import { conexion } from '../conexion.mjs';
 
 router.get('/', async function (req, res) {
     var indice = req.query.id;
-    console.log('indice clientesleerdescod  ', indice)
+
     var q = ['SELECT ClientesDesc FROM BasesGenerales.Clientes where idClientes = ' + indice].join(' ')
     conexion.query(q,
         function (err, result) {
